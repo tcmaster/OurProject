@@ -22,6 +22,7 @@ public class BigImageActivity extends Activity implements OnClickListener {
 	private int currPos;
 	private String currImg;
 	private String currDesc;
+	private String name = "小嵩能看到吗";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
