@@ -3,6 +3,7 @@ package com.android.doubanmovie.activity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class BigImageActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_big_image);
+		Log.v("test", "it 's ok");
 		image = (ImageView) findViewById(R.id.bigImage);
 		left = (ImageButton) findViewById(R.id.left);
 		right = (ImageButton) findViewById(R.id.right);
@@ -56,7 +58,7 @@ public class BigImageActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.left:
 			if (currPos == 0) {
-				Toast.makeText(this, "ÒÑ¾­ÊÇµÚÒ»ÕÅÀ²", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "ï¿½Ñ¾ï¿½ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			currPos--;
@@ -66,7 +68,8 @@ public class BigImageActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.right:
 			if (currPos == data.size() - 1) {
-				Toast.makeText(this, "ÒÑ¾­ÊÇ×îºóÒ»ÕÅÀ²", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT)
+						.show();
 				return;
 			}
 			currPos++;
