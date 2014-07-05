@@ -22,13 +22,14 @@ public class BigImageActivity extends Activity implements OnClickListener {
 	private int currPos;
 	private String currImg;
 	private String currDesc;
-	private String name = "小嵩能看到吗";
+	private String name = "我能看到。。。";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_big_image);
 		Log.v("test", "it 's ok");
+
 		image = (ImageView) findViewById(R.id.bigImage);
 		left = (ImageButton) findViewById(R.id.left);
 		right = (ImageButton) findViewById(R.id.right);
