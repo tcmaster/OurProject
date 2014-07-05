@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:gravity="center_vertical"
+    >
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_map"
+        android:id="@+id/image"
+        android:focusable="false"/>
+    <!-- 下面的TextView放弃走马灯效果，因为列表显得过于卡顿 -->
+	<com.android.doubanmovie.layout.MyTextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="30dp"
+	    android:text="@string/app_name"
+	    android:id="@+id/cinemaName"
+	    android:layout_marginLeft="15dp"
+	    android:layout_toRightOf="@id/image"
+	    android:gravity="center_vertical"
+	    android:textSize="18sp"
+	    android:maxLines="2"
+	    />
+	<TextView
+	     android:layout_width="wrap_content"
+	     android:layout_height="30dp"
+	     android:text="@string/cinima"
+	     android:id="@+id/distance"
+	     android:layout_alignParentRight="true"
+	     android:gravity="right|center_vertical"
+	     android:paddingRight="20dp"
+	     android:textSize="15sp"
+	     android:singleLine="true"
+	     android:layout_below="@id/cinemaName"
+	     />
+</RelativeLayout>

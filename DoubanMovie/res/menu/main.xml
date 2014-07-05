@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:actionViewClass="android.widget.SearchView"
+        android:title="@string/action_settings"
+        android:icon="@android:drawable/ic_menu_search"
+        />
+	<item
+	    android:id="@+id/action_mylocation"
+	    android:orderInCategory="100"
+	    android:showAsAction="always"
+	    android:title="@string/city"
+	    />
+	<item
+	    android:id="@+id/action_reflush"
+	    android:orderInCategory="100"
+	    android:showAsAction="always"
+	    android:title="@string/action_settings"
+	    android:icon="@android:drawable/ic_popup_sync"
+	    />
+</menu>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/mainbutton"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:id="@+id/showimg"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:src="@drawable/defaultcovers"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        />
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    style="@style/TextStyle.BlackText"
+	    android:text="@string/app_name"
+	    android:textSize="15sp"
+	    android:padding="5dp"
+	    android:scrollHorizontally="true"
+	    android:id="@+id/showitemtext"
+	    android:gravity="center"
+	    android:maxLines="1"
+	    />
+
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="2dp"
+	    android:gravity="center_vertical">
+
+	<RatingBar
+	    android:id="@+id/ratingBar"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    style="?android:attr/ratingBarStyleSmall"
+	    />
+	<TextView 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/ratingtext"
+	    android:maxLines="1"
+	    android:maxWidth="30dp"
+	    android:textSize="12sp"
+	    android:text="@string/app_name"
+	    android:layout_toRightOf="@id/ratingBar"
+	    android:paddingLeft="5dp"/>
+	</RelativeLayout>
+</LinearLayout>
