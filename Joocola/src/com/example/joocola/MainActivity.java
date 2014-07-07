@@ -1,17 +1,10 @@
 package com.example.joocola;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.example.joocola.utils.GetDataUtils;
-import com.example.joocola.utils.HttpPostUtils;
-import com.example.joocola.utils.HttpPostUtils.HttpPostCallBack;
 
 public class MainActivity extends Activity {
 
@@ -22,19 +15,19 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		final HashMap<String, String> mHashMap = GetDataUtils.getParmas();
-		mHashMap.put("userName", "admin");
-		mHashMap.put("pwd", "amituofo");
-		queue = Volley.newRequestQueue(MainActivity.this);
-		GetDataUtils.doGetData(url_b, mHashMap, queue);
+		// final HashMap<String, String> mHashMap = GetDataUtils.getParmas();
+		// mHashMap.put("userName", "admin");
+		// mHashMap.put("pwd", "amituofo");
+		// queue = Volley.newRequestQueue(MainActivity.this);
+		// GetDataUtils.doGetData(url_b, mHashMap, queue);
 		// PostDataUtils.postNewRequest(url_b, queue);
-		HttpPostUtils.httpPost(new HttpPostCallBack() {
-
-			@Override
-			public void httpPostResolveData(String result) {
-				Log.e("data", result);
-			}
-		});
+		// HttpPostUtils.httpPost(new HttpPostCallBack() {
+		//
+		// @Override
+		// public void httpPostResolveData(String result) {
+		// Log.e("data", result);
+		// }
+		// });
 
 	}
 
