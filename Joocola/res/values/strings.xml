@@ -10,5 +10,9 @@
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="name_hint">请输入账号</string>
-
+    <!-- lixiaosongAdd -->
+	<string name="register_phoneEmail">手机号/邮箱</string>
+	<string name="security_code">获取验证码</string>
+	<string name="register_phoneEmail_textInit">请输入手机号/邮箱</string>
+	<!-- lixiaosongAddEnd -->
 </resources>
