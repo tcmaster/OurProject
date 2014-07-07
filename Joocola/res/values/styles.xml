@@ -16,5 +16,26 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    <!-- 灰色中号字体 -->
+    <style name="size_middle_gray" parent="size_middle">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+    <!-- 中号字体 -->
+    <style name="size_middle" parent="size_big">
+        <item name="android:textSize">16.0sp</item>
+    </style>
+    <!-- 大号字体 -->
+    <style name="size_big" parent="size_huge">
+        <item name="android:textSize">18.0sp</item>
+    </style>
+     <!-- 巨大号字体 -->
+    <style name="size_huge" parent="wrap">
+        <item name="android:textSize">21.0sp</item>
+    </style>
+    <!-- 自适应宽高 -->
+    <style name="wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 
 </resources>
