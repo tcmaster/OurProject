@@ -18,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
  * 用 get 方式请求
  */
 public class GetDataUtils {
-	protected static final String url_a = "http://192.168.1.104:8099/Controller/";
+	protected static final String url_a = "http://byw00031.my3w.com/Controller/";
 	protected static final String md5 = "sign";
 
 	// http://192.168.1.104:8099/Controller/Sys.UserController.AppLogon.ashx?pwd=amituofo&userName=admin&sign=d4e0512026d993af4803c16c27b7eb17
@@ -36,6 +36,7 @@ public class GetDataUtils {
 			}
 		}
 		md5String = MD5Utils.md5s(md5String);
+		Log.e("~~~~", md5String);
 		mHashMap.put(md5, md5String);
 
 		// 开始正式调用
@@ -52,7 +53,7 @@ public class GetDataUtils {
 			urlBuilder.append("&");
 		}
 		urlBuilder.deleteCharAt(urlBuilder.length() - 1);
-
+		Log.e("get的地址", urlBuilder.toString());
 		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Method.GET,
 				urlBuilder.toString(), null, new Listener<JSONObject>() {
 

@@ -79,4 +79,14 @@
         android:layout_marginTop="14dp"
         android:text="@string/register" />
 
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register"
+        android:layout_marginRight="31dp"
+        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/forget_pswd"
+        android:text="TextView" />
+
 </RelativeLayout>

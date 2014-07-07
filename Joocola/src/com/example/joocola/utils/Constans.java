@@ -5,5 +5,7 @@ package com.example.joocola.utils;
  * 
  */
 public class Constans {
-	public static final String url_a = "http://192.168.1.104:8099/Controller/";
+	// public static final String FINAL_URL =
+	// "http://byw00031.my3w.com/Controller/Sys.UserController.AppLogon.ashx";
+	public static final String MAIN_URL = "http://byw00031.my3w.com/Controller/";
 }
