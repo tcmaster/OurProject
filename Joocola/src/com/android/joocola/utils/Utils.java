@@ -70,7 +70,7 @@ public class Utils {
 	 * @category 判断密码是否符合6-20位字母或数字
 	 */
 	public static boolean isGoodPassword(String pswd) {
-		Pattern pattern = Pattern.compile("[0-9a-zA-Z]{6,20})");
+		Pattern pattern = Pattern.compile("[0-9a-zA-Z]{6,20}");
 		return pattern.matcher(pswd).matches();
 	}
 

@@ -24,6 +24,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.interface_register2);
 		initView();
 		registerListener();
 	}

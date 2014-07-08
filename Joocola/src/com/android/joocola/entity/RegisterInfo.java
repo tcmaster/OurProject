@@ -1,6 +1,13 @@
 package com.android.joocola.entity;
 
-public class RegisterInfo {
+import java.io.Serializable;
+
+public class RegisterInfo implements Serializable {
+
+	/**
+	 * 默认的版本ID
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 用户名
 	 */
