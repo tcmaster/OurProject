@@ -18,7 +18,7 @@ import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
-import com.example.joocola.R;
+import com.android.joocola.R;
 
 public class MainActivity extends Activity implements OnClickListener {
 
