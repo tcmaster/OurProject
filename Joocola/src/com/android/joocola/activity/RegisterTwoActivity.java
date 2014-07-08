@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
-import com.example.joocola.R;
+import com.android.joocola.R;
 
 public class RegisterTwoActivity extends BaseActivity implements
 		OnClickListener {

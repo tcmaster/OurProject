@@ -14,11 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.joocola.R;
 import com.android.joocola.entity.RegisterInfo;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
-import com.example.joocola.R;
 
 public class RegisterOneActivity extends BaseActivity implements
 		OnClickListener {
@@ -191,7 +191,16 @@ public class RegisterOneActivity extends BaseActivity implements
 	}
 
 	private void verify() {
-
+		if (resultCode != null) {
+			if (resultCode.equals(et_code.getText().toString())) {
+				b_verify.setEnabled(false);
+				b_verify.setText("验证成功");
+			} else {
+				Utils.toast(this, "验证失败，请重新输入验证码");
+			}
+		} else {
+			Utils.toast(this, "网络状况不佳，请稍后再试");
+		}
 	}
 
 	@SuppressLint("HandlerLeak")
