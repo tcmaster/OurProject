@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true" >
         <activity
-            android:name="com.example.joocola.MainActivity"
+            android:name="com.android.joocola.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,17 +33,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.joocola.activity.BaseActivity"
+            android:name="com.android.joocola.activity.BaseActivity"
             android:label="@string/title_activity_base"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.joocola.activity.RegisterOneActivity"
+            android:name="com.android.joocola.activity.RegisterOneActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             />
         <activity
-            android:name="com.example.joocola.activity.RegisterTwoActivity"
+            android:name="com.android.joocola.activity.RegisterTwoActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             />
