@@ -62,9 +62,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.login:
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
-				mHttpPostInterface.addParma("userName", nameEdit.getText()
+				mHttpPostInterface.addParams("userName", nameEdit.getText()
 						.toString());
-				mHttpPostInterface.addParma("pwd", pswdEdit.getText()
+				mHttpPostInterface.addParams("pwd", pswdEdit.getText()
 						.toString());
 				// mHttpPostInterface.addParma("dataType", "Profession");
 				mHttpPostInterface.getData(test_sqString,

@@ -25,7 +25,7 @@ import android.util.Log;
 public class HttpPostInterface {
 	private HashMap<String, String> map = new HashMap<String, String>();
 
-	public void addParma(String key, String value) {
+	public void addParams(String key, String value) {
 		map.put(key, value);
 	}
 
