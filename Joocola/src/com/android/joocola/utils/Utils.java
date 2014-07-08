@@ -50,4 +50,25 @@ public class Utils {
 	public static void toast(Context context, String content) {
 		Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
 	}
+
+	/**
+	 * 
+	 * @param pswd
+	 *            密码
+	 * @category 判断密码是否符合6-20位字母或数字
+	 */
+	public static boolean isGoodPassword(String pswd) {
+		Pattern pattern = Pattern.compile("[0-9a-zA-Z]{6,20})");
+		return pattern.matcher(pswd).matches();
+	}
+
+	/**
+	 * 判断该字符串是否为空
+	 */
+	public static boolean stringIsNullOrEmpty(String str) {
+		if (str == null || str.equals(""))
+			return true;
+		else
+			return false;
+	}
 }
