@@ -1,0 +1,47 @@
+package com.android.joocola.utils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * 
+ * @author lixiaosong
+ * @category 常用工具集合类
+ */
+public class Utils {
+	/**
+	 * @category 判断当期字符串格式是否为电话号码或者邮箱
+	 * @return 如果是为true，否则为false
+	 */
+	public static boolean isPhoneNumberOrEmail(String str) {
+		return isEmail(str) || isPhoneNumber(str);
+	}
+
+	public static boolean isEmail(String str) {
+		String strPattern = "^[a-zA-Z][//w//.-]*[a-zA-Z0-9]@[a-zA-Z0-9][//w//.-]*[a-zA-Z0-9]//.[a-zA-Z][a-zA-Z//.]*[a-zA-Z]$";
+		Pattern p = Pattern.compile(strPattern);
+		Matcher m = p.matcher(str);
+		return m.matches();
+
+	}
+
+	public static boolean isPhoneNumber(String str) {
+		boolean isValid = false;
+		String expression = "^//(?(//d{3})//)?[- ]?(//d{3})[- ]?(//d{5})$";
+		String expression2 = "^//(?(//d{3})//)?[- ]?(//d{4})[- ]?(//d{4})$";
+		CharSequence inputStr = str;
+		/* 创建Pattern */
+		Pattern pattern = Pattern.compile(expression);
+		/* 将Pattern 以参数传入Matcher作Regular expression */
+		Matcher matcher = pattern.matcher(inputStr);
+		/* 创建Pattern2 */
+		Pattern pattern2 = Pattern.compile(expression2);
+		/* 将Pattern2 以参数传入Matcher2作Regular expression */
+		Matcher matcher2 = pattern2.matcher(inputStr);
+		if (matcher.matches() || matcher2.matches()) {
+			isValid = true;
+		}
+		return isValid;
+
+	}
+}
