@@ -3,6 +3,9 @@ package com.android.joocola.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+import android.widget.Toast;
+
 /**
  * 
  * @author lixiaosong
@@ -42,6 +45,9 @@ public class Utils {
 			isValid = true;
 		}
 		return isValid;
+	}
 
+	public static void toast(Context context, String content) {
+		Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
 	}
 }
