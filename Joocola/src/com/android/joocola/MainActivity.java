@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.joocola.activity.FindPasswordActivity;
+import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -24,7 +25,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	protected String url_b = "Sys.UserController.AppLogon.ashx";
 	protected String test_sqString = "Sys.BaseDataController.GetDatas.ashx";
 	private EditText nameEdit, pswdEdit;
-	private Button loginButton;
+	private Button loginButton, registerButton;
 	private TextView forget_pswd;
 
 	@Override
@@ -43,6 +44,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		pswdEdit = (EditText) this.findViewById(R.id.pswd_edit);
 		loginButton = (Button) this.findViewById(R.id.login);
 		forget_pswd = (TextView) this.findViewById(R.id.forget_pswd);
+		registerButton = (Button) this.findViewById(R.id.register);
+		registerButton.setOnClickListener(this);
 		loginButton.setOnClickListener(this);
 		forget_pswd.setOnClickListener(this);
 	}
@@ -78,9 +81,14 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.forget_pswd:
-			Intent intent = new Intent(MainActivity.this,
+			Intent forgetIntent = new Intent(MainActivity.this,
 					FindPasswordActivity.class);
-			startActivity(intent);
+			startActivity(forgetIntent);
+			break;
+		case R.id.register:
+			Intent registerIntent = new Intent(MainActivity.this,
+					RegisterOneActivity.class);
+			startActivity(registerIntent);
 			break;
 		default:
 			break;

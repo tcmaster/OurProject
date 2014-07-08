@@ -5,6 +5,8 @@ import android.os.Bundle;
 import com.example.joocola.R;
 
 public class FindPasswordActivity extends BaseActivity {
+	private String url = "Sys.UserController. ApplyForgetPWDVerifyCode.ashx"; // 找回密码需要的网址
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
