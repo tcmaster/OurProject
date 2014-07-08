@@ -12,6 +12,18 @@ import android.widget.Toast;
  * @category 常用工具集合类
  */
 public class Utils {
+	/*
+	 * 简易版的 判断账户是否是邮箱或者11位数字 暂时没发现错误
+	 * 
+	 * @author lizhe
+	 */
+	public static boolean judgeAccount(String account) {
+
+		return (account
+				.matches("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*") || account
+				.matches("\\d{11}"));
+	}
+
 	/**
 	 * @category 判断当期字符串格式是否为电话号码或者邮箱
 	 * @return 如果是为true，否则为false

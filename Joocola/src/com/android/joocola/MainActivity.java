@@ -14,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.joocola.activity.FindPasswordActivity;
-import com.android.joocola.utils.AccountUtils;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.Utils;
 import com.example.joocola.R;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.login:
-			if (AccountUtils.judgeAccount(nameEdit.getText().toString())) {
+			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
 				mHttpPostInterface.addParma("userName", nameEdit.getText()
 						.toString());
