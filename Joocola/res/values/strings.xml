@@ -31,6 +31,7 @@
     <string name="birthday">生日</string>
     <string name="isPrivate">不会公开</string>
     <string name="registerStr">注册即表示您同意《聚可乐用户协议》</string>
+    <string name="verify">点击验证</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
 </resources>

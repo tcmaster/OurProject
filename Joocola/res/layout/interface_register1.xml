@@ -51,7 +51,7 @@
 	    android:layout_marginTop="5dp"
 	    />
 	<EditText
-	    android:layout_width="match_parent"
+	    android:layout_width="220dp"
 	    android:paddingLeft="10dp"
 	    android:paddingRight="10dp"
 	    android:layout_height="40dp"
@@ -61,6 +61,17 @@
 	    android:inputType="textPhonetic|textPhonetic"
 	    android:layout_below="@id/title_authcode"
 	    android:layout_marginTop="5dp"
+	    />
+	<Button
+	    android:layout_width="wrap_content"
+	    android:layout_height="40dp"
+	    android:gravity="center"
+	    android:id="@+id/verifyButton"
+	    android:layout_toRightOf="@id/authcode_text"
+	    android:layout_alignTop="@id/authcode_text"
+	    android:layout_below="@id/title_authcode"
+	    android:textSize="16sp"
+	    android:text="@string/verify"
 	    />
 	<TextView
 	    android:layout_width="wrap_content"
