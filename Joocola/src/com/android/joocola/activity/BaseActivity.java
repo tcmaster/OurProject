@@ -1,4 +1,4 @@
-package com.example.joocola.activity;
+package com.android.joocola.activity;
 
 import android.app.Activity;
 

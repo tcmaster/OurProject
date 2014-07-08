@@ -1,4 +1,4 @@
-package com.example.joocola;
+package com.android.joocola;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.joocola.utils.HttpPostInterface;
-import com.example.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.HttpPostInterface;
+import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.example.joocola.R;
 
 public class MainActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package com.example.joocola.utils;
+package com.android.joocola.utils;
 
 import java.util.Arrays;
 import java.util.HashMap;

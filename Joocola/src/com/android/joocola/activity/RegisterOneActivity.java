@@ -1,4 +1,4 @@
-package com.example.joocola.activity;
+package com.android.joocola.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -58,7 +58,6 @@ public class RegisterOneActivity extends BaseActivity implements
 	}
 
 	private void getAutoCode() {
-
 	}
 
 	private void nextStep() {
