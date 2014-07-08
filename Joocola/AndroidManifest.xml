@@ -47,6 +47,10 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             />
+       <activity 
+           android:name="com.android.joocola.activity.FindPasswordActivity"
+           android:screenOrientation="portrait"
+           android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>
