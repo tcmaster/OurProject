@@ -18,12 +18,10 @@ import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
-import com.android.joocola.R;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	protected String url_b = "Sys.UserController.AppLogon.ashx";
-	protected String test_sqString = "Sys.BaseDataController.GetDatas.ashx";
 	private EditText nameEdit, pswdEdit;
 	private Button loginButton, registerButton;
 	private TextView forget_pswd;
@@ -67,14 +65,13 @@ public class MainActivity extends Activity implements OnClickListener {
 				mHttpPostInterface.addParams("pwd", pswdEdit.getText()
 						.toString());
 				// mHttpPostInterface.addParma("dataType", "Profession");
-				mHttpPostInterface.getData(test_sqString,
-						new HttpPostCallBack() {
+				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
-							@Override
-							public void httpPostResolveData(String result) {
-								// 在这里用handler 把json 发出去 进行更新UI的操作
-							}
-						});
+					@Override
+					public void httpPostResolveData(String result) {
+						// 在这里用handler 把json 发出去 进行更新UI的操作
+					}
+				});
 			} else {
 				Toast.makeText(MainActivity.this, "请输入正确的账号",
 						Toast.LENGTH_SHORT).show();

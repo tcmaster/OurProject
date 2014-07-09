@@ -5,7 +5,5 @@ package com.android.joocola.utils;
  * 
  */
 public class Constans {
-	// public static final String FINAL_URL =
-	// "http://byw00031.my3w.com/Controller/Sys.UserController.AppLogon.ashx";
-	public static final String MAIN_URL = "http://byw00031.my3w.com/Controller/";
+	public static final String MAIN_URL = "http://a.utryi.com/Controller/";
 }
