@@ -3,6 +3,8 @@ package com.android.joocola.utils;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 /**
@@ -82,5 +84,34 @@ public class Utils {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * 
+	 * 隐藏软键盘
+	 */
+
+	public static void hideSoftInputMode(Context context, View windowToken) {
+
+		InputMethodManager imm = ((InputMethodManager) context
+				.getSystemService(Context.INPUT_METHOD_SERVICE));
+
+		imm.hideSoftInputFromWindow(windowToken.getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
+
+	}
+
+	/**
+	 * 
+	 * 弹出软键盘
+	 */
+
+	public static void showSoftInputMode(Context context, View windowToken) {
+
+		final InputMethodManager imm = (InputMethodManager) context
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		imm.showSoftInput(windowToken, InputMethodManager.SHOW_FORCED);
+
 	}
 }

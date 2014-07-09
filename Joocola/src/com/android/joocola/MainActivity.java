@@ -77,6 +77,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.login:
+			Utils.hideSoftInputMode(MainActivity.this, v);
 			String name = nameEdit.getText().toString();
 			String pswd = pswdEdit.getText().toString();
 			if (name.length() == 0) {

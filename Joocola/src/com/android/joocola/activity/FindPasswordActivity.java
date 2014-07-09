@@ -17,7 +17,7 @@ public class FindPasswordActivity extends BaseActivity implements
 		OnClickListener {
 	private String url = "Sys.UserController.ApplyForgetPWDVerifyCode.ashx"; // 找回密码需要的网址
 	private EditText edit_pm, edit_security, edit_new_pwsd;
-	private Button get_security_code;
+	private Button get_security_code, find_done;
 	private String security_code = "";
 
 	@Override
@@ -33,6 +33,8 @@ public class FindPasswordActivity extends BaseActivity implements
 		edit_security = (EditText) this.findViewById(R.id.edit_security);
 		edit_new_pwsd = (EditText) this.findViewById(R.id.edit_new_pwsd);
 		get_security_code = (Button) this.findViewById(R.id.get_security_code);
+		find_done = (Button) this.findViewById(R.id.find_done);
+		find_done.setOnClickListener(this);
 		get_security_code.setOnClickListener(this);
 	}
 
@@ -60,10 +62,19 @@ public class FindPasswordActivity extends BaseActivity implements
 						.show();
 			}
 			break;
+		case R.id.find_done:
+			String input_security_code = edit_security.getText().toString();// 用户输入的验证码
+			if (input_security_code.length() != 6) {
+				Toast.makeText(FindPasswordActivity.this, "请输入正确的验证码",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+			if (input_security_code.equals(security_code)) {
 
+			}
+			break;
 		default:
 			break;
 		}
 	}
-
 }
