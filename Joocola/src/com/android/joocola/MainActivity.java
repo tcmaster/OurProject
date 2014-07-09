@@ -3,6 +3,8 @@ package com.android.joocola;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +27,23 @@ public class MainActivity extends Activity implements OnClickListener {
 	private EditText nameEdit, pswdEdit;
 	private Button loginButton, registerButton;
 	private TextView forget_pswd;
+	private Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				String result = (String) msg.obj;
+				if (result.equals("0")) {
+					Toast.makeText(MainActivity.this,
+							getString(R.string.loginerror), Toast.LENGTH_SHORT)
+							.show();
+				}
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,23 +77,40 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.login:
+			String name = nameEdit.getText().toString();
+			String pswd = pswdEdit.getText().toString();
+			if (name.length() == 0) {
+				Toast.makeText(MainActivity.this,
+						getString(R.string.name_hint), Toast.LENGTH_SHORT)
+						.show();
+				break;
+			}
+			if (pswd.length() == 0) {
+				Toast.makeText(MainActivity.this,
+						getString(R.string.input_pswd), Toast.LENGTH_SHORT)
+						.show();
+				break;
+			}
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
-				mHttpPostInterface.addParams("userName", nameEdit.getText()
-						.toString());
-				mHttpPostInterface.addParams("pwd", pswdEdit.getText()
-						.toString());
+				mHttpPostInterface.addParams("userName", name);
+				mHttpPostInterface.addParams("pwd", pswd);
 				// mHttpPostInterface.addParma("dataType", "Profession");
 				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(String result) {
 						// 在这里用handler 把json 发出去 进行更新UI的操作
+						Message message = Message.obtain();
+						message.what = 0;
+						message.obj = result;
+						mHandler.sendMessage(message);
 					}
 				});
 			} else {
-				Toast.makeText(MainActivity.this, "请输入正确的账号",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this,
+						getString(R.string.input_right), Toast.LENGTH_SHORT)
+						.show();
 			}
 			break;
 		case R.id.forget_pswd:

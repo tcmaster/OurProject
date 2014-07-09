@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.HttpPostInterface;
+import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 
 public class FindPasswordActivity extends BaseActivity implements
@@ -16,6 +18,7 @@ public class FindPasswordActivity extends BaseActivity implements
 	private String url = "Sys.UserController.ApplyForgetPWDVerifyCode.ashx"; // 找回密码需要的网址
 	private EditText edit_pm, edit_security, edit_new_pwsd;
 	private Button get_security_code;
+	private String security_code = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,20 @@ public class FindPasswordActivity extends BaseActivity implements
 			if (edit_pm != null && Utils.judgeAccount(input)
 					&& !Utils.stringIsNullOrEmpty(input)) {
 				// do请求
-				Log.e("test", "请求");
+				Log.e("test", input);
+				HttpPostInterface httpPostInterface = new HttpPostInterface();
+				httpPostInterface.addParams("userName", input);
+				httpPostInterface.getData(url, new HttpPostCallBack() {
+
+					@Override
+					public void httpPostResolveData(String result) {
+						Log.e("Test", result);
+					}
+				});
 			} else {
-				Toast.makeText(FindPasswordActivity.this, "请输入正确的账号",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(FindPasswordActivity.this,
+						getString(R.string.input_right), Toast.LENGTH_SHORT)
+						.show();
 			}
 			break;
 

@@ -9,9 +9,12 @@
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="name_hint">请输入账号</string>
+    <string name="input_pswd">请输入密码</string>
     <string name="image_description">Image</string> 
     <string name="input_new_pwsd">输入新密码</string>
     <string name="done">完成</string>
+    <string name="loginerror">您输入的账号或者密码有错误,请重新输入</string>
+    <string name="input_right">请输入正确的账号</string>
     <!-- lixiaosongAdd -->
     <string name="register_phoneEmail">手机号/邮箱</string>
     <string name="security_code">获取验证码</string>
