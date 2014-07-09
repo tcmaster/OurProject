@@ -36,6 +36,11 @@ public class RegisterInfo implements Serializable {
 	 * 性别
 	 */
 	private String sex;
+	/**
+	 * 
+	 * 昵称
+	 */
+	private String nickName;
 
 	public String getUserName() {
 		return userName;
@@ -93,12 +98,20 @@ public class RegisterInfo implements Serializable {
 		this.sex = sex;
 	}
 
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	@Override
 	public String toString() {
 		return "RegisterInfo [userName=" + userName + ", autoCode=" + autoCode
 				+ ", password=" + password + ", introducer=" + introducer
 				+ ", photoUrl=" + photoUrl + ", birthday=" + birthday
-				+ ", sex=" + sex + "]";
+				+ ", sex=" + sex + ", nickName=" + nickName + "]";
 	}
 
 }

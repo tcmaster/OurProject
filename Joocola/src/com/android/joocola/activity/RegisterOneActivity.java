@@ -29,7 +29,7 @@ public class RegisterOneActivity extends BaseActivity implements
 	// 返回登陆界面
 	private TextView tv_backLogin;
 	// 确认当前得到的验证码是正确
-	private boolean autoCode_Flag = true;
+	private boolean autoCode_Flag = false;
 	private static final String URLAUTOCODEURL = "Sys.UserController.ApplyRegVerifyCode.ashx";
 	// 获取到的验证码
 	private String resultCode;
@@ -52,6 +52,7 @@ public class RegisterOneActivity extends BaseActivity implements
 	private void initView() {
 		b_getAutoCode = (Button) findViewById(R.id.getAutoCode);
 		b_nextStep = (Button) findViewById(R.id.nextStep);
+		b_verify = (Button) findViewById(R.id.verifyButton);
 		et_userName = (EditText) findViewById(R.id.usernameText);
 		et_code = (EditText) findViewById(R.id.authcode_text);
 		et_password = (EditText) findViewById(R.id.password_text);
@@ -63,6 +64,7 @@ public class RegisterOneActivity extends BaseActivity implements
 		b_getAutoCode.setOnClickListener(this);
 		b_nextStep.setOnClickListener(this);
 		tv_backLogin.setOnClickListener(this);
+		b_verify.setOnClickListener(this);
 	}
 
 	@Override
@@ -88,6 +90,7 @@ public class RegisterOneActivity extends BaseActivity implements
 		}
 	}
 
+	@SuppressLint("HandlerLeak")
 	private void waitCodeReceive() {
 		b_getAutoCode.setEnabled(false);
 		b_getAutoCode.setText("60");
@@ -170,7 +173,7 @@ public class RegisterOneActivity extends BaseActivity implements
 						RegisterInfo info = new RegisterInfo();
 						info.setUserName(et_userName.getText().toString());
 						info.setPassword(et_password.getText().toString());
-						info.setAutoCode(et_code.getText().toString());
+						info.setAutoCode(resultCode);
 						info.setIntroducer(et_introducer.getText().toString());
 						intent.putExtra("info", info);
 						startActivity(intent);
@@ -195,11 +198,12 @@ public class RegisterOneActivity extends BaseActivity implements
 			if (resultCode.equals(et_code.getText().toString())) {
 				b_verify.setEnabled(false);
 				b_verify.setText("验证成功");
+				autoCode_Flag = true;
 			} else {
 				Utils.toast(this, "验证失败，请重新输入验证码");
 			}
 		} else {
-			Utils.toast(this, "网络状况不佳，请稍后再试");
+			Utils.toast(this, "未获取到验证码（请检查网络连接或重新获取验证码）");
 		}
 	}
 

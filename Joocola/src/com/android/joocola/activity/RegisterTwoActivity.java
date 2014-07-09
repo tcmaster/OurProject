@@ -1,5 +1,7 @@
 package com.android.joocola.activity;
 
+import java.io.File;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -15,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.android.joocola.R;
+import com.android.joocola.entity.RegisterInfo;
+import com.android.joocola.utils.HttpPostInterface;
+import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 
 public class RegisterTwoActivity extends BaseActivity implements
@@ -30,6 +35,16 @@ public class RegisterTwoActivity extends BaseActivity implements
 	// 标识位
 	private static final int PICKPICTURE = 1;
 	private static final int TAKEPHOTO = 2;
+	private static final String REGISTERURL = "Sys.UserController.AppRegist.ashx";
+	// 本页需要上传的数据
+	// 图片地址
+	private String imgUrl = "";
+	// 昵称
+	private String nickName = "";
+	// 性别id
+	private String pid = "";
+	// 生日
+	private String birthday = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +111,30 @@ public class RegisterTwoActivity extends BaseActivity implements
 	}
 
 	private void register() {
+		nickName = et_nickName.getText().toString();
+		birthday = et_birthday.getText().toString();
+		HttpPostInterface interface1 = new HttpPostInterface();
+		RegisterInfo info = (RegisterInfo) getIntent().getSerializableExtra(
+				"info");
+		info.setBirthday(birthday);
+		info.setSex(rg_group.getCheckedRadioButtonId() + "");
+		info.setPhotoUrl(imgUrl);
+		info.setNickName(nickName);
+		interface1.addParams("userName", info.getUserName());
+		interface1.addParams("password", info.getPassword());
+		interface1.addParams("introduceUserName", info.getIntroducer());
+		interface1.addParams("photoUrl", info.getPhotoUrl());
+		interface1.addParams("nickName", info.getNickName());
+		interface1.addParams("sexID", info.getSex());
+		interface1.addParams("birthDay", info.getBirthday());
+		interface1.addParams("verifyCode", info.getAutoCode());
+		interface1.getData(REGISTERURL, new HttpPostCallBack() {
 
+			@Override
+			public void httpPostResolveData(String result) {
+
+			}
+		});
 	}
 
 	private void clickPhoto() {
@@ -107,21 +145,58 @@ public class RegisterTwoActivity extends BaseActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// 图片路径
 		Bitmap result = null;
-		Uri uri = data.getData();
-		if (requestCode == PICKPICTURE) {
-			Log.v("lixiaosong", uri.toString());
-			iv_userPhoto.setImageURI(uri);
-			result = iv_userPhoto.getDrawingCache();
-		} else if (requestCode == TAKEPHOTO) {
-			if (uri == null) {
-				Bundle bundle = data.getExtras();
-				Bitmap photo = (Bitmap) bundle.get("data");
-				result = ThumbnailUtils.extractThumbnail(photo,
-						iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
-				iv_userPhoto.setImageBitmap(result);
+		if (data != null) {
+			Uri uri = data.getData();
+			if (requestCode == PICKPICTURE) {
+				Log.v("lixiaosong", uri.toString());
+				iv_userPhoto.setImageURI(uri);
+				String path = Utils.getRealPathFromURI(uri,
+						RegisterTwoActivity.this);
+				File file = new File(path);
+				uploadImage(file);
+			} else if (requestCode == TAKEPHOTO) {
+				if (uri == null) {
+					Bundle bundle = data.getExtras();
+					if (bundle != null) {
+						Bitmap photo = (Bitmap) bundle.get("data");
+						if (photo != null) {
+							result = ThumbnailUtils.extractThumbnail(photo,
+									iv_userPhoto.getWidth(),
+									iv_userPhoto.getHeight());
+							iv_userPhoto.setImageBitmap(result);
+							File file = Utils.createBitmapFile(result);
+							uploadImage(file);
+						}
+					}
+				} else {
+					iv_userPhoto.setImageURI(uri);
+					result = iv_userPhoto.getDrawingCache();
+					String path = Utils.getRealPathFromURI(uri,
+							RegisterTwoActivity.this);
+					File file = new File(path);
+					uploadImage(file);
+				}
 			}
 		}
-
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
+	private void uploadImage(File file) {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.uploadImageData(file, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				Log.v("lixiaosong", result);
+				if (result != null) {
+					imgUrl = processResultStr(result, "_50");
+				}
+			}
+		});
+	}
+
+	public String processResultStr(String result, String size) {
+		return result;
+	}
+
 }

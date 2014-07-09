@@ -1,5 +1,7 @@
 package com.android.joocola.utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +13,11 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -36,9 +41,9 @@ public class HttpPostInterface {
 
 			@Override
 			public void run() {
+				String md5String = "";
 				Object[] key = map.keySet().toArray();
 				Arrays.sort(key);
-				String md5String = "";
 				for (int i = 0; i < key.length; i++) {
 					md5String = md5String + key[i].toString() + "="
 							+ map.get(key[i].toString());
@@ -47,9 +52,8 @@ public class HttpPostInterface {
 					}
 				}
 				md5String = MD5Utils.md5s(md5String);
-
-				HttpPost httpPost = new HttpPost(Constans.MAIN_URL + url);
-
+				HttpPost httpPost = null;
+				httpPost = new HttpPost(Constans.MAIN_URL + url);
 				// 设置HTTP POST请求参数必须用NameValuePair对象
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				Iterator iter = map.entrySet().iterator();
@@ -91,6 +95,39 @@ public class HttpPostInterface {
 
 					}
 				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public void uploadImageData(final File file,
+			final HttpPostCallBack mHttpPostCallBack) {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				HttpClient client = new DefaultHttpClient();
+				HttpPost post = new HttpPost(Constans.UPLOADIMGURL);
+				MultipartEntity entity = new MultipartEntity();
+				try {
+					FileBody fileBody = new FileBody(file);
+					entity.addPart("Filedata", fileBody);
+					post.setEntity(entity);
+					HttpResponse response = null;
+					response = client.execute(post);
+					if (response.getStatusLine().getStatusCode() == 200) {
+						// 第三步，使用getEntity方法活得返回结果
+						String result = EntityUtils.toString(response
+								.getEntity());
+						Log.e("post的data", result);
+						mHttpPostCallBack.httpPostResolveData(result);
+					} else {
+						Log.e("获取失败", "上传图片时获取返回值失败");
+					}
+				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
