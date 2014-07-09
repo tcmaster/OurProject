@@ -81,6 +81,7 @@ public class RegisterOneActivity extends BaseActivity implements
 		case R.id.backLogin:
 			// 返回登录
 			backLogin();
+			break;
 		case R.id.verifyButton:
 			// 验证
 			verify();
