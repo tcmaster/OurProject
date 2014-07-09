@@ -93,7 +93,7 @@ public class RegisterOneActivity extends BaseActivity implements
 	@SuppressLint("HandlerLeak")
 	private void waitCodeReceive() {
 		b_getAutoCode.setEnabled(false);
-		b_getAutoCode.setText("60");
+		b_getAutoCode.setText("120");
 		buttonOk = false;
 		final Handler waitHandler = new Handler() {
 			int count = 120;

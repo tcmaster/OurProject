@@ -139,14 +139,19 @@ public class RegisterTwoActivity extends BaseActivity implements
 			@Override
 			public void httpPostResolveData(String result) {
 				try {
-					JSONObject object = new JSONObject(result);
-					if (object.getString("result").equals("true")) {
+					final JSONObject object = new JSONObject(result);
+					if (object.getBoolean("Item1")) {
 						handler.post(new Runnable() {
 
 							@Override
 							public void run() {
-								Utils.toast(RegisterTwoActivity.this,
-										"注册成功，请登录");
+								try {
+									Utils.toast(RegisterTwoActivity.this,
+											object.getString("Item2"));
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 								RegisterTwoActivity.this.finish();
 							}
 						});
@@ -155,8 +160,12 @@ public class RegisterTwoActivity extends BaseActivity implements
 
 							@Override
 							public void run() {
-								Utils.toast(RegisterTwoActivity.this,
-										"注册失败，请检查网络连接");
+								try {
+									Utils.toast(RegisterTwoActivity.this,
+											object.getString("Item2"));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 							}
 						});
 					}
