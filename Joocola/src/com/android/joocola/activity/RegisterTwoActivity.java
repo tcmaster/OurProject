@@ -228,14 +228,17 @@ public class RegisterTwoActivity extends BaseActivity implements
 			public void httpPostResolveData(String result) {
 				Log.v("lixiaosong", result);
 				if (result != null) {
-					imgUrl = processResultStr(result, "_50");
+					imgUrl = processResultStr(result, "_150_");
 				}
 			}
 		});
 	}
 
 	public String processResultStr(String result, String size) {
-		return result;
+		String after = result.substring(result.indexOf("Photo/") + 6,
+				result.length());
+		String before = result.substring(0, result.indexOf("Photo/") + 6);
+		return before + size + after;
 	}
 
 }
