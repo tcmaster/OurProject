@@ -4,14 +4,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -229,32 +227,4 @@ public class RegisterOneActivity extends BaseActivity implements
 			super.handleMessage(msg);
 		}
 	}
-
-	/**
-	 * 
-	 * 隐藏软键盘
-	 */
-	public static void hideSoftInputMode(Context context, View windowToken) {
-
-		InputMethodManager imm = ((InputMethodManager) context
-				.getSystemService(Context.INPUT_METHOD_SERVICE));
-
-		imm.hideSoftInputFromWindow(windowToken.getWindowToken(),
-				InputMethodManager.HIDE_NOT_ALWAYS);
-
-	}
-
-	/**
-	 * 
-	 * 弹出软键盘
-	 */
-	public static void showSoftInputMode(Context context, View windowToken) {
-
-		final InputMethodManager imm = (InputMethodManager) context
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		imm.showSoftInput(windowToken, InputMethodManager.SHOW_FORCED);
-
-	}
-
 }
