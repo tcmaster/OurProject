@@ -190,7 +190,7 @@ public class RegisterOneActivity extends BaseActivity implements
 	}
 
 	private void backLogin() {
-
+		finish();
 	}
 
 	private void verify() {

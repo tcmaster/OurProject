@@ -2,12 +2,16 @@ package com.android.joocola.activity;
 
 import java.io.File;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,11 +49,13 @@ public class RegisterTwoActivity extends BaseActivity implements
 	private String pid = "";
 	// 生日
 	private String birthday = "";
+	private Handler handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.interface_register2);
+		handler = new Handler();
 		initView();
 		registerListener();
 	}
@@ -132,7 +138,31 @@ public class RegisterTwoActivity extends BaseActivity implements
 
 			@Override
 			public void httpPostResolveData(String result) {
+				try {
+					JSONObject object = new JSONObject(result);
+					if (object.getString("result").equals("true")) {
+						handler.post(new Runnable() {
 
+							@Override
+							public void run() {
+								Utils.toast(RegisterTwoActivity.this,
+										"注册成功，请登录");
+								RegisterTwoActivity.this.finish();
+							}
+						});
+					} else {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								Utils.toast(RegisterTwoActivity.this,
+										"注册失败，请检查网络连接");
+							}
+						});
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
