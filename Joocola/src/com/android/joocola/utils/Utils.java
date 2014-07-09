@@ -1,8 +1,18 @@
 package com.android.joocola.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 /**
@@ -22,42 +32,6 @@ public class Utils {
 				.matches("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*") || account
 				.matches("\\d{11}"));
 	}
-
-	// /**
-	// * @category 判断当期字符串格式是否为电话号码或者邮箱
-	// * @return 如果是为true，否则为false
-	// */
-	// public static boolean isPhoneNumberOrEmail(String str) {
-	// return isEmail(str) || isPhoneNumber(str);
-	// }
-	//
-	// public static boolean isEmail(String str) {
-	// String strPattern =
-	// "^[a-zA-Z][//w//.-]*[a-zA-Z0-9]@[a-zA-Z0-9][//w//.-]*[a-zA-Z0-9]//.[a-zA-Z][a-zA-Z//.]*[a-zA-Z]$";
-	// Pattern p = Pattern.compile(strPattern);
-	// Matcher m = p.matcher(str);
-	// return m.matches();
-	//
-	// }
-	//
-	// public static boolean isPhoneNumber(String str) {
-	// boolean isValid = false;
-	// String expression = "^//(?(//d{3})//)?[- ]?(//d{3})[- ]?(//d{5})$";
-	// String expression2 = "^//(?(//d{3})//)?[- ]?(//d{4})[- ]?(//d{4})$";
-	// CharSequence inputStr = str;
-	// /* 创建Pattern */
-	// Pattern pattern = Pattern.compile(expression);
-	// /* 将Pattern 以参数传入Matcher作Regular expression */
-	// Matcher matcher = pattern.matcher(inputStr);
-	// /* 创建Pattern2 */
-	// Pattern pattern2 = Pattern.compile(expression2);
-	// /* 将Pattern2 以参数传入Matcher2作Regular expression */
-	// Matcher matcher2 = pattern2.matcher(inputStr);
-	// if (matcher.matches() || matcher2.matches()) {
-	// isValid = true;
-	// }
-	// return isValid;
-	// }
 
 	public static void toast(Context context, String content) {
 		Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
@@ -82,5 +56,60 @@ public class Utils {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * @category 将Uri转换为绝对地址
+	 * @param contentUri
+	 *            Uri内容
+	 * @param context
+	 *            上下文
+	 * @return 绝对地址
+	 */
+	public static String getRealPathFromURI(Uri contentUri, Context context) {
+		String res = null;
+		String[] proj = { MediaStore.Images.Media.DATA };
+		Cursor cursor = context.getContentResolver().query(contentUri, proj,
+				null, null, null);
+		if (cursor.moveToFirst()) {
+			;
+			int column_index = cursor
+					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			res = cursor.getString(column_index);
+		}
+		cursor.close();
+		return res;
+	}
+
+	/**
+	 * @category 将bitmap转换成文件
+	 * @param bm
+	 *            想转换的图片
+	 * @return 转换好的文件
+	 */
+	public static File createBitmapFile(Bitmap bm) {
+		ByteArrayOutputStream bAO = new ByteArrayOutputStream();
+		bm.compress(Bitmap.CompressFormat.JPEG, 100, bAO);
+		File file = new File(Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_DCIM).getAbsolutePath()
+				+ File.separator + System.currentTimeMillis() + ".jpeg");
+		FileOutputStream fOS = null;
+		try {
+			fOS = new FileOutputStream(file);
+			fOS.write(bAO.toByteArray());
+			return file;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (fOS != null)
+				try {
+					fOS.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return null;
 	}
 }
