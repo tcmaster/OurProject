@@ -16,7 +16,11 @@ import android.widget.Toast;
 import com.android.joocola.R;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.PostDataUtils;
+import com.android.joocola.utils.PostDataUtils.VolleyPostCallBack;
 import com.android.joocola.utils.Utils;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 
 public class FindPasswordActivity extends BaseActivity implements
 		OnClickListener {
@@ -25,26 +29,23 @@ public class FindPasswordActivity extends BaseActivity implements
 	private EditText edit_pm, edit_security, edit_new_pwsd;
 	private Button get_security_code, find_done;
 	private String security_code = "";
+	// 验证码获取标志位
+	private static final int GETCODESUCCESS = 0;
+	private static final int GETCODEFAIL = 1;
+	private boolean codeButtonOK = true;
+	private RequestQueue queue;
 	private Handler findHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 0:
-				String result = (String) msg.obj;
-				try {
-					JSONObject jsonObject = new JSONObject(result);
-					if (jsonObject.getBoolean("Item1")) {
-						// 此处应该添加1句 判断item2 是不是6位数字 如果是就赋值
-						security_code = jsonObject.getString("Item2");
-					} else {
-						Toast.makeText(FindPasswordActivity.this,
-								jsonObject.getString("Item2"),
-								Toast.LENGTH_SHORT).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				break;
+			case GETCODESUCCESS:
 
+				break;
+			case GETCODEFAIL:
+				Utils.toast(FindPasswordActivity.this, "验证码获取失败，请重新获取");
+				codeButtonOK = true;
+				get_security_code.setEnabled(true);
+				get_security_code.setText("获取验证码");
+				break;
 			default:
 				break;
 			}
@@ -55,6 +56,7 @@ public class FindPasswordActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activiy_findpswd);
+		queue = Volley.newRequestQueue(this);
 		mActionBar.setTitle(getString(R.string.forgetpswd));
 		initView();
 	}
@@ -69,6 +71,44 @@ public class FindPasswordActivity extends BaseActivity implements
 		get_security_code.setOnClickListener(this);
 	}
 
+	private void waitCodeReceive() {
+		get_security_code.setEnabled(false);
+		get_security_code.setText("120秒后重新获取");
+		codeButtonOK = false;
+		final Handler waitHandler = new Handler() {
+			int count = 120;
+
+			@Override
+			public void handleMessage(Message msg) {
+				count--;
+				get_security_code.setText(count + "秒后重新获取");
+				if (count == 0 || codeButtonOK) {
+					get_security_code.setText("获取验证码");
+					get_security_code.setEnabled(true);
+				}
+			};
+		};
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				int i = 119;
+				while (i >= 0) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					waitHandler.sendEmptyMessage(1);
+					if (codeButtonOK) {
+						break;
+					}
+					i--;
+				}
+			}
+		}).start();
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -78,19 +118,53 @@ public class FindPasswordActivity extends BaseActivity implements
 					&& !Utils.stringIsNullOrEmpty(input)) {
 				// do请求
 				Log.e("test", input);
-				HttpPostInterface httpPostInterface = new HttpPostInterface();
-				httpPostInterface.addParams("userName", input);
-				httpPostInterface.getData(url, new HttpPostCallBack() {
+				waitCodeReceive();
+				PostDataUtils postDataUtils = new PostDataUtils();
+				postDataUtils.addParams("userName", input);
+				postDataUtils.postNewRequest(url, queue,
+						new VolleyPostCallBack() {
 
-					@Override
-					public void httpPostResolveData(String result) {
-						Log.e("result", result);
-						Message message = Message.obtain();
-						message.what = 0;
-						message.obj = result;
-						findHandler.sendMessage(message);
-					}
-				});
+							@Override
+							public void VolleyPostResolveData(String result) {
+								Log.e("result", result);
+								try {
+									JSONObject jsonObject = new JSONObject(
+											result);
+									if (jsonObject.getBoolean("Item1")) {
+										security_code = jsonObject
+												.getString("Item2");
+										findHandler
+												.sendEmptyMessage(GETCODESUCCESS);
+									} else {
+										findHandler
+												.sendEmptyMessage(GETCODEFAIL);
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						});
+				// HttpPostInterface httpPostInterface = new
+				// HttpPostInterface();
+				// httpPostInterface.addParams("userName", input);
+				// httpPostInterface.getData(url, new HttpPostCallBack() {
+				//
+				// @Override
+				// public void httpPostResolveData(String result) {
+				// Log.e("result", result);
+				// try {
+				// JSONObject jsonObject = new JSONObject(result);
+				// if (jsonObject.getBoolean("Item1")) {
+				// security_code = jsonObject.getString("Item2");
+				// findHandler.sendEmptyMessage(GETCODESUCCESS);
+				// } else {
+				// findHandler.sendEmptyMessage(GETCODEFAIL);
+				// }
+				// } catch (JSONException e) {
+				// e.printStackTrace();
+				// }
+				// }
+				// });
 			} else {
 				Toast.makeText(FindPasswordActivity.this,
 						getString(R.string.input_right), Toast.LENGTH_SHORT)
@@ -103,8 +177,8 @@ public class FindPasswordActivity extends BaseActivity implements
 			String input_security_code = edit_security.getText().toString();// 用户输入的验证码
 			String newPswd = edit_new_pwsd.getText().toString();// 用户输入的新密码
 			if (input_security_code.length() != 6) {
-				Toast.makeText(FindPasswordActivity.this, "请输入正确的验证码",
-						Toast.LENGTH_SHORT).show();
+
+				Utils.toast(FindPasswordActivity.this, "请输入正确的验证码");
 				break;
 			}
 			Log.e("点击修改密码之后的保存下来的security_code", security_code);

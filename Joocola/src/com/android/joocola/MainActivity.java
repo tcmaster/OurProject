@@ -29,16 +29,19 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button loginButton, registerButton;
 	private TextView forget_pswd;
 	private RequestQueue queue;
+	private static final int LOGIN_SUCCESS = 0; // 登录成功
+	private static final int LOGIN_ERROR = 1; // 登录失败
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 0:
+			case LOGIN_ERROR:
 				String result = (String) msg.obj;
-				if (result.equals("0")) {
-					Toast.makeText(MainActivity.this,
-							getString(R.string.loginerror), Toast.LENGTH_SHORT)
-							.show();
-				}
+				Toast.makeText(MainActivity.this,
+						getString(R.string.loginerror), Toast.LENGTH_SHORT)
+						.show();
+				break;
+			case LOGIN_SUCCESS:
+				// 登录成功的操作
 				break;
 
 			default:
@@ -103,10 +106,18 @@ public class MainActivity extends Activity implements OnClickListener {
 					@Override
 					public void httpPostResolveData(String result) {
 						// 在这里用handler 把json 发出去 进行更新UI的操作
-						Message message = Message.obtain();
-						message.what = 0;
-						message.obj = result;
-						mHandler.sendMessage(message);
+
+						if (result.equals("0")) {
+							Message error = Message.obtain();
+							error.what = LOGIN_ERROR;
+							error.obj = result;
+							mHandler.sendMessage(error);
+						} else {
+							Message success = Message.obtain();
+							success.what = LOGIN_SUCCESS;
+							success.obj = result;
+							mHandler.sendMessage(success);
+						}
 					}
 				});
 			} else {
