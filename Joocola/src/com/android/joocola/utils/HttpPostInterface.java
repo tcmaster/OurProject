@@ -124,7 +124,6 @@ public class HttpPostInterface {
 					HttpResponse response = null;
 					response = client.execute(post);
 					if (response.getStatusLine().getStatusCode() == 200) {
-						// 第三步，使用getEntity方法活得返回结果
 						String result = EntityUtils.toString(response
 								.getEntity());
 						Log.e("post的data", result);
