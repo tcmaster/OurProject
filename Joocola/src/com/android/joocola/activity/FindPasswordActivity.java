@@ -3,6 +3,7 @@ package com.android.joocola.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,7 @@ public class FindPasswordActivity extends BaseActivity implements
 	private static final int GETCODEFAIL = 1;
 	private boolean codeButtonOK = true;
 	private RequestQueue queue;
+	@SuppressLint("HandlerLeak")
 	private Handler findHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -59,6 +61,7 @@ public class FindPasswordActivity extends BaseActivity implements
 		queue = Volley.newRequestQueue(this);
 		mActionBar.setTitle(getString(R.string.forgetpswd));
 		initView();
+
 	}
 
 	private void initView() {
@@ -71,6 +74,7 @@ public class FindPasswordActivity extends BaseActivity implements
 		get_security_code.setOnClickListener(this);
 	}
 
+	@SuppressLint("HandlerLeak")
 	private void waitCodeReceive() {
 		get_security_code.setEnabled(false);
 		get_security_code.setText("120秒后重新获取");

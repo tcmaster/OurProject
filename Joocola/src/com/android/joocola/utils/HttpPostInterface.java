@@ -83,9 +83,14 @@ public class HttpPostInterface {
 							jsonObject = new JSONObject(result);
 							boolean flag = jsonObject.getBoolean("result");
 							if (flag) {
-								mHttpPostCallBack
-										.httpPostResolveData(jsonObject
-												.getString("data"));
+								if (jsonObject.getString("data") != null) {
+
+									mHttpPostCallBack
+											.httpPostResolveData(jsonObject
+													.getString("data"));
+								} else {
+									mHttpPostCallBack.httpPostResolveData("");
+								}
 							} else {
 								Log.e("httpPost", "出错了");
 							}
