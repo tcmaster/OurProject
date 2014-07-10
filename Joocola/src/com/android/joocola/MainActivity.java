@@ -20,6 +20,7 @@ import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
+import com.android.volley.RequestQueue;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -27,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private EditText nameEdit, pswdEdit;
 	private Button loginButton, registerButton;
 	private TextView forget_pswd;
+	private RequestQueue queue;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -53,7 +55,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		initView();
-
 	}
 
 	private void initView() {
@@ -92,11 +93,11 @@ public class MainActivity extends Activity implements OnClickListener {
 						.show();
 				break;
 			}
+
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
-				// mHttpPostInterface.addParma("dataType", "Profession");
 				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
 					@Override
