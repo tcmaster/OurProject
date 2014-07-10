@@ -149,7 +149,6 @@ public class RegisterTwoActivity extends BaseActivity implements
 									Utils.toast(RegisterTwoActivity.this,
 											object.getString("Item2"));
 								} catch (JSONException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								RegisterTwoActivity.this.finish();
@@ -232,6 +231,10 @@ public class RegisterTwoActivity extends BaseActivity implements
 				}
 			}
 		});
+	}
+
+	private void initRadioGroup() {
+
 	}
 
 	public String processResultStr(String result, String size) {
