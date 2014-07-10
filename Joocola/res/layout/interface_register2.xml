@@ -12,41 +12,67 @@
 
         <ImageView
             android:id="@+id/photoImg"
-            android:layout_width="160dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
             android:src="@drawable/ic_launcher" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="5dp" >
+        <Button
+            android:id="@+id/selectFromGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btnclick"
+            android:gravity="center"
+            android:text="@string/selectFromGallery"
+            android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/selectFromGallery"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:text="@string/selectFromGallery" />
-
-            <Button
-                android:id="@+id/takePicture"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:text="@string/takePicture" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/takePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/btnclick"
+            android:gravity="center"
+            android:text="@string/takePicture"
+            android:textSize="14sp" />
     </LinearLayout>
-
+	<View
+	    android:layout_width="match_parent"
+	    android:layout_height="1px"
+	    android:background="@color/gray2"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    />
+	<LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/baseInfo"
+	    android:textSize="16sp"
+	    android:layout_marginLeft="10dp"
+	    />
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/baseInfoAttachment"
+	    android:textSize="14sp"
+	    />
+	</LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="15dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,7 +86,11 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
-            android:hint="@string/nickNameInit" />
+            android:hint="@string/nickNameInit"
+            android:background="@drawable/edittextbg"
+            android:textSize="16sp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +99,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="15dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,18 +116,19 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-<!--             <RadioButton -->
-<!--                 android:id="@+id/man" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="wrap_content" -->
-<!--                 android:text="@string/man" /> -->
+            <!-- <RadioButton -->
+            <!-- android:id="@+id/man" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:text="@string/man" /> -->
 
-<!--             <RadioButton -->
-<!--                 android:id="@+id/women" -->
-<!--                 android:layout_width="wrap_content" -->
-<!--                 android:layout_height="wrap_content" -->
-<!--                 android:layout_marginLeft="20dp" -->
-<!--                 android:text="@string/women" /> -->
+
+            <!-- <RadioButton -->
+            <!-- android:id="@+id/women" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_marginLeft="20dp" -->
+            <!-- android:text="@string/women" /> -->
         </RadioGroup>
     </LinearLayout>
 
@@ -107,7 +138,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="15dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,28 +151,34 @@
             android:id="@+id/birthdayText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:hint="@string/isPrivate"
+            android:layout_marginLeft="5dp"
+            android:drawableRight="@drawable/triangle"
             android:gravity="center_vertical"
+            android:hint="@string/isPrivate"
             android:textSize="16sp"
-            android:drawableRight="@drawable/triangle" />
+            android:background="@drawable/edittextbg"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
     </LinearLayout>
-	<Button
-	    android:layout_width="match_parent"
-	    android:layout_height="40dp"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
-	    android:id="@+id/registerButton"
-	    android:text="@string/register"
-	    android:layout_marginTop="10dp"
-	    />
-	<TextView
-	    android:id="@+id/agreeDeal"
-	    android:layout_width="wrap_content"
-	    android:layout_height="40dp"
-	    android:text="@string/registerStr"
-	    android:layout_marginTop="10dp"
-	    android:layout_gravity="right"
-	    android:layout_marginRight="10dp"
-	    />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/register"
+        android:background="@drawable/nextbtnclick" />
+
+    <TextView
+        android:id="@+id/agreeDeal"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/registerStr"
+        android:textSize="14sp" />
+
 </LinearLayout>
