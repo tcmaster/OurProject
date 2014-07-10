@@ -10,9 +10,12 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -142,6 +145,54 @@ public class Utils {
 
 		imm.showSoftInput(windowToken, InputMethodManager.SHOW_FORCED);
 
+	}
+
+	/**
+	 * <功能详细描述>判断网络是否可用<br>
+	 * 
+	 * @param context
+	 * @return<br>
+	 */
+	public static boolean isNetworkAvailable(Context context) {
+		ConnectivityManager connectivity = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity == null) {
+		} else {
+			NetworkInfo[] info = connectivity.getAllNetworkInfo();
+			if (info != null) {
+				for (int i = 0; i < info.length; i++) {
+					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 判断是否联网
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static boolean isNetConn(Context context) {
+		try {
+			ConnectivityManager connectivityManager = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+			if (info != null && info.isAvailable()) {
+				String name = info.getTypeName();
+				Log.e("chat", "联网方式" + name);
+				return true;
+			} else {
+				Log.e("chat", "断网");
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
 	}
 
 }
