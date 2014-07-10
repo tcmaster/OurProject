@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.utils.HttpPostInterface;
@@ -38,6 +39,7 @@ public class JoocolaApplication extends Application {
 				@Override
 				public void httpPostResolveData(String result) {
 					try {
+						Log.v("lixiaosong", result);
 						JSONArray array = new JSONArray(result);
 						for (int i = 0; i < array.length(); i++) {
 							JSONObject object = array.getJSONObject(i);
@@ -60,5 +62,9 @@ public class JoocolaApplication extends Application {
 
 	public static JoocolaApplication getInstance() {
 		return instance;
+	}
+
+	public List<BaseDataInfo> getBaseInfo() {
+		return baseInfoList;
 	}
 }

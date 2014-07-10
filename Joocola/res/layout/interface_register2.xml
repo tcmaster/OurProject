@@ -86,18 +86,18 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <RadioButton
-                android:id="@+id/man"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/man" />
+<!--             <RadioButton -->
+<!--                 android:id="@+id/man" -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:text="@string/man" /> -->
 
-            <RadioButton
-                android:id="@+id/women"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="@string/women" />
+<!--             <RadioButton -->
+<!--                 android:id="@+id/women" -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginLeft="20dp" -->
+<!--                 android:text="@string/women" /> -->
         </RadioGroup>
     </LinearLayout>
 
@@ -116,12 +116,15 @@
             android:text="@string/birthday"
             android:textSize="16sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/birthdayText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:hint="@string/isPrivate" />
+            android:layout_marginLeft="10dp"
+            android:hint="@string/isPrivate"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/triangle" />
     </LinearLayout>
 	<Button
 	    android:layout_width="match_parent"

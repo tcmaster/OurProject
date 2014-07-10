@@ -21,11 +21,11 @@
     <string name="register_phoneEmail_textInit">请输入手机号/邮箱</string>
     <string name="security_code_title">验证码</string>
     <string name="security_code_textInit">请输入收到的验证码</string>
-    <string name="password">密码</string>
+    <string name="password">密&#160;&#160;&#160;&#160;码</string>
     <string name="password_textInit">6–20位字母或数字</string>
     <string name="introducer">介绍人（选填）</string>
     <string name="nextStep">下一步</string>
-    <string name="backLogin">已有账号，登陆</string>
+    <string name="backLogin">已有账号，登录</string>
     <string name="selectFromGallery">从相册选择</string>
     <string name="takePicture">拍照上传</string>
     <string name="basicInfo">基本信息（注册后不能修改）</string>

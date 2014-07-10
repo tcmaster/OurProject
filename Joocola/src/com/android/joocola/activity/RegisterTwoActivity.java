@@ -1,10 +1,13 @@
 package com.android.joocola.activity;
 
 import java.io.File;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -13,14 +16,20 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.RegisterInfo;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -33,7 +42,8 @@ public class RegisterTwoActivity extends BaseActivity implements
 	// 从相册获取头像，拍照获取头像，完成注册
 	private Button b_fromGallery, b_takePicture, b_finishRegister;
 	// 昵称，生日
-	private EditText et_nickName, et_birthday;
+	private EditText et_nickName;
+	private TextView tv_birthday;
 	// 性别选择
 	private RadioGroup rg_group;
 	// 标识位
@@ -50,6 +60,8 @@ public class RegisterTwoActivity extends BaseActivity implements
 	// 生日
 	private String birthday = "";
 	private Handler handler;
+	private int[] ids = { R.id.radioButton1, R.id.radioButton2,
+			R.id.radioButton3, R.id.radioButton4, R.id.radioButton5 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +78,17 @@ public class RegisterTwoActivity extends BaseActivity implements
 		b_takePicture = (Button) findViewById(R.id.takePicture);
 		b_finishRegister = (Button) findViewById(R.id.registerButton);
 		et_nickName = (EditText) findViewById(R.id.NickName_text);
-		et_birthday = (EditText) findViewById(R.id.birthdayText);
+		tv_birthday = (TextView) findViewById(R.id.birthdayText);
 		rg_group = (RadioGroup) findViewById(R.id.Group);
+		initRadioGroup();
+		rg_group.post(new Runnable() {
+
+			@Override
+			public void run() {
+				// 默认选中第一项
+				rg_group.check(R.id.radioButton1);
+			}
+		});
 	}
 
 	private void registerListener() {
@@ -75,6 +96,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 		b_takePicture.setOnClickListener(this);
 		iv_userPhoto.setOnClickListener(this);
 		b_fromGallery.setOnClickListener(this);
+		tv_birthday.setOnClickListener(this);
 	}
 
 	@Override
@@ -91,6 +113,9 @@ public class RegisterTwoActivity extends BaseActivity implements
 			break;
 		case R.id.photoImg:
 			clickPhoto();
+			break;
+		case R.id.birthdayText:
+			showDate();
 			break;
 		default:
 			break;
@@ -118,11 +143,22 @@ public class RegisterTwoActivity extends BaseActivity implements
 
 	private void register() {
 		nickName = et_nickName.getText().toString();
-		birthday = et_birthday.getText().toString();
+		birthday = tv_birthday.getText().toString();
+		if (birthday.equals("不会公开")) {
+			Utils.toast(this, "请填写生日字段");
+			return;
+		}
+		char isNumber = nickName.charAt(0);
+		if (isNumber <= 57 && isNumber >= 48) {
+			Utils.toast(this, "昵称请以非数字开头");
+			return;
+		}
 		HttpPostInterface interface1 = new HttpPostInterface();
 		RegisterInfo info = (RegisterInfo) getIntent().getSerializableExtra(
 				"info");
 		info.setBirthday(birthday);
+		int pid = (Integer) rg_group.findViewById(
+				rg_group.getCheckedRadioButtonId()).getTag();
 		info.setSex(rg_group.getCheckedRadioButtonId() + "");
 		info.setPhotoUrl(imgUrl);
 		info.setNickName(nickName);
@@ -131,7 +167,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 		interface1.addParams("introduceUserName", info.getIntroducer());
 		interface1.addParams("photoUrl", info.getPhotoUrl());
 		interface1.addParams("nickName", info.getNickName());
-		interface1.addParams("sexID", info.getSex());
+		interface1.addParams("sexID", pid + "");
 		interface1.addParams("birthDay", info.getBirthday());
 		interface1.addParams("verifyCode", info.getAutoCode());
 		interface1.getData(REGISTERURL, new HttpPostCallBack() {
@@ -234,7 +270,26 @@ public class RegisterTwoActivity extends BaseActivity implements
 	}
 
 	private void initRadioGroup() {
-
+		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
+				.getBaseInfo();
+		int count = 0;
+		for (int i = 0; i < infos.size(); i++) {
+			BaseDataInfo info = infos.get(i);
+			if (info.getTypeName().equals("Sex")) {
+				RadioButton button = new RadioButton(this);
+				button.setText(info.getItemName());
+				button.setTag(info.getPID());
+				button.setId(ids[count]);
+				RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
+						RadioGroup.LayoutParams.WRAP_CONTENT,
+						RadioGroup.LayoutParams.WRAP_CONTENT);
+				lp.gravity = Gravity.CENTER_VERTICAL;
+				lp.rightMargin = 20;
+				button.setLayoutParams(lp);
+				count++;
+				rg_group.addView(button);
+			}
+		}
 	}
 
 	public String processResultStr(String result, String size) {
@@ -242,6 +297,21 @@ public class RegisterTwoActivity extends BaseActivity implements
 				result.length());
 		String before = result.substring(0, result.indexOf("Photo/") + 6);
 		return before + size + after;
+	}
+
+	public void showDate() {
+		DatePickerDialog dlg = new DatePickerDialog(this,
+				DatePickerDialog.THEME_HOLO_LIGHT, new OnDateSetListener() {
+
+					@Override
+					public void onDateSet(DatePicker view, int year,
+							int monthOfYear, int dayOfMonth) {
+						tv_birthday.setText(year + "-" + monthOfYear + "-"
+								+ dayOfMonth);
+					}
+				}, 1990, 1, 1);
+		dlg.setCancelable(true);
+		dlg.show();
 	}
 
 }
