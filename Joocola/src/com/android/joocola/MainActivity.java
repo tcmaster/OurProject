@@ -1,7 +1,11 @@
 package com.android.joocola;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,10 +21,10 @@ import android.widget.Toast;
 
 import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
-import com.android.volley.RequestQueue;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -28,17 +32,24 @@ public class MainActivity extends Activity implements OnClickListener {
 	private EditText nameEdit, pswdEdit;
 	private Button loginButton, registerButton;
 	private TextView forget_pswd;
-	private RequestQueue queue;
+	private static final int LOGIN_SUCCESS = 0; // 登录成功
+	private static final int LOGIN_ERROR = 1; // 登录失败
+	private SharedPreferences sharedPreferences;
+	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 0:
-				String result = (String) msg.obj;
-				if (result.equals("0")) {
-					Toast.makeText(MainActivity.this,
-							getString(R.string.loginerror), Toast.LENGTH_SHORT)
-							.show();
-				}
+			case LOGIN_ERROR:
+				Toast.makeText(MainActivity.this,
+						getString(R.string.loginerror), Toast.LENGTH_SHORT)
+						.show();
+				break;
+			case LOGIN_SUCCESS:
+				// 登录成功的操作
+				String pid = (String) msg.obj;
+				Editor editor = sharedPreferences.edit();
+				editor.putString(Constans.LOGIN_PID, pid);
+				editor.commit();
 				break;
 
 			default:
@@ -55,6 +66,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		initView();
+		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
+				Context.MODE_PRIVATE);
 	}
 
 	private void initView() {
@@ -103,10 +116,18 @@ public class MainActivity extends Activity implements OnClickListener {
 					@Override
 					public void httpPostResolveData(String result) {
 						// 在这里用handler 把json 发出去 进行更新UI的操作
-						Message message = Message.obtain();
-						message.what = 0;
-						message.obj = result;
-						mHandler.sendMessage(message);
+
+						if (result.equals("0")) {
+							Message error = Message.obtain();
+							error.what = LOGIN_ERROR;
+							error.obj = result;
+							mHandler.sendMessage(error);
+						} else {
+							Message success = Message.obtain();
+							success.what = LOGIN_SUCCESS;
+							success.obj = result;
+							mHandler.sendMessage(success);
+						}
 					}
 				});
 			} else {
