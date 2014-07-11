@@ -282,6 +282,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 				button.setText(info.getItemName());
 				button.setTag(info.getPID());
 				button.setId(ids[count]);
+				button.setButtonDrawable(R.drawable.radiobutton);
 				RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
 						RadioGroup.LayoutParams.WRAP_CONTENT,
 						RadioGroup.LayoutParams.WRAP_CONTENT);
