@@ -9,6 +9,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,9 +41,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case LOGIN_ERROR:
-				Toast.makeText(MainActivity.this,
-						getString(R.string.loginerror), Toast.LENGTH_SHORT)
-						.show();
+
+				Utils.toast(MainActivity.this, getString(R.string.loginerror));
 				break;
 			case LOGIN_SUCCESS:
 				// 登录成功的操作
@@ -50,6 +50,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				Editor editor = sharedPreferences.edit();
 				editor.putString(Constans.LOGIN_PID, pid);
 				editor.commit();
+				Utils.toast(MainActivity.this, "登录成功");
 				break;
 
 			default:
@@ -91,6 +92,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.login:
+			Log.e("Login", "点击登录");
 			Utils.hideSoftInputMode(MainActivity.this, v);
 			String name = nameEdit.getText().toString();
 			String pswd = pswdEdit.getText().toString();

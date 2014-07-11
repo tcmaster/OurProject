@@ -40,7 +40,7 @@ public class FindPasswordActivity extends BaseActivity implements
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case GETCODESUCCESS:
-
+				Utils.toast(FindPasswordActivity.this, "修改密码成功");
 				break;
 			case GETCODEFAIL:
 				Utils.toast(FindPasswordActivity.this, "验证码获取失败，请重新获取");
