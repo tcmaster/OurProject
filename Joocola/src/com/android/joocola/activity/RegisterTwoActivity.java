@@ -159,7 +159,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 		info.setBirthday(birthday);
 		int pid = (Integer) rg_group.findViewById(
 				rg_group.getCheckedRadioButtonId()).getTag();
-		info.setSex(rg_group.getCheckedRadioButtonId() + "");
+		info.setSex(pid + "");
 		info.setPhotoUrl(imgUrl);
 		info.setNickName(nickName);
 		interface1.addParams("userName", info.getUserName());
@@ -167,7 +167,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 		interface1.addParams("introduceUserName", info.getIntroducer());
 		interface1.addParams("photoUrl", info.getPhotoUrl());
 		interface1.addParams("nickName", info.getNickName());
-		interface1.addParams("sexID", pid + "");
+		interface1.addParams("sexID", info.getSex());
 		interface1.addParams("birthDay", info.getBirthday());
 		interface1.addParams("verifyCode", info.getAutoCode());
 		interface1.getData(REGISTERURL, new HttpPostCallBack() {
@@ -182,8 +182,10 @@ public class RegisterTwoActivity extends BaseActivity implements
 							@Override
 							public void run() {
 								try {
-									Utils.toast(RegisterTwoActivity.this,
-											object.getString("Item2"));
+									Utils.toast(
+											RegisterTwoActivity.this,
+											"提示（用于测试），注册成功,PID为"
+													+ object.getString("Item2"));
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
