@@ -274,26 +274,6 @@ public class RegisterTwoActivity extends BaseActivity implements
 	private void initRadioGroup() {
 		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
 				.getBaseInfo(Constans.basedata_Sex);
-		// int count = 0;
-		// for (int i = 0; i < infos.size(); i++) {
-		// BaseDataInfo info = infos.get(i);
-		//
-		// RadioButton button = new RadioButton(this);
-		// button.setText(info.getItemName());
-		// button.setTag(info.getPID());
-		// button.setId(ids[count]);
-		// button.setButtonDrawable(R.drawable.radiobutton);
-		// RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
-		// RadioGroup.LayoutParams.WRAP_CONTENT,
-		// RadioGroup.LayoutParams.WRAP_CONTENT);
-		// lp.gravity = Gravity.CENTER_VERTICAL;
-		// lp.rightMargin = 20;
-		// button.setLayoutParams(lp);
-		// count++;
-		// rg_group.addView(button);
-		//
-		// }
-		// 嵩哥你看下这个方法。
 		ViewHelper.radioGroupFillItems(RegisterTwoActivity.this, rg_group,
 				infos);
 	}
