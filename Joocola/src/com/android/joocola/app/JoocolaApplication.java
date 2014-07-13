@@ -67,4 +67,33 @@ public class JoocolaApplication extends Application {
 	public List<BaseDataInfo> getBaseInfo() {
 		return baseInfoList;
 	}
+
+	public List<BaseDataInfo> getBaseInfo(String typeName) {
+		List<BaseDataInfo> typeList = new ArrayList<BaseDataInfo>();
+		for (int i = 0; i < baseInfoList.size(); i++) {
+			if (baseInfoList.get(i).getTypeName().equals(typeName)) {
+				typeList.add(baseInfoList.get(i));
+			}
+		}
+		return typeList;
+	}
+
+	public BaseDataInfo getSingleBaseInfo(String name) {
+		return getSingleBaseInfo(name, "");
+
+	}
+
+	public BaseDataInfo getSingleBaseInfo(String name, String typeName) {
+		boolean isNotThisType = typeName.isEmpty();
+		for (int i = 0; i < baseInfoList.size(); ++i) {
+			BaseDataInfo baseDataInfo = baseInfoList.get(i);
+			if (baseDataInfo.getItemName().equals(name)
+					&& (isNotThisType || baseDataInfo.getTypeName().equals(
+							typeName))) {
+				return baseDataInfo;
+			}
+
+		}
+		return null;
+	}
 }

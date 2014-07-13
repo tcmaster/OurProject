@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -55,6 +56,7 @@ public class RegisterOneActivity extends BaseActivity implements
 		b_verify = (Button) findViewById(R.id.verifyButton);
 		et_userName = (EditText) findViewById(R.id.usernameText);
 		et_code = (EditText) findViewById(R.id.authcode_text);
+		et_code.setInputType(InputType.TYPE_CLASS_NUMBER);
 		et_password = (EditText) findViewById(R.id.password_text);
 		et_introducer = (EditText) findViewById(R.id.introducerText);
 		tv_backLogin = (TextView) findViewById(R.id.backLogin);

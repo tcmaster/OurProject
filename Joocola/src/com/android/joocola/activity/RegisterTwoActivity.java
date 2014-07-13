@@ -16,14 +16,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -31,9 +29,11 @@ import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.RegisterInfo;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
+import com.android.joocola.utils.ViewHelper;
 
 public class RegisterTwoActivity extends BaseActivity implements
 		OnClickListener {
@@ -81,14 +81,14 @@ public class RegisterTwoActivity extends BaseActivity implements
 		tv_birthday = (TextView) findViewById(R.id.birthdayText);
 		rg_group = (RadioGroup) findViewById(R.id.Group);
 		initRadioGroup();
-		rg_group.post(new Runnable() {
-
-			@Override
-			public void run() {
-				// 默认选中第一项
-				rg_group.check(R.id.radioButton1);
-			}
-		});
+		// rg_group.post(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// // 默认选中第一项
+		// rg_group.check(R.id.radioButton1);
+		// }
+		// });
 	}
 
 	private void registerListener() {
@@ -273,26 +273,29 @@ public class RegisterTwoActivity extends BaseActivity implements
 
 	private void initRadioGroup() {
 		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
-				.getBaseInfo();
-		int count = 0;
-		for (int i = 0; i < infos.size(); i++) {
-			BaseDataInfo info = infos.get(i);
-			if (info.getTypeName().equals("Sex")) {
-				RadioButton button = new RadioButton(this);
-				button.setText(info.getItemName());
-				button.setTag(info.getPID());
-				button.setId(ids[count]);
-				button.setButtonDrawable(R.drawable.radiobutton);
-				RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
-						RadioGroup.LayoutParams.WRAP_CONTENT,
-						RadioGroup.LayoutParams.WRAP_CONTENT);
-				lp.gravity = Gravity.CENTER_VERTICAL;
-				lp.rightMargin = 20;
-				button.setLayoutParams(lp);
-				count++;
-				rg_group.addView(button);
-			}
-		}
+				.getBaseInfo(Constans.basedata_Sex);
+		// int count = 0;
+		// for (int i = 0; i < infos.size(); i++) {
+		// BaseDataInfo info = infos.get(i);
+		//
+		// RadioButton button = new RadioButton(this);
+		// button.setText(info.getItemName());
+		// button.setTag(info.getPID());
+		// button.setId(ids[count]);
+		// button.setButtonDrawable(R.drawable.radiobutton);
+		// RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
+		// RadioGroup.LayoutParams.WRAP_CONTENT,
+		// RadioGroup.LayoutParams.WRAP_CONTENT);
+		// lp.gravity = Gravity.CENTER_VERTICAL;
+		// lp.rightMargin = 20;
+		// button.setLayoutParams(lp);
+		// count++;
+		// rg_group.addView(button);
+		//
+		// }
+		// 嵩哥你看下这个方法。
+		ViewHelper.radioGroupFillItems(RegisterTwoActivity.this, rg_group,
+				infos);
 	}
 
 	public String processResultStr(String result, String size) {
