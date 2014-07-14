@@ -3,6 +3,7 @@ package com.android.joocola.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 public class BaseActivity extends Activity {
@@ -16,6 +17,11 @@ public class BaseActivity extends Activity {
 				| ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME
 				| ActionBar.DISPLAY_USE_LOGO);
 
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
