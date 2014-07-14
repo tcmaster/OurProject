@@ -1,9 +1,6 @@
 package com.android.joocola.dbmanger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -53,20 +50,11 @@ public class BaseDataInfoManger {
 		return arrayList;
 	}
 
-	public void saveAllChannel(
-			HashMap<String, ArrayList<BaseDataInfo>> baseDatainfos) {
-		ArrayList<BaseDataInfo> mArrayList = new ArrayList<BaseDataInfo>();
-		Iterator<Entry<String, ArrayList<BaseDataInfo>>> it = baseDatainfos
-				.entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<String, ArrayList<BaseDataInfo>> entry = (Entry<String, ArrayList<BaseDataInfo>>) it
-					.next();
-			Object value = entry.getValue();
-			mArrayList.addAll((ArrayList<BaseDataInfo>) value);
-		}
-		if (mArrayList.size() != 0)
-			for (int i = 0; i < mArrayList.size(); i++) {
-				BaseDataInfo baseDataInfo = mArrayList.get(i);
+	public void saveAllChannel(ArrayList<BaseDataInfo> baseDatainfos) {
+
+		if (baseDatainfos.size() != 0)
+			for (int i = 0; i < baseDatainfos.size(); i++) {
+				BaseDataInfo baseDataInfo = baseDatainfos.get(i);
 				add(baseDataInfo);
 			}
 
