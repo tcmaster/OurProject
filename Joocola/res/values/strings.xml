@@ -4,7 +4,7 @@
     <string name="app_name">Joocola</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="name">手机/邮箱</string>
+    <string name="name">手机号/邮箱/昵称</string>
     <string name="pswd">密码</string>
     <string name="forgetpswd">忘记密码</string>
     <string name="login">登录</string>
@@ -36,11 +36,24 @@
     <string name="man">男</string>
     <string name="women">女</string>
     <string name="birthday">生日： </string>
-    <string name="isPrivate">不会公开</string>
+    <string name="isPrivate">请选择生日</string>
     <string name="registerStr">注册即表示您同意《聚可乐用户协议》</string>
     <string name="verify">点击验证</string>
     <string name="baseInfo">基本信息</string>
     <string name="baseInfoAttachment">（注册后不能修改）</string>
+    <!-- 个人中心界面 -->
+    <string name="edit">编辑</string>
+    <string name="creditbalance">信用余额</string>
+    <string name="howGetCredit">如何获得信用？</string>
+    <string name="iAdd">我发起的邀约</string>
+    <string name="iApplay">我报名的邀约</string>
+    <string name="applyCount">入选</string>
+    <string name="iAnswer">我回复的邀约</string>
+    <string name="answerCount">\@我</string>
+    <string name="iSave">我收藏的邀约</string>
+    <string name="iCommit">等我评价的邀约</string>
+    <string name="commitPointInit">0</string>
+    <string name="settings">设置</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>

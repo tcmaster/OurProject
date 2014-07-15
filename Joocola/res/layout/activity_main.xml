@@ -26,25 +26,20 @@
         android:layout_alignRight="@+id/name_edit"
         android:layout_below="@+id/pswd_edit"
         android:layout_marginTop="31dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/forget_pswd_btn"
         android:text="@string/login" />
 
-    <TextView
-        android:id="@+id/forget_pswd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="22dp"
-        android:text="@string/forgetpswd" />
-
-    <Button
+     <Button
         android:id="@+id/register"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignBaseline="@+id/forget_pswd"
         android:layout_alignBottom="@+id/forget_pswd"
         android:layout_alignRight="@+id/pswd_edit"
+        android:background="@drawable/forget_pswd_btn"
         android:text="@string/register" />
 
     <ImageView
@@ -69,5 +64,14 @@
 
         <requestFocus />
     </EditText>
+
+    <TextView
+         android:id="@+id/forget_pswd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pswd_edit"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="36dp"
+        android:text="@string/forgetpswd" />
 
 </RelativeLayout>

@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.Application;
 import android.util.Log;
 
+import com.android.joocola.dbmanger.BaseDataInfoManger;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -18,7 +19,7 @@ import com.android.joocola.utils.Utils;
 public class JoocolaApplication extends Application {
 	private static JoocolaApplication instance;
 	// 存储基础数据
-	private List<BaseDataInfo> baseInfoList;
+	private ArrayList<BaseDataInfo> baseInfoList;
 	private static final String BASEDATAURL = "Sys.BaseDataController.GetDatas.ashx";
 
 	@Override
@@ -30,6 +31,9 @@ public class JoocolaApplication extends Application {
 
 	// 得到基础数据信息
 	public void getInfoFromNetwork() {
+		final BaseDataInfoManger baseDataInfoManger = BaseDataInfoManger
+				.getBaseDataInfoManger(getApplicationContext());
+
 		baseInfoList = new ArrayList<BaseDataInfo>();
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("dataType", "0");
@@ -50,13 +54,17 @@ public class JoocolaApplication extends Application {
 							info.setTypeName(object.getString("TypeName"));
 							baseInfoList.add(info);
 						}
+						baseDataInfoManger.clearTable();
+						baseDataInfoManger.saveAllChannel(baseInfoList);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}
 			});
 		} else {
-			Utils.toast(this, "当前网络不可用，请检查网络连接");
+			// Utils.toast(this, "当前网络不可用，请检查网络连接");
+			baseInfoList = baseDataInfoManger.getAllChannel();
+			Log.e("没网的情况下", baseInfoList.toString());
 		}
 	}
 

@@ -24,13 +24,11 @@ import com.android.joocola.utils.Utils;
 public class RegisterOneActivity extends BaseActivity implements
 		OnClickListener {
 	// 获取验证码，下一步按钮,点击验证按钮
-	private Button b_getAutoCode, b_nextStep, b_verify;
+	private Button b_getAutoCode, b_nextStep;
 	// 用户名，验证码，密码，介绍人
 	private EditText et_userName, et_code, et_password, et_introducer;
 	// 返回登陆界面
 	private TextView tv_backLogin;
-	// 确认当前得到的验证码是正确
-	private boolean autoCode_Flag = false;
 	private static final String URLAUTOCODEURL = "Sys.UserController.ApplyRegVerifyCode.ashx";
 	// 获取到的验证码
 	private String resultCode;
@@ -53,7 +51,6 @@ public class RegisterOneActivity extends BaseActivity implements
 	private void initView() {
 		b_getAutoCode = (Button) findViewById(R.id.getAutoCode);
 		b_nextStep = (Button) findViewById(R.id.nextStep);
-		b_verify = (Button) findViewById(R.id.verifyButton);
 		et_userName = (EditText) findViewById(R.id.usernameText);
 		et_code = (EditText) findViewById(R.id.authcode_text);
 		et_code.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -66,7 +63,6 @@ public class RegisterOneActivity extends BaseActivity implements
 		b_getAutoCode.setOnClickListener(this);
 		b_nextStep.setOnClickListener(this);
 		tv_backLogin.setOnClickListener(this);
-		b_verify.setOnClickListener(this);
 	}
 
 	@Override
@@ -84,10 +80,6 @@ public class RegisterOneActivity extends BaseActivity implements
 			// 返回登录
 			backLogin();
 			break;
-		case R.id.verifyButton:
-			// 验证
-			verify();
-			break;
 		default:
 			break;
 		}
@@ -96,7 +88,7 @@ public class RegisterOneActivity extends BaseActivity implements
 	@SuppressLint("HandlerLeak")
 	private void waitCodeReceive() {
 		b_getAutoCode.setEnabled(false);
-		b_getAutoCode.setText("120");
+		b_getAutoCode.setText("120秒后重发");
 		buttonOk = false;
 		final Handler waitHandler = new Handler() {
 			int count = 120;
@@ -104,7 +96,7 @@ public class RegisterOneActivity extends BaseActivity implements
 			@Override
 			public void handleMessage(Message msg) {
 				count--;
-				b_getAutoCode.setText(count + "");
+				b_getAutoCode.setText(count + "秒后重发");
 				if (count == 0 || buttonOk) {
 					b_getAutoCode.setText("获取验证码");
 					b_getAutoCode.setEnabled(true);
@@ -163,13 +155,15 @@ public class RegisterOneActivity extends BaseActivity implements
 		// 判断是否符合电话号码和邮箱的格式
 		if (Utils.judgeAccount(et_userName.getText().toString())) {
 			// 判断验证码是否正确
-			if (autoCode_Flag) {
+			if (verify()) {
 				// 判断密码是否符合要求
 				if (Utils.isGoodPassword(et_password.getText().toString())) {
 					// 介绍人（手机号，邮箱或空串)
 					if (Utils.stringIsNullOrEmpty(et_introducer.getText()
 							.toString())
 							|| Utils.judgeAccount(et_introducer.getText()
+									.toString())
+							|| !Utils.isNickName(et_introducer.getText()
 									.toString())) {
 						Intent intent = new Intent(this,
 								RegisterTwoActivity.class);
@@ -185,10 +179,10 @@ public class RegisterOneActivity extends BaseActivity implements
 						Utils.toast(this, "介绍人输入有误，请重新输入");
 				} else
 					Utils.toast(this, "密码格式有误，请重新输入密码(6-20位数字或字母");
-			} else
-				Utils.toast(this, "验证码有误，请重新获取");
+			} else {
+			}
 		} else
-			Utils.toast(this, "用户名格式不正确，请使用邮箱/电话号码作为用户名");
+			Utils.toast(this, "手机号/邮箱格式不正确，请检查是否输入有误");
 
 	}
 
@@ -196,17 +190,17 @@ public class RegisterOneActivity extends BaseActivity implements
 		finish();
 	}
 
-	private void verify() {
+	private boolean verify() {
 		if (resultCode != null) {
 			if (resultCode.equals(et_code.getText().toString())) {
-				b_verify.setEnabled(false);
-				b_verify.setText("验证成功");
-				autoCode_Flag = true;
+				return true;
 			} else {
-				Utils.toast(this, "验证失败，请重新输入验证码");
+				Utils.toast(this, "验证码有误，请重新输入");
+				return false;
 			}
 		} else {
 			Utils.toast(this, "未获取到验证码（请检查网络连接或重新获取验证码）");
+			return false;
 		}
 	}
 

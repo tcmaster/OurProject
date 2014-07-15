@@ -148,8 +148,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 			Utils.toast(this, "请填写生日字段");
 			return;
 		}
-		char isNumber = nickName.charAt(0);
-		if (isNumber <= 57 && isNumber >= 48) {
+		if (Utils.isNickName(nickName)) {
 			Utils.toast(this, "昵称请以非数字开头");
 			return;
 		}
@@ -292,8 +291,8 @@ public class RegisterTwoActivity extends BaseActivity implements
 					@Override
 					public void onDateSet(DatePicker view, int year,
 							int monthOfYear, int dayOfMonth) {
-						tv_birthday.setText(year + "-" + monthOfYear + "-"
-								+ dayOfMonth);
+						tv_birthday.setText(year + "-" + (monthOfYear + 1)
+								+ "-" + dayOfMonth);
 					}
 				}, 1990, 1, 1);
 		dlg.setCancelable(true);
