@@ -41,6 +41,19 @@
     <string name="verify">点击验证</string>
     <string name="baseInfo">基本信息</string>
     <string name="baseInfoAttachment">（注册后不能修改）</string>
+    <!-- 个人中心界面 -->
+    <string name="edit">编辑</string>
+    <string name="creditbalance">信用余额</string>
+    <string name="howGetCredit">如何获得信用？</string>
+    <string name="iAdd">我发起的邀约</string>
+    <string name="iApplay">我报名的邀约</string>
+    <string name="applyCount">入选</string>
+    <string name="iAnswer">我回复的邀约</string>
+    <string name="answerCount">\@我</string>
+    <string name="iSave">我收藏的邀约</string>
+    <string name="iCommit">等我评价的邀约</string>
+    <string name="commitPointInit">0</string>
+    <string name="settings">设置</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>

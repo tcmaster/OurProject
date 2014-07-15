@@ -41,7 +41,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case LOGIN_ERROR:
-
 				Utils.toast(MainActivity.this, getString(R.string.loginerror));
 				break;
 			case LOGIN_SUCCESS:

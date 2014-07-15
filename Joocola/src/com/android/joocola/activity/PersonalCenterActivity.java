@@ -1,4 +1,7 @@
-package com.android.joocola;
+package com.android.joocola.activity;
+
+import com.android.joocola.R;
+import com.android.joocola.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;
