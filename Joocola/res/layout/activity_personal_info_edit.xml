@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PersonalInfoEditActivity" >
+
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:gravity="center_vertical"
+	    >
+	    <EditText
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:id="@+id/nickName_et"
+	        android:hint="@string/nickNameEdit"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="10dp"
+	        />
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:id="@+id/birthday_tv"
+	        android:text="@string/app_name"
+	        android:gravity="right|center_vertical"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="10dp"
+	        android:layout_marginRight="10dp"
+	        />
+	</LinearLayout>
+
+	<com.android.joocola.view.MyGridView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:stretchMode="columnWidth"
+	    android:numColumns="4"
+	    android:id="@+id/myPic"
+	    android:layout_marginBottom="10dp" />
+
+</LinearLayout>

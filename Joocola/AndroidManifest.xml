@@ -60,6 +60,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.android.joocola.activity.PersonalInfoEditActivity"
+            android:label="@string/title_activity_personal_info_edit" >
+        </activity>
     </application>
 
 </manifest>
