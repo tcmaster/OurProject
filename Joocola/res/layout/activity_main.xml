@@ -26,6 +26,7 @@
         android:layout_alignRight="@+id/name_edit"
         android:layout_below="@+id/pswd_edit"
         android:layout_marginTop="31dp"
+        android:background="@drawable/forget_pswd_btn"
         android:text="@string/login" />
 
     <TextView
@@ -45,6 +46,7 @@
         android:layout_alignBaseline="@+id/forget_pswd"
         android:layout_alignBottom="@+id/forget_pswd"
         android:layout_alignRight="@+id/pswd_edit"
+        android:background="@drawable/forget_pswd_btn"
         android:text="@string/register" />
 
     <ImageView

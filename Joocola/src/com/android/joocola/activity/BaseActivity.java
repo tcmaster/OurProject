@@ -17,6 +17,7 @@ public class BaseActivity extends Activity {
 				| ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME
 				| ActionBar.DISPLAY_USE_LOGO);
 
+
 	}
 
 	@Override
