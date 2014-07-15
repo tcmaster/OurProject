@@ -23,7 +23,7 @@
             android:layout_marginRight="10dp"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/smail" />
 
         <Button
             android:id="@+id/selectFromGallery"
@@ -157,11 +157,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
-            android:drawableRight="@drawable/triangle"
             android:gravity="center_vertical"
             android:hint="@string/isPrivate"
             android:textSize="16sp"
-            android:background="@drawable/edittextbg"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"/>
     </LinearLayout>
@@ -174,6 +172,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
         android:text="@string/register"
+        android:textColor="@color/white"
         android:background="@drawable/nextbtnclick" />
 
     <TextView

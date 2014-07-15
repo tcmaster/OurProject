@@ -195,4 +195,19 @@ public class Utils {
 		return false;
 	}
 
+	/**
+	 * 判断首字母是否以数字开头
+	 * 
+	 * @param name
+	 *            判断的字符串
+	 * @return true为以数字开头，false为非数字开头
+	 */
+	public static boolean isNickName(String name) {
+		char isNumber = name.charAt(0);
+		if (isNumber <= 57 && isNumber >= 48) {
+			return true;
+		}
+		return false;
+	}
+
 }

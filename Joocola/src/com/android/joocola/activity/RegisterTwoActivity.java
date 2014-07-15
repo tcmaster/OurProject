@@ -148,8 +148,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 			Utils.toast(this, "请填写生日字段");
 			return;
 		}
-		char isNumber = nickName.charAt(0);
-		if (isNumber <= 57 && isNumber >= 48) {
+		if (Utils.isNickName(nickName)) {
 			Utils.toast(this, "昵称请以非数字开头");
 			return;
 		}
@@ -274,26 +273,6 @@ public class RegisterTwoActivity extends BaseActivity implements
 	private void initRadioGroup() {
 		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
 				.getBaseInfo(Constans.basedata_Sex);
-		// int count = 0;
-		// for (int i = 0; i < infos.size(); i++) {
-		// BaseDataInfo info = infos.get(i);
-		//
-		// RadioButton button = new RadioButton(this);
-		// button.setText(info.getItemName());
-		// button.setTag(info.getPID());
-		// button.setId(ids[count]);
-		// button.setButtonDrawable(R.drawable.radiobutton);
-		// RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
-		// RadioGroup.LayoutParams.WRAP_CONTENT,
-		// RadioGroup.LayoutParams.WRAP_CONTENT);
-		// lp.gravity = Gravity.CENTER_VERTICAL;
-		// lp.rightMargin = 20;
-		// button.setLayoutParams(lp);
-		// count++;
-		// rg_group.addView(button);
-		//
-		// }
-		// 嵩哥你看下这个方法。
 		ViewHelper.radioGroupFillItems(RegisterTwoActivity.this, rg_group,
 				infos);
 	}
@@ -312,8 +291,8 @@ public class RegisterTwoActivity extends BaseActivity implements
 					@Override
 					public void onDateSet(DatePicker view, int year,
 							int monthOfYear, int dayOfMonth) {
-						tv_birthday.setText(year + "-" + monthOfYear + "-"
-								+ dayOfMonth);
+						tv_birthday.setText(year + "-" + (monthOfYear + 1)
+								+ "-" + dayOfMonth);
 					}
 				}, 1990, 1, 1);
 		dlg.setCancelable(true);
