@@ -55,6 +55,11 @@
             android:name="com.android.joocola.PersonalCenterActivity"
             android:label="@string/title_activity_personal_center" >
         </activity>
+        <activity
+            android:name="com.android.joocola.MainTabActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

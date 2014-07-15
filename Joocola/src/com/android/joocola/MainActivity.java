@@ -50,7 +50,10 @@ public class MainActivity extends Activity implements OnClickListener {
 				Editor editor = sharedPreferences.edit();
 				editor.putString(Constans.LOGIN_PID, pid);
 				editor.commit();
-				Utils.toast(MainActivity.this, "登录成功");
+				Intent intent = new Intent(MainActivity.this,
+						MainTabActivity.class);
+				startActivity(intent);
+				MainActivity.this.finish();
 				break;
 
 			default:
