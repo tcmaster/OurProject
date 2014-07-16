@@ -1,9 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    >
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".PersonalCenterActivity" >
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,10 +23,10 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/myphoto" />
 
             <ImageView
                 android:id="@+id/redPoint"
@@ -30,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|top"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/redpoint" />
         </FrameLayout>
 
         <LinearLayout
@@ -48,7 +52,7 @@
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/edit"
@@ -59,8 +63,8 @@
                 android:background="@drawable/btnclick"
                 android:gravity="center"
                 android:text="@string/edit"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -83,7 +87,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/creditbalance"
             android:textColor="@color/deepgray"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/personalAchieve"
@@ -94,7 +98,7 @@
             android:gravity="right"
             android:text="@string/app_name"
             android:textColor="@color/deepgray"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <TextView
@@ -106,7 +110,7 @@
         android:gravity="left|center_vertical"
         android:text="@string/howGetCredit"
         android:textColor="@color/deepgray"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <View
         android:layout_width="match_parent"
@@ -132,16 +136,16 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/iAdd"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/addPoint"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/redpoint" />
 
             <TextView
                 android:id="@+id/AddCount"
@@ -150,8 +154,8 @@
                 android:layout_marginRight="10dp"
                 android:gravity="right|center_vertical"
                 android:text="@string/app_name"
-                android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textColor="@color/lessgray"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -173,7 +177,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/iApplay"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/applyPoint"
@@ -182,7 +186,10 @@
                 android:layout_marginLeft="5dp"
                 android:contentDescription="@string/app_name"
                 android:text="@string/applyCount"
-                android:textSize="16sp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:background="@drawable/ellipse"
+                android:textColor="@color/white"
                 />
 
             <TextView
@@ -192,8 +199,8 @@
                 android:layout_marginRight="10dp"
                 android:gravity="right|center_vertical"
                 android:text="@string/app_name"
-                android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textColor="@color/lessgray"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -215,7 +222,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/iAnswer"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/answerPoint"
@@ -224,7 +231,10 @@
                 android:layout_marginLeft="5dp"
                 android:contentDescription="@string/app_name"
                 android:text="@string/answerCount"
-                android:textSize="16sp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:background="@drawable/ellipse"
+                android:textColor="@color/white"
                 />
 
             <TextView
@@ -234,8 +244,8 @@
                 android:layout_marginRight="10dp"
                 android:gravity="right|center_vertical"
                 android:text="@string/app_name"
-                android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textColor="@color/lessgray"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -257,7 +267,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/iSave"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
             <TextView
                 android:id="@+id/saveCount"
                 android:layout_width="match_parent"
@@ -265,8 +275,8 @@
                 android:layout_marginRight="10dp"
                 android:gravity="right|center_vertical"
                 android:text="@string/app_name"
-                android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textColor="@color/lessgray"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -288,7 +298,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/iCommit"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/commitPoint"
@@ -297,7 +307,10 @@
                 android:layout_marginLeft="5dp"
                 android:contentDescription="@string/app_name"
                 android:text="@string/commitPointInit"
-                android:textSize="16sp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:background="@drawable/ellipse"
+                android:textColor="@color/white"
                 />
         </LinearLayout>
 
@@ -320,15 +333,15 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/settings"
                 android:textColor="@color/deepgray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/SettingsPoint"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:contentDescription="@string/app_name"
-            	android:src="@drawable/ic_launcher"
+            	android:src="@drawable/redpoint"
             	android:scaleType="fitXY"
                 />
         </LinearLayout>
@@ -342,3 +355,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

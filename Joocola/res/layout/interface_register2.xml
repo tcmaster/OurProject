@@ -23,7 +23,7 @@
             android:layout_marginRight="10dp"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
-            android:src="@drawable/smail" />
+            android:src="@drawable/myphoto" />
 
         <Button
             android:id="@+id/selectFromGallery"

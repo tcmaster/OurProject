@@ -54,8 +54,11 @@
     <string name="iCommit">等我评价的邀约</string>
     <string name="commitPointInit">0</string>
     <string name="settings">设置</string>
+    <!-- 个人信息编辑界面 -->
+    <string name="nickNameEdit">请输入昵称</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>
+    <string name="title_activity_personal_info_edit">PersonalInfoEditActivity</string>
 
 </resources>
