@@ -30,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/redPoint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right|top"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/redpoint" />
@@ -127,7 +127,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:id="@+id/addLayout" >
 
             <TextView
                 android:id="@+id/IAdd"
@@ -168,7 +169,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:id="@+id/applayLayout" >
 
             <TextView
                 android:id="@+id/IApply"
@@ -215,7 +217,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:id="@+id/answerLayout" >
 
             <TextView
                 android:id="@+id/IAnswer"
@@ -262,7 +265,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:id="@+id/saveLayout" >
 
             <TextView
                 android:id="@+id/ISave"
@@ -293,7 +297,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:id="@+id/commitLayout" >
 
             <TextView
                 android:id="@+id/ICommit"
@@ -330,7 +335,8 @@
          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:id="@+id/settingLayout" >
 
             <TextView
                 android:id="@+id/Settings"
