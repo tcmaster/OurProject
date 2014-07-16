@@ -35,6 +35,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private TextView forget_pswd;
 	private static final int LOGIN_SUCCESS = 0; // 登录成功
 	private static final int LOGIN_ERROR = 1; // 登录失败
+	private int mBackKeyPressedTimes = 0;
 	private SharedPreferences sharedPreferences;
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
@@ -153,5 +154,29 @@ public class MainActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (mBackKeyPressedTimes == 0) {
+			mBackKeyPressedTimes = 1;
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} finally {
+						mBackKeyPressedTimes = 0;
+					}
+				}
+			}.start();
+			return;
+		} else {
+			this.finish();
+			System.exit(0);
+		}
+		super.onBackPressed();
 	}
 }

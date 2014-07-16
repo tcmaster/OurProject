@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
+    android:orientation="vertical" 
      >
 
      
@@ -11,8 +11,7 @@
         android:id="@+id/vPager"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#000000"
+        android:layout_weight="1" 
         android:flipInterval="30"
         android:persistentDrawingCache="animation" >
     </android.support.v4.view.ViewPager>
@@ -20,38 +19,89 @@
   
 
         <LinearLayout
-             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dip"
-            android:paddingTop="10dip"  >
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"  >
+
+             
+
+            <RelativeLayout 
+                android:id="@+id/tab_realease"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_normal"
+                android:layout_width="0dp" >
 
             <TextView
                 android:id="@+id/tv_tab_realease"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:text="聚可乐" 
-                android:textSize="18sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="聚可乐"
+                android:textSize="14sp" />
 
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/tab_realease" />
+
+            </RelativeLayout>
+             
+               <RelativeLayout 
+                android:id="@+id/tab_nearby"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp" >
             <TextView
                 android:id="@+id/tv_tab_nearby"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:text="附近" 
-                android:textSize="18sp" />
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" 
+                android:textSize="14sp"
+                android:text="附近"   />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/tab_nearby" />
+
+            </RelativeLayout>
+            <RelativeLayout 
+                android:id="@+id/tab_message"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp" >
 
             <TextView
                 android:id="@+id/tv_tab_message"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:text="信息" 
-                android:textSize="18sp" />
- 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="信息 "
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/tab_message" />
+
+              </RelativeLayout>
         </LinearLayout>
 
      
