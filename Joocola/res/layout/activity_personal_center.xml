@@ -189,6 +189,8 @@
                 android:textSize="14sp"
                 android:gravity="center"
                 android:background="@drawable/ellipse"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:textColor="@color/white"
                 />
 
@@ -235,6 +237,8 @@
                 android:gravity="center"
                 android:background="@drawable/ellipse"
                 android:textColor="@color/white"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 />
 
             <TextView
@@ -311,6 +315,8 @@
                 android:gravity="center"
                 android:background="@drawable/ellipse"
                 android:textColor="@color/white"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 />
         </LinearLayout>
 
