@@ -14,10 +14,13 @@ public class IssuedinvitationActivity extends BaseActivity {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		String title = bundle.getString("title");
+		initActionbar(title);
+	}
+
+	private void initActionbar(String title) {
 		useCustomerActionBar();
 		getActionBarleft().setText(title);
 		getActionBarTitle().setVisibility(View.INVISIBLE);
 		getActionBarRight().setVisibility(View.INVISIBLE);
 	}
-
 }

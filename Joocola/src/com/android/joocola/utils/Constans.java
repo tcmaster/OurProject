@@ -25,4 +25,5 @@ public class Constans {
 	public static final String basedata_Drink = "Drink";
 	public static final String basedata_Revenue = "Revenue";
 	public static final String basedata_Height = "Height";
+	public static final String basedata_AppointCost = "AppointCost";
 }
