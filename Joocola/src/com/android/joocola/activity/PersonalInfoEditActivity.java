@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.android.joocola.R;
+import com.lidroid.xutils.ViewUtils;
 
 /**
  * 个人资料编辑界面
@@ -17,5 +18,6 @@ public class PersonalInfoEditActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_info_edit);
+		ViewUtils.inject(this);
 	}
 }

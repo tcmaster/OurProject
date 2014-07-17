@@ -273,7 +273,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 			public void httpPostResolveData(String result) {
 				Log.v("lixiaosong", result);
 				if (result != null) {
-					imgUrl = processResultStr(result, "_150_");
+					imgUrl = result;
 				}
 			}
 		});
@@ -284,13 +284,6 @@ public class RegisterTwoActivity extends BaseActivity implements
 				.getBaseInfo(Constans.basedata_Sex);
 		ViewHelper.radioGroupFillItems(RegisterTwoActivity.this, rg_group,
 				infos);
-	}
-
-	public String processResultStr(String result, String size) {
-		String after = result.substring(result.indexOf("Photo/") + 6,
-				result.length());
-		String before = result.substring(0, result.indexOf("Photo/") + 6);
-		return before + size + after;
 	}
 
 	public void showDate() {

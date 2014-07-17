@@ -13,6 +13,8 @@ import android.util.Log;
 import com.android.joocola.dbmanger.BaseDataInfoManger;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.IssueInfo;
+import com.android.joocola.entity.UserInfo;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -25,6 +27,9 @@ public class JoocolaApplication extends Application {
 
 	// 发布邀约的类别实体类
 	private ArrayList<IssueInfo> issueInfos = new ArrayList<IssueInfo>();
+	// 当前登录用户信息,只有本次登录成功才可使用
+	private UserInfo userInfo;
+
 	@Override
 	public void onCreate() {
 		instance = this;
@@ -114,5 +119,78 @@ public class JoocolaApplication extends Application {
 
 	public void setIssueInfos(ArrayList<IssueInfo> issueInfos) {
 		this.issueInfos = issueInfos;
+	}
+
+	/**
+	 * 在用户登录成功后，用于获得用户信息
+	 */
+	public void initUserInfo(String userId) {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("userID", userId);
+		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				if (result != null && !result.equals("")) {
+					userInfo = new UserInfo();
+					try {
+						JSONObject object = new JSONObject(result);
+						/**
+						 * 这里写的太麻烦，准备在优化时把这些改成通用反射方法
+						 */
+						userInfo.setDrinkName(object.getString("DrinkName"));
+						userInfo.setPhone(object.getString("Phone"));
+						userInfo.setMarryID(object.getInt("MarryID") + "");
+						userInfo.setPID(object.getInt("PID") + "");
+						userInfo.setNickName(object.getString("NickName"));
+						userInfo.setCredit(object.getInt("Credit") + "");
+						userInfo.setSexName(object.getString("SexName"));
+						userInfo.setUserName(object.getString("UserName"));
+						userInfo.setHeightID(object.getInt("HeightID") + "");
+						userInfo.setProfessionID(object.getInt("ProfessionID")
+								+ "");
+						userInfo.setSignature(object.getString("Signature"));
+						userInfo.setSmokeID(object.getInt("SmokeID") + "");
+						userInfo.setBirthday(object.getString("Birthday"));
+						userInfo.setMicroQQ(object.getString("MicroQQ"));
+						userInfo.setRevenueName(object.getString("RevenueName"));
+						userInfo.setQQ(object.getString("QQ"));
+						userInfo.setPhotoUrl(object.getString("PhotoUrl"));
+						userInfo.setHobbyIDs(object.getString("HobbyIDs"));
+						userInfo.setOldCityName(object.getString("OldCityName"));
+						userInfo.setDescription(object.getString("Description"));
+						userInfo.setHobbyNames(object.getString("HobbyNames"));
+						userInfo.setNewCityID(object.getInt("NewCityID") + "");
+						userInfo.setOldCityID(object.getInt("OldCityID") + "");
+						userInfo.setMicroBlog(object.getString("MicroBlog"));
+						userInfo.setHeightName(object.getString("HeightName"));
+						userInfo.setRevenueID(object.getInt("RevenueID") + "");
+						userInfo.setDrinkID(object.getInt("DrinkID") + "");
+						userInfo.setMarryName(object.getString("MarryName"));
+						userInfo.setProfessionName(object
+								.getString("ProfessionName"));
+						userInfo.setEmail(object.getString("Email"));
+						userInfo.setNewCityName(object.getString("NewCityName"));
+						userInfo.setSmokeName(object.getString("SmokeName"));
+						userInfo.setSexID(object.getInt("SexID") + "");
+						userInfo.setAlbumPhotoUrls(object.getString("Email"));
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				} else
+					Utils.toast(getApplicationContext(), "获取登录用户信息失败");
+			}
+		});
+	}
+
+	/**
+	 * 得到登录用户的信息，如果没有进行登录，则会返回空,可用该方法更新用户信息
+	 * 
+	 * @return 用户信息
+	 */
+	public UserInfo getUserInfo() {
+		return userInfo;
+
 	}
 }

@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.utils.Constans;
+import com.lidroid.xutils.BitmapUtils;
 
 /**
  * 
@@ -45,6 +48,7 @@ public class PersonalCenterActivity extends BaseActivity implements
 		initViews();
 		initActionBar();
 		initListeners();
+		initUserInfo();
 	}
 
 	private void initViews() {
@@ -94,5 +98,13 @@ public class PersonalCenterActivity extends BaseActivity implements
 			break;
 		}
 
+	}
+
+	private void initUserInfo() {
+		BitmapUtils utils = new BitmapUtils(this);
+		utils.display(iv_photo, Constans.URL
+				+ JoocolaApplication.getInstance().getUserInfo().getPhotoUrl());
+		nickName.setText(JoocolaApplication.getInstance().getUserInfo()
+				.getNickName());
 	}
 }

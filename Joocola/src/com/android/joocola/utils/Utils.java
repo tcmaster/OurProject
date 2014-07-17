@@ -210,4 +210,20 @@ public class Utils {
 		return false;
 	}
 
+	/**
+	 * 拼接图片地址
+	 * 
+	 * @param result
+	 *            原图片地址
+	 * @param size
+	 *            要拼接上的字符串
+	 * @return 拼接完的图片地址
+	 */
+	public static String processResultStr(String result, String size) {
+		String after = result.substring(result.lastIndexOf("/") + 1,
+				result.length());
+		String before = result.substring(0, result.lastIndexOf("/") + 1);
+		return before + size + after;
+	}
+
 }

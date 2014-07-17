@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
+import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -47,6 +48,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case LOGIN_SUCCESS:
 				// 登录成功的操作
 				String pid = (String) msg.obj;
+				JoocolaApplication.getInstance().initUserInfo(pid);
 				Editor editor = sharedPreferences.edit();
 				editor.putString(Constans.LOGIN_PID, pid);
 				editor.commit();
