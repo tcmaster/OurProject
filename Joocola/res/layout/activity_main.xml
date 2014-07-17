@@ -28,18 +28,20 @@
         android:layout_marginTop="31dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:textColor="@color/white"
         android:background="@drawable/forget_pswd_btn"
         android:text="@string/login" />
 
      <Button
         android:id="@+id/register"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="50dp"
         android:layout_alignBaseline="@+id/forget_pswd"
         android:layout_alignBottom="@+id/forget_pswd"
         android:layout_alignRight="@+id/pswd_edit"
         android:background="@drawable/forget_pswd_btn"
+         android:textColor="@color/white"
         android:text="@string/register" />
 
     <ImageView

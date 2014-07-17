@@ -2,6 +2,7 @@ package com.android.joocola.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.android.joocola.R;
 
@@ -13,7 +14,10 @@ public class IssuedinvitationActivity extends BaseActivity {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		String title = bundle.getString("title");
-		mActionBar.setTitle(title);
+		useCustomerActionBar();
+		getActionBarleft().setText(title);
+		getActionBarTitle().setVisibility(View.INVISIBLE);
+		getActionBarRight().setVisibility(View.INVISIBLE);
 	}
 
 }
