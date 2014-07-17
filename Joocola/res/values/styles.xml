@@ -60,14 +60,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-    <declare-styleable name="SoufunTextView">
-        <attr name="width" format="dimension" />
-        <attr name="textsize" format="dimension" />
-        <attr name="textcolor" format="reference|color" />
-        <attr name="linespacingextra" format="dimension" />
-        <attr name="typeface" />
-    </declare-styleable>
     <style name="AnimBottom" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
