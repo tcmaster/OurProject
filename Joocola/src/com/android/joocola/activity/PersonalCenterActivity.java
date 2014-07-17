@@ -1,6 +1,5 @@
 package com.android.joocola.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -77,13 +76,11 @@ public class PersonalCenterActivity extends BaseActivity implements
 		editButton.setOnClickListener(this);
 	}
 
-	@SuppressLint("NewApi")
 	private void initActionBar() {
-		if (mActionBar != null) {
-			mActionBar.setTitle("我");
-			mActionBar.setLogo(R.drawable.smail);
-			mActionBar.setDisplayHomeAsUpEnabled(true);
-		}
+		useCustomerActionBar();
+		getActionBarleft().setText("我");
+		getActionBarTitle().setVisibility(View.INVISIBLE);
+		getActionBarRight().setVisibility(View.INVISIBLE);
 	}
 
 	@Override
