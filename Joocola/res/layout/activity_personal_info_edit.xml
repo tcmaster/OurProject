@@ -5,41 +5,294 @@
     android:orientation="vertical"
     tools:context=".PersonalInfoEditActivity" >
 
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:gravity="center_vertical"
-	    >
-	    <EditText
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="16sp"
-	        android:id="@+id/nickName_et"
-	        android:hint="@string/nickNameEdit"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginTop="10dp"
-	        android:layout_marginBottom="10dp"
-	        />
-	    <TextView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:textSize="16sp"
-	        android:id="@+id/birthday_tv"
-	        android:text="@string/app_name"
-	        android:gravity="right|center_vertical"
-	        android:layout_marginTop="10dp"
-	        android:layout_marginBottom="10dp"
-	        android:layout_marginRight="10dp"
-	        />
-	</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-	<com.android.joocola.view.MyGridView
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:stretchMode="columnWidth"
-	    android:numColumns="4"
-	    android:id="@+id/myPic"
-	    android:layout_marginBottom="10dp" />
+        <EditText
+            android:id="@+id/nickName_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/nickNameEdit"
+            android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/birthday_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="right|center_vertical"
+            android:text="@string/app_name"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <com.android.joocola.view.MyGridView
+        android:id="@+id/myPic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:numColumns="4"
+        android:stretchMode="columnWidth" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/hobby"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/hobby" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/signin"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/signin" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/phone"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/phone" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginBottom="10dp"
+        android:background="@color/gray2" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/location"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/location" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/profession"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/profession" />
+    </LinearLayout>
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/annualSalary"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/annualSalary" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/height"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/height" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/emotion"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/emotion" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/smoke"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/smoke" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/drink"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/deepgray"
+            android:textSize="16sp"
+            android:id="@+id/drink" />
+    </LinearLayout>
+    
 </LinearLayout>

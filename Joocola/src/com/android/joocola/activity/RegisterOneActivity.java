@@ -45,6 +45,7 @@ public class RegisterOneActivity extends BaseActivity implements
 		setContentView(R.layout.interface_register1);
 		handler = new MyHandler();
 		initView();
+		initActionBar();
 		registerListener();
 	}
 
@@ -57,6 +58,12 @@ public class RegisterOneActivity extends BaseActivity implements
 		et_password = (EditText) findViewById(R.id.password_text);
 		et_introducer = (EditText) findViewById(R.id.introducerText);
 		tv_backLogin = (TextView) findViewById(R.id.backLogin);
+	}
+
+	private void initActionBar() {
+		useCustomerActionBar();
+		getActionBarTitle().setText("注册");
+		getActionBarRight().setText("注册1/1");
 	}
 
 	private void registerListener() {

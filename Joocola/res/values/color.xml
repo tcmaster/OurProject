@@ -9,6 +9,7 @@
     <color name="light_gray">#555555</color>
     <color name="orange">#f07d14</color>
     <color name="t_red">#c44710</color>
+    <color name="green">#ff00ff00</color>
     <drawable name="clickblue">#ff3333ff</drawable>
     <drawable name="clickbluefalse">#ff5555ff</drawable>
 </resources>
