@@ -72,5 +72,11 @@
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>
     <string name="title_activity_personal_info_edit">PersonalInfoEditActivity</string>
-
+    <!-- 发布邀请界面 -->
+    <string name="issue_time">时间</string>
+    <string name="issue_theme">主题</string>
+    <string name="issue_duixiang">邀约对象</string>
+    <string name="issue_cost">花销</string>
+    <string name="issue_place">地点</string>
+    <string name="issue_state">说明</string>
 </resources>
