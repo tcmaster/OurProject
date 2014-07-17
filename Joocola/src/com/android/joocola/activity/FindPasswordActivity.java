@@ -67,7 +67,10 @@ public class FindPasswordActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activiy_findpswd);
 		queue = Volley.newRequestQueue(this);
-		mActionBar.setTitle(getString(R.string.forgetpswd));
+		useCustomerActionBar();
+		getActionBarleft().setText(getString(R.string.forgetpswd));
+		getActionBarTitle().setVisibility(View.INVISIBLE);
+		getActionBarRight().setVisibility(View.INVISIBLE);
 		initView();
 
 	}
