@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.android.joocola.dbmanger.BaseDataInfoManger;
 import com.android.joocola.entity.BaseDataInfo;
+import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -22,6 +23,8 @@ public class JoocolaApplication extends Application {
 	private ArrayList<BaseDataInfo> baseInfoList;
 	private static final String BASEDATAURL = "Sys.BaseDataController.GetDatas.ashx";
 
+	// 发布邀约的类别实体类
+	private ArrayList<IssueInfo> issueInfos = new ArrayList<IssueInfo>();
 	@Override
 	public void onCreate() {
 		instance = this;
@@ -103,5 +106,13 @@ public class JoocolaApplication extends Application {
 
 		}
 		return null;
+	}
+
+	public ArrayList<IssueInfo> getIssueInfos() {
+		return issueInfos;
+	}
+
+	public void setIssueInfos(ArrayList<IssueInfo> issueInfos) {
+		this.issueInfos = issueInfos;
 	}
 }

@@ -55,6 +55,7 @@
     <string name="iCommit">等我评价的邀约</string>
     <string name="commitPointInit">0</string>
     <string name="settings">设置</string>
+    <string name="issue">发表邀约    选择类型</string>
     <!-- 个人信息编辑界面 -->
     <string name="nickNameEdit">这里是昵称</string>
     <string name="hobby">爱好</string>
