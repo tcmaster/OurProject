@@ -8,7 +8,10 @@ public class Constans {
 	public static final String URL = "http://a.utryi.com";
 	public static final String MAIN_URL = "http://a.utryi.com/Controller/";
 	public static final String UPLOADIMGURL = "http://a.utryi.com/_Base/Uploader/UserPhoto.ashx";
-
+	/**
+	 * 获取用户信息接口
+	 */
+	public static final String USERINFOURL = "Sys.UserController.GetUserInfo.ashx";
 	/*
 	 * 用来获取登录信息的shareprefernce.
 	 */
