@@ -35,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.joocola.activity.IssuedinvitationActivity;
+import com.android.joocola.activity.PersonalCenterActivity;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.fragment.Messagefragment;
@@ -67,8 +68,7 @@ public class MainTabActivity extends FragmentActivity {
 	private ArrayList<IssueInfo> mIssueInfos;
 	private JoocolaApplication mJoocolaApplication;
 	@SuppressLint("HandlerLeak")
-	private Handler mHandler = new Handler()
-	{
+	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 1:
@@ -80,6 +80,7 @@ public class MainTabActivity extends FragmentActivity {
 			}
 		};
 	};
+
 	// getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);//
 	// 用来更新menu
 	@Override
@@ -103,34 +104,36 @@ public class MainTabActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
+		Intent intent = new Intent();
 		switch (id) {
 		case R.id.action_add:
 			mIssueInfos = mJoocolaApplication.getIssueInfos();
 			if (mIssueInfos == null || mIssueInfos.size() == 0) {
-			HttpPostInterface httpPostInterface = new HttpPostInterface();
-			httpPostInterface.getData(issue_url, new HttpPostCallBack() {
-				
-				@Override
-				public void httpPostResolveData(String result) {
-					try {
-						JSONArray jsonArray = new JSONArray(result);
-						for (int i = 0; i < jsonArray.length(); i++) {
-							IssueInfo issueInfo = new IssueInfo();
-							JSONObject jsonObject = jsonArray.getJSONObject(i);
-							issueInfo.setPID(jsonObject.getInt("PID"));
-							issueInfo.setSortNo(jsonObject.getInt("SortNo"));
-							issueInfo.setPhotoUrl(jsonObject
-									.getString("PhotoUrl"));
-							issueInfo.setTypeName(jsonObject
-									.getString("TypeName"));
-							mIssueInfos.add(issueInfo);
-						}
+				HttpPostInterface httpPostInterface = new HttpPostInterface();
+				httpPostInterface.getData(issue_url, new HttpPostCallBack() {
 
-					} catch (JSONException e) {
-						e.printStackTrace();
+					@Override
+					public void httpPostResolveData(String result) {
+						try {
+							JSONArray jsonArray = new JSONArray(result);
+							for (int i = 0; i < jsonArray.length(); i++) {
+								IssueInfo issueInfo = new IssueInfo();
+								JSONObject jsonObject = jsonArray
+										.getJSONObject(i);
+								issueInfo.setPID(jsonObject.getInt("PID"));
+								issueInfo.setSortNo(jsonObject.getInt("SortNo"));
+								issueInfo.setPhotoUrl(jsonObject
+										.getString("PhotoUrl"));
+								issueInfo.setTypeName(jsonObject
+										.getString("TypeName"));
+								mIssueInfos.add(issueInfo);
+							}
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						mHandler.sendEmptyMessage(1);
 					}
-					mHandler.sendEmptyMessage(1);
-				}
 				});
 			} else {
 				mHandler.sendEmptyMessage(1);
@@ -141,13 +144,15 @@ public class MainTabActivity extends FragmentActivity {
 			Log.i("option", "loudou");
 			break;
 		case R.id.action_me:
-			Log.i("option", "me1");
+			intent.setClass(this, PersonalCenterActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	private void initActionbar() {
 		mActionBar = getActionBar();
 		mActionBar.setTitle("北京");
@@ -156,6 +161,7 @@ public class MainTabActivity extends FragmentActivity {
 		// mActionBar.setDisplayShowCustomEnabled(true);
 		// mActionBar.setCustomView(R.layout.maintab_actionbar);
 	}
+
 	private void initView() {
 
 		tab_realease = (RelativeLayout) this.findViewById(R.id.tab_realease);
@@ -184,6 +190,7 @@ public class MainTabActivity extends FragmentActivity {
 		mPager.setCurrentItem(0);
 		mPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	}
+
 	public class MyOnClickListener implements View.OnClickListener {
 		private int index = 0;
 
@@ -237,6 +244,7 @@ public class MainTabActivity extends FragmentActivity {
 
 		return super.onPrepareOptionsMenu(menu);
 	}
+
 	@Override
 	public void onBackPressed() {
 		if (mBackKeyPressedTimes == 0) {
@@ -296,6 +304,7 @@ public class MainTabActivity extends FragmentActivity {
 		});
 		customerDialog.showDlg();
 	}
+
 	class IssueAdapter extends BaseAdapter {
 		private LayoutInflater layoutInflater;
 		private ImageLoader mImageLoader;
