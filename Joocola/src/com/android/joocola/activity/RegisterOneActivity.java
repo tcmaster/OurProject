@@ -62,7 +62,8 @@ public class RegisterOneActivity extends BaseActivity implements
 
 	private void initActionBar() {
 		useCustomerActionBar();
-		getActionBarTitle().setText("注册");
+		getActionBarTitle().setVisibility(View.INVISIBLE);
+		getActionBarleft().setText("注册");
 		getActionBarRight().setText("注册1/1");
 	}
 

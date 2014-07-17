@@ -6,33 +6,37 @@
     android:paddingBottom="10dp"
     android:background="@color/white"
     >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/homelayout"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arrow"
         android:contentDescription="@string/app_name"
-        android:layout_alignParentLeft="true"
         android:id="@+id/arrow"
-        android:layout_centerVertical="true"
         />
     <ImageView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/smail"
         android:contentDescription="@string/app_name"
-        android:layout_toRightOf="@id/arrow"
-        android:id="@+id/logo"
-        android:layout_centerVertical="true"/>
+        android:id="@+id/logo"/>
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:textSize="16sp"
 	    android:textColor="@color/green"
 	    android:text="@string/app_name"
-	    android:layout_toRightOf="@id/logo"
-	    android:layout_centerVertical="true"
 	    android:id="@+id/leftText"
 	    />
+	</LinearLayout>
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
@@ -45,7 +49,7 @@
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:textSize="18sp"
+	    android:textSize="16sp"
 	    android:textColor="@color/green"
 	    android:text="@string/app_name"
 	    android:layout_centerVertical="true"

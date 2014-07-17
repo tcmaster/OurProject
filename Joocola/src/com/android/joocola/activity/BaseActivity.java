@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -16,6 +18,7 @@ public class BaseActivity extends Activity {
 	// 自定义ActionBar相关
 	private TextView left, right, title;
 	private ImageView arrow, logo;
+	private LinearLayout backButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,14 @@ public class BaseActivity extends Activity {
 		logo = (ImageView) view.findViewById(R.id.logo);
 		arrow = (ImageView) view.findViewById(R.id.arrow);
 		title = (TextView) view.findViewById(R.id.title);
+		backButton = (LinearLayout) view.findViewById(R.id.homelayout);
+		backButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				BaseActivity.this.onBackPressed();
+			}
+		});
 	}
 
 	/**
@@ -100,6 +111,20 @@ public class BaseActivity extends Activity {
 	 */
 	public ImageView getActionBarLogo() {
 		return logo;
+	}
+
+	/**
+	 * 得到自定义actionBar自定义的返回布局，并进行设置,使用之前需调用{@link useCustomerActionBar}
+	 * 
+	 * @return 返回键的layout
+	 */
+	public LinearLayout getBackButton() {
+		return backButton;
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
 	}
 
 }
