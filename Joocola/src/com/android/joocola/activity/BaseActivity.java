@@ -118,10 +118,19 @@ public class BaseActivity extends Activity {
 	 * 
 	 * @return 返回键的layout
 	 */
-	public LinearLayout getBackButton() {
+	public LinearLayout getActionBarBackButton() {
 		return backButton;
 	}
 
+	public View getActionBarCustomerView() {
+		return mActionBar.getCustomView();
+	}
+
+	/**
+	 * 得到ActionBar的CustomerView， 使用之前需调用{@link useCustomerActionBar}
+	 * 
+	 * @return ActionBar的CustomerView
+	 */
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();

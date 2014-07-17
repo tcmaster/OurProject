@@ -69,7 +69,16 @@ public class RegisterTwoActivity extends BaseActivity implements
 		setContentView(R.layout.interface_register2);
 		handler = new Handler();
 		initView();
+		initActionBar();
 		registerListener();
+	}
+
+	private void initActionBar() {
+		useCustomerActionBar();
+		getActionBarTitle().setVisibility(View.INVISIBLE);
+		getActionBarleft().setText("注册");
+		getActionBarRight().setText("注册2/2");
+
 	}
 
 	private void initView() {
