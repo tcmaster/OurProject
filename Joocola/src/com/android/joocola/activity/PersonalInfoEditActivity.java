@@ -12,15 +12,18 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.adapter.Dlg_GridView_Adapter;
 import com.android.joocola.adapter.Dlg_ListView_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
+import com.android.joocola.utils.HttpPostInterface;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -46,12 +49,12 @@ public class PersonalInfoEditActivity extends Activity {
 	 * 爱好
 	 */
 	@ViewInject(R.id.hobby)
-	private TextView hobby_tv;
+	private EditText hobby_tv;
 	/**
 	 * 个性签名
 	 */
 	@ViewInject(R.id.signin)
-	private TextView signin_tv;
+	private EditText signin_tv;
 	/**
 	 * 电话
 	 */
@@ -111,17 +114,23 @@ public class PersonalInfoEditActivity extends Activity {
 		ViewUtils.inject(this);
 	}
 
-	@OnClick({ R.id.hobby, R.id.signin, R.id.phone, R.id.location,
-			R.id.profession, R.id.annualSalary, R.id.height, R.id.emotion,
-			R.id.smoke, R.id.drink })
+	@OnClick({ R.id.phone, R.id.location, R.id.profession, R.id.annualSalary,
+			R.id.height, R.id.emotion, R.id.smoke, R.id.drink })
 	public void onViewClick(View v) {
 		List<BaseDataInfo> resultInfos = new ArrayList<BaseDataInfo>();
 		TextView display = null;
 		String title = "";
 		switch (v.getId()) {
 		case R.id.hobby:
-
-			break;
+			for (int i = 0; i < baseDataInfos.size(); i++) {
+				if (baseDataInfos.get(i).getTypeName().equals("Hobby")) {
+					resultInfos.add(baseDataInfos.get(i));
+				}
+			}
+			display = hobby_tv;
+			title = "兴趣爱好";
+			showMultiChoiceDialog(resultInfos, title, display);
+			return;
 		case R.id.signin:
 
 			break;
@@ -202,7 +211,7 @@ public class PersonalInfoEditActivity extends Activity {
 			public void getCustomerView(Window window, AlertDialog dlg) {
 				TextView tv_title = (TextView) window
 						.findViewById(R.id.dlg_pe_title);
-				ListView lv_items = (ListView) window
+				final ListView lv_items = (ListView) window
 						.findViewById(R.id.dlg_pe_listview);
 				TextView btn_ok = (TextView) window
 						.findViewById(R.id.dlg_pe_ok);
@@ -236,6 +245,8 @@ public class PersonalInfoEditActivity extends Activity {
 							 * 这里要执行网络请求
 							 */
 							tv.setText(choiceData);
+							HttpPostInterface interface1 = new HttpPostInterface();
+							interface1.addParams("", "");
 							cdlg.dismissDlg();
 							break;
 						case R.id.dlg_pe_cancel:
@@ -255,8 +266,66 @@ public class PersonalInfoEditActivity extends Activity {
 		cdlg.showDlg();
 	}
 
-	private void showMultiChoiceDialog(List<BaseDataInfo> info, String title,
-			TextView tv) {
+	private void showMultiChoiceDialog(final List<BaseDataInfo> info,
+			final String title, final TextView tv) {
+		final CustomerDialog cdlg = new CustomerDialog(this,
+				R.layout.dlg_multichoice);
+		choiceData = "";
+		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
 
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				TextView tv_title = (TextView) window
+						.findViewById(R.id.dlg_pe_title);
+				final GridView gv_items = (GridView) window
+						.findViewById(R.id.dlg_pe_gridView);
+				TextView btn_ok = (TextView) window
+						.findViewById(R.id.dlg_pe_ok);
+				TextView btn_cacel = (TextView) window
+						.findViewById(R.id.dlg_pe_cancel);
+				gv_items.setAdapter(new Dlg_GridView_Adapter(info,
+						PersonalInfoEditActivity.this));
+				gv_items.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						((Dlg_GridView_Adapter) parent.getAdapter())
+								.setPos(position);
+					}
+				});
+				OnClickListener listener = new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						switch (v.getId()) {
+						case R.id.dlg_pe_ok:
+							/**
+							 * 这里要执行网络请求
+							 */
+							boolean[] selection = ((Dlg_GridView_Adapter) gv_items
+									.getAdapter()).getSelection();
+							for (int i = 0; i < selection.length; i++) {
+								if (selection[i])
+									choiceData += info.get(i).getItemName()
+											+ " ";
+							}
+							tv.setText(choiceData);
+							cdlg.dismissDlg();
+							break;
+						case R.id.dlg_pe_cancel:
+							cdlg.dismissDlg();
+							break;
+						default:
+							break;
+						}
+
+					}
+				};
+				btn_ok.setOnClickListener(listener);
+				btn_cacel.setOnClickListener(listener);
+			}
+		});
+		cdlg.showDlg();
 	}
 }

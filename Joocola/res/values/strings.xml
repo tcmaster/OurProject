@@ -60,7 +60,7 @@
     <string name="nickNameEdit">这里是昵称</string>
     <string name="hobby">爱好</string>
     <string name="signin">个性签名</string>
-    <string name="phone">手机</string>
+    <string name="phone">手    机</string>
     <string name="location">现居地</string>
     <string name="profession">职业</string>
     <string name="annualSalary">年收入</string>
@@ -70,6 +70,7 @@
     <string name="drink">喝酒</string>
     <string name="btn_ok">确认 </string>
     <string name="btn_cancel">取消</string>
+    <string name="please_choice">请选择</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>

@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/hobby" />
@@ -87,14 +87,15 @@
             android:textColor="@color/deepgray"
             android:textSize="16sp" />
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:init="@string/app_name"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
+            android:inputType="text"
             android:id="@+id/signin" />
     </LinearLayout>
     <LinearLayout
@@ -111,14 +112,15 @@
             android:textColor="@color/deepgray"
             android:textSize="16sp" />
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:init="@string/app_name"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
+            android:inputType="phone"
             android:id="@+id/phone" />
     </LinearLayout>
     <View
@@ -145,7 +147,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/location" />
@@ -169,7 +171,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/profession" />
@@ -193,7 +195,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/annualSalary" />
@@ -217,7 +219,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/height" />
@@ -241,7 +243,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/emotion" />
@@ -265,7 +267,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/smoke" />
@@ -289,7 +291,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:text="@string/app_name"
+            android:text="@string/please_choice"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:id="@+id/drink" />
