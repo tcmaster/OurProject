@@ -30,4 +30,19 @@ public class Constans {
 	public static final String basedata_Height = "Height";
 	public static final String basedata_Hobby = "Hobby";
 	public static final String basedata_AppointCost = "AppointCost";
+
+	/*
+	 * 发布邀约时的map的字符串
+	 */
+	public static final String ISSUE_TYPEID = "TypeID";
+	public static final String ISSUE_TITLE = "Title";
+	public static final String ISSUE_COSTCREDIT = "CostCredit";
+	public static final String ISSUE_SEXID = "SexID";
+	public static final String ISSUE_COSTID = "CostID";
+	public static final String ISSUE_RESERVEDATE = "ReserveDate";
+	public static final String ISSUE_LOCATIONAME = "LocationName";
+	public static final String ISSUE_LOCATIONX = "LocationX";
+	public static final String ISSUE_LOCATIONY = "LocationY";
+	public static final String ISSUE_DESCRIPTION = "Description";
+	public static final String ISSUE_PUBLISHERID = "PublisherID";
 }

@@ -79,4 +79,14 @@
     <string name="issue_cost">花销</string>
     <string name="issue_place">地点</string>
     <string name="issue_state">说明</string>
+    <string name="issue_cost_credit">愿花费信用(不低于10)</string>
+    <string name="issue_credit_balance">信用余额 :</string>
+    <string name="issue_credit_pay">信用充值</string>
+    <string name="issue_sureissue">确认发布</string>
+    <string name="issue_hint">提示</string>
+    <string name="issue_hinta">1.花费信用越高，越能体现邀约诚意，排名越靠前，越容易找到感兴趣的人。</string>
+    <string name="issue_hintb">2.邀约不成功，扣除10个信用后，剩下的全部返还。</string>
+    <string name="issue_hintc">3.发布成功后，不能修改类型、主题、邀约详情等信息。</string>
+    <string name="issue_hintd">4.虚假发布将被删除并没收信用.</string>
+    
 </resources>

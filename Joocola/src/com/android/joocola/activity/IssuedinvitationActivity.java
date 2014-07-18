@@ -79,7 +79,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 		lp.gravity = Gravity.CENTER_VERTICAL;
 		lp.rightMargin = 25;
 		button.setLayoutParams(lp);
-		button.setPadding(10, 1, 1, 1);
+		button.setPadding(40, 1, 1, 1);
 		sexGroup.addView(button);
 		initRadioGroup(Constans.basedata_AppointCost, cost_group);
 	}
