@@ -68,6 +68,8 @@
     <string name="emotion">情感状态</string>
     <string name="smoke">抽烟</string>
     <string name="drink">喝酒</string>
+    <string name="btn_ok">确认 </string>
+    <string name="btn_cancel">取消</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>

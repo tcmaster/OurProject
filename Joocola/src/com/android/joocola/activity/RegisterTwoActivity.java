@@ -60,8 +60,6 @@ public class RegisterTwoActivity extends BaseActivity implements
 	// 生日
 	private String birthday = "";
 	private Handler handler;
-	private int[] ids = { R.id.radioButton1, R.id.radioButton2,
-			R.id.radioButton3, R.id.radioButton4, R.id.radioButton5 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
