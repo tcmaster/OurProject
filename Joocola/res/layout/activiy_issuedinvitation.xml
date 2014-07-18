@@ -1,71 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
- 
-
-<RelativeLayout
+ <ScrollView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:scrollbars="none"
+    >
 
-    <TextView
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical" >
+      <TextView
         android:id="@+id/tv_issue_theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="37dp"
-        android:text="@string/issue_time" />
-
-    <EditText
+        android:layout_marginLeft="20dp" 
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:text="@string/issue_theme" />
+      <EditText
         android:id="@+id/et_issue_theme"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/tv_issue_theme"
-        android:layout_below="@+id/tv_issue_theme"
+        android:layout_height="40dp" 
         android:layout_marginTop="16dp"
         android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:background="@drawable/edittext_bg"
-        android:ems="20" />
-
-    <TextView
+        android:ems="20" /> 
+         <TextView
         android:id="@+id/issue_duixiang"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/et_issue_theme"
-        android:layout_below="@+id/et_issue_theme"
+        android:layout_height="wrap_content" 
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
         android:text="@string/issue_duixiang" />
 
      <RadioGroup
          android:id="@+id/issue_sex_Group"
          android:layout_width="match_parent"
-         android:layout_height="40dp"
-         android:layout_alignLeft="@+id/issue_duixiang"
-         android:layout_below="@+id/issue_duixiang"
+         android:layout_height="40dp" 
          android:layout_marginTop="20dp"
-         android:layout_marginRight="20dp"
+         android:layout_marginLeft="20dp" 
          android:gravity="center_vertical"
          android:orientation="horizontal" >
      </RadioGroup>
-
      <TextView
          android:id="@+id/tv_issue_cost"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/issue_sex_Group"
-         android:layout_centerVertical="true"
+         android:layout_height="wrap_content" 
          android:layout_marginTop="20dp"
+         android:layout_marginLeft="20dp"
+         android:textStyle="bold"
          android:text="@string/issue_cost"
             />
      <RadioGroup
          android:id="@+id/issue_cost_group"
          android:layout_width="match_parent"
-         android:layout_height="40dp" 
-         android:layout_below="@+id/tv_issue_cost"
+         android:layout_height="40dp"  
          android:layout_marginTop="20dp"
-         android:layout_marginLeft="20dp"
-         android:layout_marginRight="20dp"
+         android:layout_marginLeft="20dp" 
          android:gravity="center_vertical"
          android:orientation="horizontal" >
      </RadioGroup>
@@ -73,10 +67,59 @@
      <TextView
          android:id="@+id/tv_issue_time"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/issue_cost_group"
-         android:layout_below="@+id/issue_cost_group"
+         android:layout_height="wrap_content" 
          android:layout_marginTop="20dp"
+         android:layout_marginLeft="20dp"
+         android:textStyle="bold"
          android:text="@string/issue_time" />
 
-</RelativeLayout> 
+     <TextView
+         android:id="@+id/tv_issuetime"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" 
+         android:layout_marginTop="14dp"
+         android:layout_marginLeft="20dp"
+         android:textStyle="bold"
+         android:text="2014-09-12 20:22:33" />
+
+     <TextView
+         android:id="@+id/tv_location"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" 
+         android:textStyle="bold"
+         android:layout_marginTop="20dp"
+         android:layout_marginLeft="20dp"
+         android:text="地点" />
+
+     <EditText
+         android:id="@+id/edit_location"
+         android:layout_width="wrap_content"
+         android:layout_height="40dp" 
+         android:layout_marginTop="16dp"
+         android:layout_marginLeft="20dp"
+         android:layout_marginRight="20dp"
+         android:background="@drawable/edittext_bg"
+         android:ems="20" >
+      </EditText>
+      <TextView
+         android:id="@+id/tv_state"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" 
+         android:layout_marginTop="20dp"
+         android:layout_marginLeft="20dp"
+         android:textStyle="bold"
+         android:text="@string/issue_state" />
+      <EditText
+         android:id="@+id/edit_state"
+         android:layout_width="wrap_content"
+         android:layout_height="100dp" 
+         android:layout_marginTop="16dp"
+         android:layout_marginLeft="20dp"
+         android:layout_marginRight="20dp"
+         android:layout_marginBottom="50dp"
+         android:background="@drawable/edittext_bg"
+         android:ems="100" >
+      </EditText>
+     </LinearLayout>
+ 
+</ScrollView>
