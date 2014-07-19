@@ -121,10 +121,13 @@ public class Constans {
 	 * 用户微信
 	 */
 	public static final String MICROQQURL = "Sys.UserController.SetUserMicroQQ.ashx";
-	// /**
-	// * 用户微信
-	// */
-	// public static final String MICROQQURL =
-	// "Sys.UserController.SetUserMicroQQ.ashx";
+	/**
+	 * 用户微博
+	 */
+	public static final String MICROBLOGURL = "Sys.UserController.SetUserMicroBlog.ashx";
+	/**
+	 * 用户信用
+	 */
+	public static final String USERCREDITURL = "Sys.UserController.GetUserCredit.ashx";
 
 }

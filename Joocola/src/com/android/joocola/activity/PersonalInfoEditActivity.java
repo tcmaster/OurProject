@@ -21,6 +21,7 @@ import com.android.joocola.adapter.Dlg_GridView_Adapter;
 import com.android.joocola.adapter.Dlg_ListView_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.BaseDataInfo;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -120,6 +121,7 @@ public class PersonalInfoEditActivity extends Activity {
 		List<BaseDataInfo> resultInfos = new ArrayList<BaseDataInfo>();
 		TextView display = null;
 		String title = "";
+		String url = "";
 		switch (v.getId()) {
 		case R.id.hobby:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -132,13 +134,13 @@ public class PersonalInfoEditActivity extends Activity {
 			showMultiChoiceDialog(resultInfos, title, display);
 			return;
 		case R.id.signin:
-
+			url = Constans.SIGNINURL;
 			break;
 		case R.id.phone:
-
+			url = Constans.PHONEURL;
 			break;
 		case R.id.location:
-
+			url = Constans.NEWCITYURL;
 			break;
 		case R.id.profession:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -148,6 +150,7 @@ public class PersonalInfoEditActivity extends Activity {
 			}
 			display = profession_tv;
 			title = "职业";
+			url = Constans.PROFESSIONURL;
 			break;
 		case R.id.annualSalary:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -157,6 +160,7 @@ public class PersonalInfoEditActivity extends Activity {
 			}
 			display = annualSalary_tv;
 			title = "年收入";
+			url = Constans.USERREVENUEURL;
 			break;
 		case R.id.height:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -166,6 +170,7 @@ public class PersonalInfoEditActivity extends Activity {
 			}
 			display = height_tv;
 			title = "身高";
+			url = Constans.HEIGHTURL;
 			break;
 		case R.id.emotion:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -175,6 +180,7 @@ public class PersonalInfoEditActivity extends Activity {
 			}
 			display = emotion_tv;
 			title = "情感状态";
+			url = Constans.MARRYURL;
 			break;
 		case R.id.smoke:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -184,6 +190,7 @@ public class PersonalInfoEditActivity extends Activity {
 			}
 			display = smoke_tv;
 			title = "抽烟";
+			url = Constans.SMOKEURL;
 			break;
 		case R.id.drink:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -197,11 +204,11 @@ public class PersonalInfoEditActivity extends Activity {
 		default:
 			break;
 		}
-		showSingleChoiceDialog(resultInfos, title, display);
+		showSingleChoiceDialog(resultInfos, title, display, url);
 	}
 
 	private void showSingleChoiceDialog(final List<BaseDataInfo> info,
-			final String title, final TextView tv) {
+			final String title, final TextView tv, final String url) {
 		final CustomerDialog cdlg = new CustomerDialog(this,
 				R.layout.dlg_singlechoice);
 		choiceData = "";

@@ -44,9 +44,9 @@ public class ViewHelper {
 					RadioGroup.LayoutParams.WRAP_CONTENT,
 					RadioGroup.LayoutParams.WRAP_CONTENT);
 			lp.gravity = Gravity.CENTER_VERTICAL;
-			lp.rightMargin = 20;
+			lp.rightMargin = Utils.dip2px(context, 20);
 			button.setLayoutParams(lp);
-			button.setPadding(40, 1, 1, 1);
+			button.setPadding(Utils.dip2px(context, 10), 1, 1, 1);
 			rg_group.addView(button);
 
 			if (!hasExists && info.getPID() == selID) {
