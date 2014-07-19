@@ -1,7 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- <ScrollView -->
+<!--     xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!--     xmlns:tools="http://schemas.android.com/tools" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="match_parent"> -->
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".PersonalInfoEditActivity" >
 
@@ -20,7 +26,14 @@
             android:layout_marginTop="10dp"
             android:hint="@string/nickNameEdit"
             android:textSize="16sp" />
-
+		<Button 
+		    android:layout_width="wrap_content"
+            android:layout_height="20dp"
+		    android:id="@+id/nickNameSave"
+		    android:text="@string/btn_ok"
+		    android:textSize="14sp"
+		    android:background="@drawable/btnclick"
+		    android:visibility="invisible"/>
         <TextView
             android:id="@+id/birthday_tv"
             android:layout_width="match_parent"
@@ -36,9 +49,9 @@
     <com.android.joocola.view.MyGridView
         android:id="@+id/myPic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginBottom="10dp"
-        android:numColumns="4"
+        android:numColumns="auto_fit"
         android:stretchMode="columnWidth" />
 
     <View
@@ -88,15 +101,24 @@
             android:textSize="16sp" />
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:hint="@string/app_name"
+            android:hint="@string/signinInitText"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:inputType="text"
             android:id="@+id/signin" />
+        <Button 
+		    android:layout_width="wrap_content"
+            android:layout_height="20dp"
+		    android:id="@+id/signinsave"
+		    android:text="@string/btn_ok"
+		    android:textSize="14sp"
+		    android:background="@drawable/btnclick"
+		    android:visibility="invisible"
+		   	/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,15 +135,24 @@
             android:textSize="16sp" />
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:paddingLeft="20dp"
-            android:hint="@string/app_name"
+            android:hint="@string/phoneInitText"
             android:textColor="@color/deepgray"
             android:textSize="16sp"
             android:inputType="phone"
             android:id="@+id/phone" />
+        <Button 
+		    android:layout_width="wrap_content"
+            android:layout_height="20dp"
+		    android:id="@+id/phoneinitsave"
+		    android:text="@string/btn_ok"
+		    android:textSize="14sp"
+		    android:background="@drawable/btnclick"
+		    android:visibility="invisible"
+		   	/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -298,3 +329,4 @@
     </LinearLayout>
     
 </LinearLayout>
+<!-- </ScrollView> -->

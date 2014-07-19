@@ -100,7 +100,7 @@ public class Constans {
 	/**
 	 * 设置用户抽烟状况
 	 */
-	public static final String SMOKEURL = "Sys.UserController.SetUserSmoke.ashxx";
+	public static final String SMOKEURL = "Sys.UserController.SetUserSmoke.ashx";
 	/**
 	 * 用户饮酒状况
 	 */

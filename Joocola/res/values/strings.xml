@@ -71,6 +71,8 @@
     <string name="btn_ok">确认 </string>
     <string name="btn_cancel">取消</string>
     <string name="please_choice">请选择</string>
+    <string name="signinInitText">请输入个性签名</string>
+    <string name="phoneInitText">请输入手机号</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>
