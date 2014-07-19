@@ -75,11 +75,13 @@
 
      <TextView
          android:id="@+id/tv_issuetime"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content" 
+         android:layout_width="match_parent"
+         android:layout_height="40dp" 
          android:layout_marginTop="14dp"
          android:layout_marginLeft="20dp"
-         android:textStyle="bold"
+         android:layout_marginRight="20dp"
+         android:paddingTop="10dp"
+         android:textStyle="bold"  
          android:text="2014-09-12 20:22:33" />
 
      <TextView

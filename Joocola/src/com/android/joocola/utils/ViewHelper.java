@@ -46,7 +46,7 @@ public class ViewHelper {
 			lp.gravity = Gravity.CENTER_VERTICAL;
 			lp.rightMargin = Utils.dip2px(context, 20);
 			button.setLayoutParams(lp);
-			button.setPadding(Utils.dip2px(context, 10), 1, 1, 1);
+			button.setPadding(Utils.dip2px(context, 20), 1, 1, 1);
 			rg_group.addView(button);
 
 			if (!hasExists && info.getPID() == selID) {

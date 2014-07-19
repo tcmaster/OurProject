@@ -91,5 +91,7 @@
     <string name="issue_hintb">2.邀约不成功，扣除10个信用后，剩下的全部返还。</string>
     <string name="issue_hintc">3.发布成功后，不能修改类型、主题、邀约详情等信息。</string>
     <string name="issue_hintd">4.虚假发布将被删除并没收信用.</string>
+    <string name="issue_choosetime">选择时间</string>
+    <string name="issue_choosedata">选择日期</string>
     
 </resources>
