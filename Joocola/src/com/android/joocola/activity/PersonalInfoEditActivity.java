@@ -274,10 +274,9 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		}
 	}
 
-	@OnClick({ R.id.phone, R.id.location, R.id.profession, R.id.annualSalary,
-			R.id.height, R.id.emotion, R.id.smoke, R.id.drink,
-			R.id.nickNameSave, R.id.signinsave, R.id.phoneinitsave,
-			R.id.birthday_tv, R.id.hobby })
+	@OnClick({ R.id.location, R.id.profession, R.id.annualSalary, R.id.height,
+			R.id.emotion, R.id.smoke, R.id.drink, R.id.nickNameSave,
+			R.id.signinsave, R.id.phoneinitsave, R.id.birthday_tv, R.id.hobby })
 	public void onViewClick(View v) {
 		List<BaseDataInfo> resultInfos = new ArrayList<BaseDataInfo>();
 		TextView display = null;
@@ -294,12 +293,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			title = "兴趣爱好";
 			showMultiChoiceDialog(resultInfos, title, display);
 			return;
-		case R.id.signin:
-			url = Constans.SIGNINURL;
-			break;
-		case R.id.phone:
-			url = Constans.PHONEURL;
-			break;
 		case R.id.location:
 			url = Constans.NEWCITYURL;
 			Utils.toast(PersonalInfoEditActivity.this, "待实现");
