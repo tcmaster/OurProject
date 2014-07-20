@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.lidroid.xutils.bitmap.core.BitmapSize;
 
 public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	private List<String> imgUrls;
@@ -49,10 +53,17 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 					null);
 		ImageView iV = (ImageView) convertView.findViewById(R.id.imageView);
 		if (position == imgUrls.size()) {
-			iV.setImageResource(R.drawable.ic_launcher);
+			iV.setImageResource(R.drawable.addpic);
 		} else {
+			iV.setBackgroundResource(R.drawable.photobg);
+			iV.setPadding(Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3),
+					Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3));
+			Log.v("图片即将下载", imgUrls.get(position));
 			BitmapUtils utils = new BitmapUtils(mContext);
-			utils.display(iV, imgUrls.get(position));
+			BitmapDisplayConfig config = new BitmapDisplayConfig();
+			config.setBitmapMaxSize(new BitmapSize(iV.getWidth() - 5, iV
+					.getHeight() - 5));
+			utils.display(iV, imgUrls.get(position), config);
 		}
 		return convertView;
 	}
