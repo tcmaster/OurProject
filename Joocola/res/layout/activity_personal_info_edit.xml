@@ -1,332 +1,401 @@
-<!-- <ScrollView -->
-<!--     xmlns:android="http://schemas.android.com/apk/res/android" -->
-<!--     xmlns:tools="http://schemas.android.com/tools" -->
-<!--     android:layout_width="match_parent" -->
-<!--     android:layout_height="match_parent"> -->
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".PersonalInfoEditActivity" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".PersonalInfoEditActivity" >
 
-        <EditText
-            android:id="@+id/nickName_et"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/nickName_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="@string/nickNameEdit"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/nickNameSave"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btnclick"
+                android:text="@string/btn_ok"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/birthday_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/app_name"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <com.android.joocola.view.MyGridView
+            android:id="@+id/myPic"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginBottom="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="@string/nickNameEdit"
-            android:textSize="16sp" />
-		<Button 
-		    android:layout_width="wrap_content"
-            android:layout_height="20dp"
-		    android:id="@+id/nickNameSave"
-		    android:text="@string/btn_ok"
-		    android:textSize="14sp"
-		    android:background="@drawable/btnclick"
-		    android:visibility="invisible"/>
-        <TextView
-            android:id="@+id/birthday_tv"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/hobby"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/hobby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="right|center_vertical"
-            android:text="@string/app_name"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:orientation="horizontal" >
 
-    <com.android.joocola.view.MyGridView
-        android:id="@+id/myPic"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="10dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/signin"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/gray2" />
+            <EditText
+                android:id="@+id/signin"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_bg"
+                android:gravity="left|center_vertical"
+                android:hint="@string/signinInitText"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            <Button
+                android:id="@+id/signinsave"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btnclick"
+                android:text="@string/btn_ok"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/hobby"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/hobby" />
-    </LinearLayout>
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/phone"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/signin"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_bg"
+                android:gravity="left|center_vertical"
+                android:hint="@string/phoneInitText"
+                android:inputType="phone"
+                android:paddingLeft="5dp"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:hint="@string/signinInitText"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:inputType="text"
-            android:id="@+id/signin" />
-        <Button 
-		    android:layout_width="wrap_content"
-            android:layout_height="20dp"
-		    android:id="@+id/signinsave"
-		    android:text="@string/btn_ok"
-		    android:textSize="14sp"
-		    android:background="@drawable/btnclick"
-		    android:visibility="invisible"
-		   	/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            <Button
+                android:id="@+id/phoneinitsave"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btnclick"
+                android:text="@string/btn_ok"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/phone"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:hint="@string/phoneInitText"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:inputType="phone"
-            android:id="@+id/phone" />
-        <Button 
-		    android:layout_width="wrap_content"
-            android:layout_height="20dp"
-		    android:id="@+id/phoneinitsave"
-		    android:text="@string/btn_ok"
-		    android:textSize="14sp"
-		    android:background="@drawable/btnclick"
-		    android:visibility="invisible"
-		   	/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginBottom="10dp"
-        android:background="@color/gray2" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/location"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/location" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/profession"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/location"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/profession" />
-    </LinearLayout>
-<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/annualSalary"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/profession"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
+            <TextView
+                android:id="@+id/profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/annualSalary" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/height"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/annualSalary"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
+            <TextView
+                android:id="@+id/annualSalary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/height" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/emotion"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/height"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
+            <TextView
+                android:id="@+id/height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/emotion" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/smoke"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/emotion"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
+            <TextView
+                android:id="@+id/emotion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/smoke" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp" >
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/drink"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/smoke"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
 
-        <TextView
+            <TextView
+                android:id="@+id/smoke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray2" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="20dp"
-            android:text="@string/please_choice"
-            android:textColor="@color/deepgray"
-            android:textSize="16sp"
-            android:id="@+id/drink" />
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/drink"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/drink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:paddingRight="20dp"
+                android:text="@string/please_choice"
+                android:textColor="@color/deepgray"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
-    
-</LinearLayout>
-<!-- </ScrollView> -->
+
+</ScrollView>

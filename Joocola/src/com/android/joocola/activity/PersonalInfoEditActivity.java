@@ -177,8 +177,15 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	private void initData() {
 		UserInfo userInfo = JoocolaApplication.getInstance().getUserInfo();
 		nickName.setText(userInfo.getNickName());
-		birthday_tv.setText(userInfo.getSexName() + " "
-				+ userInfo.getBirthday());
+		birthday_tv.setText(userInfo.getBirthday());
+		if (userInfo.getSexName().contains("男")) {
+			birthday_tv.setCompoundDrawablesWithIntrinsicBounds(getResources()
+					.getDrawable(R.drawable.ic_launcher), null, null, null);
+		} else {
+			birthday_tv.setCompoundDrawablesWithIntrinsicBounds(getResources()
+					.getDrawable(R.drawable.girl), null, null, null);
+		}
+		birthday_tv.setCompoundDrawablePadding(Utils.dip2px(this, -2));
 		if (userInfo.getHobbyNames().equals(""))
 			hobby_tv.setText("请选择");
 		else
