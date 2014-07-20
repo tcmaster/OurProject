@@ -444,13 +444,22 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						.findViewById(R.id.dlg_pe_ok);
 				TextView btn_cacel = (TextView) window
 						.findViewById(R.id.dlg_pe_cancel);
-				lv_items.setAdapter(new Dlg_ListView_Adapter(info,
-						PersonalInfoEditActivity.this));
+				Dlg_ListView_Adapter dlg_ListView_Adapter = new Dlg_ListView_Adapter(
+						info, PersonalInfoEditActivity.this);
+				lv_items.setAdapter(dlg_ListView_Adapter);
 				tv_title.setText(title);
 				choiceData = ((BaseDataInfo) lv_items.getAdapter().getItem(0))
 						.getItemName();
 				choicePID = ((BaseDataInfo) lv_items.getAdapter().getItem(0))
 						.getPID();
+				for (int i = 0; i < info.size(); i++) {
+					if (info.get(i).getItemName()
+							.equals(tv.getText().toString())) {
+						choicePID = info.get(i).getPID();
+						dlg_ListView_Adapter.setPos(i);
+						break;
+					}
+				}
 				lv_items.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override

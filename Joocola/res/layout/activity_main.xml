@@ -44,29 +44,6 @@
          android:textColor="@color/white"
         android:text="@string/register" />
 
-    <ImageView
-        android:id="@+id/login_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/image_description"
-        android:src="@drawable/login_icon" />
-
-    <EditText
-        android:id="@+id/name_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_icon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:ems="30"
-        android:hint="@string/name_hint" >
-
-        <requestFocus />
-    </EditText>
-
     <TextView
          android:id="@+id/forget_pswd"
         android:layout_width="wrap_content"
@@ -74,6 +51,20 @@
         android:layout_alignLeft="@+id/pswd_edit"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="36dp"
+        android:padding="20dp"
         android:text="@string/forgetpswd" />
+
+    <EditText
+        android:id="@+id/name_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:ems="30"
+        android:hint="@string/name_hint" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

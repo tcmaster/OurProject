@@ -27,8 +27,9 @@ public class ViewHelper {
 		if (items.size() == 0) {
 			return -1;
 		}
-		int[] ids = { R.id.radioButton1, R.id.radioButton2, R.id.radioButton3,
-				R.id.radioButton4, R.id.radioButton5 };
+		// int[] ids = { R.id.radioButton1, R.id.radioButton2,
+		// R.id.radioButton3,
+		// R.id.radioButton4, R.id.radioButton5 };
 		boolean hasExists = false;
 		int selID = selectedPID;
 
@@ -38,7 +39,8 @@ public class ViewHelper {
 			BaseDataInfo info = items.get(i);
 			button.setText(info.getItemName());
 			button.setTag(info.getPID());
-			button.setId(ids[i]);
+			button.setId(info.getPID());
+			// button.setId(ids[i]);
 			button.setButtonDrawable(R.drawable.radiobutton);
 			RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
 					RadioGroup.LayoutParams.WRAP_CONTENT,
