@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -381,7 +384,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		showSingleChoiceDialog(resultInfos, title, display, url);
 	}
 
-	private void saveEditText(String params, String url, String contant) {
+	private void saveEditText(String params, final String url, String contant) {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("userID", JoocolaApplication.getInstance()
 				.getUserInfo().getPID());
@@ -390,7 +393,19 @@ public class PersonalInfoEditActivity extends BaseActivity {
 
 			@Override
 			public void httpPostResolveData(String result) {
-				final String data = result;
+				String data = "";
+				if (url == Constans.NICKNAMEURL) {
+					JSONObject object;
+					try {
+						object = new JSONObject(result);
+						data = object.getString("Item1");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				} else
+					data = result;
+
 				if (data.equals("true")) {
 					handler.post(new Runnable() {
 
