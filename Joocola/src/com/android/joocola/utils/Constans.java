@@ -1,6 +1,5 @@
 package com.android.joocola.utils;
 
-
 /*
  * 常用的字符串
  * 
