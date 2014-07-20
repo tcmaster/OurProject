@@ -59,10 +59,12 @@
         <com.android.joocola.view.MyGridView
             android:id="@+id/myPic"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth" />
+            android:layout_margin="5dp"
+            android:numColumns="4"
+            android:verticalSpacing="10dp"
+             />
 
         <View
             android:layout_width="match_parent"

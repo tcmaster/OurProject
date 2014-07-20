@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -27,11 +29,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.adapter.Dlg_BaseCity_Adapter;
+import com.android.joocola.adapter.Dlg_City_Adapter;
 import com.android.joocola.adapter.Dlg_GridView_Adapter;
 import com.android.joocola.adapter.Dlg_ListView_Adapter;
 import com.android.joocola.adapter.PC_Edit_GridView_Adapter;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.entity.BaseCityInfo;
 import com.android.joocola.entity.BaseDataInfo;
+import com.android.joocola.entity.CityInfo;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
@@ -72,12 +78,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 * 个性签名
 	 */
 	@ViewInject(R.id.signin)
-	private EditText signin_tv;
+	private EditText signin_et;
 	/**
 	 * 电话
 	 */
 	@ViewInject(R.id.phone)
-	private EditText phone_tv;
+	private EditText phone_et;
 	/**
 	 * 现居地
 	 */
@@ -138,11 +144,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 */
 	private List<BaseDataInfo> baseDataInfos;
 	/**
-	 * 下面三个是用于临时存放选择数据的变量
+	 * 下面四个是用于临时存放选择数据的变量
 	 */
 	private String choiceData;
 	private int choicePID;
 	private String choicePIDS;
+	private String newCityPID;
 	/**
 	 * 往主线程发送消息的handler
 	 */
@@ -175,6 +182,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	}
 
 	private void initData() {
+		birthday_tv.requestFocus();
 		UserInfo userInfo = JoocolaApplication.getInstance().getUserInfo();
 		nickName.setText(userInfo.getNickName());
 		birthday_tv.setText(userInfo.getBirthday());
@@ -190,8 +198,8 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			hobby_tv.setText("请选择");
 		else
 			hobby_tv.setText(userInfo.getHobbyNames());
-		signin_tv.setText(userInfo.getSignature());
-		phone_tv.setText(userInfo.getPhone());
+		signin_et.setText(userInfo.getSignature());
+		phone_et.setText(userInfo.getPhone());
 		if (userInfo.getNewCityName().equals(""))
 			location_tv.setText("请选择");
 		else
@@ -221,14 +229,16 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		else
 			drink_tv.setText(userInfo.getDrinkName());
 		String[] imgs = userInfo.getAlbumPhotoUrls().split(",");
+
 		pic_gv.setAdapter(new PC_Edit_GridView_Adapter(
 				PersonalInfoEditActivity.this));
 		if (imgs != null) {
 			for (int i = 0; i < imgs.length; i++) {
 				if (imgs[i].equals(""))
 					continue;
+				Log.v("lixiaosong", "上传到的图片地址" + imgs[i]);
 				((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
-						.addImgUrls(Constans.URL + imgs[i]);
+						.addImgUrls(imgs[i]);
 			}
 		}
 	}
@@ -304,11 +314,9 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			showMultiChoiceDialog(resultInfos, title, display);
 			return;
 		case R.id.location:
-			url = Constans.NEWCITYURL;
-			Utils.toast(PersonalInfoEditActivity.this, "待实现");
+			showCityDialog();
 			return;
 		case R.id.birthday_tv:
-			Utils.toast(PersonalInfoEditActivity.this, "待实现");
 			return;
 		case R.id.profession:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -377,12 +385,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			return;
 		case R.id.signinsave:
 			signin_save_btn.setVisibility(View.INVISIBLE);
-			saveEditText("newSign", Constans.SIGNINURL, signin_tv.getText()
+			saveEditText("newSign", Constans.SIGNINURL, signin_et.getText()
 					.toString());
 			return;
 		case R.id.phoneinitsave:
 			phone_save_btn.setVisibility(View.INVISIBLE);
-			saveEditText("phone", Constans.PHONEURL, phone_tv.getText()
+			saveEditText("phone", Constans.PHONEURL, phone_et.getText()
 					.toString());
 			return;
 		default:
@@ -554,6 +562,190 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		cdlg.showDlg();
 	}
 
+	private void showCityDialog() {
+		newCityPID = "";
+		final CustomerDialog cdlg = new CustomerDialog(this,
+				R.layout.dlg_newcity_choice);
+		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				TextView tv_title = (TextView) window
+						.findViewById(R.id.dlg_pe_title);
+				TextView btn_ok = (TextView) window
+						.findViewById(R.id.dlg_pe_ok);
+				TextView btn_cacel = (TextView) window
+						.findViewById(R.id.dlg_pe_cancel);
+				tv_title.setText("现居地");
+				final ListView baseCity_lv = (ListView) window
+						.findViewById(R.id.dlg_basecity_listview);
+				final ListView city_lv = (ListView) window
+						.findViewById(R.id.dlg_city_listview);
+				baseCity_lv.setAdapter(new Dlg_BaseCity_Adapter(
+						PersonalInfoEditActivity.this));
+				city_lv.setAdapter(new Dlg_City_Adapter(
+						PersonalInfoEditActivity.this));
+				((Dlg_BaseCity_Adapter) baseCity_lv.getAdapter())
+						.bindData(JoocolaApplication.getInstance()
+								.getBaseCityInfo());
+				final Object object = new Object();
+				baseCity_lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						newCityPID = "";
+						HttpPostInterface interface1 = new HttpPostInterface();
+						interface1.addParams(
+								"provinceID",
+								((BaseCityInfo) parent.getAdapter().getItem(
+										position)).getPID());
+						((Dlg_BaseCity_Adapter) parent.getAdapter())
+								.setPos(position);
+						interface1.getData(Constans.CITY_INFO_URL,
+								new HttpPostCallBack() {
+
+									@Override
+									public void httpPostResolveData(
+											String result) {
+										final List<CityInfo> cityInfos = new ArrayList<CityInfo>();
+										JSONArray array = null;
+										try {
+											array = new JSONArray(result);
+											for (int i = 0; i < array.length(); i++) {
+												CityInfo temp = new CityInfo();
+												JSONObject object = null;
+												try {
+													object = array
+															.getJSONObject(i);
+												} catch (JSONException e) {
+													// TODO Auto-generated catch
+													// block
+													e.printStackTrace();
+												}
+												temp.setCityName(object
+														.getString("CityName"));
+												temp.setParentID(object
+														.getInt("ParentID")
+														+ "");
+												temp.setParentname(object
+														.getString("ParentName"));
+												temp.setPID(object
+														.getInt("PID") + "");
+												cityInfos.add(temp);
+											}
+										} catch (JSONException e1) {
+											e1.printStackTrace();
+										}
+										handler.post(new Runnable() {
+
+											@Override
+											public void run() {
+												((Dlg_City_Adapter) city_lv
+														.getAdapter())
+														.bindData(cityInfos);
+											}
+										});
+
+									}
+								});
+					}
+				});
+				city_lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						((Dlg_City_Adapter) parent.getAdapter())
+								.setPos(position);
+						newCityPID = ((CityInfo) parent.getAdapter().getItem(
+								position)).getPID();
+					}
+				});
+				OnClickListener listener = new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						switch (v.getId()) {
+						case R.id.dlg_pe_ok:
+							if (newCityPID.equals("")) {
+								Utils.toast(PersonalInfoEditActivity.this,
+										"请选择具体城市");
+								return;
+							}
+							HttpPostInterface interface1 = new HttpPostInterface();
+							interface1.addParams("userID", JoocolaApplication
+									.getInstance().getUserInfo().getPID());
+							interface1.addParams("newCityID", newCityPID);
+							interface1.getData(Constans.NEWCITYURL,
+									new HttpPostCallBack() {
+
+										@Override
+										public void httpPostResolveData(
+												String result) {
+											if (result.equals("true")) {
+												handler.post(new Runnable() {
+
+													@Override
+													public void run() {
+														Utils.toast(
+																PersonalInfoEditActivity.this,
+																"用户资料提交成功");
+													}
+												});
+												/**
+												 * 这里需要获得城市显示名称,又一个网络请求
+												 */
+												getCityName(newCityPID);
+												JoocolaApplication
+														.getInstance()
+														.initUserInfo(
+																JoocolaApplication
+																		.getInstance()
+																		.getUserInfo()
+																		.getPID());
+											}
+
+										}
+									});
+							cdlg.dismissDlg();
+							break;
+						case R.id.dlg_pe_cancel:
+							cdlg.dismissDlg();
+							break;
+						default:
+							break;
+						}
+
+					}
+				};
+				btn_ok.setOnClickListener(listener);
+				btn_cacel.setOnClickListener(listener);
+			}
+		});
+		cdlg.showDlg();
+	}
+
+	private void getCityName(String cityPID) {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("cityID", cityPID);
+		interface1.getData(Constans.GETCITYNAME, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				final String cityName = result;
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						location_tv.setText(cityName);
+					}
+				});
+
+			}
+		});
+	}
+
 	private void showMultiChoiceDialog(final List<BaseDataInfo> info,
 			final String title, final TextView tv) {
 		final CustomerDialog cdlg = new CustomerDialog(this,
@@ -575,6 +767,19 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				tv_title.setText(title);
 				gv_items.setAdapter(new Dlg_GridView_Adapter(info,
 						PersonalInfoEditActivity.this));
+				String[] maybeChoice = tv.getText().toString().split(",");
+				if (maybeChoice != null) {
+					for (int i = 0; i < maybeChoice.length; i++) {
+						for (int j = 0; j < gv_items.getAdapter().getCount(); j++) {
+							if (((BaseDataInfo) gv_items.getAdapter()
+									.getItem(j)).getItemName().equals(
+									maybeChoice[i])) {
+								((Dlg_GridView_Adapter) gv_items.getAdapter())
+										.setPos(j);
+							}
+						}
+					}
+				}
 				gv_items.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override
@@ -724,6 +929,45 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						public void run() {
 							((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
 									.addImgUrls(Constans.URL + res);
+							/**
+							 * 将图片相册地址上传，这里还要调网络接口
+							 * 
+							 */
+							HttpPostInterface interface2 = new HttpPostInterface();
+							interface2.addParams("newUrls", Constans.URL + res);
+							interface2.addParams("userID", JoocolaApplication
+									.getInstance().getUserInfo().getPID());
+							interface2.addParams("delUrls", "");
+							interface2.getData(Constans.ALBUMURL,
+									new HttpPostCallBack() {
+
+										@Override
+										public void httpPostResolveData(
+												String result) {
+											if (result.equals("true")) {
+												handler.post(new Runnable() {
+
+													@Override
+													public void run() {
+														Utils.toast(
+																PersonalInfoEditActivity.this,
+																"图片已上传");
+													}
+												});
+												/**
+												 * 联网重新进行用户资料的获取
+												 */
+												JoocolaApplication
+														.getInstance()
+														.initUserInfo(
+																JoocolaApplication
+																		.getInstance()
+																		.getUserInfo()
+																		.getPID());
+											}
+
+										}
+									});
 						}
 					});
 

@@ -11,6 +11,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.android.joocola.dbmanger.BaseDataInfoManger;
+import com.android.joocola.entity.BaseCityInfo;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.entity.UserInfo;
@@ -29,12 +30,15 @@ public class JoocolaApplication extends Application {
 	private ArrayList<IssueInfo> issueInfos = new ArrayList<IssueInfo>();
 	// 当前登录用户信息,只有本次登录成功才可使用
 	private UserInfo userInfo;
+	// 基础城市信息
+	private List<BaseCityInfo> baseCityInfos;
 
 	@Override
 	public void onCreate() {
 		instance = this;
 		super.onCreate();
 		getInfoFromNetwork();
+		initBaseCityInfo();
 	}
 
 	// 得到基础数据信息
@@ -173,7 +177,8 @@ public class JoocolaApplication extends Application {
 						userInfo.setNewCityName(object.getString("NewCityName"));
 						userInfo.setSmokeName(object.getString("SmokeName"));
 						userInfo.setSexID(object.getInt("SexID") + "");
-						userInfo.setAlbumPhotoUrls(object.getString("Email"));
+						userInfo.setAlbumPhotoUrls(object
+								.getString("AlbumPhotoUrls"));
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -191,6 +196,39 @@ public class JoocolaApplication extends Application {
 	 */
 	public UserInfo getUserInfo() {
 		return userInfo;
+	}
 
+	public void initBaseCityInfo() {
+		baseCityInfos = new ArrayList<BaseCityInfo>();
+		HttpPostInterface interface1 = new HttpPostInterface();
+		if (Utils.isNetConn(this)) {
+			interface1.getData(Constans.BASE_CITY_INFO_URL,
+					new HttpPostCallBack() {
+
+						@Override
+						public void httpPostResolveData(String result) {
+							try {
+								Log.v("lixiaosong", result);
+								JSONArray array = new JSONArray(result);
+								for (int i = 0; i < array.length(); i++) {
+									JSONObject object = array.getJSONObject(i);
+									BaseCityInfo info = new BaseCityInfo();
+									info.setCityName(object
+											.getString("CityName"));
+									info.setPID(object.getInt("PID") + "");
+									baseCityInfos.add(info);
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+		} else {
+			Log.e("没网的情况下", baseInfoList.toString());
+		}
+	}
+
+	public List<BaseCityInfo> getBaseCityInfo() {
+		return baseCityInfos;
 	}
 }

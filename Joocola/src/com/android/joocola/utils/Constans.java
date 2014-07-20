@@ -45,7 +45,14 @@ public class Constans {
 	public static final String ISSUE_LOCATIONY = "LocationY";
 	public static final String ISSUE_DESCRIPTION = "Description";
 	public static final String ISSUE_PUBLISHERID = "PublisherID";
-
+	/**
+	 * 获取省份信息
+	 */
+	public static final String BASE_CITY_INFO_URL = "Sys.CityController.GetProvinces.ashx";
+	/**
+	 * 获取省份下的城市信息
+	 */
+	public static final String CITY_INFO_URL = "Sys.CityController.GetCitys.ashx";
 	/**
 	 * 修改用户信息接口URL
 	 */
@@ -89,6 +96,10 @@ public class Constans {
 	 * 用户现居地
 	 */
 	public static final String NEWCITYURL = "Sys.UserController.SetUserNewCity.ashx";
+	/**
+	 * 得到城市显示名称
+	 */
+	public static final String GETCITYNAME = "Sys.CityController.GetCityName.ashx";
 	/**
 	 * 设置用户职业
 	 */
