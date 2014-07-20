@@ -36,7 +36,9 @@ public class Dlg_ListView_Adapter extends BaseAdapter {
 		selectionArray = new boolean[baseDataInfos.size()];
 		for (int i = 0; i < selectionArray.length; i++)
 			selectionArray[i] = false;
-		selectionArray[0] = true;
+		if (selectionArray.length > 0) {
+			selectionArray[0] = true;
+		}
 		inflater = LayoutInflater.from(context);
 	}
 
