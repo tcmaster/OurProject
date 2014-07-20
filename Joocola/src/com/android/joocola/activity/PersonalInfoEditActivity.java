@@ -588,7 +588,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				((Dlg_BaseCity_Adapter) baseCity_lv.getAdapter())
 						.bindData(JoocolaApplication.getInstance()
 								.getBaseCityInfo());
-				final Object object = new Object();
 				baseCity_lv.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override
@@ -885,8 +884,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// 图片路径
-		Bitmap result = null;
 		if (data != null) {
 			Uri uri = data.getData();
 			if (requestCode == PICKPICTURE) {
