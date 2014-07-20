@@ -28,12 +28,13 @@
     <EditText
         android:id="@+id/edit_pm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignLeft="@+id/phonemail"
         android:layout_below="@+id/get_security_code"
         android:layout_marginTop="16dp"
         android:layout_marginRight="20dp"
-        android:hint="@string/register_phoneEmail_textInit"
+        android:background="@drawable/edittext_bg"
+        android:hint="@string/register_phoneEmail_textInit" 
         android:ems="30" >
          <requestFocus />
      </EditText>
@@ -50,11 +51,12 @@
     <EditText
         android:id="@+id/edit_security"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignLeft="@+id/security_code_title"
         android:layout_below="@+id/security_code_title"
         android:layout_marginTop="14dp"
         android:ems="10"
+        android:background="@drawable/edittext_bg"
         android:hint="@string/security_code_textInit" />
 
     <TextView
@@ -70,11 +72,12 @@
     <EditText
         android:id="@+id/edit_new_pwsd"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignLeft="@+id/input_new_pwsd"
         android:layout_below="@+id/input_new_pwsd"
         android:layout_marginTop="14dp"
         android:layout_marginRight="20dp"
+        android:background="@drawable/edittext_bg"
         android:hint="@string/password_textInit"
         android:ems="20" > 
     </EditText>

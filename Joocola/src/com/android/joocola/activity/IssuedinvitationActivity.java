@@ -8,11 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -69,20 +67,30 @@ public class IssuedinvitationActivity extends BaseActivity {
 		tv_issuetime.setOnClickListener(new TimeOnclickListenr());
 		sexGroup = (RadioGroup) this.findViewById(R.id.issue_sex_Group);
 		cost_group = (RadioGroup) this.findViewById(R.id.issue_cost_group);
-		initRadioGroup(Constans.basedata_Sex, sexGroup);
-		RadioButton button = new RadioButton(IssuedinvitationActivity.this);
-		button.setText("不限");
-		button.setTag(0);
-		button.setButtonDrawable(R.drawable.radiobutton);
-		RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
-				RadioGroup.LayoutParams.WRAP_CONTENT,
-				RadioGroup.LayoutParams.WRAP_CONTENT);
-		lp.gravity = Gravity.CENTER_VERTICAL;
-		lp.rightMargin = 25;
-		button.setLayoutParams(lp);
-		button.setPadding(Utils.dip2px(IssuedinvitationActivity.this, 20), 1,
-				1, 1);
-		sexGroup.addView(button);
+		// initRadioGroup(Constans.basedata_Sex, sexGroup);
+		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
+				.getBaseInfo(Constans.basedata_Sex);
+		BaseDataInfo baseDataInfo = new BaseDataInfo();
+		baseDataInfo.setPID(0);
+		baseDataInfo.setItemName("不限");
+		baseDataInfo.setSortNo(Integer.MAX_VALUE);
+		infos.add(baseDataInfo);
+		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this,
+ sexGroup,
+				infos);
+		// RadioButton button = new RadioButton(IssuedinvitationActivity.this);
+		// button.setText("不限");
+		// button.setTag(0);
+		// button.setButtonDrawable(R.drawable.radiobutton);
+		// RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
+		// RadioGroup.LayoutParams.WRAP_CONTENT,
+		// RadioGroup.LayoutParams.WRAP_CONTENT);
+		// lp.gravity = Gravity.CENTER_VERTICAL;
+		// lp.rightMargin = 25;
+		// button.setLayoutParams(lp);
+		// button.setPadding(Utils.dip2px(IssuedinvitationActivity.this, 20), 1,
+		// 1, 1);
+		// sexGroup.addView(button);
 		initRadioGroup(Constans.basedata_AppointCost, cost_group);
 	}
 
@@ -118,7 +126,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 			if (edit_state != null) {
 				String state = edit_state.getText().toString();
 				if (TextUtils.isEmpty(state)) {
-					Utils.toast(IssuedinvitationActivity.this, "主题不能为空");
+					Utils.toast(IssuedinvitationActivity.this, "说明不能为空");
 					return;
 				} else {
 					issuedinvitationInfo.setLocationDescription(state);
