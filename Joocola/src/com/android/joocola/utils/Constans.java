@@ -1,5 +1,6 @@
 package com.android.joocola.utils;
 
+
 /*
  * 常用的字符串
  * 
@@ -130,4 +131,10 @@ public class Constans {
 	 */
 	public static final String USERCREDITURL = "Sys.UserController.GetUserCredit.ashx";
 
+	/**
+	 * 时间界面的几个传值
+	 */
+	public static final int INTENT_TIME = 1;
+	public static final int BACKTOISSUE_OK = 2;
+	public static final int BACKTOISSUE_CANCEL = 3;
 }
