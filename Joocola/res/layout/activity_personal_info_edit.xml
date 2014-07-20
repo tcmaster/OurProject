@@ -18,7 +18,7 @@
 
             <EditText
                 android:id="@+id/nickName_et"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <com.android.joocola.view.MyGridView
             android:id="@+id/myPic"
@@ -69,7 +69,7 @@
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,7 +114,8 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/signin"
                 android:textColor="@color/deepgray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginRight="5dp" />
 
             <EditText
                 android:id="@+id/signin"
@@ -126,7 +127,8 @@
                 android:inputType="text"
                 android:paddingLeft="5dp"
                 android:textColor="@color/deepgray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                 />
 
             <Button
                 android:id="@+id/signinsave"
@@ -142,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,7 +158,8 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/phone"
                 android:textColor="@color/deepgray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginRight="5dp" />
 
             <EditText
                 android:id="@+id/phone"
@@ -168,7 +171,8 @@
                 android:inputType="phone"
                 android:paddingLeft="5dp"
                 android:textColor="@color/deepgray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                />
 
             <Button
                 android:id="@+id/phoneinitsave"
@@ -184,7 +188,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -215,7 +219,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -246,7 +250,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -277,7 +281,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -308,7 +312,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -339,7 +343,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -370,7 +374,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="10dp"
-            android:background="@color/gray2" />
+            android:background="@color/lessgray" />
 
         <LinearLayout
             android:layout_width="match_parent"

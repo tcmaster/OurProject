@@ -59,7 +59,7 @@
     <string name="nickNameEdit">这里是昵称</string>
     <string name="hobby">爱好</string>
     <string name="signin">个性签名</string>
-    <string name="phone">手    机</string>
+    <string name="phone">手&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;机</string>
     <string name="location">所在地</string>
     <string name="profession">职业</string>
     <string name="annualSalary">年收入</string>
