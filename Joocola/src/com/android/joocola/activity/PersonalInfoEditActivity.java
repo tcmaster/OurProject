@@ -452,6 +452,9 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				Dlg_ListView_Adapter dlg_ListView_Adapter = new Dlg_ListView_Adapter(
 						info, PersonalInfoEditActivity.this);
 				lv_items.setAdapter(dlg_ListView_Adapter);
+				if (lv_items.getAdapter().getCount() > 5)
+					lv_items.getLayoutParams().height = Utils.dip2px(
+							PersonalInfoEditActivity.this, 200);
 				tv_title.setText(title);
 				choiceData = ((BaseDataInfo) lv_items.getAdapter().getItem(0))
 						.getItemName();
@@ -725,10 +728,15 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							for (int i = 0; i < city_lv.getAdapter().getCount(); i++) {
 								if (((CityInfo) city_lv.getAdapter().getItem(i))
 										.getPID().equals(
-												userInfo.getNewCityID())) {
+												JoocolaApplication
+														.getInstance()
+														.getUserInfo()
+														.getNewCityID())) {
 									((Dlg_City_Adapter) city_lv.getAdapter())
 											.setPos(i);
-									newCityPID = userInfo.getNewCityID();
+									newCityPID = JoocolaApplication
+											.getInstance().getUserInfo()
+											.getNewCityID();
 								}
 							}
 						}
@@ -820,6 +828,11 @@ public class PersonalInfoEditActivity extends BaseActivity {
 											+ ",";
 									choicePIDS += info.get(i).getPID() + ",";
 								}
+							}
+							if (choiceData.equals("")) {
+								Utils.toast(PersonalInfoEditActivity.this,
+										"请选择一项爱好");
+								return;
 							}
 							choiceData = choiceData.substring(0,
 									choiceData.length() - 1);
