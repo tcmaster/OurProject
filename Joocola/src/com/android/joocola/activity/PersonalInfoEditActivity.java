@@ -725,10 +725,15 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							for (int i = 0; i < city_lv.getAdapter().getCount(); i++) {
 								if (((CityInfo) city_lv.getAdapter().getItem(i))
 										.getPID().equals(
-												userInfo.getNewCityID())) {
+												JoocolaApplication
+														.getInstance()
+														.getUserInfo()
+														.getNewCityID())) {
 									((Dlg_City_Adapter) city_lv.getAdapter())
 											.setPos(i);
-									newCityPID = userInfo.getNewCityID();
+									newCityPID = JoocolaApplication
+											.getInstance().getUserInfo()
+											.getNewCityID();
 								}
 							}
 						}
