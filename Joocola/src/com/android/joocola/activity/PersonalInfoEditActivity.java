@@ -17,6 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +55,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.lidroid.xutils.view.annotation.event.OnFocusChange;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
+import com.lidroid.xutils.view.annotation.event.OnItemLongClick;
 
 /**
  * 个人资料编辑界面 这个页面用了xUtils
@@ -241,6 +244,44 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						.addImgUrls(imgs[i]);
 			}
 		}
+		phone_et.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				phone_save_btn.setVisibility(View.VISIBLE);
+			}
+		});
+		signin_et.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				signin_save_btn.setVisibility(View.VISIBLE);
+			}
+		});
 	}
 
 	@OnItemClick(R.id.myPic)
@@ -274,6 +315,19 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							});
 			builder.create().show();
 		}
+
+	}
+
+	@OnItemClick(R.id.myPic)
+	public void onGridViewItemClick(AdapterView<?> parent, View view,
+			int position, long id) {
+
+	}
+
+	@OnItemLongClick(R.id.myPic)
+	public void onGridViewItemLongClick(AdapterView<?> arg0, View arg1,
+			int arg2, long arg3) {
+
 	}
 
 	@OnFocusChange({ R.id.signin, R.id.phone })
