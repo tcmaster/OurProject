@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import android.content.Context;
@@ -242,4 +245,20 @@ public class Utils {
 		return (int) (pxValue / scale + 0.5f);
 	}
 
+	/**
+	 * 获取当前时间
+	 * 
+	 * @param format
+	 * @return
+	 */
+	public static String getCurrentTime(String format) {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+		String currentTime = sdf.format(date);
+		return currentTime;
+	}
+
+	public static String getCurrentTime() {
+		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
+	}
 }

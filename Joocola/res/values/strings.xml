@@ -100,4 +100,11 @@
     <string name="issue_ok">恭喜,发布邀约成功!</string>
     <string name="issue_oktishi">请在约定时间到达之前,从报名者中选定与你一起聚会/约会的人.</string>
     <string name="check_details">查看详情</string>
+    <!-- 自定义ListView --> 
+    <string name="pull_to_refresh">下拉可以刷新</string>
+    <string name="release_to_refresh">松开可以刷新</string>
+    <string name="lastUpdateTime">最近更新：%s</string>
+    <string name="load_full">已加载全部</string>
+    <string name="no_data">暂无数据</string>
+    <string name="more">加载中</string>
 </resources>
