@@ -22,6 +22,12 @@ import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 import com.android.joocola.utils.ViewHelper;
 
+/**
+ * 邀约详细信息界面。
+ * 
+ * @author bb
+ * 
+ */
 public class IssuedinvitationActivity extends BaseActivity {
 	private RadioGroup sexGroup, cost_group;
 	private int issueID;

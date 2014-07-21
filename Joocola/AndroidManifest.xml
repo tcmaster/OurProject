@@ -79,6 +79,16 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.android.joocola.activity.IssuedinvitationCActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.android.joocola.activity.IssuedinvitationDetailsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.android.joocola.activity.TimeActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" >

@@ -22,6 +22,9 @@ import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 邀约发布界面
+ */
 public class IssuedinvitationBActivity extends BaseActivity {
 	private EditText et_cost_credit;
 	private TextView credit_balance;
@@ -50,8 +53,11 @@ public class IssuedinvitationBActivity extends BaseActivity {
 								jsonObject.getString("Item2"));
 					} else {
 						int issue_pid = jsonObject.getInt("Item1");
-						Utils.toast(IssuedinvitationBActivity.this,
- "发布成功");
+						Intent intent = new Intent(
+								IssuedinvitationBActivity.this,
+								IssuedinvitationCActivity.class);
+						intent.putExtra("issue_pid", issue_pid);
+						startActivity(intent);
 						IssuedinvitationBActivity.this.finish();
 					}
 				} catch (JSONException e) {

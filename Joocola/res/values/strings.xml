@@ -94,4 +94,7 @@
     <string name="issue_hintd">4.虚假发布将被删除并没收信用.</string>
     <string name="issue_choosetime">选择时间</string>
     <string name="issue_choosedata">选择日期</string>
+    <string name="issue_ok">恭喜,发布邀约成功!</string>
+    <string name="issue_oktishi">请在约定时间到达之前,从报名者中选定与你一起聚会/约会的人.</string>
+    <string name="check_details">查看详情</string>
 </resources>
