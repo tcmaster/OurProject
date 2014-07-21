@@ -67,12 +67,13 @@ public class MainTabActivity extends FragmentActivity {
 	private final String issue_url = "Bus.AppointController.GetTypes.ashx";
 	private ArrayList<IssueInfo> mIssueInfos;
 	private JoocolaApplication mJoocolaApplication;
+	private BitmapCache bitmapCache;
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 1:
-				showIssueDialog(mIssueInfos);
+				showIssueDialog(mIssueInfos, bitmapCache);
 				break;
 
 			default:
@@ -92,6 +93,7 @@ public class MainTabActivity extends FragmentActivity {
 		initActionbar();
 		initView();
 		initViewPager();
+		bitmapCache = new BitmapCache();
 	}
 
 	@Override
@@ -269,7 +271,8 @@ public class MainTabActivity extends FragmentActivity {
 		super.onBackPressed();
 	}
 
-	private void showIssueDialog(final ArrayList<IssueInfo> issueInfos) {
+	private void showIssueDialog(final ArrayList<IssueInfo> issueInfos,
+			final BitmapCache bitmapCache) {
 		CustomerDialog customerDialog = new CustomerDialog(
 				MainTabActivity.this, R.layout.dialog_issuedinvitation);
 		customerDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
@@ -282,7 +285,7 @@ public class MainTabActivity extends FragmentActivity {
 				GridView gridView = (GridView) dlg
 						.findViewById(R.id.issue_gridview);
 				IssueAdapter issueAdapter = new IssueAdapter(
-						MainTabActivity.this, issueInfos);
+						MainTabActivity.this, issueInfos, bitmapCache);
 				gridView.setAdapter(issueAdapter);
 				gridView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -310,11 +313,12 @@ public class MainTabActivity extends FragmentActivity {
 		private ImageLoader mImageLoader;
 		private ArrayList<IssueInfo> issueInfos;
 
-		public IssueAdapter(Context mContext, ArrayList<IssueInfo> infos) {
+		public IssueAdapter(Context mContext, ArrayList<IssueInfo> infos,
+				BitmapCache bitmapCache) {
 			layoutInflater = LayoutInflater.from(mContext);
 			issueInfos = infos;
 			mImageLoader = new ImageLoader(Volley.newRequestQueue(mContext),
-					new BitmapCache());
+					bitmapCache);
 		}
 
 		@Override

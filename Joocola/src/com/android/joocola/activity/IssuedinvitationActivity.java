@@ -148,6 +148,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 					IssuedinvitationBActivity.class);
 			intent.putExtra("info", issuedinvitationInfo);
 			startActivity(intent);
+			IssuedinvitationActivity.this.finish();
 		}
 	}
 	class IssueOnclick implements OnClickListener {

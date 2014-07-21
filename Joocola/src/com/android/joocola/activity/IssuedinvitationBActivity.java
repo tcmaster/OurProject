@@ -52,6 +52,7 @@ public class IssuedinvitationBActivity extends BaseActivity {
 						int issue_pid = jsonObject.getInt("Item1");
 						Utils.toast(IssuedinvitationBActivity.this,
  "发布成功");
+						IssuedinvitationBActivity.this.finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -141,10 +142,9 @@ public class IssuedinvitationBActivity extends BaseActivity {
 				@Override
 				public void httpPostResolveData(String result) {
 					Message message = Message.obtain();
-					message.what = 2;
+					message.what = 1;
 					message.obj = result;
 					issueHandler.sendMessage(message);
-					
 				}
 			});
 
