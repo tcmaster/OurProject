@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -63,7 +65,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 * 昵称
 	 */
 	@ViewInject(R.id.nickName_et)
-	private EditText nickName;
+	private TextView nickName;
 	/**
 	 * 生日
 	 */
@@ -119,11 +121,8 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.drink)
 	private TextView drink_tv;
-	/**
-	 * 昵称保存按钮
-	 */
-	@ViewInject(R.id.nickNameSave)
-	private Button nickName_save_btn;
+	@ViewInject(R.id.seximg)
+	private ImageView sex_iv;
 	/**
 	 * 个性签名保存按钮
 	 */
@@ -157,6 +156,10 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	// 标识位
 	private static final int PICKPICTURE = 1;
 	private static final int TAKEPHOTO = 2;
+	/**
+	 * 用户信息
+	 */
+	private UserInfo userInfo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +169,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		initActionBar();
 		handler = new Handler();
+		userInfo = JoocolaApplication.getInstance().getUserInfo();
 		initData();
 	}
 
@@ -181,19 +185,15 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		super.onStart();
 	}
 
+	@SuppressLint("NewApi")
 	private void initData() {
-		birthday_tv.requestFocus();
-		UserInfo userInfo = JoocolaApplication.getInstance().getUserInfo();
+
 		nickName.setText(userInfo.getNickName());
 		birthday_tv.setText(userInfo.getBirthday());
-		if (userInfo.getSexName().contains("男")) {
-			birthday_tv.setCompoundDrawablesWithIntrinsicBounds(getResources()
-					.getDrawable(R.drawable.ic_launcher), null, null, null);
-		} else {
-			birthday_tv.setCompoundDrawablesWithIntrinsicBounds(getResources()
-					.getDrawable(R.drawable.girl), null, null, null);
-		}
-		birthday_tv.setCompoundDrawablePadding(Utils.dip2px(this, -2));
+		if (userInfo.getSexName().contains("男"))
+			sex_iv.setImageResource(R.drawable.boy);
+		else
+			sex_iv.setImageResource(R.drawable.girl);
 		if (userInfo.getHobbyNames().equals(""))
 			hobby_tv.setText("请选择");
 		else
@@ -276,13 +276,10 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		}
 	}
 
-	@OnFocusChange({ R.id.nickName_et, R.id.signin, R.id.phone })
+	@OnFocusChange({ R.id.signin, R.id.phone })
 	public void onFocusChange(View v, boolean hasFocus) {
 		int vis = hasFocus ? View.VISIBLE : View.INVISIBLE;
 		switch (v.getId()) {
-		case R.id.nickName_et:
-			nickName_save_btn.setVisibility(vis);
-			break;
 		case R.id.signin:
 			signin_save_btn.setVisibility(vis);
 			break;
@@ -295,8 +292,8 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	}
 
 	@OnClick({ R.id.location, R.id.profession, R.id.annualSalary, R.id.height,
-			R.id.emotion, R.id.smoke, R.id.drink, R.id.nickNameSave,
-			R.id.signinsave, R.id.phoneinitsave, R.id.birthday_tv, R.id.hobby })
+			R.id.emotion, R.id.smoke, R.id.drink, R.id.signinsave,
+			R.id.phoneinitsave, R.id.hobby })
 	public void onViewClick(View v) {
 		List<BaseDataInfo> resultInfos = new ArrayList<BaseDataInfo>();
 		TextView display = null;
@@ -315,8 +312,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			return;
 		case R.id.location:
 			showCityDialog();
-			return;
-		case R.id.birthday_tv:
 			return;
 		case R.id.profession:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -378,11 +373,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			title = "喝酒";
 			url = Constans.DRINKURL;
 			break;
-		case R.id.nickNameSave:
-			nickName_save_btn.setVisibility(View.INVISIBLE);
-			saveEditText("nickName", Constans.NICKNAMEURL, nickName.getText()
-					.toString());
-			return;
 		case R.id.signinsave:
 			signin_save_btn.setVisibility(View.INVISIBLE);
 			saveEditText("newSign", Constans.SIGNINURL, signin_et.getText()
@@ -588,66 +578,33 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				((Dlg_BaseCity_Adapter) baseCity_lv.getAdapter())
 						.bindData(JoocolaApplication.getInstance()
 								.getBaseCityInfo());
+				for (int i = 0; i < baseCity_lv.getAdapter().getCount(); i++) {
+					if (JoocolaApplication
+							.getInstance()
+							.getUserInfo()
+							.getNewCityName()
+							.contains(
+									((BaseCityInfo) baseCity_lv.getAdapter()
+											.getItem(i)).getCityName())) {
+						((Dlg_BaseCity_Adapter) baseCity_lv.getAdapter())
+								.setPos(i);
+						getNewCityData(
+								((BaseCityInfo) baseCity_lv.getAdapter()
+										.getItem(i)).getPID(),
+								(Dlg_BaseCity_Adapter) baseCity_lv.getAdapter(),
+								i, city_lv, true);
+					}
+				}
 				baseCity_lv.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						newCityPID = "";
-						HttpPostInterface interface1 = new HttpPostInterface();
-						interface1.addParams(
-								"provinceID",
-								((BaseCityInfo) parent.getAdapter().getItem(
-										position)).getPID());
-						((Dlg_BaseCity_Adapter) parent.getAdapter())
-								.setPos(position);
-						interface1.getData(Constans.CITY_INFO_URL,
-								new HttpPostCallBack() {
-
-									@Override
-									public void httpPostResolveData(
-											String result) {
-										final List<CityInfo> cityInfos = new ArrayList<CityInfo>();
-										JSONArray array = null;
-										try {
-											array = new JSONArray(result);
-											for (int i = 0; i < array.length(); i++) {
-												CityInfo temp = new CityInfo();
-												JSONObject object = null;
-												try {
-													object = array
-															.getJSONObject(i);
-												} catch (JSONException e) {
-													// TODO Auto-generated catch
-													// block
-													e.printStackTrace();
-												}
-												temp.setCityName(object
-														.getString("CityName"));
-												temp.setParentID(object
-														.getInt("ParentID")
-														+ "");
-												temp.setParentname(object
-														.getString("ParentName"));
-												temp.setPID(object
-														.getInt("PID") + "");
-												cityInfos.add(temp);
-											}
-										} catch (JSONException e1) {
-											e1.printStackTrace();
-										}
-										handler.post(new Runnable() {
-
-											@Override
-											public void run() {
-												((Dlg_City_Adapter) city_lv
-														.getAdapter())
-														.bindData(cityInfos);
-											}
-										});
-
-									}
-								});
+						getNewCityData(((BaseCityInfo) parent.getAdapter()
+								.getItem(position)).getPID(),
+								(Dlg_BaseCity_Adapter) parent.getAdapter(),
+								position, city_lv, false);
 					}
 				});
 				city_lv.setOnItemClickListener(new OnItemClickListener() {
@@ -723,6 +680,64 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 		});
 		cdlg.showDlg();
+	}
+
+	private void getNewCityData(String baseCityPID,
+			Dlg_BaseCity_Adapter base_adp, int pos, final ListView city_lv,
+			final boolean init) {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("provinceID", baseCityPID);
+		((Dlg_BaseCity_Adapter) base_adp).setPos(pos);
+		interface1.getData(Constans.CITY_INFO_URL, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				final List<CityInfo> cityInfos = new ArrayList<CityInfo>();
+				JSONArray array = null;
+				try {
+					array = new JSONArray(result);
+					for (int i = 0; i < array.length(); i++) {
+						CityInfo temp = new CityInfo();
+						JSONObject object = null;
+						try {
+							object = array.getJSONObject(i);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch
+							// block
+							e.printStackTrace();
+						}
+						temp.setCityName(object.getString("CityName"));
+						temp.setParentID(object.getInt("ParentID") + "");
+						temp.setParentname(object.getString("ParentName"));
+						temp.setPID(object.getInt("PID") + "");
+						cityInfos.add(temp);
+					}
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						((Dlg_City_Adapter) city_lv.getAdapter())
+								.bindData(cityInfos);
+						if (init) {
+							for (int i = 0; i < city_lv.getAdapter().getCount(); i++) {
+								if (((CityInfo) city_lv.getAdapter().getItem(i))
+										.getPID().equals(
+												userInfo.getNewCityID())) {
+									((Dlg_City_Adapter) city_lv.getAdapter())
+											.setPos(i);
+									newCityPID = userInfo.getNewCityID();
+								}
+							}
+						}
+
+					}
+				});
+
+			}
+		});
 	}
 
 	private void getCityName(String cityPID) {

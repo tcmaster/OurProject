@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -80,13 +81,18 @@ public class Dlg_ListView_Adapter extends BaseAdapter {
 					.findViewById(R.id.list_arrow);
 			holder.tv_text = (TextView) convertView
 					.findViewById(R.id.list_content);
+			holder.layout = (LinearLayout) convertView
+					.findViewById(R.id.layout);
 			convertView.setTag(holder);
 		} else
 			holder = (ViewHolder) convertView.getTag();
-		if (selectionArray[position])
+		if (selectionArray[position]) {
 			holder.iv_arrow.setVisibility(View.VISIBLE);
-		else
+			holder.layout.setBackgroundResource(R.color.lessgray2);
+		} else {
 			holder.iv_arrow.setVisibility(View.INVISIBLE);
+			holder.layout.setBackgroundResource(R.color.white);
+		}
 		holder.tv_text.setText(baseDataInfos.get(position).getItemName());
 		return convertView;
 	}
@@ -94,5 +100,6 @@ public class Dlg_ListView_Adapter extends BaseAdapter {
 	private class ViewHolder {
 		ImageView iv_arrow;
 		TextView tv_text;
+		LinearLayout layout;
 	}
 }

@@ -3,7 +3,6 @@ package com.android.joocola.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +73,9 @@ public class Dlg_GridView_Adapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.dlg_gird_item, null);
 		tv_text = (TextView) convertView.findViewById(R.id.dlg_list_item);
 		if (selectionArray[position])
-			tv_text.setBackgroundColor(Color.GREEN);
+			tv_text.setBackgroundResource(R.drawable.multichoicebg);
 		else
-			tv_text.setBackgroundColor(Color.WHITE);
+			tv_text.setBackgroundResource(R.drawable.rectbg);
 		tv_text.setText(baseDataInfos.get(position).getItemName());
 		return convertView;
 	}

@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/layout">
     <ImageView 
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:contentDescription="@string/image_description"
         android:id="@+id/list_arrow"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/hook"
         android:scaleType="fitXY"
         />
     <TextView
