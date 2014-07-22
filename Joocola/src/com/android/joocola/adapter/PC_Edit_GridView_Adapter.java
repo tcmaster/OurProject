@@ -72,6 +72,11 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	public void deleteImgUrls(int position) {
+		imgUrls.remove(position);
+		notifyDataSetChanged();
+	}
+
 	public ArrayList<String> getImageUrls() {
 		return imgUrls;
 	}

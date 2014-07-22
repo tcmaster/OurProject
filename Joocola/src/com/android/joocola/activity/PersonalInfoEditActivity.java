@@ -20,10 +20,15 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +60,6 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.lidroid.xutils.view.annotation.event.OnFocusChange;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
-import com.lidroid.xutils.view.annotation.event.OnItemLongClick;
 
 /**
  * 个人资料编辑界面 这个页面用了xUtils
@@ -286,6 +290,59 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				signin_save_btn.setVisibility(View.VISIBLE);
 			}
 		});
+		pic_gv.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+
+			@Override
+			public void onCreateContextMenu(ContextMenu menu, View v,
+					ContextMenuInfo menuInfo) {
+				menu.add(0, 0, 0, "删除");
+			}
+		});
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			final AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item
+					.getMenuInfo();
+			String deleteUrl = (String) pic_gv.getAdapter().getItem(
+					menuInfo.position);
+
+			HttpPostInterface interface1 = new HttpPostInterface();
+			interface1.addParams("userID", JoocolaApplication.getInstance()
+					.getUserInfo().getPID());
+			interface1.addParams("newUrls", "");
+			interface1.addParams("delUrls", deleteUrl);
+			interface1.getData(Constans.ALBUMURL, new HttpPostCallBack() {
+
+				@Override
+				public void httpPostResolveData(String result) {
+					if (result.equals("true")) {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								Utils.toast(PersonalInfoEditActivity.this,
+										"删除成功");
+								((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
+										.deleteImgUrls(menuInfo.position);
+							}
+						});
+					} else {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								Utils.toast(PersonalInfoEditActivity.this,
+										"删除失败，网络状况不佳,请在次尝试");
+							}
+						});
+					}
+
+				}
+			});
+		}
+		return super.onContextItemSelected(item);
 	}
 
 	@OnItemClick(R.id.myPic)
@@ -327,12 +384,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			intent.putExtra("position", position);
 			startActivity(intent);
 		}
-
-	}
-
-	@OnItemLongClick(R.id.myPic)
-	public void onGridViewItemLongClick(AdapterView<?> arg0, View arg1,
-			int arg2, long arg3) {
 
 	}
 
@@ -993,7 +1044,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			File file = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DCIM).getAbsolutePath()
 					+ File.separator + tempName);
-			int rotate = Utils.rotateImg(file.getAbsolutePath());
 			uploadImage(file);
 		}
 

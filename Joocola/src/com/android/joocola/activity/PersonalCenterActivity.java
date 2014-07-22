@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.utils.Constans;
 import com.lidroid.xutils.BitmapUtils;
 
 /**
@@ -102,8 +101,8 @@ public class PersonalCenterActivity extends BaseActivity implements
 
 	private void initUserInfo() {
 		BitmapUtils utils = new BitmapUtils(this);
-		utils.display(iv_photo, Constans.URL
-				+ JoocolaApplication.getInstance().getUserInfo().getPhotoUrl());
+		utils.display(iv_photo, JoocolaApplication.getInstance().getUserInfo()
+				.getPhotoUrl());
 		nickName.setText(JoocolaApplication.getInstance().getUserInfo()
 				.getNickName());
 	}
