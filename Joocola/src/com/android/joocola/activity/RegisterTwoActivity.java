@@ -1,6 +1,8 @@
 package com.android.joocola.activity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONException;
@@ -10,11 +12,13 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,6 +64,10 @@ public class RegisterTwoActivity extends BaseActivity implements
 	// 生日
 	private String birthday = "";
 	private Handler handler;
+	/**
+	 * 照相时的临时文件名
+	 */
+	private String tempName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,11 +147,19 @@ public class RegisterTwoActivity extends BaseActivity implements
 	private void getPhotoByTakePicture() {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			tempName = System.currentTimeMillis() + ".jpg";
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DCIM).getAbsolutePath()
+					+ File.separator + tempName);
+			Uri u = Uri.fromFile(file);
+			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
 			Intent getImageByCamera = new Intent(
 					"android.media.action.IMAGE_CAPTURE");
+			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
 			startActivityForResult(getImageByCamera, TAKEPHOTO);
 		} else {
-			Utils.toast(this, "请确定已经插入SD卡");
+			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
 		}
 
 	}
@@ -151,7 +167,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 	private void register() {
 		nickName = et_nickName.getText().toString();
 		birthday = tv_birthday.getText().toString();
-		if (birthday.equals("不会公开")) {
+		if (birthday.equals("请选择生日")) {
 			Utils.toast(this, "请填写生日字段");
 			return;
 		}
@@ -226,38 +242,39 @@ public class RegisterTwoActivity extends BaseActivity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// 图片路径
-		Bitmap result = null;
-		if (data != null) {
-			Uri uri = data.getData();
-			if (requestCode == PICKPICTURE) {
-				Log.v("lixiaosong", uri.toString());
-				iv_userPhoto.setImageURI(uri);
+		if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DCIM).getAbsolutePath()
+					+ File.separator + tempName);
+			Log.v("lixiaosong", "我到了这里，照片地址是" + file.getAbsolutePath());
+			/**
+			 * 这里需要对原图进行缩放
+			 */
+			Bitmap bm = ThumbnailUtils.extractThumbnail(
+					BitmapFactory.decodeFile(file.getAbsolutePath()),
+					iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
+			iv_userPhoto.setImageBitmap(bm);
+			uploadImage(file);
+		} else if (requestCode == PICKPICTURE && resultCode == RESULT_OK) {
+			if (data != null) {
+				Uri uri = data.getData();
+				Bitmap bm = null;
+				try {
+					bm = ThumbnailUtils.extractThumbnail(
+							MediaStore.Images.Media.getBitmap(
+									this.getContentResolver(), uri),
+							iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				iv_userPhoto.setImageBitmap(bm);
 				String path = Utils.getRealPathFromURI(uri,
 						RegisterTwoActivity.this);
 				File file = new File(path);
 				uploadImage(file);
-			} else if (requestCode == TAKEPHOTO) {
-				if (uri == null) {
-					Bundle bundle = data.getExtras();
-					if (bundle != null) {
-						Bitmap photo = (Bitmap) bundle.get("data");
-						if (photo != null) {
-							result = ThumbnailUtils.extractThumbnail(photo,
-									iv_userPhoto.getWidth(),
-									iv_userPhoto.getHeight());
-							iv_userPhoto.setImageBitmap(result);
-							File file = Utils.createBitmapFile(result);
-							uploadImage(file);
-						}
-					}
-				} else {
-					iv_userPhoto.setImageURI(uri);
-					result = iv_userPhoto.getDrawingCache();
-					String path = Utils.getRealPathFromURI(uri,
-							RegisterTwoActivity.this);
-					File file = new File(path);
-					uploadImage(file);
-				}
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -269,7 +286,6 @@ public class RegisterTwoActivity extends BaseActivity implements
 
 			@Override
 			public void httpPostResolveData(String result) {
-				Log.v("lixiaosong", result);
 				if (result != null) {
 					imgUrl = result;
 				}

@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -260,5 +261,27 @@ public class Utils {
 
 	public static String getCurrentTime() {
 		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
+	}
+
+	/**
+	 * 对被旋转过的图片进行旋转校正
+	 */
+	public static int rotateImg(String filePath) {
+		try {
+			ExifInterface exifInterface = new ExifInterface(filePath);
+			int tag = exifInterface.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION, -1);
+			if (tag == ExifInterface.ORIENTATION_ROTATE_90) {
+				return 90;
+			} else if (tag == ExifInterface.ORIENTATION_ROTATE_180) {
+				return 180;
+			} else if (tag == ExifInterface.ORIENTATION_ROTATE_270) {
+				return 270;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

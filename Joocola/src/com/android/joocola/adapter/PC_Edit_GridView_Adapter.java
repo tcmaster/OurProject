@@ -1,7 +1,6 @@
 package com.android.joocola.adapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,7 +17,7 @@ import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
 import com.lidroid.xutils.bitmap.core.BitmapSize;
 
 public class PC_Edit_GridView_Adapter extends BaseAdapter {
-	private List<String> imgUrls;
+	private ArrayList<String> imgUrls;
 	private LayoutInflater mInflater;
 	private Context mContext;
 
@@ -71,6 +70,10 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	public void addImgUrls(String url) {
 		imgUrls.add(url);
 		notifyDataSetChanged();
+	}
+
+	public ArrayList<String> getImageUrls() {
+		return imgUrls;
 	}
 
 }

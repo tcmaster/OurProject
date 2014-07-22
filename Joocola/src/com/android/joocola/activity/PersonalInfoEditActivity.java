@@ -12,11 +12,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -163,6 +163,10 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 * 用户信息
 	 */
 	private UserInfo userInfo;
+	/**
+	 * 照相时的临时文件名
+	 */
+	private String tempName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -314,13 +318,15 @@ public class PersonalInfoEditActivity extends BaseActivity {
 								}
 							});
 			builder.create().show();
+		} else {
+			Intent intent = new Intent(PersonalInfoEditActivity.this,
+					WatchBigPicActivity.class);
+			intent.putStringArrayListExtra("imgUrls",
+					((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
+							.getImageUrls());
+			intent.putExtra("position", position);
+			startActivity(intent);
 		}
-
-	}
-
-	@OnItemClick(R.id.myPic)
-	public void onGridViewItemClick(AdapterView<?> parent, View view,
-			int position, long id) {
 
 	}
 
@@ -956,41 +962,41 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	private void getPhotoByTakePicture() {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			tempName = System.currentTimeMillis() + ".jpg";
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DCIM).getAbsolutePath()
+					+ File.separator + tempName);
+			Uri u = Uri.fromFile(file);
+			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
 			Intent getImageByCamera = new Intent(
 					"android.media.action.IMAGE_CAPTURE");
+			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
 			startActivityForResult(getImageByCamera, TAKEPHOTO);
 		} else {
-			Utils.toast(this, "请确定已经插入SD卡");
+			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
 		}
+
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data != null) {
-			Uri uri = data.getData();
-			if (requestCode == PICKPICTURE) {
+		if (requestCode == PICKPICTURE && resultCode == RESULT_OK) {
+			if (data != null) {
+				Uri uri = data.getData();
 				String path = Utils.getRealPathFromURI(uri,
 						PersonalInfoEditActivity.this);
 				File file = new File(path);
 				uploadImage(file);
-			} else if (requestCode == TAKEPHOTO) {
-				if (uri == null) {
-					Bundle bundle = data.getExtras();
-					if (bundle != null) {
-						Bitmap photo = (Bitmap) bundle.get("data");
-						if (photo != null) {
-							File file = Utils.createBitmapFile(photo);
-							uploadImage(file);
-						}
-					}
-				} else {
-					String path = Utils.getRealPathFromURI(uri,
-							PersonalInfoEditActivity.this);
-					File file = new File(path);
-					uploadImage(file);
-				}
 			}
+		} else if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DCIM).getAbsolutePath()
+					+ File.separator + tempName);
+			int rotate = Utils.rotateImg(file.getAbsolutePath());
+			uploadImage(file);
 		}
+
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 

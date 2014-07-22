@@ -147,7 +147,7 @@ public class JoocolaApplication extends Application {
 						userInfo.setMarryID(object.getInt("MarryID") + "");
 						userInfo.setPID(object.getInt("PID") + "");
 						userInfo.setNickName(object.getString("NickName"));
-						userInfo.setCredit(object.getInt("Credit") + "");
+						// userInfo.setCredit(object.getInt("Credit") + "");
 						userInfo.setSexName(object.getString("SexName"));
 						userInfo.setUserName(object.getString("UserName"));
 						userInfo.setHeightID(object.getInt("HeightID") + "");
