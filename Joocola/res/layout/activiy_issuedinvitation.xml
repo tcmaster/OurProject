@@ -117,11 +117,22 @@
          android:layout_height="100dp" 
          android:layout_marginTop="16dp"
          android:layout_marginLeft="20dp"
-         android:layout_marginRight="20dp"
-         android:layout_marginBottom="50dp"
+         android:layout_marginRight="20dp" 
          android:background="@drawable/edittext_bg"
          android:ems="100" >
       </EditText>
+
+      <Button
+          android:id="@+id/btn_sureissue"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="50dp"
+          android:background="@drawable/nextbtnclick"
+          android:text="@string/issue_sureissue" />
+
      </LinearLayout>
  
 </ScrollView>

@@ -2,12 +2,168 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="15"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/getissum_title"
+        android:id="@+id/issueitem_title"
+        android:layout_width="match_parent"
+        android:textStyle="bold"
+        android:layout_height="0dp"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:text="title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" >
+
+        <ImageView
+            android:id="@+id/issueitem_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/photobg" />
+
+        <ImageView
+            android:id="@+id/issueitem_seximg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/issueitem_name"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/girl" />
+
+        <TextView
+            android:id="@+id/issueitem_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/issueitem_seximg"
+            android:text="10" />
+
+        <TextView
+            android:id="@+id/issueitem_astro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/issueitem_age"
+            android:layout_alignBottom="@+id/issueitem_age"
+            android:layout_toRightOf="@+id/issueitem_age"
+            android:text="天蝎" />
+
+        <TextView
+            android:id="@+id/issueitem_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/issueitem_seximg"
+            android:layout_marginLeft="22dp"
+            android:layout_toRightOf="@+id/issueitem_img"
+            android:text="姓名" />
+
+        <TextView
+            android:id="@+id/issueitem_issuesex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/issueitem_seximg"
+            android:layout_below="@+id/issueitem_seximg"
+            android:text="男性" />
+
+        <TextView
+            android:id="@+id/issueitem_issuecost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/issueitem_issuesex"
+            android:layout_alignBottom="@+id/issueitem_issuesex"
+            android:layout_alignLeft="@+id/issueitem_astro"
+            android:text="请我吧" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/issueitem_time"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="time"
+        android:textSize="16sp" />
+    <RelativeLayout 
+     android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+        android:id="@+id/issueitem_location"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="wrap_content"  
+        android:layout_alignParentTop="true"
+        android:text="地址" />
+
+        <ImageView
+            android:id="@+id/issueitem_locationbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="28dp"
+            android:padding="5dp"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/didian" />
+        
+    </RelativeLayout>
+     
+
+    <TextView
+        android:id="@+id/issueitem_description"
+       android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="说明" />
+    <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"  
+            android:background="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:weightSum="10"
+        android:layout_height="0dp" >
+
+        <TextView
+            android:id="@+id/issueitem_state"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:text="状态" />
+
+        <TextView
+            android:id="@+id/issueitem_usercount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:layout_gravity="center_vertical"
+            android:text="报名" />
+
+        <ImageView
+            android:id="@+id/fenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/actionbar_fenge" />
+
+        <TextView
+            android:id="@+id/issueitem_replycount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:layout_gravity="center_vertical"
+            android:text="回复" />
+
+    </LinearLayout>
 
 </LinearLayout>

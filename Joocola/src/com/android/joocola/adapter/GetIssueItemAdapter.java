@@ -43,14 +43,12 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView =inflater.inflate(
-					R.layout.getissueitem, null);
-			holder.title = (TextView) convertView
-					.findViewById(R.id.getissum_title);
+R.layout.getissueitem, null);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.title.setText(infos.get(position).getTitle());
+		// holder.title.setText(infos.get(position).getTitle());
 		return convertView;
 	}
 
