@@ -14,7 +14,6 @@ public class GetIssueInfoEntity {
 	private int TypeID; // 邀约类型PID
 	private String TypeName; // 及显示名称
 	private String Title; // 邀约标题
-	private int CostCredit; // 邀约愿花费费用
 	private int SexID;// 邀约对象性别PID
 	private String SexName; // 邀约对象 性别显示名称
 	private int CostID;// 邀约话费类型
@@ -66,13 +65,6 @@ public class GetIssueInfoEntity {
 		Title = title;
 	}
 
-	public int getCostCredit() {
-		return CostCredit;
-	}
-
-	public void setCostCredit(int costCredit) {
-		CostCredit = costCredit;
-	}
 
 	public int getSexID() {
 		return SexID;
@@ -221,9 +213,9 @@ public class GetIssueInfoEntity {
 	@Override
 	public String toString() {
 		return "GetIssueInfoEntity [PID=" + PID + ", TypeID=" + TypeID
-				+ ", TypeName=" + TypeName + ", Title=" + Title
-				+ ", CostCredit=" + CostCredit + ", SexID=" + SexID
-				+ ", SexName=" + SexName + ", CostID=" + CostID + ", CostName="
+				+ ", TypeName=" + TypeName + ", Title=" + Title + ", SexID="
+				+ SexID + ", SexName=" + SexName + ", CostID=" + CostID
+				+ ", CostName="
 				+ CostName + ", ReserveDate=" + ReserveDate + ", LocationName="
 				+ LocationName + ", LocationX=" + LocationX + ", LocationY="
 				+ LocationY + ", Description=" + Description
