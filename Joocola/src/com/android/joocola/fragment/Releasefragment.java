@@ -41,59 +41,35 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 	private List<GetIssueInfoEntity> mEntities = new ArrayList<GetIssueInfoEntity>();
 	private GetIssueItemAdapter getIssueItemAdapter;
 	private BitmapCache bitmapCache = new BitmapCache();
+	private int load_data = 1;
+	private int totalItemsCount;
+
 	@SuppressLint("HandlerLeak")
 	private Handler releaseHandler  = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 0:
-				Log.e("拿完数据了哦", "<<<----");
-				String json = (String) msg.obj;
-				try {
-					JSONObject jsonObject = new JSONObject(json);
-					JSONArray jsonArray = jsonObject.getJSONArray("Entities");
-					for (int i = 0; i < jsonArray.length(); i++) {
-						JSONObject object = jsonArray.getJSONObject(i);
-						GetIssueInfoEntity getIssueInfoEntity = new GetIssueInfoEntity();
-						getIssueInfoEntity.setTitle(object.getString("Title"));
-						getIssueInfoEntity.setApplyUserCount(object
-								.getInt("ApplyUserCount"));
-						getIssueInfoEntity.setCostName(object
-								.getString("CostName"));
-						getIssueInfoEntity.setDescription(object
-								.getString("Description"));
-						getIssueInfoEntity.setLocationName(object
-								.getString("LocationName"));
-						getIssueInfoEntity.setPID(object.getInt("PID"));
-						getIssueInfoEntity.setPublishDate(object
-								.getString("PublishDate"));
-						getIssueInfoEntity.setPublisherAge(object
-								.getInt("PublisherAge"));
-						getIssueInfoEntity.setPublisherAstro(object
-								.getString("PublisherAstro"));
-						getIssueInfoEntity.setPublisherBirthday(object
-								.getString("PublisherBirthday"));
-						getIssueInfoEntity.setPublisherName(object
-								.getString("PublisherName"));
-						getIssueInfoEntity.setPublisherPhoto(object
-								.getString("PublisherPhoto"));
-						getIssueInfoEntity.setReplyCount(object
-								.getInt("ReplyCount"));
-						getIssueInfoEntity.setReserveDate(object
-								.getString("ReserveDate"));
-						getIssueInfoEntity.setSexName(object
-								.getString("SexName"));
-						getIssueInfoEntity.setState(object.getString("State"));
-						getIssueInfoEntity.setTitle(object.getString("Title"));
-						mEntities.add(getIssueInfoEntity);
-					}
-					getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
-							getActivity(), bitmapCache);
-					mAutoListView.setAdapter(getIssueItemAdapter);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				break;
 
+			case 0:
+				mAutoListView.onRefreshComplete();
+				//mEntities.clear();
+				String json = (String) msg.obj;
+				mEntities.addAll(resolveJson(json));
+				getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
+						getActivity(), bitmapCache);
+				mAutoListView.setAdapter(getIssueItemAdapter);
+				mAutoListView.setResultSize(totalItemsCount);
+				break;
+			case 1:
+				mAutoListView.onRefreshComplete();
+				mEntities.clear();
+				load_data = 1;
+				String json1 = (String) msg.obj;
+				mEntities.addAll(resolveJson(json1));
+				getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
+						getActivity(), bitmapCache);
+				mAutoListView.setAdapter(getIssueItemAdapter);
+				mAutoListView.setResultSize(totalItemsCount);
+				break;
 			default:
 				break;
 			}
@@ -110,30 +86,83 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		View view = inflater.inflate(R.layout.fragment_release, container,
 				false);
 		mAutoListView = (AutoListView) view.findViewById(R.id.issue_listview);
+		mAutoListView.setOnRefreshListener(this);
+		mAutoListView.setOnLoadListener(this);
+		getData(0);
+		return view;
+	}
+
+	private void getData(final int type) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		httpPostInterface.addParams("ItemsPerPage", 5 + "");
-		httpPostInterface.addParams("CurrentPage", 1 + "");
+		// httpPostInterface.addParams("ItemsPerPage", load_data + "");
+		httpPostInterface.addParams("CurrentPage", load_data + "");
 		httpPostInterface.getData(issue_url, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
 				Message message = Message.obtain();
-				message.what = 0;
+				message.what = type;
 				message.obj = result;
 				releaseHandler.sendMessage(message);
 			}
 		});
-
-		return view;
 	}
-
 	@Override
 	public void onLoad() {
-
+		// load_data += 5;
+		load_data += 1;
+		Log.e("onload", load_data + "");
+		getData(0);
 	}
 
 	@Override
 	public void onRefresh() {
+		Log.e("onRefresh", load_data + "");
+		getData(1);
+	}
 
+	private List<GetIssueInfoEntity> resolveJson(String json) {
+		List<GetIssueInfoEntity> data = new ArrayList<GetIssueInfoEntity>();
+		try {
+			JSONObject jsonObject = new JSONObject(json);
+			totalItemsCount = jsonObject.getInt("TotalItemsCount");
+			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject object = jsonArray.getJSONObject(i);
+				GetIssueInfoEntity getIssueInfoEntity = new GetIssueInfoEntity();
+				getIssueInfoEntity.setTitle(object.getString("Title"));
+				getIssueInfoEntity.setApplyUserCount(object
+						.getInt("ApplyUserCount"));
+				getIssueInfoEntity.setCostName(object.getString("CostName"));
+				getIssueInfoEntity.setDescription(object
+						.getString("Description"));
+				getIssueInfoEntity.setLocationName(object
+						.getString("LocationName"));
+				getIssueInfoEntity.setPID(object.getInt("PID"));
+				getIssueInfoEntity.setPublishDate(object
+						.getString("PublishDate"));
+				getIssueInfoEntity.setPublisherAge(object
+						.getInt("PublisherAge"));
+				getIssueInfoEntity.setPublisherAstro(object
+						.getString("PublisherAstro"));
+				getIssueInfoEntity.setPublisherBirthday(object
+						.getString("PublisherBirthday"));
+				getIssueInfoEntity.setPublisherName(object
+						.getString("PublisherName"));
+				getIssueInfoEntity.setPublisherPhoto(object
+						.getString("PublisherPhoto"));
+				getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
+				getIssueInfoEntity.setReserveDate(object
+						.getString("ReserveDate"));
+				getIssueInfoEntity.setSexName(object.getString("SexName"));
+				getIssueInfoEntity.setState(object.getString("State"));
+				getIssueInfoEntity.setTitle(object.getString("Title"));
+				data.add(getIssueInfoEntity);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return data;
 	}
 }

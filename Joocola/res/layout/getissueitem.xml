@@ -4,15 +4,21 @@
     android:layout_height="match_parent"
     android:weightSum="15"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/issueitem_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:textStyle="bold"
         android:layout_height="0dp"
-        android:textSize="20sp"
-        android:layout_weight="1"
+        android:layout_weight="1" >
+     <TextView
+        android:id="@+id/issueitem_title"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp" 
         android:text="title" />
+     </LinearLayout>
+    
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,10 +27,10 @@
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/issueitem_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true" 
             android:layout_alignParentTop="true"
             android:contentDescription="@string/image_description"
             android:src="@drawable/photobg" />
@@ -103,45 +109,81 @@
         </LinearLayout>
          
     </RelativeLayout>
+   <LinearLayout  
+       android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/issueitem_time"
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_description"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/issue_time" />
+
+        <TextView
+            android:id="@+id/issueitem_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="time"
+            android:textSize="16sp" />
+
+   </LinearLayout>
+    
+    <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="time"
-        android:textSize="16sp" />
-    <RelativeLayout 
-     android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <TextView
-        android:id="@+id/issueitem_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"  
-        android:layout_alignParentTop="true"
-        android:text="地址" />
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/issueitem_locationbtn"
+        <ImageView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="28dp"
-            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/issue_location" />
+
+        <TextView
+            android:id="@+id/issueitem_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:text="地址" />
+
+         <ImageView
+            android:id="@+id/issueitem_locationbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_marginRight="10dp"
             android:contentDescription="@string/image_description"
             android:src="@drawable/didian" />
         
-    </RelativeLayout>
+    </LinearLayout>
      
-
-    <TextView
-        android:id="@+id/issueitem_description"
-       android:layout_width="match_parent"
+  <LinearLayout 
+     android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="说明" />
+        android:layout_weight="1">
+
+      <ImageView 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:contentDescription="@string/image_description"
+          android:src="@drawable/issue_description" />
+
+         <TextView
+             android:id="@+id/issueitem_description"
+             android:layout_width="wrap_content"
+             android:layout_marginLeft="5dp"
+             android:layout_height="wrap_content" 
+             android:text="说明" />
+
+        </LinearLayout>
+    
     <View
             android:layout_width="wrap_content"
             android:layout_height="1px"  
@@ -153,12 +195,15 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:weightSum="10"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_height="0dp" >
 
         <TextView
             android:id="@+id/issueitem_state"
             android:layout_width="0dp"
             android:layout_weight="7"
+            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_gravity="center_vertical"
@@ -177,6 +222,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:contentDescription="@string/image_description"
             android:src="@drawable/actionbar_fenge" />
 
         <TextView
@@ -184,6 +230,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
+            android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
             android:text="回复" />
 

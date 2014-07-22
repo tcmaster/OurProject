@@ -3,6 +3,7 @@ package com.android.joocola.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constans;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -20,7 +22,6 @@ import com.android.volley.toolbox.Volley;
 
 public class GetIssueItemAdapter extends BaseAdapter {
 	private List<GetIssueInfoEntity> infos;
-	private Context mContext;
 	private LayoutInflater inflater;
 	private ViewHolder holder;
 	private ImageLoader mImageLoader;
@@ -28,9 +29,8 @@ public class GetIssueItemAdapter extends BaseAdapter {
 	public GetIssueItemAdapter(List<GetIssueInfoEntity> info, Context context,
 			BitmapCache bitmapCache) {
 		this.infos = info;
-		this.mContext = context;
 		inflater = LayoutInflater.from(context);
-		mImageLoader = new ImageLoader(Volley.newRequestQueue(mContext),
+		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
 				bitmapCache);
 	}
 	@Override
@@ -84,6 +84,7 @@ public class GetIssueItemAdapter extends BaseAdapter {
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
+		}
 			GetIssueInfoEntity entity = infos.get(position);
 			holder.title.setText(entity.getTitle());
 			holder.name.setText(entity.getPublisherName());
@@ -95,11 +96,19 @@ public class GetIssueItemAdapter extends BaseAdapter {
 			holder.location.setText(entity.getLocationName());
 			holder.description.setText(entity.getDescription());
 			holder.state.setText(entity.getState());
-			holder.usercount.setText("报名(" + entity.getApplyUserCount() + ")");
-			holder.replycount.setText("回复(" + entity.getReplyCount() + ")");
+		holder.usercount.setText("报名(" + entity.getApplyUserCount() + ")");
+		holder.replycount.setText("回复(" + entity.getReplyCount() + ")");
 			String touxiangUrl = entity.getPublisherPhoto();
+			holder.touxiang.setErrorImageResId(R.drawable.photobg);
+			holder.touxiang.setDefaultImageResId(R.drawable.photobg);
+		Log.e("这是第" + position + "条的图片的地址", touxiangUrl);
+		if (touxiangUrl.startsWith("h")) {
 			holder.touxiang.setImageUrl(touxiangUrl, mImageLoader);
+		} else {
+			holder.touxiang.setImageUrl(Constans.URL + touxiangUrl,
+					mImageLoader);
 		}
+
 		return convertView;
 	}
 
