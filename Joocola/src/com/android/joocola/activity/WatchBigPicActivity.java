@@ -2,15 +2,28 @@ package com.android.joocola.activity;
 
 import java.util.List;
 
-import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.android.joocola.R;
+import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadCallBack;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadFrom;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 /**
@@ -19,7 +32,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * @author lixiaosong
  * 
  */
-public class WatchBigPicActivity extends Activity {
+public class WatchBigPicActivity extends BaseActivity {
 	/**
 	 * 展示图片的ViewPager
 	 */
@@ -41,15 +54,50 @@ public class WatchBigPicActivity extends Activity {
 		ViewUtils.inject(this);
 		imgUrls = getIntent().getStringArrayListExtra("imgUrls");
 		currentItem = getIntent().getIntExtra("position", 0);
+		initActionBar();
+		initViewPager();
 	}
 
 	private void initActionBar() {
+		useCustomerActionBar();
+		getActionBarleft().setText((currentItem + 1) + "/" + imgUrls.size());
+		getActionBarleft().setTextColor(
+				getResources().getColor(R.color.deepgray));
+		getActionBarTitle().setVisibility(View.INVISIBLE);
+		getActionBarRight().setText("保存");
+		getActionBarRight().setBackgroundResource(R.drawable.btnclick);
+		getActionBarRight().setTextColor(
+				getResources().getColor(R.color.deepgray));
+		getActionBarRight().setGravity(Gravity.CENTER);
+		getActionBarRight().setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
 	}
 
 	private void initViewPager() {
 		photo_vp.setAdapter(new Photo_Vp_Adapter());
 		photo_vp.setCurrentItem(currentItem);
+		photo_vp.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int arg0) {
+				getActionBarleft().setText((arg0 + 1) + "/" + imgUrls.size());
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+
+			}
+		});
 	}
 
 	private class Photo_Vp_Adapter extends PagerAdapter {
@@ -66,12 +114,51 @@ public class WatchBigPicActivity extends Activity {
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
-			return super.instantiateItem(container, position);
+			View view = LayoutInflater.from(WatchBigPicActivity.this).inflate(
+					R.layout.item_vp_watchbigimg, null);
+			BitmapUtils utils = new BitmapUtils(WatchBigPicActivity.this);
+			utils.display(view, imgUrls.get(position),
+					new BitmapLoadCallBack<View>() {
+						@Override
+						public void onPreLoad(View container, String uri,
+								BitmapDisplayConfig config) {
+							ImageView iV = (ImageView) container
+									.findViewById(R.id.vp_bigimg);
+							iV.setImageDrawable(getResources().getDrawable(
+									R.drawable.loading_medium));
+							Animation anim = AnimationUtils.loadAnimation(
+									WatchBigPicActivity.this,
+									R.anim.progress_rotate);
+							iV.startAnimation(anim);
+							super.onPreLoad(container, uri, config);
+						}
+
+						@Override
+						public void onLoadCompleted(View arg0, String arg1,
+								Bitmap arg2, BitmapDisplayConfig arg3,
+								BitmapLoadFrom arg4) {
+							ImageView iV = (ImageView) arg0
+									.findViewById(R.id.vp_bigimg);
+							iV.clearAnimation();
+							iV.setImageBitmap(arg2);
+						}
+
+						@Override
+						public void onLoadFailed(View arg0, String arg1,
+								Drawable arg2) {
+							ImageView iV = (ImageView) arg0
+									.findViewById(R.id.vp_bigimg);
+							iV.clearAnimation();
+							iV.setImageBitmap(null);
+						}
+					});
+			((ViewPager) container).addView(view);
+			return view;
 		}
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			super.destroyItem(container, position, object);
+			container.removeView((RelativeLayout) object);
 		}
 
 	}
