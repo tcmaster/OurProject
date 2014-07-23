@@ -247,7 +247,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			for (int i = 0; i < imgs.length; i++) {
 				if (imgs[i].equals(""))
 					continue;
-				Log.v("lixiaosong", "上传到的图片地址" + imgs[i]);
 				((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
 						.addImgUrls(imgs[i]);
 			}

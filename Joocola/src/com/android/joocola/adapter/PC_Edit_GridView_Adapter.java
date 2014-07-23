@@ -29,7 +29,9 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	public PC_Edit_GridView_Adapter(Context context, boolean flag) {
 		mInflater = LayoutInflater.from(context);
 		imgUrls = new ArrayList<String>();
+		bigimgUrls = new ArrayList<String>();
 		mContext = context;
+		this.flag = flag;
 	}
 
 	@Override
