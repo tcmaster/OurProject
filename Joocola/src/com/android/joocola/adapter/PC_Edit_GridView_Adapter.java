@@ -31,6 +31,7 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 		imgUrls = new ArrayList<String>();
 		bigimgUrls = new ArrayList<String>();
 		mContext = context;
+		this.flag = flag;
 	}
 
 	@Override
