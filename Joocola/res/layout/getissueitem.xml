@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="15"
+    android:weightSum="15" 
     android:orientation="vertical" >
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
         android:textSize="20sp" 
-        android:text="title" />
+         />
      </LinearLayout>
     
 
@@ -50,7 +50,7 @@
             android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="24dp" 
-            android:text="姓名" />
+             />
 
              <LinearLayout
                  android:layout_width="match_parent" 
@@ -69,13 +69,13 @@
               android:id="@+id/issueitem_age"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" 
-              android:text="10" />
+               />
            <TextView
             android:id="@+id/issueitem_astro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             android:layout_marginLeft="5dp"
-            android:text="天蝎" />
+              />
               </LinearLayout>
 
              <LinearLayout
@@ -92,7 +92,7 @@
              android:paddingTop="3dp"
              android:paddingBottom="3dp"
              android:background="@color/gray2"
-             android:text="男性" />
+             />
            <TextView
              android:id="@+id/issueitem_issuecost"
              android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
              android:paddingTop="3dp"
              android:paddingBottom="3dp"
              android:background="@color/gray2"
-             android:text="请我吧" />
+               />
              </LinearLayout>
 
         </LinearLayout>
@@ -120,14 +120,15 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/image_description"
             android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/issue_time" />
 
         <TextView
             android:id="@+id/issueitem_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="time"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp" 
             android:textSize="16sp" />
 
    </LinearLayout>
@@ -136,22 +137,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        
         android:orientation="horizontal">
 
         <ImageView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
             android:contentDescription="@string/image_description"
             android:src="@drawable/issue_location" />
 
         <TextView
             android:id="@+id/issueitem_location"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="3"
-            android:text="地址" />
+            android:layout_marginLeft="5dp" 
+            android:layout_gravity="center_vertical"
+            />
 
          <ImageView
             android:id="@+id/issueitem_locationbtn"
@@ -159,6 +162,7 @@
             android:layout_height="wrap_content" 
             android:layout_marginRight="10dp"
             android:contentDescription="@string/image_description"
+            android:visibility="gone"
             android:src="@drawable/didian" />
         
     </LinearLayout>
@@ -166,12 +170,14 @@
   <LinearLayout 
      android:layout_width="match_parent"
         android:layout_height="0dp"
+         android:orientation="horizontal"
         android:layout_weight="1">
 
       <ImageView 
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginLeft="10dp"
+          android:layout_gravity="center_vertical"
           android:contentDescription="@string/image_description"
           android:src="@drawable/issue_description" />
 
@@ -179,7 +185,8 @@
              android:id="@+id/issueitem_description"
              android:layout_width="wrap_content"
              android:layout_marginLeft="5dp"
-             android:layout_height="wrap_content" 
+              android:layout_height="wrap_content" 
+             android:layout_gravity="center_vertical" 
              android:text="说明" />
 
         </LinearLayout>
@@ -202,37 +209,32 @@
         <TextView
             android:id="@+id/issueitem_state"
             android:layout_width="0dp"
-            android:layout_weight="7"
+            android:layout_weight="6"
             android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_gravity="center_vertical"
-            android:text="状态" />
+             />
 
         <TextView
             android:id="@+id/issueitem_usercount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
+            android:layout_marginRight="10dp"
             android:layout_gravity="center_vertical"
-            android:text="报名" />
+              />
 
-        <ImageView
-            android:id="@+id/fenge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/image_description"
-            android:src="@drawable/actionbar_fenge" />
+        
 
         <TextView
             android:id="@+id/issueitem_replycount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:layout_marginRight="5dp"
             android:layout_gravity="center_vertical"
-            android:text="回复" />
+              />
 
     </LinearLayout>
 

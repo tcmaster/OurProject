@@ -385,6 +385,8 @@ public class AutoListView extends ListView implements OnScrollListener {
 		child.measure(childWidthSpec, childHeightSpec);
 	}
 
+
+	
 	/*
 	 * 定义下拉刷新接口
 	 */

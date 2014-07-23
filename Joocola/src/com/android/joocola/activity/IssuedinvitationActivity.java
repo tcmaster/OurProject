@@ -102,8 +102,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 		useCustomerActionBar();
 		getActionBarleft().setText("发布邀约:" + title);
 		getActionBarTitle().setVisibility(View.INVISIBLE);
-		getActionBarRight().setText("下一步");
-		getActionBarRight().setOnClickListener(new IssueOnclick());
+		getActionBarRight().setVisibility(View.INVISIBLE);
 
 	}
 

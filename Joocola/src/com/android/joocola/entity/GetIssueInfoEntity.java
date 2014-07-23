@@ -1,5 +1,6 @@
 package com.android.joocola.entity;
 
+import java.io.Serializable;
 
 
 
@@ -9,7 +10,11 @@ package com.android.joocola.entity;
  * @author bb
  * 
  */
-public class GetIssueInfoEntity {
+public class GetIssueInfoEntity implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int PID; // 邀约PID
 	private int TypeID; // 邀约类型PID
 	private String TypeName; // 及显示名称
@@ -32,6 +37,7 @@ public class GetIssueInfoEntity {
 	private int PublisherAge;// 发布者年龄
 	private String PublisherAstro;// 发布者星座
 	private String PublishDate;// 发布时间
+	private int PublisherID;// 发布者ID
 
 	public int getPID() {
 		return PID;
@@ -225,6 +231,14 @@ public class GetIssueInfoEntity {
 				+ ", PublisherBirthday=" + PublisherBirthday
 				+ ", PublisherAge=" + PublisherAge + ", PublisherAstro="
 				+ PublisherAstro + ", PublishDate=" + PublishDate + "]";
+	}
+
+	public int getPublisherID() {
+		return PublisherID;
+	}
+
+	public void setPublisherID(int publisherID) {
+		PublisherID = publisherID;
 	}
 
 }

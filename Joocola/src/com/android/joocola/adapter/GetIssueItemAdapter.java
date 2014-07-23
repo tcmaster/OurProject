@@ -3,7 +3,6 @@ package com.android.joocola.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,8 +99,7 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		holder.replycount.setText("回复(" + entity.getReplyCount() + ")");
 			String touxiangUrl = entity.getPublisherPhoto();
 			holder.touxiang.setErrorImageResId(R.drawable.photobg);
-			holder.touxiang.setDefaultImageResId(R.drawable.photobg);
-		Log.e("这是第" + position + "条的图片的地址", touxiangUrl);
+		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
 		if (touxiangUrl.startsWith("h")) {
 			holder.touxiang.setImageUrl(touxiangUrl, mImageLoader);
 		} else {
