@@ -1,7 +1,13 @@
 package com.android.joocola.activity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +18,8 @@ import com.android.joocola.R;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.HttpPostInterface;
+import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -29,6 +37,22 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 	private NetworkImageView touxiang;
 	private ImageView sexImageView;
 	private ImageLoader mImageLoader;
+	private String url = "Bus.AppointController.QueryAppoint.ashx";
+	private Handler handler = new Handler()
+	{
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				String json = (String) msg.obj;
+				GetIssueInfoEntity getIssueInfoEntity = resloveJson(json);
+				initView(getIssueInfoEntity);
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,15 +67,84 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 		GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
 				.getSerializableExtra("issueInfo");
 			initView(getIssueInfoEntity);
+		} else {
+			getIssueInfoEntity(issue_pid);
 		}
 	}
 
+	private GetIssueInfoEntity getIssueInfoEntity(int issue_pid) {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("IDs", issue_pid + "");
+		httpPostInterface.getData(url, new HttpPostCallBack() {
+			
+			@Override
+			public void httpPostResolveData(String result) {
+				Message message = Message.obtain();
+				message.what = 0;
+				message.obj = result;
+				handler.sendMessage(message);
+			}
+		});
+		return null;
+	}
 	private void initActionbar() {
 		useCustomerActionBar();
 		getActionBarleft().setText("邀约详情");
 		getActionBarTitle().setVisibility(View.INVISIBLE);
 		getActionBarRight().setVisibility(View.INVISIBLE);
 	}
+
+	private GetIssueInfoEntity resloveJson(String json) {
+		JSONObject jsonObject;
+		GetIssueInfoEntity getIssueInfoEntity = new GetIssueInfoEntity();
+		try {
+			jsonObject = new JSONObject(json);
+			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
+			if (jsonArray.length() != 0) {
+				JSONObject object = jsonArray.getJSONObject(0);
+				
+				getIssueInfoEntity.setTitle(object.getString("Title"));
+				getIssueInfoEntity.setApplyUserCount(object
+						.getInt("ApplyUserCount"));
+				getIssueInfoEntity.setCostName(object.getString("CostName"));
+				getIssueInfoEntity.setDescription(object
+						.getString("Description"));
+				getIssueInfoEntity.setLocationName(object
+						.getString("LocationName"));
+				getIssueInfoEntity.setPID(object.getInt("PID"));
+				getIssueInfoEntity.setPublishDate(object
+						.getString("PublishDate"));
+				getIssueInfoEntity.setPublisherAge(object
+						.getInt("PublisherAge"));
+				getIssueInfoEntity.setPublisherAstro(object
+						.getString("PublisherAstro"));
+				getIssueInfoEntity.setPublisherBirthday(object
+						.getString("PublisherBirthday"));
+				getIssueInfoEntity.setPublisherName(object
+						.getString("PublisherName"));
+				getIssueInfoEntity.setPublisherPhoto(object
+						.getString("PublisherPhoto"));
+				getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
+				getIssueInfoEntity.setReserveDate(object
+						.getString("ReserveDate"));
+				getIssueInfoEntity.setPublisherID(object.getInt("PublisherID"));
+				getIssueInfoEntity.setSexName(object.getString("SexName"));
+				getIssueInfoEntity.setState(object.getString("State"));
+				getIssueInfoEntity.setTitle(object.getString("Title"));
+			}  
+		} catch (JSONException e1) {
+			 
+			e1.printStackTrace();
+		}
+		return getIssueInfoEntity;
+
+	}
+	
+	/**
+	 * 加载布局
+	 * 
+	 * @param entity
+	 */
 	private void initView(GetIssueInfoEntity entity)
 	{
 		title = (TextView) this
@@ -96,6 +189,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 		replycount.setText("回复(" + entity.getReplyCount() + ")");
 		String touxiangUrl = entity.getPublisherPhoto();
 		touxiang.setDefaultImageResId(R.drawable.photobg);
+		Log.e("tagf", touxiangUrl);
 		if (touxiangUrl.startsWith("h")) {
 			touxiang.setImageUrl(touxiangUrl, mImageLoader);
 		} else {

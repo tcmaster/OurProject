@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,23 +54,18 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 			switch (msg.what) {
 
 			case 0:
-				//mEntities.clear();
+				mAutoListView.onLoadComplete();
 				String json = (String) msg.obj;
 				mEntities.addAll(resolveJson(json));
-				getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
-						getActivity(), bitmapCache);
-				mAutoListView.setAdapter(getIssueItemAdapter);
-				mAutoListView.setResultSize(10);
+				getIssueItemAdapter.notifyDataSetChanged();
+				mAutoListView.setResultSize(totalItemsCount);
 				break;
 			case 1:
 				mAutoListView.onRefreshComplete();
 				mEntities.clear();
-				mCurPageIndex = 1;
 				String json1 = (String) msg.obj;
 				mEntities.addAll(resolveJson(json1));
-				getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
-						getActivity(), bitmapCache);
-				mAutoListView.setAdapter(getIssueItemAdapter);
+				getIssueItemAdapter.notifyDataSetChanged();
 				break;
 			default:
 				break;
@@ -92,6 +86,9 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		mAutoListView.setOnRefreshListener(this);
 		mAutoListView.setOnLoadListener(this);
 		mAutoListView.setOnItemClickListener(new MylistviewItemClick());
+		getIssueItemAdapter = new GetIssueItemAdapter(mEntities, getActivity(),
+				bitmapCache);
+		mAutoListView.setAdapter(getIssueItemAdapter);
 		getData(0);
 		return view;
 	}
@@ -114,18 +111,15 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 	@Override
 	public void onLoad() {
 		if (mCurPageIndex + 1 > mTotalPagesCount) {
-			Log.e("----------->", mCurPageIndex + "");
-			Log.e("_____________________>", mTotalPagesCount + "");
 			return;
 		}
 		mCurPageIndex += 1;
-		Log.e("加载第几页", mCurPageIndex + "");
 		getData(0);
 	}
 
 	@Override
 	public void onRefresh() {
-		Log.e("onRefresh", mCurPageIndex + "");
+		mCurPageIndex = 1;
 		getData(1);
 	}
 
@@ -142,6 +136,13 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		}
 
 	}
+
+	/**
+	 * 解析json 返回一个GetIssueInfoEntity的list
+	 * 
+	 * @param json
+	 * @return
+	 */
 	private List<GetIssueInfoEntity> resolveJson(String json) {
 		List<GetIssueInfoEntity> data = new ArrayList<GetIssueInfoEntity>();
 		try {
