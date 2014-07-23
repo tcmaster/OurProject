@@ -11,7 +11,7 @@ public class Constans {
 	/**
 	 * 获取用户信息接口
 	 */
-	public static final String USERINFOURL = "Sys.UserController.GetUserInfo.ashx";
+	public static final String USERINFOURL = "Sys.UserController.GetUserInfos.ashx";
 	/*
 	 * 用来获取登录信息的shareprefernce.
 	 */

@@ -146,6 +146,14 @@ public class UserInfo implements Serializable {
 	 * 用户相册图片，以“，”分割
 	 */
 	private String AlbumPhotoUrls;
+	/**
+	 * 用户年龄
+	 */
+	private String Age;
+	/**
+	 * 用户星座
+	 */
+	private String Astro;
 
 	public String getPID() {
 		return PID;
@@ -419,6 +427,22 @@ public class UserInfo implements Serializable {
 		AlbumPhotoUrls = albumPhotoUrls;
 	}
 
+	public String getAge() {
+		return Age;
+	}
+
+	public void setAge(String age) {
+		Age = age;
+	}
+
+	public String getAstro() {
+		return Astro;
+	}
+
+	public void setAstro(String astro) {
+		Astro = astro;
+	}
+
 	@Override
 	public String toString() {
 		return "UserInfo [PID=" + PID + ", UserName=" + UserName
@@ -437,7 +461,8 @@ public class UserInfo implements Serializable {
 				+ ", MicroBlog=" + MicroBlog + ", Phone=" + Phone
 				+ ", Signature=" + Signature + ", Description=" + Description
 				+ ", HobbyIDs=" + HobbyIDs + ", HobbyNames=" + HobbyNames
-				+ ", AlbumPhotoUrls=" + AlbumPhotoUrls + "]";
+				+ ", AlbumPhotoUrls=" + AlbumPhotoUrls + ", Age=" + Age
+				+ ", Astro=" + Astro + "]";
 	}
 
 }

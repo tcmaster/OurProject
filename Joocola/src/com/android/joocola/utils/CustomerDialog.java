@@ -6,6 +6,11 @@ import android.app.AlertDialog.Builder;
 import android.view.Window;
 import android.view.WindowManager;
 
+/**
+ * 自定义Dialog 可以自定义Dialog的布局，以及定义布局上的监听事件，不影响界面上键盘的弹出
+ * 
+ * @author lixiaosong
+ */
 public class CustomerDialog {
 	private Activity context;
 	private int res;
@@ -62,6 +67,7 @@ public class CustomerDialog {
 			dlg.dismiss();
 		}
 	}
+
 	public interface CustomerViewInterface {
 		public void getCustomerView(final Window window, final AlertDialog dlg);
 	}

@@ -18,10 +18,15 @@ import com.lidroid.xutils.bitmap.core.BitmapSize;
 
 public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	private ArrayList<String> imgUrls;
+	private ArrayList<String> bigimgUrls;
 	private LayoutInflater mInflater;
 	private Context mContext;
+	/**
+	 * true 为编辑界面，false为详情界面
+	 */
+	private boolean flag = false;
 
-	public PC_Edit_GridView_Adapter(Context context) {
+	public PC_Edit_GridView_Adapter(Context context, boolean flag) {
 		mInflater = LayoutInflater.from(context);
 		imgUrls = new ArrayList<String>();
 		mContext = context;
@@ -29,7 +34,10 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return imgUrls.size() + 1;
+		if (flag)
+			return imgUrls.size() + 1;
+		else
+			return imgUrls.size();
 	}
 
 	@Override
@@ -68,17 +76,22 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	}
 
 	public void addImgUrls(String url) {
-		imgUrls.add(url);
+		imgUrls.add(Utils.processResultStr(url, "_150_"));
+		bigimgUrls.add(url);
 		notifyDataSetChanged();
 	}
 
 	public void deleteImgUrls(int position) {
 		imgUrls.remove(position);
+		bigimgUrls.remove(position);
 		notifyDataSetChanged();
 	}
 
+	/**
+	 * @return 大图地址
+	 */
 	public ArrayList<String> getImageUrls() {
-		return imgUrls;
+		return bigimgUrls;
 	}
 
 }

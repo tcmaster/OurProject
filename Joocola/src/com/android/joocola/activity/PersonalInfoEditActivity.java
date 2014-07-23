@@ -242,7 +242,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		String[] imgs = userInfo.getAlbumPhotoUrls().split(",");
 
 		pic_gv.setAdapter(new PC_Edit_GridView_Adapter(
-				PersonalInfoEditActivity.this));
+				PersonalInfoEditActivity.this, true));
 		if (imgs != null) {
 			for (int i = 0; i < imgs.length; i++) {
 				if (imgs[i].equals(""))

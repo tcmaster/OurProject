@@ -27,15 +27,12 @@ public class PersonalCenterActivity extends BaseActivity implements
 	private ImageView iv_photoRedPoint, iv_addPoint, iv_settingsPoint;
 	// 红色背景的文字提示，依次是报名邀约的文字提示，回复邀约的文字提示，评价邀约的文字提示
 	private TextView tv_applyPoint, tv_answerPoint, tv_commitPoint;
-	// 右边的数值文字，用于表示该条目的数量，依次是信用余额数，发起邀约数，报名邀约数，回复邀约数，收藏邀约数
-	private TextView tv_personalAchieve, tv_AddCount, tv_applyCount,
-			tv_answerCount, tv_saveCount;
+	// 右边的数值文字，用于表示该条目的数量，依次是发起邀约数，报名邀约数，回复邀约数，收藏邀约数
+	private TextView tv_AddCount, tv_applyCount, tv_answerCount, tv_saveCount;
 	// 昵称
 	private TextView nickName;
 	// 编辑按钮
 	private Button editButton;
-	// 如何获得信用的文字
-	private TextView howToGetCredit;
 	// 几个点击跳转的布局,依次是发起，报名，回复，收藏，评价，设置
 	private LinearLayout ll_add, ll_apply, ll_answer, ll_save, ll_commit,
 			ll_settings;
@@ -58,14 +55,12 @@ public class PersonalCenterActivity extends BaseActivity implements
 		tv_applyPoint = (TextView) findViewById(R.id.applyPoint);
 		tv_answerPoint = (TextView) findViewById(R.id.answerPoint);
 		tv_commitPoint = (TextView) findViewById(R.id.commitPoint);
-		tv_personalAchieve = (TextView) findViewById(R.id.personalAchieve);
 		tv_AddCount = (TextView) findViewById(R.id.AddCount);
 		tv_applyCount = (TextView) findViewById(R.id.applyCount);
 		tv_answerCount = (TextView) findViewById(R.id.answerCount);
 		tv_saveCount = (TextView) findViewById(R.id.saveCount);
 		nickName = (TextView) findViewById(R.id.personalName);
 		editButton = (Button) findViewById(R.id.edit);
-		howToGetCredit = (TextView) findViewById(R.id.howGetBalance);
 		ll_add = (LinearLayout) findViewById(R.id.addLayout);
 		ll_apply = (LinearLayout) findViewById(R.id.applayLayout);
 		ll_answer = (LinearLayout) findViewById(R.id.answerLayout);

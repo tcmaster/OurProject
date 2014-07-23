@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Application;
+import android.os.Handler;
 import android.util.Log;
 
 import com.android.joocola.dbmanger.BaseDataInfoManger;
@@ -18,6 +19,7 @@ import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.utils.Utils;
 
 public class JoocolaApplication extends Application {
@@ -32,11 +34,13 @@ public class JoocolaApplication extends Application {
 	private UserInfo userInfo;
 	// 基础城市信息
 	private List<BaseCityInfo> baseCityInfos;
+	private Handler handler;
 
 	@Override
 	public void onCreate() {
 		instance = this;
 		super.onCreate();
+		handler = new Handler();
 		getInfoFromNetwork();
 		initBaseCityInfo();
 	}
@@ -55,7 +59,6 @@ public class JoocolaApplication extends Application {
 				@Override
 				public void httpPostResolveData(String result) {
 					try {
-						Log.v("lixiaosong", result);
 						JSONArray array = new JSONArray(result);
 						for (int i = 0; i < array.length(); i++) {
 							JSONObject object = array.getJSONObject(i);
@@ -130,7 +133,7 @@ public class JoocolaApplication extends Application {
 	 */
 	public void initUserInfo(String userId) {
 		HttpPostInterface interface1 = new HttpPostInterface();
-		interface1.addParams("userID", userId);
+		interface1.addParams("UserIDs", userId);
 		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
@@ -139,52 +142,23 @@ public class JoocolaApplication extends Application {
 					userInfo = new UserInfo();
 					try {
 						JSONObject object = new JSONObject(result);
-						/**
-						 * 这里写的太麻烦，准备在优化时把这些改成通用反射方法
-						 */
-						userInfo.setDrinkName(object.getString("DrinkName"));
-						userInfo.setPhone(object.getString("Phone"));
-						userInfo.setMarryID(object.getInt("MarryID") + "");
-						userInfo.setPID(object.getInt("PID") + "");
-						userInfo.setNickName(object.getString("NickName"));
-						// userInfo.setCredit(object.getInt("Credit") + "");
-						userInfo.setSexName(object.getString("SexName"));
-						userInfo.setUserName(object.getString("UserName"));
-						userInfo.setHeightID(object.getInt("HeightID") + "");
-						userInfo.setProfessionID(object.getInt("ProfessionID")
-								+ "");
-						userInfo.setSignature(object.getString("Signature"));
-						userInfo.setSmokeID(object.getInt("SmokeID") + "");
-						userInfo.setBirthday(object.getString("Birthday"));
-						userInfo.setMicroQQ(object.getString("MicroQQ"));
-						userInfo.setRevenueName(object.getString("RevenueName"));
-						userInfo.setQQ(object.getString("QQ"));
-						userInfo.setPhotoUrl(object.getString("PhotoUrl"));
-						userInfo.setHobbyIDs(object.getString("HobbyIDs"));
-						userInfo.setOldCityName(object.getString("OldCityName"));
-						userInfo.setDescription(object.getString("Description"));
-						userInfo.setHobbyNames(object.getString("HobbyNames"));
-						userInfo.setNewCityID(object.getInt("NewCityID") + "");
-						userInfo.setOldCityID(object.getInt("OldCityID") + "");
-						userInfo.setMicroBlog(object.getString("MicroBlog"));
-						userInfo.setHeightName(object.getString("HeightName"));
-						userInfo.setRevenueID(object.getInt("RevenueID") + "");
-						userInfo.setDrinkID(object.getInt("DrinkID") + "");
-						userInfo.setMarryName(object.getString("MarryName"));
-						userInfo.setProfessionName(object
-								.getString("ProfessionName"));
-						userInfo.setEmail(object.getString("Email"));
-						userInfo.setNewCityName(object.getString("NewCityName"));
-						userInfo.setSmokeName(object.getString("SmokeName"));
-						userInfo.setSexID(object.getInt("SexID") + "");
-						userInfo.setAlbumPhotoUrls(object
-								.getString("AlbumPhotoUrls"));
+						JSONArray array = object.getJSONArray("Entities");
+						JSONObject userObject = array.getJSONObject(0);
+						JsonUtils.getUserInfo(userObject, userInfo);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 
-				} else
-					Utils.toast(getApplicationContext(), "获取登录用户信息失败");
+				} else {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Utils.toast(getApplicationContext(), "获取登录用户信息失败");
+						}
+					});
+
+				}
 			}
 		});
 	}
@@ -208,7 +182,6 @@ public class JoocolaApplication extends Application {
 						@Override
 						public void httpPostResolveData(String result) {
 							try {
-								Log.v("lixiaosong", result);
 								JSONArray array = new JSONArray(result);
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject object = array.getJSONObject(i);
