@@ -294,7 +294,9 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v,
 					ContextMenuInfo menuInfo) {
-				menu.add(0, 0, 0, "删除");
+				if (!(((AdapterContextMenuInfo) menuInfo).position == (pic_gv
+						.getAdapter().getCount() - 1)))
+					menu.add(0, 0, 0, "删除");
 			}
 		});
 	}

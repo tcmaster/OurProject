@@ -4,13 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -32,7 +33,7 @@ import com.lidroid.xutils.view.annotation.event.OnItemClick;
  * @author lixiaosong
  * 
  */
-public class PersonalDetailActivity extends Activity {
+public class PersonalDetailActivity extends BaseActivity {
 	/**
 	 * 本页面的用户ID
 	 */
@@ -46,6 +47,11 @@ public class PersonalDetailActivity extends Activity {
 	 */
 	@ViewInject(R.id.pd_ageAndstar_tv)
 	private TextView ageAndStar_tv;
+	/**
+	 * 性别
+	 */
+	@ViewInject(R.id.pd_sexImg_iv)
+	private ImageView sex_iv;
 	/**
 	 * 位置
 	 */
@@ -143,11 +149,31 @@ public class PersonalDetailActivity extends Activity {
 		ViewUtils.inject(this);
 		userId = getIntent().getStringExtra("userId");
 		handler = new Handler();
+		initActionBar();
 		if (userId != null) {
 			getAndShowUserInfo();
 		} else {
 			Utils.toast(this, "获取用户信息失败");
 		}
+	}
+
+	private void initActionBar() {
+		useCustomerActionBar();
+		getActionBarleft().setText("详细资料");
+		getActionBarRight().setCompoundDrawablesWithIntrinsicBounds(null, null,
+				getResources().getDrawable(R.drawable.edit), null);
+		getActionBarRight().setText("");
+		getActionBarTitle().setText("");
+		getActionBarRight().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(PersonalDetailActivity.this,
+						PersonalInfoEditActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
 	/**
@@ -173,23 +199,38 @@ public class PersonalDetailActivity extends Activity {
 							public void run() {
 								ageAndStar_tv.setText(info.getAge() + " "
 										+ info.getAstro());
-								if (info.getSexName().contains("男"))
+								if (info.getSexName().contains("男")) {
 									ageAndStar_tv.setTextColor(Color.BLUE);
-								else
+									sex_iv.setImageResource(R.drawable.boy);
+								} else {
 									ageAndStar_tv.setTextColor(Color.RED);
-								nickName_tv.setText(info.getNickName());
-								hobby_tv.setText(info.getHobbyNames());
-								signIn_tv.setText(info.getSignature());
-								phone_tv.setText(info.getPhone());
-								startDate_tv.setText(0);
+									sex_iv.setImageResource(R.drawable.girl);
+								}
+								nickName_tv.setText(Utils.getNewStr(
+										info.getNickName(), "未填写"));
+								hobby_tv.setText(Utils.getNewStr(
+										info.getHobbyNames(), "未填写"));
+								signIn_tv.setText(Utils.getNewStr(
+										info.getSignature(), "未填写"));
+								phone_tv.setText(Utils.getNewStr(
+										info.getPhone(), "未填写"));
+								startDate_tv.setText("0");
 								commitCount.setText("0");
 								addCommitCount.setText("0");
-								location_tv.setText(info.getNewCityName());
-								profession_tv.setText(info.getProfessionName());
-								annualSalary_tv.setText(info.getRevenueName());
-								emotion_tv.setText(info.getMarryName());
-								smoke_tv.setText(info.getSmokeName());
-								drink_tv.setText(info.getDrinkName());
+								location_tv.setText(Utils.getNewStr(
+										info.getNewCityName(), "未填写"));
+								profession_tv.setText(Utils.getNewStr(
+										info.getProfessionName(), "未填写"));
+								height_tv.setText(Utils.getNewStr(
+										info.getHeightName(), "未填写"));
+								annualSalary_tv.setText(Utils.getNewStr(
+										info.getRevenueName(), "未填写"));
+								emotion_tv.setText(Utils.getNewStr(
+										info.getMarryName(), "未填写"));
+								smoke_tv.setText(Utils.getNewStr(
+										info.getSmokeName(), "未填写"));
+								drink_tv.setText(Utils.getNewStr(
+										info.getDrinkName(), "未填写"));
 								String[] imgUrls = info.getAlbumPhotoUrls()
 										.split(",");
 								pic_gv.setAdapter(new PC_Edit_GridView_Adapter(

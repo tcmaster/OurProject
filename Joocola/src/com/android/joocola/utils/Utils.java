@@ -283,4 +283,15 @@ public class Utils {
 		}
 		return -1;
 	}
+
+	/**
+	 * 如果src的字符串为空或者等于"",则返回want的字符串，如果不满足，则返回src
+	 * 
+	 */
+	public static String getNewStr(String src, String want) {
+		if (src == null || src.equals("") || src.equals("null"))
+			return want;
+		else
+			return src;
+	}
 }
