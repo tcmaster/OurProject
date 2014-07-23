@@ -3,6 +3,7 @@ package com.android.joocola.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -99,7 +100,19 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 		} else {
 			touxiang.setImageUrl(Constans.URL + touxiangUrl, mImageLoader);
 		}
-		int publishID = entity.getPublisherID(); // 用于传值到嵩哥界面
+		final int publishID = entity.getPublisherID(); // 用于传值到嵩哥界面
+		touxiang.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(
+						IssuedinvitationDetailsActivity.this,
+						PersonalDetailActivity.class);
+				intent.putExtra("pid", publishID);
+				startActivity(intent);
+				
+			}
+		});
 
 	}
 }

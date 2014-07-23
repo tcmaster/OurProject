@@ -45,8 +45,9 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 	private List<GetIssueInfoEntity> mEntities = new ArrayList<GetIssueInfoEntity>();
 	private GetIssueItemAdapter getIssueItemAdapter;
 	private BitmapCache bitmapCache = new BitmapCache();
-	private int load_data = 1;
 	private int totalItemsCount;
+	private int mTotalPagesCount;// 总共有多少页
+	private int mCurPageIndex = 1;// 当前显示多少页
 
 	@SuppressLint("HandlerLeak")
 	private Handler releaseHandler  = new Handler(){
@@ -54,25 +55,23 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 			switch (msg.what) {
 
 			case 0:
-				mAutoListView.onRefreshComplete();
 				//mEntities.clear();
 				String json = (String) msg.obj;
 				mEntities.addAll(resolveJson(json));
 				getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
 						getActivity(), bitmapCache);
 				mAutoListView.setAdapter(getIssueItemAdapter);
-				mAutoListView.setResultSize(totalItemsCount);
+				mAutoListView.setResultSize(10);
 				break;
 			case 1:
 				mAutoListView.onRefreshComplete();
 				mEntities.clear();
-				load_data = 1;
+				mCurPageIndex = 1;
 				String json1 = (String) msg.obj;
 				mEntities.addAll(resolveJson(json1));
 				getIssueItemAdapter = new GetIssueItemAdapter(mEntities,
 						getActivity(), bitmapCache);
 				mAutoListView.setAdapter(getIssueItemAdapter);
-				mAutoListView.setResultSize(totalItemsCount);
 				break;
 			default:
 				break;
@@ -99,8 +98,8 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 
 	private void getData(final int type) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		// httpPostInterface.addParams("ItemsPerPage", load_data + "");
-		httpPostInterface.addParams("CurrentPage", load_data + "");
+		httpPostInterface.addParams("ItemsPerPage", 10 + "");
+		httpPostInterface.addParams("CurrentPage", mCurPageIndex + "");
 		httpPostInterface.getData(issue_url, new HttpPostCallBack() {
 
 			@Override
@@ -114,15 +113,19 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 	}
 	@Override
 	public void onLoad() {
-		// load_data += 5;
-		load_data += 1;
-		Log.e("onload", load_data + "");
+		if (mCurPageIndex + 1 > mTotalPagesCount) {
+			Log.e("----------->", mCurPageIndex + "");
+			Log.e("_____________________>", mTotalPagesCount + "");
+			return;
+		}
+		mCurPageIndex += 1;
+		Log.e("加载第几页", mCurPageIndex + "");
 		getData(0);
 	}
 
 	@Override
 	public void onRefresh() {
-		Log.e("onRefresh", load_data + "");
+		Log.e("onRefresh", mCurPageIndex + "");
 		getData(1);
 	}
 
@@ -144,6 +147,8 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			totalItemsCount = jsonObject.getInt("TotalItemsCount");
+			mTotalPagesCount = jsonObject.getInt("TotalPagesCount");
+			mCurPageIndex = jsonObject.getInt("CurPageIndex");
 			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject object = jsonArray.getJSONObject(i);
