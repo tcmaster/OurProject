@@ -82,8 +82,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.android.joocola.activity.IssuedinvitationDetailsActivity"
-            android:launchMode="singleTop"
+            android:name="com.android.joocola.activity.IssuedinvitationDetailsActivity" 
             android:screenOrientation="portrait" >
         </activity>
         <activity

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,8 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.android.joocola.R;
+import com.android.joocola.activity.IssuedinvitationDetailsActivity;
 import com.android.joocola.adapter.GetIssueItemAdapter;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
@@ -88,6 +92,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		mAutoListView = (AutoListView) view.findViewById(R.id.issue_listview);
 		mAutoListView.setOnRefreshListener(this);
 		mAutoListView.setOnLoadListener(this);
+		mAutoListView.setOnItemClickListener(new MylistviewItemClick());
 		getData(0);
 		return view;
 	}
@@ -121,6 +126,19 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		getData(1);
 	}
 
+	class MylistviewItemClick implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			GetIssueInfoEntity getIssueInfoEntity = mEntities.get(position - 1);
+			Intent intent = new Intent(getActivity(),
+					IssuedinvitationDetailsActivity.class);
+			intent.putExtra("issueInfo", getIssueInfoEntity);
+			startActivity(intent);
+		}
+
+	}
 	private List<GetIssueInfoEntity> resolveJson(String json) {
 		List<GetIssueInfoEntity> data = new ArrayList<GetIssueInfoEntity>();
 		try {
@@ -154,6 +172,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 				getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
 				getIssueInfoEntity.setReserveDate(object
 						.getString("ReserveDate"));
+				getIssueInfoEntity.setPublisherID(object.getInt("PublisherID"));
 				getIssueInfoEntity.setSexName(object.getString("SexName"));
 				getIssueInfoEntity.setState(object.getString("State"));
 				getIssueInfoEntity.setTitle(object.getString("Title"));
