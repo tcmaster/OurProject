@@ -2,6 +2,7 @@ package com.android.joocola.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -108,7 +109,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 				Intent intent = new Intent(
 						IssuedinvitationDetailsActivity.this,
 						PersonalDetailActivity.class);
-				intent.putExtra("pid", publishID);
+				intent.putExtra("userId", publishID + "");
+				Log.e("跳转的pid", publishID + "");
 				startActivity(intent);
 				
 			}
