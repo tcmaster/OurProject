@@ -5,6 +5,7 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
@@ -46,6 +48,7 @@ public class WatchBigPicActivity extends BaseActivity {
 	 * 当前点击位置
 	 */
 	private int currentItem;
+	private Handler handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class WatchBigPicActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		imgUrls = getIntent().getStringArrayListExtra("imgUrls");
 		currentItem = getIntent().getIntExtra("position", 0);
+		handler = new Handler();
 		initActionBar();
 		initViewPager();
 	}
@@ -73,7 +77,40 @@ public class WatchBigPicActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				/**
+				 * 开启线程，保存下载图片
+				 */
+				Utils.toast(WatchBigPicActivity.this, "图片开始下载");
+				new Thread(new Runnable() {
 
+					@Override
+					public void run() {
+						final String path = Utils.getNetBitmap(imgUrls
+								.get(photo_vp.getCurrentItem()));
+						if (path == null) {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									Utils.toast(WatchBigPicActivity.this,
+											"图片未成功保存，请检查网络连接");
+
+								}
+							});
+						} else {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									Utils.toast(WatchBigPicActivity.this,
+											"图片已经保存成功,保存地址是" + path);
+
+								}
+							});
+						}
+
+					}
+				}).start();
 			}
 		});
 	}

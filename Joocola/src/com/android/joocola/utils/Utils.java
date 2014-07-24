@@ -5,10 +5,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -293,5 +301,79 @@ public class Utils {
 			return want;
 		else
 			return src;
+	}
+
+	/**
+	 * 获取网络图片,并将其保存在文件中,会返回保存的路径
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static String getNetBitmap(String url) {
+
+		final HttpClient client = new DefaultHttpClient();
+		final HttpGet getRequest = new HttpGet(url);
+
+		try {
+			HttpResponse response = client.execute(getRequest);
+			final int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode != HttpStatus.SC_OK) {
+				return null;
+			}
+
+			final HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				InputStream inputStream = null;
+				FileOutputStream fOS = null;
+				try {
+					inputStream = entity.getContent();
+					if (Environment.getExternalStorageState().equals(
+							Environment.MEDIA_MOUNTED)) {
+						File file = new File(Environment
+								.getExternalStoragePublicDirectory(
+										Environment.DIRECTORY_DCIM)
+								.getAbsolutePath()
+								+ File.separator + "聚可乐文件图片存储");
+						if (!file.exists())
+							file.mkdirs();
+						File bmFile = new File(file.getAbsolutePath()
+								+ File.separator + System.currentTimeMillis()
+								+ ".jpg");
+						fOS = new FileOutputStream(bmFile);
+						byte[] data = new byte[1024];
+						int len = 0;
+						while ((len = inputStream.read(data)) != -1) {
+							fOS.write(data, 0, len);
+						}
+						return bmFile.getAbsolutePath();
+					}
+					return null;
+				} catch (OutOfMemoryError e) {
+					System.gc();
+					return null;
+				} finally {
+					if (inputStream != null) {
+						inputStream.close();
+						inputStream = null;
+					}
+					if (fOS != null) {
+						fOS.close();
+						fOS = null;
+					}
+					entity.consumeContent();
+				}
+			}
+		} catch (OutOfMemoryError o) {
+			System.gc();
+		} catch (IOException e) {
+			getRequest.abort();
+		} catch (IllegalStateException e) {
+			getRequest.abort();
+		} catch (Exception e) {
+			getRequest.abort();
+		} finally {
+			client.getConnectionManager().shutdown();
+		}
+		return null;
 	}
 }
