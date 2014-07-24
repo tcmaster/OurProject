@@ -166,6 +166,10 @@ public class FindPasswordActivity extends BaseActivity implements
 			String input_name = edit_pm.getText().toString();
 			String input_security_code = edit_security.getText().toString();// 用户输入的验证码
 			String newPswd = edit_new_pwsd.getText().toString();// 用户输入的新密码
+			if (input_name.isEmpty()) {
+				Utils.toast(FindPasswordActivity.this, "请输入账号");
+				break;
+			}
 			if (input_security_code.length() != 6) {
 
 				Utils.toast(FindPasswordActivity.this, "请输入正确的验证码");

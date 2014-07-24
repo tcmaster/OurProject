@@ -1,9 +1,13 @@
 package com.android.joocola.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,11 +19,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.adapter.IssueReplyAdapter;
 import com.android.joocola.entity.GetIssueInfoEntity;
+import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.JsonUtils;
+import com.android.joocola.view.AutoListView;
+import com.android.joocola.view.AutoListView.OnLoadListener;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -30,14 +39,23 @@ import com.android.volley.toolbox.Volley;
  * @author bb
  * 
  */
-public class IssuedinvitationDetailsActivity extends BaseActivity {
+public class IssuedinvitationDetailsActivity extends BaseActivity implements
+		OnLoadListener {
 	private int issue_pid;
 	private TextView title, name, age, astro, issuetime, issuesex, issuecost,
 			location, description, state, usercount, replycount;
 	private NetworkImageView touxiang;
 	private ImageView sexImageView;
 	private ImageLoader mImageLoader;
-	private String url = "Bus.AppointController.QueryAppoint.ashx";
+	private AutoListView mAutoListView;
+	private String url = "Bus.AppointController.QueryAppoint.ashx";// 根据pid获得邀约详情的地址;
+	private String replyUrl = "Bus.AppointController.PubAppointReply.ashx";// 邀约评论的地址。
+	private int totalItemsCount; // 总共多少条
+	private int mTotalPagesCount;// 总共有多少页
+	private int mCurPageIndex = 1;// 当前显示多少页
+	private IssueReplyAdapter issueReplyAdapter;
+	private List<ReplyEntity> list = new ArrayList<ReplyEntity>();
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler()
 	{
 		public void handleMessage(android.os.Message msg) {
@@ -47,7 +65,14 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 				GetIssueInfoEntity getIssueInfoEntity = resloveJson(json);
 				initView(getIssueInfoEntity);
 				break;
-
+			case 1:
+				mAutoListView.onLoadComplete();
+				String replyJson = (String) msg.obj;
+				List<ReplyEntity> list = resolveJson(replyJson);
+				mAutoListView.setResultSize(list.size());
+				list.addAll(list);
+				issueReplyAdapter.notifyDataSetChanged();
+				break;
 			default:
 				break;
 			}
@@ -59,6 +84,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 		this.setContentView(R.layout.activity_issuedetails);
 		Intent intent = getIntent();
 		initActionbar();
+		mAutoListView = (AutoListView) this.findViewById(R.id.issue_listview);
+		mAutoListView.setOnLoadListener(this);
+		BitmapCache bitmapCache = new BitmapCache();
+		issueReplyAdapter = new IssueReplyAdapter(list,
+				IssuedinvitationDetailsActivity.this, bitmapCache);
+		mAutoListView.setAdapter(issueReplyAdapter);
 		mImageLoader = new ImageLoader(
 				Volley.newRequestQueue(IssuedinvitationDetailsActivity.this),
 				new BitmapCache());
@@ -66,13 +97,14 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 		if (issue_pid == -1) {
 		GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
 				.getSerializableExtra("issueInfo");
+			issue_pid = getIssueInfoEntity.getPID();
 			initView(getIssueInfoEntity);
 		} else {
 			getIssueInfoEntity(issue_pid);
 		}
 	}
 
-	private GetIssueInfoEntity getIssueInfoEntity(int issue_pid) {
+	private void getIssueInfoEntity(int issue_pid) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("IDs", issue_pid + "");
 		httpPostInterface.getData(url, new HttpPostCallBack() {
@@ -85,7 +117,6 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 				handler.sendMessage(message);
 			}
 		});
-		return null;
 	}
 	private void initActionbar() {
 		useCustomerActionBar();
@@ -102,35 +133,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
 			if (jsonArray.length() != 0) {
 				JSONObject object = jsonArray.getJSONObject(0);
-				
-				getIssueInfoEntity.setTitle(object.getString("Title"));
-				getIssueInfoEntity.setApplyUserCount(object
-						.getInt("ApplyUserCount"));
-				getIssueInfoEntity.setCostName(object.getString("CostName"));
-				getIssueInfoEntity.setDescription(object
-						.getString("Description"));
-				getIssueInfoEntity.setLocationName(object
-						.getString("LocationName"));
-				getIssueInfoEntity.setPID(object.getInt("PID"));
-				getIssueInfoEntity.setPublishDate(object
-						.getString("PublishDate"));
-				getIssueInfoEntity.setPublisherAge(object
-						.getInt("PublisherAge"));
-				getIssueInfoEntity.setPublisherAstro(object
-						.getString("PublisherAstro"));
-				getIssueInfoEntity.setPublisherBirthday(object
-						.getString("PublisherBirthday"));
-				getIssueInfoEntity.setPublisherName(object
-						.getString("PublisherName"));
-				getIssueInfoEntity.setPublisherPhoto(object
-						.getString("PublisherPhoto"));
-				getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
-				getIssueInfoEntity.setReserveDate(object
-						.getString("ReserveDate"));
-				getIssueInfoEntity.setPublisherID(object.getInt("PublisherID"));
-				getIssueInfoEntity.setSexName(object.getString("SexName"));
-				getIssueInfoEntity.setState(object.getString("State"));
-				getIssueInfoEntity.setTitle(object.getString("Title"));
+				getIssueInfoEntity = JsonUtils.getIssueInfoEntity(object,
+						getIssueInfoEntity);
 			}  
 		} catch (JSONException e1) {
 			 
@@ -146,7 +150,9 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 	 * @param entity
 	 */
 	private void initView(GetIssueInfoEntity entity)
-	{
+ {
+		initReplyList();// 加载评论JSON
+
 		title = (TextView) this
 				.findViewById(R.id.issueitem_title);
 		name = (TextView) this
@@ -211,4 +217,60 @@ public class IssuedinvitationDetailsActivity extends BaseActivity {
 		});
 
 	}
+
+	/**
+	 * 加载评论json
+	 */
+	private void initReplyList() {
+
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("IDs", issue_pid + "");
+		httpPostInterface.addParams("ItemsPerPage", 10 + "");
+		httpPostInterface.addParams("CurrentPage", mCurPageIndex + "");
+		httpPostInterface.getData(replyUrl, new HttpPostCallBack() {
+			
+			@Override
+			public void httpPostResolveData(String result) {
+				Message message = Message.obtain();
+				message.what = 1;
+				message.obj = result;
+				handler.sendMessage(message);
+			}
+		});
+	}
+
+	/**
+	 * 解析评论json
+	 */
+	private List<ReplyEntity> resolveJson(String json) {
+		List<ReplyEntity> list = new ArrayList<ReplyEntity>();
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject(json);
+			totalItemsCount = jsonObject.getInt("TotalItemsCount");
+			mTotalPagesCount = jsonObject.getInt("TotalPagesCount");
+			mCurPageIndex = jsonObject.getInt("CurPageIndex");
+			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+				ReplyEntity replyEntity = new ReplyEntity();
+				replyEntity = JsonUtils
+						.getReplyEntity(jsonObject2, replyEntity);
+				list.add(replyEntity);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	@Override
+	public void onLoad() {
+		if (mCurPageIndex + 1 > mTotalPagesCount) {
+			return;
+		}
+		mCurPageIndex += 1;
+		initReplyList();
+	}
+
+
 }
