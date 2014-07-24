@@ -559,7 +559,8 @@
                 android:text="@string/like"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:id="@+id/like_tv"/>
         </LinearLayout>
 
         <View
