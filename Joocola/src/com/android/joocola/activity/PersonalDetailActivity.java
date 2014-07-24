@@ -4,20 +4,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.adapter.PC_Edit_GridView_Adapter;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.CustomerDialog;
+import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -25,6 +31,7 @@ import com.android.joocola.utils.Utils;
 import com.android.joocola.view.MyGridView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
 
 /**
@@ -137,6 +144,21 @@ public class PersonalDetailActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.pd_myPicShow_gv)
 	private MyGridView pic_gv;
+	/**
+	 * 邀请按钮
+	 */
+	@ViewInject(R.id.pd_add_ll)
+	private LinearLayout add_ll;
+	/**
+	 * 喜欢按钮
+	 */
+	@ViewInject(R.id.pd_like_ll)
+	private LinearLayout like_ll;
+	/**
+	 * 聊天按钮
+	 */
+	@ViewInject(R.id.pd_talk_ll)
+	private LinearLayout talk_ll;
 	/**
 	 * 用于向主线程发送数据的handler
 	 */
@@ -269,5 +291,64 @@ public class PersonalDetailActivity extends BaseActivity {
 				((PC_Edit_GridView_Adapter) pic_gv.getAdapter()).getImageUrls());
 		intent.putExtra("position", position);
 		startActivity(intent);
+	}
+
+	@OnClick({ R.id.pd_add_ll, R.id.pd_like_ll, R.id.pd_talk_ll })
+	public void OnClick(View v) {
+		switch (v.getId()) {
+		case R.id.pd_add_ll:
+			processAdd();
+			break;
+		case R.id.pd_like_ll:
+			processLike();
+			break;
+		case R.id.pd_talk_ll:
+			processTalk();
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void processAdd() {
+		CustomerDialog cdlg = new CustomerDialog(this,
+				R.layout.dlg_singlechoice);
+		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				TextView title_tv = (TextView) window
+						.findViewById(R.id.dlg_pe_title);
+				TextView ok_btn = (TextView) window
+						.findViewById(R.id.dlg_pe_ok);
+				TextView cancel_btn = (TextView) window
+						.findViewById(R.id.dlg_pe_cancel);
+				ListView add_lv = (ListView) window
+						.findViewById(R.id.dlg_pe_listview);
+			}
+		});
+		cdlg.showDlg();
+	}
+
+	private void processLike() {
+		CustomerDialog cdlg = new CustomerDialog(this, R.layout.dlg_message);
+		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				TextView title_tv = (TextView) window
+						.findViewById(R.id.dlg_pe_title);
+				TextView ok_btn = (TextView) window
+						.findViewById(R.id.dlg_pe_ok);
+				TextView cancel_btn = (TextView) window
+						.findViewById(R.id.dlg_pe_cancel);
+				TextView message_tv = (TextView) window
+						.findViewById(R.id.dlg_message);
+			}
+		});
+		cdlg.showDlg();
+	}
+
+	private void processTalk() {
 	}
 }

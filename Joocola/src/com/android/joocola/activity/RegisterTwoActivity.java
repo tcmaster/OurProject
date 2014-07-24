@@ -246,15 +246,17 @@ public class RegisterTwoActivity extends BaseActivity implements
 			File file = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DCIM).getAbsolutePath()
 					+ File.separator + tempName);
-			Log.v("lixiaosong", "我到了这里，照片地址是" + file.getAbsolutePath());
 			/**
 			 * 这里需要对原图进行缩放
 			 */
 			Bitmap bm = ThumbnailUtils.extractThumbnail(
 					BitmapFactory.decodeFile(file.getAbsolutePath()),
 					iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
+			bm = Utils.rotaingImageView(
+					Utils.rotateImg(file.getAbsolutePath()), bm);
+			File resultFile = Utils.createBitmapFile(bm);
 			iv_userPhoto.setImageBitmap(bm);
-			uploadImage(file);
+			uploadImage(resultFile);
 		} else if (requestCode == PICKPICTURE && resultCode == RESULT_OK) {
 			if (data != null) {
 				Uri uri = data.getData();
@@ -277,10 +279,11 @@ public class RegisterTwoActivity extends BaseActivity implements
 				uploadImage(file);
 			}
 		}
+
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void uploadImage(File file) {
+	private void uploadImage(final File file) {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.uploadImageData(file, new HttpPostCallBack() {
 
@@ -288,6 +291,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 			public void httpPostResolveData(String result) {
 				if (result != null) {
 					imgUrl = Utils.processResultStr(result, "_150_");
+					file.delete();
 				}
 			}
 		});

@@ -77,6 +77,9 @@
     <string name="nickName_pd">昵称</string>
     <string name="startDate_pd">发起中的邀约</string>
     <string name="commit">评价</string>
+    <string name="add">邀请</string>
+    <string name="like">喜欢</string>
+    <string name="talk">聊天</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>

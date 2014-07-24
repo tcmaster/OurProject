@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/vp_bigimg"
         android:contentDescription="@string/image_description"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        />
 
 </RelativeLayout>

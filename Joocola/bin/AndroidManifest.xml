@@ -97,7 +97,9 @@
         </activity>
         <activity
             android:name="com.android.joocola.activity.PersonalDetailActivity"
-            android:label="@string/title_activity_personal_detail" >
+            android:label="@string/title_activity_personal_detail"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

@@ -14,4 +14,6 @@
     <color name="actionBarTextTitle">#2eb10b</color>
     <drawable name="clickblue">#ff3333ff</drawable>
     <drawable name="clickbluefalse">#ff5555ff</drawable>
+    <drawable name="clickdeepgraytrue">#ff444444</drawable>
+    <drawable name="clickdeepgrayfalse">#eec7c7c7</drawable>
 </resources>

@@ -21,6 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -290,6 +291,23 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+
+	/**
+	 * 旋转图片
+	 * 
+	 * @param angle
+	 * @param bitmap
+	 * @return Bitmap
+	 */
+	public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+		// 旋转图片 动作
+		Matrix matrix = new Matrix();
+		matrix.postRotate(angle);
+		// 创建新的图片
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		return resizedBitmap;
 	}
 
 	/**

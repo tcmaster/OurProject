@@ -12,6 +12,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -306,9 +308,8 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		if (item.getItemId() == 0) {
 			final AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item
 					.getMenuInfo();
-			String deleteUrl = (String) pic_gv.getAdapter().getItem(
-					menuInfo.position);
-
+			String deleteUrl = ((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
+					.getImageUrls().get(menuInfo.position);
 			HttpPostInterface interface1 = new HttpPostInterface();
 			interface1.addParams("userID", JoocolaApplication.getInstance()
 					.getUserInfo().getPID());
@@ -327,6 +328,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 										"删除成功");
 								((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
 										.deleteImgUrls(menuInfo.position);
+								/**
+								 * 更新用户信息
+								 */
+								JoocolaApplication.getInstance().initUserInfo(
+										JoocolaApplication.getInstance()
+												.getUserInfo().getPID());
 							}
 						});
 					} else {
@@ -1045,13 +1052,20 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			File file = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DCIM).getAbsolutePath()
 					+ File.separator + tempName);
-			uploadImage(file);
+			/**
+			 * 这里需要对照片的角度进行校正
+			 */
+			Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
+			bm = Utils.rotaingImageView(
+					Utils.rotateImg(file.getAbsolutePath()), bm);
+			File resultFile = Utils.createBitmapFile(bm);
+			uploadImage(resultFile);
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void uploadImage(File file) {
+	private void uploadImage(final File file) {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.uploadImageData(file, new HttpPostCallBack() {
 
@@ -1108,6 +1122,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 					});
 
 				}
+				file.delete();
 			}
 		});
 	}
