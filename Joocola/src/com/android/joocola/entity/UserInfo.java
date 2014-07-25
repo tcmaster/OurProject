@@ -154,6 +154,39 @@ public class UserInfo implements Serializable {
 	 * 用户星座
 	 */
 	private String Astro;
+	/**
+	 * 
+	 * 用户当前查询的某邀约的PID
+	 */
+	private String AppointID;
+	/**
+	 * 用户在当前查询的邀约中的状态
+	 */
+	private String AppointStateID;
+	/**
+	 * 用户发起的邀约数量
+	 */
+	private String StaAppMyCount;
+	/**
+	 * 用户参与的邀约数量
+	 */
+	private String StaAppJoinCount;
+	/**
+	 * 用户回复的邀约数量
+	 */
+	private String StaAppReplyCount;
+	/**
+	 * 用户收藏的邀约数量
+	 */
+	private String StaAppFavoriteCount;
+	/**
+	 * 等待用户评价的邀约数量
+	 */
+	private String StaAppWaitCommentCount;
+	/**
+	 * 用户评价过的邀约数量
+	 */
+	private String StaAppCommentCount;
 
 	public String getPID() {
 		return PID;
@@ -443,6 +476,70 @@ public class UserInfo implements Serializable {
 		Astro = astro;
 	}
 
+	public String getAppointID() {
+		return AppointID;
+	}
+
+	public void setAppointID(String appointID) {
+		AppointID = appointID;
+	}
+
+	public String getAppointStateID() {
+		return AppointStateID;
+	}
+
+	public void setAppointStateID(String appointStateID) {
+		AppointStateID = appointStateID;
+	}
+
+	public String getStaAppMyCount() {
+		return StaAppMyCount;
+	}
+
+	public void setStaAppMyCount(String staAppMyCount) {
+		StaAppMyCount = staAppMyCount;
+	}
+
+	public String getStaAppJoinCount() {
+		return StaAppJoinCount;
+	}
+
+	public void setStaAppJoinCount(String staAppJoinCount) {
+		StaAppJoinCount = staAppJoinCount;
+	}
+
+	public String getStaAppReplyCount() {
+		return StaAppReplyCount;
+	}
+
+	public void setStaAppReplyCount(String staAppReplyCount) {
+		StaAppReplyCount = staAppReplyCount;
+	}
+
+	public String getStaAppFavoriteCount() {
+		return StaAppFavoriteCount;
+	}
+
+	public void setStaAppFavoriteCount(String staAppFavoriteCount) {
+		StaAppFavoriteCount = staAppFavoriteCount;
+	}
+
+	public String getStaAppWaitCommentCount() {
+		return StaAppWaitCommentCount;
+	}
+
+	public void setStaAppWaitCommentCount(String staAppWaitCommentCount) {
+		StaAppWaitCommentCount = staAppWaitCommentCount;
+	}
+
+	public String getStaAppCommentCount() {
+		return StaAppCommentCount;
+	}
+
+	public void setStaAppCommentCount(String staAppCommentCount) {
+		StaAppCommentCount = staAppCommentCount;
+	}
+
 	@Override
 	public String toString() {
 		return "UserInfo [PID=" + PID + ", UserName=" + UserName
@@ -462,7 +559,13 @@ public class UserInfo implements Serializable {
 				+ ", Signature=" + Signature + ", Description=" + Description
 				+ ", HobbyIDs=" + HobbyIDs + ", HobbyNames=" + HobbyNames
 				+ ", AlbumPhotoUrls=" + AlbumPhotoUrls + ", Age=" + Age
-				+ ", Astro=" + Astro + "]";
+				+ ", Astro=" + Astro + ", AppointID=" + AppointID
+				+ ", AppointStateID=" + AppointStateID + ", StaAppMyCount="
+				+ StaAppMyCount + ", StaAppJoinCount=" + StaAppJoinCount
+				+ ", StaAppReplyCount=" + StaAppReplyCount
+				+ ", StaAppFavoriteCount=" + StaAppFavoriteCount
+				+ ", StaAppWaitCommentCount=" + StaAppWaitCommentCount
+				+ ", StaAppCommentCount=" + StaAppCommentCount + "]";
 	}
 
 }

@@ -58,6 +58,17 @@ public class JsonUtils {
 			userInfo.setAlbumPhotoUrls(object.getString("AlbumPhotoUrls"));
 			userInfo.setAge(object.getInt("Age") + "");
 			userInfo.setAstro(object.getString("Astro"));
+			userInfo.setAppointID(object.getInt("AppointID") + "");
+			userInfo.setAppointStateID(object.getInt("AppointStateID") + "");
+			userInfo.setStaAppMyCount(object.getInt("StaAppMyCount") + "");
+			userInfo.setStaAppJoinCount(object.getInt("StaAppJoinCount") + "");
+			userInfo.setStaAppReplyCount(object.getInt("StaAppReplyCount") + "");
+			userInfo.setStaAppFavoriteCount(object
+					.getInt("StaAppFavoriteCount") + "");
+			userInfo.setStaAppWaitCommentCount(object
+					.getInt("StaAppWaitCommentCount") + "");
+			userInfo.setStaAppCommentCount(object.getInt("StaAppCommentCount")
+					+ "");
 		}
 		return userInfo;
 	}

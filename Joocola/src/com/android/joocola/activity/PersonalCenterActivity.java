@@ -103,5 +103,15 @@ public class PersonalCenterActivity extends BaseActivity implements
 						.getUserInfo().getPhotoUrl(), "_150_"));
 		nickName.setText(JoocolaApplication.getInstance().getUserInfo()
 				.getNickName());
+		tv_AddCount.setText(JoocolaApplication.getInstance().getUserInfo()
+				.getStaAppMyCount());
+		tv_applyCount.setText(JoocolaApplication.getInstance().getUserInfo()
+				.getStaAppJoinCount());
+		tv_answerCount.setText(JoocolaApplication.getInstance().getUserInfo()
+				.getStaAppReplyCount());
+		tv_saveCount.setText(JoocolaApplication.getInstance().getUserInfo()
+				.getStaAppFavoriteCount());
+		tv_commitPoint.setText(JoocolaApplication.getInstance().getUserInfo()
+				.getStaAppWaitCommentCount());
 	}
 }

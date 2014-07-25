@@ -98,6 +98,8 @@ public class HttpPostInterface {
 							e.printStackTrace();
 						}
 
+					} else {
+						mHttpPostCallBack.httpPostResolveData(null);
 					}
 				} catch (ClientProtocolException e) {
 					e.printStackTrace();

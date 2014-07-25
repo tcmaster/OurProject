@@ -62,6 +62,10 @@ public class Constans {
 	 */
 	public static final String IS_LIKE_USER_URL = "Sys.UserController.IsLikeUser.ashx";
 	/**
+	 * 获取邀约列表
+	 */
+	public static final String GET_QUERY_APPOINT = "Bus.AppointController.QueryAppoint.ashx";
+	/**
 	 * 修改用户信息接口URL
 	 */
 	/**

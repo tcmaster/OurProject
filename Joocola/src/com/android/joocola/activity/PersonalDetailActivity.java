@@ -1,5 +1,8 @@
 package com.android.joocola.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +22,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.adapter.Dlg_ListView_Adapter;
 import com.android.joocola.adapter.PC_Edit_GridView_Adapter;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
@@ -405,13 +410,22 @@ public class PersonalDetailActivity extends BaseActivity {
 	public void OnClick(View v) {
 		switch (v.getId()) {
 		case R.id.pd_add_ll:
-			processAdd();
+			if (Utils.isNetConn(PersonalDetailActivity.this))
+				processAdd();
+			else
+				Utils.toast(PersonalDetailActivity.this, "网络异常");
 			break;
 		case R.id.pd_like_ll:
-			processLike();
+			if (Utils.isNetConn(PersonalDetailActivity.this))
+				processLike();
+			else
+				Utils.toast(PersonalDetailActivity.this, "网络异常");
 			break;
 		case R.id.pd_talk_ll:
-			processTalk();
+			if (Utils.isNetConn(PersonalDetailActivity.this))
+				processTalk();
+			else
+				Utils.toast(PersonalDetailActivity.this, "网络异常");
 			break;
 		default:
 			break;
@@ -419,7 +433,7 @@ public class PersonalDetailActivity extends BaseActivity {
 	}
 
 	private void processAdd() {
-		CustomerDialog cdlg = new CustomerDialog(this,
+		final CustomerDialog cdlg = new CustomerDialog(this,
 				R.layout.dlg_singlechoice);
 		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
 
@@ -433,13 +447,131 @@ public class PersonalDetailActivity extends BaseActivity {
 						.findViewById(R.id.dlg_pe_cancel);
 				final ListView add_lv = (ListView) window
 						.findViewById(R.id.dlg_pe_listview);
+				final List<GetIssueInfoEntity> entitys = new ArrayList<GetIssueInfoEntity>();
 				title_tv.setText("邀请参加我的邀约");
 				HttpPostInterface interface1 = new HttpPostInterface();
 				interface1.addParams("ItemsPerPage", 9999 + "");
 				interface1.addParams("State", 1 + "");
 				interface1.addParams("PublisherID", JoocolaApplication
 						.getInstance().getUserInfo().getPID());
-				// interface1.getData(url, mHttpPostCallBack)
+				interface1.getData(Constans.GET_QUERY_APPOINT,
+						new HttpPostCallBack() {
+
+							@Override
+							public void httpPostResolveData(String result) {
+								try {
+									if (result != null) {
+										JSONObject jObject = new JSONObject(
+												result);
+										JSONArray array = jObject
+												.getJSONArray("Entities");
+										for (int i = 0; i < array.length(); i++) {
+											JSONObject object = array
+													.getJSONObject(i);
+											GetIssueInfoEntity entity = new GetIssueInfoEntity();
+											entity.setPID(object.getInt("PID"));
+											entity.setTypeID(object
+													.getInt("TypeID"));
+											entity.setTypeName(object
+													.getString("TypeName"));
+											entity.setTitle(object
+													.getString("Title"));
+											entity.setSexID(object
+													.getInt("SexID"));
+											entity.setSexName(object
+													.getString("SexName"));
+											entity.setCostID(object
+													.getInt("CostID"));
+											entity.setCostName(object
+													.getString("CostName"));
+											entity.setReserveDate(object
+													.getString("ReserveDate"));
+											entity.setLocationName(object
+													.getString("LocationName"));
+											entity.setLocationX(object
+													.getDouble("LocationX"));
+											entity.setLocationY(object
+													.getDouble("LocationY"));
+											entity.setDescription(object
+													.getString("Description"));
+											entity.setApplyUserCount(object
+													.getInt("ApplyUserCount"));
+											entity.setReplyCount(object
+													.getInt("ReplyCount"));
+											entity.setState(object
+													.getString("State"));
+											entity.setPublisherID(object
+													.getInt("PublisherID"));
+											entity.setPublisherName(object
+													.getString("PublisherName"));
+											entity.setPublisherPhoto(object
+													.getString("PublisherPhoto"));
+											entity.setPublisherBirthday(object
+													.getString("PublisherBirthday"));
+											entity.setPublisherAge(object
+													.getInt("PublisherAge"));
+											entity.setPublisherAstro(object
+													.getString("PublisherAstro"));
+											entity.setPublishDate(object
+													.getString("PublishDate"));
+											entitys.add(entity);
+										}
+									} else {
+										handler.post(new Runnable() {
+
+											@Override
+											public void run() {
+												Utils.toast(
+														PersonalDetailActivity.this,
+														"网络状况不佳");
+												cdlg.dismissDlg();
+												return;
+											}
+										});
+									}
+									handler.post(new Runnable() {
+
+										@Override
+										public void run() {
+											add_lv.setAdapter(new Dlg_ListView_Adapter<GetIssueInfoEntity>(
+													entitys,
+													PersonalDetailActivity.this));
+											if (add_lv.getAdapter().getCount() == 0) {
+												Utils.toast(
+														PersonalDetailActivity.this,
+														"暂无邀约");
+												cdlg.dismissDlg();
+												return;
+											}
+											if (add_lv.getAdapter().getCount() > 5)
+												add_lv.getLayoutParams().height = Utils
+														.dip2px(PersonalDetailActivity.this,
+																200);
+											ok_btn.setOnClickListener(new OnClickListener() {
+
+												@Override
+												public void onClick(View v) {
+													cdlg.dismissDlg();
+												}
+											});
+											cancel_btn
+													.setOnClickListener(new OnClickListener() {
+
+														@Override
+														public void onClick(
+																View v) {
+															cdlg.dismissDlg();
+														}
+													});
+										}
+									});
+
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+
+							}
+						});
 			}
 		});
 		cdlg.showDlg();

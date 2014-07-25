@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.entity.BaseDataInfo;
+import com.android.joocola.entity.GetIssueInfoEntity;
 
 /**
  * 编辑界面Dialog ListView的选择适配器
@@ -20,7 +21,7 @@ import com.android.joocola.entity.BaseDataInfo;
  * @author lixiaosong
  * 
  */
-public class Dlg_ListView_Adapter extends BaseAdapter {
+public class Dlg_ListView_Adapter<T> extends BaseAdapter {
 	/**
 	 * 确定哪个元素被选中，哪个元素未被选中
 	 */
@@ -28,11 +29,10 @@ public class Dlg_ListView_Adapter extends BaseAdapter {
 	/**
 	 * 该界面需要显示的数据
 	 */
-	private List<BaseDataInfo> baseDataInfos;
+	private List<T> baseDataInfos;
 	private LayoutInflater inflater;
 
-	public Dlg_ListView_Adapter(List<BaseDataInfo> baseDataInfos,
-			Context context) {
+	public Dlg_ListView_Adapter(List<T> baseDataInfos, Context context) {
 		this.baseDataInfos = baseDataInfos;
 		selectionArray = new boolean[baseDataInfos.size()];
 		for (int i = 0; i < selectionArray.length; i++)
@@ -93,7 +93,12 @@ public class Dlg_ListView_Adapter extends BaseAdapter {
 			holder.iv_arrow.setVisibility(View.INVISIBLE);
 			holder.layout.setBackgroundResource(R.color.white);
 		}
-		holder.tv_text.setText(baseDataInfos.get(position).getItemName());
+		if (baseDataInfos.get(position) instanceof BaseDataInfo) {
+			holder.tv_text.setText(((BaseDataInfo) baseDataInfos.get(position))
+					.getItemName());
+		} else if (baseDataInfos.get(position) instanceof GetIssueInfoEntity)
+			holder.tv_text.setText(((GetIssueInfoEntity) baseDataInfos
+					.get(position)).getTitle());
 		return convertView;
 	}
 
