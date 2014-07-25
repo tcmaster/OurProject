@@ -26,9 +26,12 @@ import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.view.AutoListView;
 import com.android.joocola.view.AutoListView.OnLoadListener;
 import com.android.joocola.view.AutoListView.OnRefreshListener;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 
 
 /**
@@ -56,15 +59,18 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 			case 0:
 				mAutoListView.onLoadComplete();
 				String json = (String) msg.obj;
-				mEntities.addAll(resolveJson(json));
+				List<GetIssueInfoEntity> newEntities = resolveJson(json);
+				mEntities.addAll(newEntities);
+				mAutoListView.setResultSize(newEntities.size());
 				getIssueItemAdapter.notifyDataSetChanged();
-				mAutoListView.setResultSize(totalItemsCount);
 				break;
 			case 1:
 				mAutoListView.onRefreshComplete();
 				mEntities.clear();
 				String json1 = (String) msg.obj;
-				mEntities.addAll(resolveJson(json1));
+				List<GetIssueInfoEntity> newRefreshEntities = resolveJson(json1);
+				mEntities.addAll(newRefreshEntities);
+				mAutoListView.setResultSize(newRefreshEntities.size());
 				getIssueItemAdapter.notifyDataSetChanged();
 				break;
 			default:
@@ -86,8 +92,10 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		mAutoListView.setOnRefreshListener(this);
 		mAutoListView.setOnLoadListener(this);
 		mAutoListView.setOnItemClickListener(new MylistviewItemClick());
+		ImageLoader mImageLoader = new ImageLoader(
+				Volley.newRequestQueue(getActivity()), bitmapCache);
 		getIssueItemAdapter = new GetIssueItemAdapter(mEntities, getActivity(),
-				bitmapCache);
+				bitmapCache, mImageLoader);
 		mAutoListView.setAdapter(getIssueItemAdapter);
 		getData(0);
 		return view;
@@ -128,11 +136,13 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			if (position < mEntities.size()) {
 			GetIssueInfoEntity getIssueInfoEntity = mEntities.get(position - 1);
 			Intent intent = new Intent(getActivity(),
 					IssuedinvitationDetailsActivity.class);
 			intent.putExtra("issueInfo", getIssueInfoEntity);
 			startActivity(intent);
+			}
 		}
 
 	}
@@ -154,34 +164,8 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject object = jsonArray.getJSONObject(i);
 				GetIssueInfoEntity getIssueInfoEntity = new GetIssueInfoEntity();
-				getIssueInfoEntity.setTitle(object.getString("Title"));
-				getIssueInfoEntity.setApplyUserCount(object
-						.getInt("ApplyUserCount"));
-				getIssueInfoEntity.setCostName(object.getString("CostName"));
-				getIssueInfoEntity.setDescription(object
-						.getString("Description"));
-				getIssueInfoEntity.setLocationName(object
-						.getString("LocationName"));
-				getIssueInfoEntity.setPID(object.getInt("PID"));
-				getIssueInfoEntity.setPublishDate(object
-						.getString("PublishDate"));
-				getIssueInfoEntity.setPublisherAge(object
-						.getInt("PublisherAge"));
-				getIssueInfoEntity.setPublisherAstro(object
-						.getString("PublisherAstro"));
-				getIssueInfoEntity.setPublisherBirthday(object
-						.getString("PublisherBirthday"));
-				getIssueInfoEntity.setPublisherName(object
-						.getString("PublisherName"));
-				getIssueInfoEntity.setPublisherPhoto(object
-						.getString("PublisherPhoto"));
-				getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
-				getIssueInfoEntity.setReserveDate(object
-						.getString("ReserveDate"));
-				getIssueInfoEntity.setPublisherID(object.getInt("PublisherID"));
-				getIssueInfoEntity.setSexName(object.getString("SexName"));
-				getIssueInfoEntity.setState(object.getString("State"));
-				getIssueInfoEntity.setTitle(object.getString("Title"));
+				getIssueInfoEntity = JsonUtils.getIssueInfoEntity(object,
+						getIssueInfoEntity);
 				data.add(getIssueInfoEntity);
 			}
 

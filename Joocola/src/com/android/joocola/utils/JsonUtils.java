@@ -3,6 +3,8 @@ package com.android.joocola.utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.joocola.entity.GetIssueInfoEntity;
+import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.entity.UserInfo;
 
 public class JsonUtils {
@@ -58,5 +60,63 @@ public class JsonUtils {
 			userInfo.setAstro(object.getString("Astro"));
 		}
 		return userInfo;
+	}
+
+	/**
+	 * 解析发布信息的JSON
+	 * 
+	 * @param object
+	 * @param getIssueInfoEntity
+	 * @return
+	 * @throws JSONException
+	 */
+	public static GetIssueInfoEntity getIssueInfoEntity(JSONObject object,
+			GetIssueInfoEntity getIssueInfoEntity) throws JSONException {
+		if (getIssueInfoEntity != null) {
+			getIssueInfoEntity.setTitle(object.getString("Title"));
+			getIssueInfoEntity.setApplyUserCount(object
+					.getInt("ApplyUserCount"));
+			getIssueInfoEntity.setCostName(object.getString("CostName"));
+			getIssueInfoEntity.setDescription(object.getString("Description"));
+			getIssueInfoEntity
+					.setLocationName(object.getString("LocationName"));
+			getIssueInfoEntity.setPID(object.getInt("PID"));
+			getIssueInfoEntity.setPublishDate(object.getString("PublishDate"));
+			getIssueInfoEntity.setPublisherAge(object.getInt("PublisherAge"));
+			getIssueInfoEntity.setPublisherAstro(object
+					.getString("PublisherAstro"));
+			getIssueInfoEntity.setPublisherBirthday(object
+					.getString("PublisherBirthday"));
+			getIssueInfoEntity.setPublisherName(object
+					.getString("PublisherName"));
+			getIssueInfoEntity.setPublisherPhoto(object
+					.getString("PublisherPhoto"));
+			getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
+			getIssueInfoEntity.setReserveDate(object.getString("ReserveDate"));
+			getIssueInfoEntity.setPublisherID(object.getInt("PublisherID"));
+			getIssueInfoEntity.setSexName(object.getString("SexName"));
+			getIssueInfoEntity.setState(object.getString("State"));
+			getIssueInfoEntity.setTitle(object.getString("Title"));
+		}
+		return getIssueInfoEntity;
+	}
+
+	/**
+	 * 解析回复json
+	 * 
+	 * @throws JSONException
+	 */
+	public static ReplyEntity getReplyEntity(JSONObject jsonObject,
+			ReplyEntity replyEntity) throws JSONException {
+		if (replyEntity != null) {
+			replyEntity.setContent(jsonObject.getString("Content"));
+			replyEntity.setPublishDate(jsonObject.getString("PublishDate"));
+			replyEntity.setPublisherID(jsonObject.getInt("PublisherID"));
+			replyEntity.setPublisherName(jsonObject.getString("PublisherName"));
+			replyEntity.setPublisherPhotoString(jsonObject
+					.getString("PublisherPhoto"));
+			replyEntity.setReplypid(jsonObject.getInt("PID"));
+		}
+		return replyEntity;
 	}
 }

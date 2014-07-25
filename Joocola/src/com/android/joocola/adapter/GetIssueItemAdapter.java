@@ -16,7 +16,6 @@ import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 
 
 public class GetIssueItemAdapter extends BaseAdapter {
@@ -26,11 +25,11 @@ public class GetIssueItemAdapter extends BaseAdapter {
 	private ImageLoader mImageLoader;
 
 	public GetIssueItemAdapter(List<GetIssueInfoEntity> info, Context context,
-			BitmapCache bitmapCache) {
+			BitmapCache bitmapCache, ImageLoader imageLoader) {
 		this.infos = info;
 		inflater = LayoutInflater.from(context);
-		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
-				bitmapCache);
+		mImageLoader = imageLoader;
+
 	}
 	@Override
 	public int getCount() {
@@ -110,7 +109,7 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	class ViewHolder {
+	private class ViewHolder {
 		TextView title, name, age, astro, issuetime, issuesex, issuecost,
 				location, description, state, usercount, replycount;
 		NetworkImageView touxiang;

@@ -161,6 +161,12 @@ public class PersonalDetailActivity extends BaseActivity {
 	@ViewInject(R.id.pd_talk_ll)
 	private LinearLayout talk_ll;
 	/**
+	 * 喜欢的文字
+	 */
+	@ViewInject(R.id.like_tv)
+	private TextView like_tv;
+
+	/**
 	 * 用于向主线程发送数据的handler
 	 */
 	private static Handler handler;
@@ -268,9 +274,11 @@ public class PersonalDetailActivity extends BaseActivity {
 								}
 							}
 						});
+						ifLikeUser();
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
+
 				} else
 					handler.post(new Runnable() {
 
@@ -280,6 +288,105 @@ public class PersonalDetailActivity extends BaseActivity {
 						}
 					});
 
+			}
+		});
+	}
+
+	/**
+	 * 用来判断是否喜欢该用户
+	 */
+	private void ifLikeUser() {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("opUserID", JoocolaApplication.getInstance()
+				.getUserInfo().getPID());
+		interface1.addParams("likeUserID", userId);
+		interface1.getData(Constans.IS_LIKE_USER_URL, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				if (result != null) {
+					if (result.equals("true")) {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								like_ll.setEnabled(false);
+								like_tv.setText("已喜欢");
+							}
+						});
+					}
+				} else {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Utils.toast(PersonalDetailActivity.this, "网络状况不佳");
+						}
+					});
+				}
+			}
+		});
+	}
+
+	private void likeUser() {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("opUserID", JoocolaApplication.getInstance()
+				.getUserInfo().getPID());
+		interface1.addParams("likeUserID", userId);
+		interface1.getData(Constans.LIKE_USER_URL, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				if (result != null) {
+					try {
+						final JSONObject object = new JSONObject(result);
+						if (object.getBoolean("Item1")) {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									like_ll.setEnabled(false);
+									like_tv.setText("已喜欢");
+									try {
+										Utils.toast(
+												PersonalDetailActivity.this,
+												object.getString("Item2"));
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
+								}
+							});
+
+						} else {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									try {
+										Utils.toast(
+												PersonalDetailActivity.this,
+												object.getString("Item2"));
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}
+							});
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Utils.toast(PersonalDetailActivity.this, "网络状况不佳");
+						}
+					});
+				}
 			}
 		});
 	}
@@ -330,15 +437,17 @@ public class PersonalDetailActivity extends BaseActivity {
 				HttpPostInterface interface1 = new HttpPostInterface();
 				interface1.addParams("ItemsPerPage", 9999 + "");
 				interface1.addParams("State", 1 + "");
-				interface1.addParams("PublisherID", JoocolaApplication.getInstance().getUserInfo().getPID());
-				interface1.getData(url, mHttpPostCallBack)
+				interface1.addParams("PublisherID", JoocolaApplication
+						.getInstance().getUserInfo().getPID());
+				// interface1.getData(url, mHttpPostCallBack)
 			}
 		});
 		cdlg.showDlg();
 	}
 
 	private void processLike() {
-		CustomerDialog cdlg = new CustomerDialog(this, R.layout.dlg_message);
+		final CustomerDialog cdlg = new CustomerDialog(this,
+				R.layout.dlg_message);
 		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
 
 			@Override
@@ -351,6 +460,23 @@ public class PersonalDetailActivity extends BaseActivity {
 						.findViewById(R.id.dlg_pe_cancel);
 				TextView message_tv = (TextView) window
 						.findViewById(R.id.dlg_message);
+				message_tv.setText("确认喜欢的提示语");
+				title_tv.setText("确认喜欢");
+				ok_btn.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						likeUser();
+						cdlg.dismissDlg();
+					}
+				});
+				cancel_btn.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						cdlg.dismissDlg();
+					}
+				});
 			}
 		});
 		cdlg.showDlg();

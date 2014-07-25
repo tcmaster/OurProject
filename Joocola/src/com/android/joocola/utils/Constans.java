@@ -54,6 +54,14 @@ public class Constans {
 	 */
 	public static final String CITY_INFO_URL = "Sys.CityController.GetCitys.ashx";
 	/**
+	 * 喜欢某人接口
+	 */
+	public static final String LIKE_USER_URL = "Sys.UserController.LikeUser.ashx";
+	/**
+	 * 检查是否喜欢某人
+	 */
+	public static final String IS_LIKE_USER_URL = "Sys.UserController.IsLikeUser.ashx";
+	/**
 	 * 修改用户信息接口URL
 	 */
 	/**
