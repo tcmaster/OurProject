@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.adapter.PC_Edit_GridView_Adapter;
+import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
@@ -319,12 +320,18 @@ public class PersonalDetailActivity extends BaseActivity {
 			public void getCustomerView(Window window, AlertDialog dlg) {
 				TextView title_tv = (TextView) window
 						.findViewById(R.id.dlg_pe_title);
-				TextView ok_btn = (TextView) window
+				final TextView ok_btn = (TextView) window
 						.findViewById(R.id.dlg_pe_ok);
-				TextView cancel_btn = (TextView) window
+				final TextView cancel_btn = (TextView) window
 						.findViewById(R.id.dlg_pe_cancel);
-				ListView add_lv = (ListView) window
+				final ListView add_lv = (ListView) window
 						.findViewById(R.id.dlg_pe_listview);
+				title_tv.setText("邀请参加我的邀约");
+				HttpPostInterface interface1 = new HttpPostInterface();
+				interface1.addParams("ItemsPerPage", 9999 + "");
+				interface1.addParams("State", 1 + "");
+				interface1.addParams("PublisherID", JoocolaApplication.getInstance().getUserInfo().getPID());
+				interface1.getData(url, mHttpPostCallBack)
 			}
 		});
 		cdlg.showDlg();
