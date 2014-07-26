@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private RadioGroup sexGroup, cost_group;
 	private int issueID;
 	private int userPid;
+	private ImageView dingweiImg;
 	private SharedPreferences sharedPreferences;
 	private IssuedinvitationInfo issuedinvitationInfo = new IssuedinvitationInfo();
 	private EditText et_issue_theme, edit_location, edit_state;
@@ -107,6 +109,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 	}
 
 	private void initView() {
+		dingweiImg = (ImageView) this.findViewById(R.id.dingwei_img);
 		et_issue_theme =(EditText)this.findViewById(R.id.et_issue_theme);
 		edit_location = (EditText) this.findViewById(R.id.edit_location);
 		edit_state = (EditText) this.findViewById(R.id.edit_state);
@@ -116,6 +119,16 @@ public class IssuedinvitationActivity extends BaseActivity {
 		cost_group = (RadioGroup) this.findViewById(R.id.issue_cost_group);
 		btn_sureissue = (Button) this.findViewById(R.id.btn_sureissue);
 		btn_sureissue.setOnClickListener(new IssueOnclick());
+		dingweiImg.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(IssuedinvitationActivity.this,GaodeMapActivity.class);
+				String address = edit_location.getText().toString();
+				intent.putExtra("address", address);
+				startActivity(intent);
+			}
+		});
 		// initRadioGroup(Constans.basedata_Sex, sexGroup);
 		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
 				.getBaseInfo(Constans.basedata_Sex);

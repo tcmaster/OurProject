@@ -49,7 +49,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private ImageLoader mImageLoader;
 	private AutoListView mAutoListView;
 	private String url = "Bus.AppointController.QueryAppoint.ashx";// 根据pid获得邀约详情的地址;
-	private String replyUrl = "Bus.AppointController.PubAppointReply.ashx";// 邀约评论的地址。
+	private String replyUrl = "Bus.AppointController.QueryAppointReply.ashx";// 邀约评论的地址。
 	private int totalItemsCount; // 总共多少条
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
@@ -224,7 +224,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private void initReplyList() {
 
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		httpPostInterface.addParams("IDs", issue_pid + "");
+		httpPostInterface.addParams("AppointID", issue_pid + "");
+		Log.e("ids", issue_pid + "");
 		httpPostInterface.addParams("ItemsPerPage", 10 + "");
 		httpPostInterface.addParams("CurrentPage", mCurPageIndex + "");
 		httpPostInterface.getData(replyUrl, new HttpPostCallBack() {
