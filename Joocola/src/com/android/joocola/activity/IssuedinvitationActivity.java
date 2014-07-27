@@ -48,6 +48,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private EditText et_issue_theme, edit_location, edit_state;
 	private TextView tv_issuetime;
 	private Button btn_sureissue;
+	private double LocationX;
+	private double LocationY;
 	private String issueUrl = "Bus.AppointController.PubAppoint.ashx";// 发布地址
 	@SuppressLint("HandlerLeak")
 	private Handler issueHandler = new Handler()
@@ -126,7 +128,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 				Intent intent = new Intent(IssuedinvitationActivity.this,GaodeMapActivity.class);
 				String address = edit_location.getText().toString();
 				intent.putExtra("address", address);
-				startActivity(intent);
+				startActivityForResult(intent, 30);
 			}
 		});
 		// initRadioGroup(Constans.basedata_Sex, sexGroup);
@@ -191,8 +193,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 			int costID = (Integer) cost_group.findViewById(
 					cost_group.getCheckedRadioButtonId()).getTag();
 			issuedinvitationInfo.setCostId(costID);
-			issuedinvitationInfo.setLocationX(123.123456);
-			issuedinvitationInfo.setLocationY(321.987654);
+			issuedinvitationInfo.setLocationX(LocationX);
+			issuedinvitationInfo.setLocationY(LocationY);
 			HttpPostInterface httpPostInterface = new HttpPostInterface(); 
 			httpPostInterface.addParams(Constans.ISSUE_COSTID,
 					issuedinvitationInfo.getCostId()
@@ -264,7 +266,14 @@ public class IssuedinvitationActivity extends BaseActivity {
 				Log.i("time返回", "CANCEL");
 			}
 			break;
-
+		case 30:
+			if (resultCode == 40) {
+				LocationX = data.getDoubleExtra("locationX", 123.123456);
+				LocationY = data.getDoubleExtra("locationY", 321.987654);
+				String address = data.getStringExtra("address");
+				edit_location.setText(address);
+			}
+			break;
 		default:
 			break;
 		}
