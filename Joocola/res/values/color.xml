@@ -16,4 +16,6 @@
     <drawable name="clickbluefalse">#ff5555ff</drawable>
     <drawable name="clickdeepgraytrue">#ff444444</drawable>
     <drawable name="clickdeepgrayfalse">#eec7c7c7</drawable>
+    <color name="fense">#d960af</color>
+    <color name="lanse">#327bd7</color>
 </resources>

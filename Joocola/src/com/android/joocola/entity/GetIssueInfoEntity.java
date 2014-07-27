@@ -38,6 +38,7 @@ public class GetIssueInfoEntity implements Serializable {
 	private String PublisherAstro;// 发布者星座
 	private String PublishDate;// 发布时间
 	private int PublisherID;// 发布者ID
+	private int PublisherSexID;// 发布者性别id
 
 	public int getPID() {
 		return PID;
@@ -239,6 +240,14 @@ public class GetIssueInfoEntity implements Serializable {
 
 	public void setPublisherID(int publisherID) {
 		PublisherID = publisherID;
+	}
+
+	public int getPublisherSexID() {
+		return PublisherSexID;
+	}
+
+	public void setPublisherSexID(int publisherSexID) {
+		PublisherSexID = publisherSexID;
 	}
 
 }

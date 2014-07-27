@@ -196,6 +196,15 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		String touxiangUrl = entity.getPublisherPhoto();
 		touxiang.setDefaultImageResId(R.drawable.photobg);
 		Log.e("tagf", touxiangUrl);
+		if (entity.getPublisherSexID() == 1) {
+			sexImageView.setImageResource(R.drawable.boy);
+			age.setTextColor(getResources().getColor(R.color.lanse));
+			astro.setTextColor(getResources().getColor(R.color.lanse));
+		} else {
+			sexImageView.setImageResource(R.drawable.girl);
+			age.setTextColor(getResources().getColor(R.color.fense));
+			astro.setTextColor(getResources().getColor(R.color.fense));
+		}
 		if (touxiangUrl.startsWith("h")) {
 			touxiang.setImageUrl(touxiangUrl, mImageLoader);
 		} else {

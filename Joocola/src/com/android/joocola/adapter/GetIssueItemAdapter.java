@@ -23,10 +23,12 @@ public class GetIssueItemAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ViewHolder holder;
 	private ImageLoader mImageLoader;
+	private Context mContext;
 
 	public GetIssueItemAdapter(List<GetIssueInfoEntity> info, Context context,
 			BitmapCache bitmapCache, ImageLoader imageLoader) {
 		this.infos = info;
+		mContext = context;
 		inflater = LayoutInflater.from(context);
 		mImageLoader = imageLoader;
 
@@ -97,6 +99,19 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		holder.usercount.setText("报名(" + entity.getApplyUserCount() + ")");
 		holder.replycount.setText("回复(" + entity.getReplyCount() + ")");
 			String touxiangUrl = entity.getPublisherPhoto();
+		if (entity.getPublisherSexID() == 1) {
+			holder.sexImageView.setImageResource(R.drawable.boy);
+			holder.age.setTextColor(mContext.getResources().getColor(
+					R.color.lanse));
+			holder.astro.setTextColor(mContext.getResources().getColor(
+					R.color.lanse));
+		} else {
+			holder.sexImageView.setImageResource(R.drawable.girl);
+			holder.age.setTextColor(mContext.getResources().getColor(
+					R.color.fense));
+			holder.astro.setTextColor(mContext.getResources().getColor(
+					R.color.fense));
+		}
 			holder.touxiang.setErrorImageResId(R.drawable.photobg);
 		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
 		if (touxiangUrl.startsWith("h")) {

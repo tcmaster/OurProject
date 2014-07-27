@@ -108,6 +108,8 @@ public class JsonUtils {
 			getIssueInfoEntity.setSexName(object.getString("SexName"));
 			getIssueInfoEntity.setState(object.getString("State"));
 			getIssueInfoEntity.setTitle(object.getString("Title"));
+			getIssueInfoEntity.setPublisherSexID(object
+					.getInt("PublisherSexID"));
 		}
 		return getIssueInfoEntity;
 	}
