@@ -19,8 +19,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -32,7 +30,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -60,7 +57,6 @@ import com.android.joocola.view.MyGridView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.lidroid.xutils.view.annotation.event.OnFocusChange;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
 
 /**
@@ -132,16 +128,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	private TextView drink_tv;
 	@ViewInject(R.id.seximg)
 	private ImageView sex_iv;
-	/**
-	 * 个性签名保存按钮
-	 */
-	@ViewInject(R.id.signinsave)
-	private Button signin_save_btn;
-	/**
-	 * 电话保存按钮
-	 */
-	@ViewInject(R.id.phoneinitsave)
-	private Button phone_save_btn;
 	/**
 	 * 图片
 	 */
@@ -253,44 +239,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						.addImgUrls(imgs[i]);
 			}
 		}
-		phone_et.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				phone_save_btn.setVisibility(View.VISIBLE);
-			}
-		});
-		signin_et.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				signin_save_btn.setVisibility(View.VISIBLE);
-			}
-		});
 		pic_gv.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 
 			@Override
@@ -301,6 +249,17 @@ public class PersonalInfoEditActivity extends BaseActivity {
 					menu.add(0, 0, 0, "删除");
 			}
 		});
+	}
+
+	/**
+	 * 在退出应用时，调用方法，将修改的个性签名和手机号保存
+	 */
+	@Override
+	protected void onStop() {
+		saveEditText("newSign", Constans.SIGNINURL, signin_et.getText()
+				.toString());
+		saveEditText("phone", Constans.PHONEURL, phone_et.getText().toString());
+		super.onStop();
 	}
 
 	@Override
@@ -395,24 +354,8 @@ public class PersonalInfoEditActivity extends BaseActivity {
 
 	}
 
-	@OnFocusChange({ R.id.signin, R.id.phone })
-	public void onFocusChange(View v, boolean hasFocus) {
-		int vis = hasFocus ? View.VISIBLE : View.INVISIBLE;
-		switch (v.getId()) {
-		case R.id.signin:
-			signin_save_btn.setVisibility(vis);
-			break;
-		case R.id.phone:
-			phone_save_btn.setVisibility(vis);
-			break;
-		default:
-			break;
-		}
-	}
-
 	@OnClick({ R.id.location, R.id.profession, R.id.annualSalary, R.id.height,
-			R.id.emotion, R.id.smoke, R.id.drink, R.id.signinsave,
-			R.id.phoneinitsave, R.id.hobby })
+			R.id.emotion, R.id.smoke, R.id.drink, R.id.hobby })
 	public void onViewClick(View v) {
 		List<BaseDataInfo> resultInfos = new ArrayList<BaseDataInfo>();
 		TextView display = null;
@@ -492,16 +435,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			title = "喝酒";
 			url = Constans.DRINKURL;
 			break;
-		case R.id.signinsave:
-			signin_save_btn.setVisibility(View.INVISIBLE);
-			saveEditText("newSign", Constans.SIGNINURL, signin_et.getText()
-					.toString());
-			return;
-		case R.id.phoneinitsave:
-			phone_save_btn.setVisibility(View.INVISIBLE);
-			saveEditText("phone", Constans.PHONEURL, phone_et.getText()
-					.toString());
-			return;
 		default:
 			break;
 		}
@@ -535,8 +468,9 @@ public class PersonalInfoEditActivity extends BaseActivity {
 
 						@Override
 						public void run() {
-							Utils.toast(PersonalInfoEditActivity.this,
-									"用户资料修改成功");
+							Utils.toast(JoocolaApplication.getInstance(),
+									"用户资料已保存");
+
 						}
 					});
 					/**
