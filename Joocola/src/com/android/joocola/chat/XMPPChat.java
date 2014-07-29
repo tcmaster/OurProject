@@ -1,12 +1,22 @@
 package com.android.joocola.chat;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.PacketCollector;
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.AndFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.filter.PacketIDFilter;
+import org.jivesoftware.smack.filter.PacketTypeFilter;
+import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Registration;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smackx.address.provider.MultipleAddressesProvider;
@@ -83,7 +93,7 @@ public class XMPPChat {
 		if (null == connection || connection.isAuthenticated()) {
 			try {
 				ConnectionConfiguration config = new ConnectionConfiguration(
-						REMOTE_HOST, PORT, SERVICE_NAME);
+						REMOTE_HOST, PORT);
 				config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
 				config.setSendPresence(true); // 状态设为离线，目的为了取离线消息
 				config.setReconnectionAllowed(true);
@@ -118,6 +128,41 @@ public class XMPPChat {
 				}
 			connection = null;
 		}
+	}
+
+	/**
+	 * 注册
+	 * 
+	 * @param account
+	 *            注册的账号
+	 * @param password
+	 *            注册的密码
+	 * @return 1注册成功，0服务器没有返回结果，2账号已经被使用，3注册失败
+	 */
+	public String register(String account, String password) {
+		if (connection == null)
+			return "0";
+		Registration registration = new Registration();
+		registration.setType(IQ.Type.SET);
+		registration.setTo(connection.getServiceName());
+		Map<String, String> att = new HashMap<String, String>();
+		att.put("username", account);
+		att.put("password", password);
+		att.put("android", "geolo_createUser_android");
+		registration.setAttributes(att);
+		PacketFilter filter = new AndFilter(new PacketIDFilter(
+				registration.getPacketID()), new PacketTypeFilter(IQ.class));
+		PacketCollector collector = connection.createPacketCollector(filter);
+		try {
+			connection.sendPacket(registration);
+		} catch (NotConnectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		IQ result = (IQ) collector.nextResult(SmackConfiguration
+				.getDefaultPacketReplyTimeout());
+		collector.cancel();
+		return "1";
 	}
 
 	/**
