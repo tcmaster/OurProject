@@ -592,7 +592,8 @@ public class PersonalDetailActivity extends BaseActivity {
 						.findViewById(R.id.dlg_pe_cancel);
 				TextView message_tv = (TextView) window
 						.findViewById(R.id.dlg_message);
-				message_tv.setText("确认喜欢的提示语");
+				message_tv.setText(getResources()
+						.getString(R.string.likeprompt));
 				title_tv.setText("确认喜欢");
 				ok_btn.setOnClickListener(new OnClickListener() {
 

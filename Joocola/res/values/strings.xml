@@ -80,6 +80,7 @@
     <string name="add">邀请</string>
     <string name="like">喜欢</string>
     <string name="talk">聊天</string>
+    <string name="likeprompt">对方也喜欢你时，才会看到你喜欢TA，并可以互相看到对方手机号。</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>
@@ -114,5 +115,6 @@
     <string name="no_data">暂无数据</string>
     <string name="more">加载中</string>
     <string name="title_activity_personal_detail">PersonalDetailActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>

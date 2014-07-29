@@ -758,8 +758,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						try {
 							object = array.getJSONObject(i);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch
-							// block
 							e.printStackTrace();
 						}
 						temp.setCityName(object.getString("CityName"));
