@@ -40,7 +40,8 @@ public class GaodeMapActivity extends BaseActivity implements
 	private Marker regeoMarker;
 	private String address;
 	private Button searchBtn;
-	private EditText editText;
+	private EditText editText, cityEdit;
+	private String cityString;
  
 	private double locationX;
 	private double locationY;
@@ -56,6 +57,7 @@ public class GaodeMapActivity extends BaseActivity implements
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		init();
 		getLatlon(address);
+
 	}
 
 	/**
@@ -75,6 +77,7 @@ public class GaodeMapActivity extends BaseActivity implements
 		editText = (EditText) this.findViewById(R.id.issue_map_edit);
 		searchBtn = (Button) this.findViewById(R.id.issue_map_searchbtn);
 		searchBtn.setOnClickListener(this);
+		cityEdit = (EditText) this.findViewById(R.id.issue_city_edit);
 		geocoderSearch = new GeocodeSearch(this);
 		geocoderSearch.setOnGeocodeSearchListener(this);
 		progDialog = new ProgressDialog(this);
@@ -123,9 +126,21 @@ public class GaodeMapActivity extends BaseActivity implements
 	 */
 	public void getLatlon(final String name) {
 		showDialog();
-		GeocodeQuery query = new GeocodeQuery(name, "010");// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode，
+		GeocodeQuery query = new GeocodeQuery(name, "010");// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
+		// 需要控制第2个参数,第2个参数为城市编码。
 		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
 	}
+
+	/**
+	 * 响应地理编码
+	 */
+	public void getLatlon(final String name, final String city) {
+		showDialog();
+		GeocodeQuery query = new GeocodeQuery(name, city);// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
+		// 需要控制第2个参数,第2个参数为城市编码。
+		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
+	}
+
 
 	/**
 	 * 响应逆地理编码
@@ -221,7 +236,8 @@ public class GaodeMapActivity extends BaseActivity implements
 		switch (v.getId()) {
 		case R.id.issue_map_searchbtn:
 			address = editText.getText().toString();
-			getLatlon(address);
+			cityString = cityEdit.getText().toString();
+			getLatlon(address, cityString);
 			break;
 
 		default:

@@ -7,12 +7,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-        <EditText
-            android:id="@+id/issue_map_edit"
-            android:layout_width="wrap_content"
+      <EditText
+            android:id="@+id/issue_city_edit"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:ems="10" >
+ 
+        </EditText>
+        <EditText
+            android:id="@+id/issue_map_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:ems="10" >
 
             <requestFocus />
@@ -20,10 +27,10 @@
 
         <Button
             android:id="@+id/issue_map_searchbtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="search" />
 
     </LinearLayout>
     

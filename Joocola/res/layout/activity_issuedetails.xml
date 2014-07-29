@@ -268,7 +268,6 @@
           android:layout_width="50dp"
           android:layout_height="wrap_content"
           android:layout_marginLeft="100dp"
-          
           android:contentDescription="@string/image_description"
           android:src="@drawable/tab_message" />
       <ImageView

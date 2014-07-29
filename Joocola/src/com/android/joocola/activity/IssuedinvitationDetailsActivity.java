@@ -8,13 +8,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,9 +32,12 @@ import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.CustomerDialog;
+import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
+import com.android.joocola.utils.Utils;
 import com.android.joocola.view.AutoListView;
 import com.android.joocola.view.AutoListView.OnLoadListener;
 import com.android.volley.toolbox.ImageLoader;
@@ -40,7 +51,7 @@ import com.android.volley.toolbox.Volley;
  * 
  */
 public class IssuedinvitationDetailsActivity extends BaseActivity implements
-		OnLoadListener {
+		OnLoadListener, OnClickListener {
 	private int issue_pid;
 	private TextView title, name, age, astro, issuetime, issuesex, issuecost,
 			location, description, state, usercount, replycount;
@@ -50,11 +61,17 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private AutoListView mAutoListView;
 	private String url = "Bus.AppointController.QueryAppoint.ashx";// 根据pid获得邀约详情的地址;
 	private String replyUrl = "Bus.AppointController.QueryAppointReply.ashx";// 邀约评论的地址。
+	private String replyItUrl = "Bus.AppointController.PubAppointReply.ashx";// 回复地址。
 	private int totalItemsCount; // 总共多少条
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
+	private Button applyBtn;
+	private ImageView collectBtn, replyBtn;
 	private IssueReplyAdapter issueReplyAdapter;
 	private List<ReplyEntity> list = new ArrayList<ReplyEntity>();
+	private SharedPreferences mSharedPreferences;
+	private String user_pid;
+	private CustomerDialog customerDialog;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler()
 	{
@@ -84,6 +101,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		this.setContentView(R.layout.activity_issuedetails);
 		Intent intent = getIntent();
 		initActionbar();
+		initBottomView();
+		mSharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
+				Context.MODE_PRIVATE);
+		user_pid = mSharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
 		mAutoListView = (AutoListView) this.findViewById(R.id.issue_listview);
 		mAutoListView.setOnLoadListener(this);
 		BitmapCache bitmapCache = new BitmapCache();
@@ -104,6 +125,25 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		}
 	}
 
+	/**
+	 * 加载底部的布局
+	 */
+
+	private void initBottomView() {
+		applyBtn = (Button) this.findViewById(R.id.apply_btn);
+		replyBtn = (ImageView) this.findViewById(R.id.reply_btn);
+		collectBtn = (ImageView) this.findViewById(R.id.collect_btn);
+		applyBtn.setOnClickListener(this);
+		replyBtn.setOnClickListener(this);
+		collectBtn.setOnClickListener(this);
+
+	}
+
+	/**
+	 * 根据pid去获得issueinfo
+	 * 
+	 * @param issue_pid
+	 */
 	private void getIssueInfoEntity(int issue_pid) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("IDs", issue_pid + "");
@@ -118,6 +158,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			}
 		});
 	}
+
+	/**
+	 * 加载Actionbar
+	 */
 	private void initActionbar() {
 		useCustomerActionBar();
 		getActionBarleft().setText("邀约详情");
@@ -282,5 +326,88 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		initReplyList();
 	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.reply_btn:// 回复按钮
+			showReplyDialog();
+			Log.e("reply_btn", "reply_btn");
+			break;
+		case R.id.apply_btn:// 报名按钮
+			break;
+		case R.id.collect_btn:// 收藏按钮
+			break;
+		default:
+			break;
+		}
 
+	}
+
+	/**
+	 * 发表回复
+	 */
+	private void doReply(String replyString) {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("AppointID", issue_pid + "");
+		httpPostInterface.addParams("PublisherID", user_pid);
+		httpPostInterface.addParams("Content", replyString);
+		httpPostInterface.getData(replyItUrl, new HttpPostCallBack() {
+			
+			@Override
+			public void httpPostResolveData(String result) {
+				if (customerDialog != null) {
+					customerDialog.dismissDlg();
+				}
+			}
+		});
+
+	}
+	
+	/**
+	 * 弹出回复的对话框。
+	 */
+	private void showReplyDialog() {
+		customerDialog = new CustomerDialog(
+				IssuedinvitationDetailsActivity.this, R.layout.dialog_reply);
+		customerDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
+			
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				window.setGravity(Gravity.BOTTOM);
+				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+						WindowManager.LayoutParams.WRAP_CONTENT);
+				final EditText editText = (EditText) dlg
+						.findViewById(R.id.dialog_reply_edittext);
+				Button button = (Button) dlg
+						.findViewById(R.id.dialog_reply_btn);
+				button.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						String inputString = editText.getText().toString();
+						if (inputString.isEmpty())
+ {
+							Utils.toast(IssuedinvitationDetailsActivity.this,
+									"请输入回复");
+							return;
+						}
+						if (issue_pid == -1) {
+							Utils.toast(IssuedinvitationDetailsActivity.this,
+									"邀约pid错误");
+							return;
+						}
+						if (user_pid.isEmpty()) {
+							Utils.toast(IssuedinvitationDetailsActivity.this,
+									"用户pid错误");
+							return;
+						}
+						doReply(inputString);
+
+					}
+				});
+				 
+			}
+		});
+		customerDialog.showDlg();
+	}
 }

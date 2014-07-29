@@ -28,9 +28,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-         <meta-data
+        <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="cc589731ed2d57d91bc0d3aa2eb1b3b5"/>
+            android:value="cc589731ed2d57d91bc0d3aa2eb1b3b5" />
+
         <activity
             android:name="com.android.joocola.MainActivity"
             android:label="@string/app_name"
@@ -88,7 +89,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.android.joocola.activity.IssuedinvitationDetailsActivity" 
+            android:name="com.android.joocola.activity.IssuedinvitationDetailsActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -108,11 +109,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
-            android:name="com.android.joocola.activity.GaodeMapActivity" 
+            android:name="com.android.joocola.activity.GaodeMapActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.android.joocola.activity.ChatActivity"
+            android:label="@string/title_activity_chat" >
         </activity>
     </application>
 

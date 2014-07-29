@@ -102,6 +102,8 @@
          android:layout_marginLeft="20dp"
          android:layout_marginRight="20dp"
          android:layout_marginTop="16dp"
+         android:paddingLeft="5dp"
+         android:paddingRight="5dp"
          android:background="@drawable/edittext_bg"
          android:ems="20" >
 
@@ -147,6 +149,7 @@
           android:layout_marginTop="20dp"
           android:layout_marginBottom="50dp"
           android:background="@drawable/nextbtnclick"
+          android:textColor="@color/white"
           android:text="@string/issue_sureissue" />
 
      </LinearLayout>
