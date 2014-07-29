@@ -97,6 +97,16 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				list.addAll(mlist);
 				issueReplyAdapter.notifyDataSetChanged();
 				break;
+			/**
+			 * 刷新数据
+			 */
+			case 2:
+				if(customerDialog!=null)
+				{
+					customerDialog.dismissDlg();
+				}
+                refreshReply();
+				break;
 			default:
 				break;
 			}
@@ -304,7 +314,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			}
 		});
 	}
-
+     
 	/**
 	 * 解析评论json
 	 */
@@ -337,7 +347,13 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		mCurPageIndex += 1;
 		initReplyList();
 	}
-
+    
+	private void refreshReply()
+	{
+		mCurPageIndex = 1;
+		list.clear();
+		initReplyList();
+	}
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -369,8 +385,13 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			public void httpPostResolveData(String result) {
 				if (customerDialog != null) {
 					customerDialog.dismissDlg();
+					
 				}
-			}
+				Message message =Message.obtain();
+				message.what=2;
+				message.obj =result;
+				handler.sendMessage(message);
+			} 
 		});
 
 	}
@@ -414,6 +435,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 							return;
 						}
 						doReply(inputString);
+						
 
 					}
 				});
