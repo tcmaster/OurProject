@@ -77,17 +77,24 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	{
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
+			/**
+			 * 通过issue_pid加载完成后
+			 */
 			case 0:
 				String json = (String) msg.obj;
 				GetIssueInfoEntity getIssueInfoEntity = resloveJson(json);
 				initView(getIssueInfoEntity);
 				break;
+				
+			/**
+			 * 加载回复列表
+			 */
 			case 1:
 				mAutoListView.onLoadComplete();
 				String replyJson = (String) msg.obj;
-				List<ReplyEntity> list = resolveJson(replyJson);
+				List<ReplyEntity> mlist = resolveJson(replyJson);
 				mAutoListView.setResultSize(list.size());
-				list.addAll(list);
+				list.addAll(mlist);
 				issueReplyAdapter.notifyDataSetChanged();
 				break;
 			default:
@@ -102,18 +109,23 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		Intent intent = getIntent();
 		initActionbar();
 		initBottomView();
+		//获得当前登录的user_pid
 		mSharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		user_pid = mSharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
+		
+		//初始化回复列表的listview。
 		mAutoListView = (AutoListView) this.findViewById(R.id.issue_listview);
-		mAutoListView.setOnLoadListener(this);
+		mAutoListView.setOnLoadListener(this); 
 		BitmapCache bitmapCache = new BitmapCache();
-		issueReplyAdapter = new IssueReplyAdapter(list,
-				IssuedinvitationDetailsActivity.this, bitmapCache);
-		mAutoListView.setAdapter(issueReplyAdapter);
 		mImageLoader = new ImageLoader(
 				Volley.newRequestQueue(IssuedinvitationDetailsActivity.this),
 				new BitmapCache());
+		issueReplyAdapter = new IssueReplyAdapter(list,
+				IssuedinvitationDetailsActivity.this, bitmapCache);
+		mAutoListView.setAdapter(issueReplyAdapter);
+		
+		//因为有2个界面可以传入此界面,1为发布完成的时候,2为从首页fragment的listview点进来。
 		issue_pid = intent.getIntExtra("issue_pid", -1);
 		if (issue_pid == -1) {
 		GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
@@ -189,7 +201,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	}
 	
 	/**
-	 * 加载布局
+	 * 加载上面的布局
 	 * 
 	 * @param entity
 	 */
