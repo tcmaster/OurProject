@@ -1,7 +1,9 @@
 package com.android.joocola.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.android.joocola.R;
 import com.android.joocola.utils.AMapUtil;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 
 public class GaodeMapActivity extends BaseActivity implements
@@ -46,6 +49,8 @@ public class GaodeMapActivity extends BaseActivity implements
 	private double locationX;
 	private double locationY;
 	private LatLonPoint latLonPoint;
+	private String locationCity;
+	private SharedPreferences sharedPreferences;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +60,9 @@ public class GaodeMapActivity extends BaseActivity implements
 		address = intent.getStringExtra("address");
 		mapView = (MapView) findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
+		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
+				Context.MODE_PRIVATE);
+		locationCity = sharedPreferences.getString("LocationCity", "北京");
 		init();
 		getLatlon(address);
 
@@ -78,6 +86,7 @@ public class GaodeMapActivity extends BaseActivity implements
 		searchBtn = (Button) this.findViewById(R.id.issue_map_searchbtn);
 		searchBtn.setOnClickListener(this);
 		cityEdit = (EditText) this.findViewById(R.id.issue_city_edit);
+		cityEdit.setText(locationCity);
 		geocoderSearch = new GeocodeSearch(this);
 		geocoderSearch.setOnGeocodeSearchListener(this);
 		progDialog = new ProgressDialog(this);

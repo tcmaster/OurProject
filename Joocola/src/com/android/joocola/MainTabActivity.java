@@ -11,6 +11,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -68,6 +69,7 @@ public class MainTabActivity extends FragmentActivity {
 	private ArrayList<IssueInfo> mIssueInfos;
 	private JoocolaApplication mJoocolaApplication;
 	private BitmapCache bitmapCache;
+	private SharedPreferences sharedPreferences;
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -90,6 +92,8 @@ public class MainTabActivity extends FragmentActivity {
 		this.setContentView(R.layout.activity_maintab);
 		mJoocolaApplication = JoocolaApplication.getInstance();
 		mIssueInfos = new ArrayList<IssueInfo>();
+		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
+				Context.MODE_PRIVATE);
 		initActionbar();
 		initView();
 		initViewPager();
@@ -157,7 +161,7 @@ public class MainTabActivity extends FragmentActivity {
 
 	private void initActionbar() {
 		mActionBar = getActionBar();
-		mActionBar.setTitle("北京");
+		mActionBar.setTitle(sharedPreferences.getString("LocationCity", "北京"));
 		mActionBar.setDisplayShowHomeEnabled(false);
 
 		// mActionBar.setDisplayShowCustomEnabled(true);

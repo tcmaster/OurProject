@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private static final int LOGIN_ERROR = 1; // 登录失败
 	private int mBackKeyPressedTimes = 0;
 	private SharedPreferences sharedPreferences;
-
+	private Editor editor;
 	private LocationManagerProxy aMapLocManager = null;
 	private AMapLocation aMapLocation; // 用于判断定位超时
 
@@ -60,7 +60,6 @@ public class MainActivity extends Activity implements OnClickListener,
 				// 登录成功的操作
 				String pid = (String) msg.obj;
 				JoocolaApplication.getInstance().initUserInfo(pid);
-				Editor editor = sharedPreferences.edit();
 				editor.putString(Constans.LOGIN_PID, pid);
 				editor.commit();
 				Intent intent = new Intent(MainActivity.this,
@@ -90,6 +89,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		initView();
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
 		initLocation();
 	}
 
@@ -248,9 +248,8 @@ public class MainActivity extends Activity implements OnClickListener,
 			this.aMapLocation = location;// 判断超时机制
 			Double geoLat = location.getLatitude();// x
 			Double geoLng = location.getLongitude();// y
-			String str = ("\n市:" + location.getCity() + "\n区(县):"
-					+ location.getDistrict() + "\n区域编码:" + location.getAdCode());
-			Log.e("str", str);
+			editor.putString("LocationCity", location.getCity());
+			String str = location.getCity();
 			if (!str.isEmpty()) {
 				stopLocation();
 			}
