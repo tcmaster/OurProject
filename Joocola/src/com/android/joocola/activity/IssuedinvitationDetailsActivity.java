@@ -40,6 +40,7 @@ import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.utils.Utils;
 import com.android.joocola.view.AutoListView;
 import com.android.joocola.view.AutoListView.OnLoadListener;
+import com.android.joocola.view.AutoListView.OnRefreshListener;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -51,7 +52,7 @@ import com.android.volley.toolbox.Volley;
  * 
  */
 public class IssuedinvitationDetailsActivity extends BaseActivity implements
-		OnLoadListener, OnClickListener {
+		OnLoadListener, OnClickListener, OnRefreshListener {
 	private int issue_pid;
 	private TextView title, name, age, astro, issuetime, issuesex, issuecost,
 			location, description, state, usercount, replycount;
@@ -105,6 +106,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				{
 					customerDialog.dismissDlg();
 				}
+				mAutoListView.onRefreshComplete();
                 refreshReply();
 				break;
 			default:
@@ -119,14 +121,15 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		Intent intent = getIntent();
 		initActionbar();
 		initBottomView();
-		//获得当前登录的user_pid
+		// 获得当前登录的user_pid
 		mSharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		user_pid = mSharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
 		
-		//初始化回复列表的listview。
+		// 初始化回复列表的listview。
 		mAutoListView = (AutoListView) this.findViewById(R.id.issue_listview);
 		mAutoListView.setOnLoadListener(this); 
+		mAutoListView.setOnRefreshListener(this);
 		BitmapCache bitmapCache = new BitmapCache();
 		mImageLoader = new ImageLoader(
 				Volley.newRequestQueue(IssuedinvitationDetailsActivity.this),
@@ -135,7 +138,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				IssuedinvitationDetailsActivity.this, bitmapCache);
 		mAutoListView.setAdapter(issueReplyAdapter);
 		
-		//因为有2个界面可以传入此界面,1为发布完成的时候,2为从首页fragment的listview点进来。
+		// 因为有2个界面可以传入此界面,1为发布完成的时候,2为从首页fragment的listview点进来。
 		issue_pid = intent.getIntExtra("issue_pid", -1);
 		if (issue_pid == -1) {
 		GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
@@ -443,5 +446,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			}
 		});
 		customerDialog.showDlg();
+	}
+
+	@Override
+	public void onRefresh() {
+		handler.sendEmptyMessage(2);
 	}
 }
