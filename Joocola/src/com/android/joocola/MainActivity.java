@@ -66,6 +66,23 @@ public class MainActivity extends Activity implements OnClickListener,
 						MainTabActivity.class);
 				startActivity(intent);
 				MainActivity.this.finish();
+				// new Thread(new Runnable() {
+				//
+				// @Override
+				// public void run() {
+				// XMPPChat.getInstance().login("tcover", "123456");
+				// XMPPChat.getInstance().setPresence(XMPPChat.QME);
+				// Chat chat = SingleChat.getInstance().getFriendChat(
+				// "test1", null);
+				// try {
+				// chat.sendMessage("hello,终于能说话了");
+				// } catch (XMPPException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// }
+				// }).start();
+
 				break;
 			case 10:
 				if (aMapLocation == null) {
