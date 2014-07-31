@@ -11,6 +11,8 @@ import android.app.Application;
 import android.os.Handler;
 import android.util.Log;
 
+import com.android.joocola.chat.UserChatListener;
+import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.dbmanger.BaseDataInfoManger;
 import com.android.joocola.entity.BaseCityInfo;
 import com.android.joocola.entity.BaseDataInfo;
@@ -129,6 +131,53 @@ public class JoocolaApplication extends Application {
 	}
 
 	/**
+	 * 首次登录，获取用户信息
+	 */
+	public void initUserInfoAfterLogin(String userId) {
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("UserIDs", userId);
+		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				if (result != null && !result.equals("")) {
+					userInfo = new UserInfo();
+					try {
+						JSONObject object = new JSONObject(result);
+						JSONArray array = object.getJSONArray("Entities");
+						JSONObject userObject = array.getJSONObject(0);
+						JsonUtils.getUserInfo(userObject, userInfo);
+						// 在用户信息获取完成后，进行聊天的注册
+						String register = XMPPChat.getInstance().register(
+								userInfo.getNickName(), "123456",
+								userInfo.getNickName());
+						if (register.equals("1") || register.equals("2")) {
+							// 如果该账号已经被注册或者注册成功，说明可以进行登录
+							XMPPChat.getInstance().login(
+									userInfo.getNickName(), "123456");
+							XMPPChat.getInstance().getConnection()
+									.getChatManager()
+									.addChatListener(new UserChatListener());
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Utils.toast(getApplicationContext(), "获取登录用户信息失败");
+						}
+					});
+
+				}
+			}
+		});
+	}
+
+	/**
 	 * 在用户登录成功后，用于获得用户信息
 	 */
 	public void initUserInfo(String userId) {
@@ -204,4 +253,5 @@ public class JoocolaApplication extends Application {
 	public List<BaseCityInfo> getBaseCityInfo() {
 		return baseCityInfos;
 	}
+
 }

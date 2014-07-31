@@ -5,6 +5,10 @@ package com.android.joocola.utils;
  * 
  */
 public class Constans {
+	/**
+	 * 聊天广播的Action
+	 */
+	public static final String CHAT_ACTION = "IWantHaveAChat";
 	public static final String URL = "http://a.utryi.com";
 	public static final String MAIN_URL = "http://a.utryi.com/Controller/";
 	public static final String UPLOADIMGURL = "http://a.utryi.com/_Base/Uploader/UserPhoto.ashx";

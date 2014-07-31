@@ -28,7 +28,6 @@ import com.amap.api.location.LocationProviderProxy;
 import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.utils.AMapUtil;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -59,30 +58,13 @@ public class MainActivity extends Activity implements OnClickListener,
 			case LOGIN_SUCCESS:
 				// 登录成功的操作
 				String pid = (String) msg.obj;
-				JoocolaApplication.getInstance().initUserInfo(pid);
+				JoocolaApplication.getInstance().initUserInfoAfterLogin(pid);
 				editor.putString(Constans.LOGIN_PID, pid);
 				editor.commit();
 				Intent intent = new Intent(MainActivity.this,
 						MainTabActivity.class);
 				startActivity(intent);
 				MainActivity.this.finish();
-				// new Thread(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				// XMPPChat.getInstance().login("tcover", "123456");
-				// XMPPChat.getInstance().setPresence(XMPPChat.QME);
-				// Chat chat = SingleChat.getInstance().getFriendChat(
-				// "test1", null);
-				// try {
-				// chat.sendMessage("hello,终于能说话了");
-				// } catch (XMPPException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-				// }
-				// }).start();
-
 				break;
 			case 10:
 				if (aMapLocation == null) {
@@ -122,6 +104,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				LocationProviderProxy.AMapNetwork, 2000, 10, this);
 		mHandler.sendEmptyMessageDelayed(10, 10000);// 设置超过10秒还没有定位到就停止定位
 	}
+
 	private void initView() {
 		nameEdit = (EditText) this.findViewById(R.id.name_edit);
 		pswdEdit = (EditText) this.findViewById(R.id.pswd_edit);
@@ -245,8 +228,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onProviderDisabled(String provider) {
 	}
-
-
 
 	/**
 	 * 销毁定位
