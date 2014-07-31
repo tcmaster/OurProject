@@ -59,7 +59,7 @@ public class XMPPChat {
 	/**
 	 * 远程服务器地址
 	 */
-	private String REMOTE_HOST = "192.168.87.182";
+	private String REMOTE_HOST = "192.168.0.104";
 	/**
 	 * 服务名
 	 */
@@ -105,7 +105,7 @@ public class XMPPChat {
 						REMOTE_HOST, PORT);
 				XMPPConnection.DEBUG_ENABLED = true;
 				config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
-				config.setSendPresence(true); // 状态设为离线，目的为了取离线消息
+				config.setSendPresence(false); // 状态设为离线，目的为了取离线消息
 				config.setReconnectionAllowed(true);
 				config.setDebuggerEnabled(true);
 				Log.v("lixiaosong", config.getServiceName());

@@ -93,18 +93,14 @@ public class ChatActivity extends Activity {
 			Utils.toast(this, "输入内容不能为空");
 			return;
 		}
-		/**
-		 * 得到会话
-		 */
+		// 得到会话
 		Chat chat = SingleChat.getInstance().getFriendChat("test1", null);
 		try {
 			chat.sendMessage(content);
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		}
-		/**
-		 * 增加一条发送成功的消息到本地窗口
-		 */
+		// 增加一条发送成功的消息到本地窗口
 		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(
 				ChatActivity.this).inflate(R.layout.item_chat_me, null);
 		TextView name_tv = (TextView) layout.findViewById(R.id.chat_name);
@@ -115,7 +111,6 @@ public class ChatActivity extends Activity {
 		ll_chatWindow.addView(layout);
 		scrollToBottom();
 		et_content.setText("");
-
 	}
 
 	/**

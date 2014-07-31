@@ -11,6 +11,7 @@ import android.app.Application;
 import android.os.Handler;
 import android.util.Log;
 
+import com.android.joocola.chat.OfflineChatInfoManager;
 import com.android.joocola.chat.UserChatListener;
 import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.dbmanger.BaseDataInfoManger;
@@ -23,6 +24,7 @@ import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.utils.Utils;
+import com.lidroid.xutils.DbUtils;
 
 public class JoocolaApplication extends Application {
 	private static JoocolaApplication instance;
@@ -37,6 +39,10 @@ public class JoocolaApplication extends Application {
 	// 基础城市信息
 	private List<BaseCityInfo> baseCityInfos;
 	private Handler handler;
+	/**
+	 * 数据库帮助类
+	 */
+	private DbUtils db;
 
 	@Override
 	public void onCreate() {
@@ -158,6 +164,10 @@ public class JoocolaApplication extends Application {
 							XMPPChat.getInstance().getConnection()
 									.getChatManager()
 									.addChatListener(new UserChatListener());
+							/**
+							 * 得到所有一对一的离线消息
+							 */
+							OfflineChatInfoManager.getOfflineInfo();
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -254,4 +264,12 @@ public class JoocolaApplication extends Application {
 		return baseCityInfos;
 	}
 
+	/**
+	 * 得到数据库，注意，该数据库是DBUtils
+	 */
+	public DbUtils getDB() {
+		if (db == null)
+			db = DbUtils.create(this, "joocolaDB");
+		return db;
+	}
 }
