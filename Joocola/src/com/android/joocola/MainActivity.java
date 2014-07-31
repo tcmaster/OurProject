@@ -70,7 +70,6 @@ public class MainActivity extends Activity implements OnClickListener,
 			case 10:
 				if (aMapLocation == null) {
 					stopLocation();// 销毁掉定位
-
 				}
 				break;
 			default:
@@ -249,6 +248,8 @@ public class MainActivity extends Activity implements OnClickListener,
 			Double geoLat = location.getLatitude();// x
 			Double geoLng = location.getLongitude();// y
 			editor.putString("LocationCity", location.getCity());
+			editor.putString("LocationX", geoLat + "");
+			editor.putString("LocationY", geoLng + "");
 			String str = location.getCity();
 			if (!str.isEmpty()) {
 				stopLocation();
