@@ -118,7 +118,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		 * ，第一个参数是定位provider，第二个参数时间最短是2000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
 		 */
 		aMapLocManager.requestLocationUpdates(
-				LocationProviderProxy.AMapNetwork, 2000, 10, this);
+				LocationProviderProxy.AMapNetwork, 20000, 10, this);
 		mHandler.sendEmptyMessageDelayed(10, 10000);// 设置超过10秒还没有定位到就停止定位
 	}
 	private void initView() {
@@ -268,9 +268,10 @@ public class MainActivity extends Activity implements OnClickListener,
 			editor.putString("LocationX", geoLat + "");
 			editor.putString("LocationY", geoLng + "");
 			String str = location.getCity();
-			if (!str.isEmpty()) {
-				stopLocation();
-			}
+			// if (!str.isEmpty()) {
+			// stopLocation();
+			// }
+			Log.e("----------->", str);
 		}
 	}
 }
