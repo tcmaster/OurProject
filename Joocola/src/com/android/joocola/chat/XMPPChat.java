@@ -1,14 +1,12 @@
 package com.android.joocola.chat;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketCollector;
+import org.jivesoftware.smack.Roster;
+import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.SmackConfiguration;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.SmackException.NotConnectedException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.AndFilter;
@@ -16,32 +14,34 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Registration;
+import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smackx.address.provider.MultipleAddressesProvider;
+import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smackx.GroupChatInvitation;
+import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
-import org.jivesoftware.smackx.chatstates.packet.ChatStateExtension;
-import org.jivesoftware.smackx.commands.provider.AdHocCommandDataProvider;
-import org.jivesoftware.smackx.delay.provider.DelayInformationProvider;
-import org.jivesoftware.smackx.disco.provider.DiscoverInfoProvider;
-import org.jivesoftware.smackx.disco.provider.DiscoverItemsProvider;
-import org.jivesoftware.smackx.iqlast.packet.LastActivity;
-import org.jivesoftware.smackx.iqprivate.PrivateDataManager;
-import org.jivesoftware.smackx.muc.packet.GroupChatInvitation;
-import org.jivesoftware.smackx.muc.provider.MUCAdminProvider;
-import org.jivesoftware.smackx.muc.provider.MUCOwnerProvider;
-import org.jivesoftware.smackx.muc.provider.MUCUserProvider;
-import org.jivesoftware.smackx.offline.packet.OfflineMessageInfo;
-import org.jivesoftware.smackx.offline.packet.OfflineMessageRequest;
-import org.jivesoftware.smackx.privacy.provider.PrivacyProvider;
+import org.jivesoftware.smackx.packet.ChatStateExtension;
+import org.jivesoftware.smackx.packet.LastActivity;
+import org.jivesoftware.smackx.packet.OfflineMessageInfo;
+import org.jivesoftware.smackx.packet.OfflineMessageRequest;
+import org.jivesoftware.smackx.packet.SharedGroupsInfo;
+import org.jivesoftware.smackx.provider.AdHocCommandDataProvider;
+import org.jivesoftware.smackx.provider.DataFormProvider;
+import org.jivesoftware.smackx.provider.DelayInformationProvider;
+import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
+import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
+import org.jivesoftware.smackx.provider.MUCAdminProvider;
+import org.jivesoftware.smackx.provider.MUCOwnerProvider;
+import org.jivesoftware.smackx.provider.MUCUserProvider;
+import org.jivesoftware.smackx.provider.MessageEventProvider;
+import org.jivesoftware.smackx.provider.MultipleAddressesProvider;
+import org.jivesoftware.smackx.provider.StreamInitiationProvider;
+import org.jivesoftware.smackx.provider.VCardProvider;
+import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
-import org.jivesoftware.smackx.sharedgroups.packet.SharedGroupsInfo;
-import org.jivesoftware.smackx.si.provider.StreamInitiationProvider;
-import org.jivesoftware.smackx.vcardtemp.provider.VCardProvider;
-import org.jivesoftware.smackx.xdata.provider.DataFormProvider;
-import org.jivesoftware.smackx.xevent.provider.MessageEventProvider;
-import org.jivesoftware.smackx.xhtmlim.provider.XHTMLExtensionProvider;
 
 import android.util.Log;
 
@@ -59,7 +59,7 @@ public class XMPPChat {
 	/**
 	 * 远程服务器地址
 	 */
-	private String REMOTE_HOST = "127.0.0.1";
+	private String REMOTE_HOST = "192.168.87.182";
 	/**
 	 * 服务名
 	 */
@@ -72,6 +72,15 @@ public class XMPPChat {
 	 * XMPP的连接
 	 */
 	private XMPPConnection connection;
+	/**
+	 * 下面几个字段代表本用户当前的几个状态 ONLINE，QME，BUSY，LEAVE，INVISIBLE,OFFLINE
+	 */
+	public static final int ONLINE = 0;
+	public static final int QME = 1;
+	public static final int BUSY = 2;
+	public static final int LEAVE = 3;
+	public static final int INVISIBLE = 4;
+	public static final int OFFLINE = 5;
 
 	synchronized public static XMPPChat getInstance() {
 		if (chatService == null)
@@ -80,31 +89,30 @@ public class XMPPChat {
 	}
 
 	private XMPPChat() {
-
+		getConnection();
 	}
 
-	private XMPPConnection getConnection() {
+	public XMPPConnection getConnection() {
 		if (connection == null)
 			openConnection();
 		return connection;
 	}
 
 	private boolean openConnection() {
-		if (null == connection || connection.isAuthenticated()) {
+		if (null == connection || !connection.isAuthenticated()) {
 			try {
 				ConnectionConfiguration config = new ConnectionConfiguration(
 						REMOTE_HOST, PORT);
+				XMPPConnection.DEBUG_ENABLED = true;
 				config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
 				config.setSendPresence(true); // 状态设为离线，目的为了取离线消息
 				config.setReconnectionAllowed(true);
 				config.setDebuggerEnabled(true);
-				connection = new XMPPTCPConnection(config);
+				Log.v("lixiaosong", config.getServiceName());
+				Log.v("lixiaosong", config.getHostAddresses().toString());
+				connection = new XMPPConnection(config);
 				connection.connect();
 				return true;
-			} catch (SmackException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			} catch (XMPPException e) {
 				e.printStackTrace();
 			}
@@ -119,13 +127,8 @@ public class XMPPChat {
 	 */
 	public void closeConnection() {
 		if (connection != null) {
-			// connection.removeConnectionListener(connectionListener);
 			if (connection.isConnected())
-				try {
-					connection.disconnect();
-				} catch (NotConnectedException e) {
-					e.printStackTrace();
-				}
+				connection.disconnect();
 			connection = null;
 		}
 	}
@@ -139,30 +142,125 @@ public class XMPPChat {
 	 *            注册的密码
 	 * @return 1注册成功，0服务器没有返回结果，2账号已经被使用，3注册失败
 	 */
-	public String register(String account, String password) {
+	public String register(String account, String password, String name) {
 		if (connection == null)
 			return "0";
 		Registration registration = new Registration();
 		registration.setType(IQ.Type.SET);
+		registration.setUsername(account);
+		registration.setPassword(password);
 		registration.setTo(connection.getServiceName());
-		Map<String, String> att = new HashMap<String, String>();
-		att.put("username", account);
-		att.put("password", password);
-		att.put("android", "geolo_createUser_android");
-		registration.setAttributes(att);
+		registration.addAttribute("android", "geolo_createUser_android");
+		registration.addAttribute("name", name);
 		PacketFilter filter = new AndFilter(new PacketIDFilter(
 				registration.getPacketID()), new PacketTypeFilter(IQ.class));
 		PacketCollector collector = connection.createPacketCollector(filter);
-		try {
-			connection.sendPacket(registration);
-		} catch (NotConnectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		connection.sendPacket(registration);
 		IQ result = (IQ) collector.nextResult(SmackConfiguration
-				.getDefaultPacketReplyTimeout());
+				.getPacketReplyTimeout());
 		collector.cancel();
+		if (result == null) {
+			Log.v("lixiaosong", "服务器无响应");
+			return "0";
+		} else if (result.getType() == IQ.Type.RESULT) {
+			Log.v("lixiaosong", "注册成功");
+			return "1";
+		} else if (result.getType() == IQ.Type.ERROR) {
+			if (result.getError().toString().equalsIgnoreCase("conflict(409)")) {
+				Log.v("lixiaosong", "该账号已被注册");
+				return "2";
+			} else {
+				Log.v("lixiaosong", "注册失败");
+				return "3";
+			}
+		}
 		return "1";
+	}
+
+	/**
+	 * 
+	 * @param userName
+	 *            用户名
+	 * @param password
+	 *            密码
+	 * @return true代表登录成功，false代表登录失败
+	 */
+	public boolean login(String userName, String password) {
+		if (connection != null) {
+			try {
+				connection.login(userName, password);
+				return true;
+			} catch (XMPPException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 修改用户状态
+	 * 
+	 * @param code
+	 *            状态有ONLINE，QME，BUSY，LEAVE，INVISIBLE,OFFLINE
+	 */
+	public void setPresence(int code) {
+		if (connection == null)
+			return;
+		Presence presence;
+		switch (code) {
+		case ONLINE:
+			presence = new Presence(Presence.Type.available);
+			connection.sendPacket(presence);
+			Log.v("state", "设置在线");
+			break;
+		case QME:
+			presence = new Presence(Presence.Type.available);
+			presence.setMode(Presence.Mode.chat);
+			connection.sendPacket(presence);
+			Log.v("state", "设置Q我吧");
+			System.out.println(presence.toXML());
+			break;
+		case BUSY:
+			presence = new Presence(Presence.Type.available);
+			presence.setMode(Presence.Mode.dnd);
+			connection.sendPacket(presence);
+			Log.v("state", "设置忙碌");
+			System.out.println(presence.toXML());
+			break;
+		case LEAVE:
+			presence = new Presence(Presence.Type.available);
+			presence.setMode(Presence.Mode.away);
+			connection.sendPacket(presence);
+			Log.v("state", "设置离开");
+			System.out.println(presence.toXML());
+			break;
+		case INVISIBLE:
+			Roster roster = connection.getRoster();
+			Collection<RosterEntry> entries = roster.getEntries();
+			for (RosterEntry entry : entries) {
+				presence = new Presence(Presence.Type.unavailable);
+				presence.setPacketID(Packet.ID_NOT_AVAILABLE);
+				presence.setFrom(connection.getUser());
+				presence.setTo(entry.getUser());
+				connection.sendPacket(presence);
+				System.out.println(presence.toXML());
+			}
+			// 向同一用户的其他客户端发送隐身状态
+			presence = new Presence(Presence.Type.unavailable);
+			presence.setPacketID(Packet.ID_NOT_AVAILABLE);
+			presence.setFrom(connection.getUser());
+			presence.setTo(StringUtils.parseBareAddress(connection.getUser()));
+			connection.sendPacket(presence);
+			Log.v("state", "设置隐身");
+			break;
+		case OFFLINE:
+			presence = new Presence(Presence.Type.unavailable);
+			connection.sendPacket(presence);
+			Log.v("state", "设置离线");
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
