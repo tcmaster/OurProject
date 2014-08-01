@@ -161,13 +161,14 @@ public class JoocolaApplication extends Application {
 							// 如果该账号已经被注册或者注册成功，说明可以进行登录
 							XMPPChat.getInstance().login(
 									userInfo.getNickName(), "123456");
+							// 得到所有一对一的离线消息,并将其存入数据库
+							OfflineChatInfoManager.getOfflineInfo();
+							// 将账号设置为在线状态
+							XMPPChat.getInstance().setPresence(XMPPChat.ONLINE);
+							// 添加接收消息的监听器
 							XMPPChat.getInstance().getConnection()
 									.getChatManager()
 									.addChatListener(new UserChatListener());
-							/**
-							 * 得到所有一对一的离线消息
-							 */
-							OfflineChatInfoManager.getOfflineInfo();
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
