@@ -59,11 +59,11 @@ public class XMPPChat {
 	/**
 	 * 远程服务器地址
 	 */
-	private String REMOTE_HOST = "192.168.0.104";
+	private String REMOTE_HOST = "182.92.187.129";
 	/**
 	 * 服务名
 	 */
-	private String SERVICE_NAME = "xtc-0323141502";
+	private String SERVICE_NAME = "10.171.59.131";
 	/**
 	 * 本类的单例对象
 	 */
