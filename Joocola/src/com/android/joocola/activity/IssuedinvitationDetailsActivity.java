@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -66,16 +67,14 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private int totalItemsCount; // 总共多少条
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
-	private Button applyBtn;
-	private ImageView collectBtn, replyBtn;
+	private LinearLayout apply_ll, reply_ll, collect_ll;
 	private IssueReplyAdapter issueReplyAdapter;
 	private List<ReplyEntity> list = new ArrayList<ReplyEntity>();
 	private SharedPreferences mSharedPreferences;
 	private String user_pid;
 	private CustomerDialog customerDialog;
 	@SuppressLint("HandlerLeak")
-	private Handler handler = new Handler()
-	{
+	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			/**
@@ -86,7 +85,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				GetIssueInfoEntity getIssueInfoEntity = resloveJson(json);
 				initView(getIssueInfoEntity);
 				break;
-				
+
 			/**
 			 * 加载回复列表
 			 */
@@ -102,18 +101,18 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			 * 刷新数据
 			 */
 			case 2:
-				if(customerDialog!=null)
-				{
+				if (customerDialog != null) {
 					customerDialog.dismissDlg();
 				}
 				mAutoListView.onRefreshComplete();
-                refreshReply();
+				refreshReply();
 				break;
 			default:
 				break;
 			}
 		};
 	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,10 +124,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		mSharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		user_pid = mSharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
-		
+
 		// 初始化回复列表的listview。
 		mAutoListView = (AutoListView) this.findViewById(R.id.issue_listview);
-		mAutoListView.setOnLoadListener(this); 
+		mAutoListView.setOnLoadListener(this);
 		mAutoListView.setOnRefreshListener(this);
 		BitmapCache bitmapCache = new BitmapCache();
 		mImageLoader = new ImageLoader(
@@ -137,12 +136,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		issueReplyAdapter = new IssueReplyAdapter(list,
 				IssuedinvitationDetailsActivity.this, bitmapCache);
 		mAutoListView.setAdapter(issueReplyAdapter);
-		
+
 		// 因为有2个界面可以传入此界面,1为发布完成的时候,2为从首页fragment的listview点进来。
 		issue_pid = intent.getIntExtra("issue_pid", -1);
 		if (issue_pid == -1) {
-		GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
-				.getSerializableExtra("issueInfo");
+			GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
+					.getSerializableExtra("issueInfo");
 			issue_pid = getIssueInfoEntity.getPID();
 			initView(getIssueInfoEntity);
 		} else {
@@ -155,12 +154,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	 */
 
 	private void initBottomView() {
-		applyBtn = (Button) this.findViewById(R.id.apply_btn);
-		replyBtn = (ImageView) this.findViewById(R.id.reply_btn);
-		collectBtn = (ImageView) this.findViewById(R.id.collect_btn);
-		applyBtn.setOnClickListener(this);
-		replyBtn.setOnClickListener(this);
-		collectBtn.setOnClickListener(this);
+		apply_ll = (LinearLayout) this.findViewById(R.id.apply_ll);
+		reply_ll = (LinearLayout) this.findViewById(R.id.reply_ll);
+		collect_ll = (LinearLayout) this.findViewById(R.id.collect_ll);
+		apply_ll.setOnClickListener(this);
+		reply_ll.setOnClickListener(this);
+		collect_ll.setOnClickListener(this);
 
 	}
 
@@ -173,7 +172,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("IDs", issue_pid + "");
 		httpPostInterface.getData(url, new HttpPostCallBack() {
-			
+
 			@Override
 			public void httpPostResolveData(String result) {
 				Message message = Message.obtain();
@@ -204,52 +203,37 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				JSONObject object = jsonArray.getJSONObject(0);
 				getIssueInfoEntity = JsonUtils.getIssueInfoEntity(object,
 						getIssueInfoEntity);
-			}  
+			}
 		} catch (JSONException e1) {
-			 
+
 			e1.printStackTrace();
 		}
 		return getIssueInfoEntity;
 
 	}
-	
+
 	/**
 	 * 加载上面的布局
 	 * 
 	 * @param entity
 	 */
-	private void initView(GetIssueInfoEntity entity)
- {
+	private void initView(GetIssueInfoEntity entity) {
 		initReplyList();// 加载评论JSON
 
-		title = (TextView) this
-				.findViewById(R.id.issueitem_title);
-		name = (TextView) this
-				.findViewById(R.id.issueitem_name);
-		age = (TextView) this
-				.findViewById(R.id.issueitem_age);
-		astro = (TextView) this
-				.findViewById(R.id.issueitem_astro);
-		issuetime = (TextView) this
-				.findViewById(R.id.issueitem_time);
-		issuesex = (TextView) this
-				.findViewById(R.id.issueitem_issuesex);
-		issuecost = (TextView) this
-				.findViewById(R.id.issueitem_issuecost);
-		location = (TextView) this
-				.findViewById(R.id.issueitem_location);
-		description = (TextView) this
-				.findViewById(R.id.issueitem_description);
-		state = (TextView) this
-				.findViewById(R.id.issueitem_state);
-		usercount = (TextView) this
-				.findViewById(R.id.issueitem_usercount);
-		replycount = (TextView) this
-				.findViewById(R.id.issueitem_replycount);
-		touxiang = (NetworkImageView) this
-				.findViewById(R.id.issueitem_img);
-		sexImageView = (ImageView) this
-.findViewById(R.id.issueitem_seximg);
+		title = (TextView) this.findViewById(R.id.issueitem_title);
+		name = (TextView) this.findViewById(R.id.issueitem_name);
+		age = (TextView) this.findViewById(R.id.issueitem_age);
+		astro = (TextView) this.findViewById(R.id.issueitem_astro);
+		issuetime = (TextView) this.findViewById(R.id.issueitem_time);
+		issuesex = (TextView) this.findViewById(R.id.issueitem_issuesex);
+		issuecost = (TextView) this.findViewById(R.id.issueitem_issuecost);
+		location = (TextView) this.findViewById(R.id.issueitem_location);
+		description = (TextView) this.findViewById(R.id.issueitem_description);
+		state = (TextView) this.findViewById(R.id.issueitem_state);
+		usercount = (TextView) this.findViewById(R.id.issueitem_usercount);
+		replycount = (TextView) this.findViewById(R.id.issueitem_replycount);
+		touxiang = (NetworkImageView) this.findViewById(R.id.issueitem_img);
+		sexImageView = (ImageView) this.findViewById(R.id.issueitem_seximg);
 		title.setText(entity.getTitle());
 		name.setText(entity.getPublisherName());
 		age.setText(entity.getPublisherAge() + "");
@@ -281,7 +265,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		}
 		final int publishID = entity.getPublisherID(); // 用于传值到嵩哥界面
 		touxiang.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(
@@ -290,7 +274,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				intent.putExtra("userId", publishID + "");
 				Log.e("跳转的pid", publishID + "");
 				startActivity(intent);
-				
+
 			}
 		});
 
@@ -307,7 +291,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		httpPostInterface.addParams("ItemsPerPage", 10 + "");
 		httpPostInterface.addParams("CurrentPage", mCurPageIndex + "");
 		httpPostInterface.getData(replyUrl, new HttpPostCallBack() {
-			
+
 			@Override
 			public void httpPostResolveData(String result) {
 				Message message = Message.obtain();
@@ -317,7 +301,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			}
 		});
 	}
-     
+
 	/**
 	 * 解析评论json
 	 */
@@ -342,6 +326,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		}
 		return list;
 	}
+
 	@Override
 	public void onLoad() {
 		if (mCurPageIndex + 1 > mTotalPagesCount) {
@@ -350,23 +335,23 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		mCurPageIndex += 1;
 		initReplyList();
 	}
-    
-	private void refreshReply()
-	{
+
+	private void refreshReply() {
 		mCurPageIndex = 1;
 		list.clear();
 		initReplyList();
 	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.reply_btn:// 回复按钮
+		case R.id.reply_ll:// 回复按钮
 			showReplyDialog();
 			Log.e("reply_btn", "reply_btn");
 			break;
-		case R.id.apply_btn:// 报名按钮
+		case R.id.apply_ll:// 报名按钮
 			break;
-		case R.id.collect_btn:// 收藏按钮
+		case R.id.collect_ll:// 收藏按钮
 			break;
 		default:
 			break;
@@ -383,22 +368,22 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		httpPostInterface.addParams("PublisherID", user_pid);
 		httpPostInterface.addParams("Content", replyString);
 		httpPostInterface.getData(replyItUrl, new HttpPostCallBack() {
-			
+
 			@Override
 			public void httpPostResolveData(String result) {
 				if (customerDialog != null) {
 					customerDialog.dismissDlg();
-					
+
 				}
-				Message message =Message.obtain();
-				message.what=2;
-				message.obj =result;
+				Message message = Message.obtain();
+				message.what = 2;
+				message.obj = result;
 				handler.sendMessage(message);
-			} 
+			}
 		});
 
 	}
-	
+
 	/**
 	 * 弹出回复的对话框。
 	 */
@@ -406,7 +391,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		customerDialog = new CustomerDialog(
 				IssuedinvitationDetailsActivity.this, R.layout.dialog_reply);
 		customerDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
-			
+
 			@Override
 			public void getCustomerView(Window window, AlertDialog dlg) {
 				window.setGravity(Gravity.BOTTOM);
@@ -417,12 +402,11 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				Button button = (Button) dlg
 						.findViewById(R.id.dialog_reply_btn);
 				button.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						String inputString = editText.getText().toString();
-						if (inputString.isEmpty())
- {
+						if (inputString.isEmpty()) {
 							Utils.toast(IssuedinvitationDetailsActivity.this,
 									"请输入回复");
 							return;
@@ -438,11 +422,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 							return;
 						}
 						doReply(inputString);
-						
 
 					}
 				});
-				 
+
 			}
 		});
 		customerDialog.showDlg();

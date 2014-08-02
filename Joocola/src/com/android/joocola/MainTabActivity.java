@@ -12,6 +12,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -35,6 +37,10 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.android.joocola.activity.IssuedinvitationActivity;
 import com.android.joocola.activity.PersonalCenterActivity;
 import com.android.joocola.app.JoocolaApplication;
@@ -59,7 +65,8 @@ import com.android.volley.toolbox.Volley;
  * @author bb
  * 
  */
-public class MainTabActivity extends FragmentActivity {
+public class MainTabActivity extends FragmentActivity implements
+		AMapLocationListener {
 	private RelativeLayout tab_realease, tab_nearby, tab_message;
 	private ViewPager mPager;
 	private ActionBar mActionBar;
@@ -70,6 +77,10 @@ public class MainTabActivity extends FragmentActivity {
 	private JoocolaApplication mJoocolaApplication;
 	private BitmapCache bitmapCache;
 	private SharedPreferences sharedPreferences;
+	private LocationManagerProxy aMapLocManager = null;
+	private AMapLocation aMapLocation; // 用于判断定位超时
+	private Editor editor;
+
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -94,10 +105,40 @@ public class MainTabActivity extends FragmentActivity {
 		mIssueInfos = new ArrayList<IssueInfo>();
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
+		editor = sharedPreferences.edit();
 		initActionbar();
 		initView();
 		initViewPager();
+		initLocation();
 		bitmapCache = new BitmapCache();
+
+	}
+
+	/**
+	 * 加载定位相关
+	 */
+	private void initLocation() {
+		aMapLocManager = LocationManagerProxy.getInstance(this);
+		/*
+		 * mAMapLocManager.setGpsEnable(false);//
+		 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true Location
+		 * API定位采用GPS和网络混合定位方式
+		 * ，第一个参数是定位provider，第二个参数时间最短是2000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
+		 */
+		aMapLocManager.requestLocationUpdates(
+				LocationProviderProxy.AMapNetwork, 20000, 10, this);
+		mHandler.sendEmptyMessageDelayed(10, 10000);// 设置超过10秒还没有定位到就停止定位
+	}
+
+	/**
+	 * 销毁定位
+	 */
+	private void stopLocation() {
+		if (aMapLocManager != null) {
+			aMapLocManager.removeUpdates(this);
+			aMapLocManager.destory();
+		}
+		aMapLocManager = null;
 	}
 
 	@Override
@@ -163,9 +204,6 @@ public class MainTabActivity extends FragmentActivity {
 		mActionBar = getActionBar();
 		mActionBar.setTitle(sharedPreferences.getString("LocationCity", "北京"));
 		mActionBar.setDisplayShowHomeEnabled(false);
-
-		// mActionBar.setDisplayShowCustomEnabled(true);
-		// mActionBar.setCustomView(R.layout.maintab_actionbar);
 	}
 
 	private void initView() {
@@ -275,6 +313,12 @@ public class MainTabActivity extends FragmentActivity {
 		super.onBackPressed();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		stopLocation();
+	}
+
 	private void showIssueDialog(final ArrayList<IssueInfo> issueInfos,
 			final BitmapCache bitmapCache) {
 		CustomerDialog customerDialog = new CustomerDialog(
@@ -376,5 +420,38 @@ public class MainTabActivity extends FragmentActivity {
 		 * 类别名称
 		 */
 		private TextView issueText;
+	}
+
+	@Override
+	public void onLocationChanged(Location arg0) {
+
+	}
+
+	@Override
+	public void onProviderDisabled(String arg0) {
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+
+	}
+
+	@Override
+	public void onLocationChanged(AMapLocation location) {
+		if (location != null) {
+			this.aMapLocation = location;// 判断超时机制
+			Double geoLat = location.getLatitude();// x
+			Double geoLng = location.getLongitude();// y
+			editor.putString("LocationCity", location.getCity());
+			editor.putString("LocationX", geoLat + "");
+			editor.putString("LocationY", geoLng + "");
+			String str = location.getCity();
+			Log.e("----------->", str);
+		}
 	}
 }

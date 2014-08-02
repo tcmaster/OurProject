@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,10 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.LocationManagerProxy;
-import com.amap.api.location.LocationProviderProxy;
 import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.app.JoocolaApplication;
@@ -33,8 +28,7 @@ import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 
-public class MainActivity extends Activity implements OnClickListener,
-		AMapLocationListener {
+public class MainActivity extends Activity implements OnClickListener {
 
 	protected String url_b = "Sys.UserController.AppLogon.ashx";
 	private EditText nameEdit, pswdEdit;
@@ -45,8 +39,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	private int mBackKeyPressedTimes = 0;
 	private SharedPreferences sharedPreferences;
 	private Editor editor;
-	private LocationManagerProxy aMapLocManager = null;
-	private AMapLocation aMapLocation; // 用于判断定位超时
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
@@ -66,11 +58,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				startActivity(intent);
 				MainActivity.this.finish();
 				break;
-			case 10:
-				if (aMapLocation == null) {
-					stopLocation();// 销毁掉定位
-				}
-				break;
+
 			default:
 				break;
 			}
@@ -88,20 +76,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
-		initLocation();
-	}
-
-	private void initLocation() {
-		aMapLocManager = LocationManagerProxy.getInstance(this);
-		/*
-		 * mAMapLocManager.setGpsEnable(false);//
-		 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true Location
-		 * API定位采用GPS和网络混合定位方式
-		 * ，第一个参数是定位provider，第二个参数时间最短是2000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
-		 */
-		aMapLocManager.requestLocationUpdates(
-				LocationProviderProxy.AMapNetwork, 20000, 10, this);
-		mHandler.sendEmptyMessageDelayed(10, 10000);// 设置超过10秒还没有定位到就停止定位
 	}
 
 	private void initView() {
@@ -210,49 +184,4 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onBackPressed();
 	}
 
-	@Override
-	public void onLocationChanged(Location location) {
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-	}
-
-	/**
-	 * 销毁定位
-	 */
-	private void stopLocation() {
-		if (aMapLocManager != null) {
-			aMapLocManager.removeUpdates(this);
-			aMapLocManager.destory();
-		}
-		aMapLocManager = null;
-	}
-
-	@Override
-	public void onLocationChanged(AMapLocation location) {
-		if (location != null) {
-			this.aMapLocation = location;// 判断超时机制
-			Double geoLat = location.getLatitude();// x
-			Double geoLng = location.getLongitude();// y
-			editor.putString("LocationCity", location.getCity());
-			editor.putString("LocationX", geoLat + "");
-			editor.putString("LocationY", geoLng + "");
-			String str = location.getCity();
-			// if (!str.isEmpty()) {
-			// stopLocation();
-			// }
-			Log.e("----------->", str);
-		}
-	}
 }
