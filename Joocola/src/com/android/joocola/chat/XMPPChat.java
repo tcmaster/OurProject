@@ -81,6 +81,13 @@ public class XMPPChat {
 	public static final int LEAVE = 3;
 	public static final int INVISIBLE = 4;
 	public static final int OFFLINE = 5;
+	static {
+		try {
+			Class.forName("org.jivesoftware.smack.ReconnectionManager");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	synchronized public static XMPPChat getInstance() {
 		if (chatService == null)

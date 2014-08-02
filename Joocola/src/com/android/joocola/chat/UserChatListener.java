@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.entity.ChatOfflineInfo;
 import com.android.joocola.utils.Constans;
+import com.lidroid.xutils.exception.DbException;
 
 /**
  * 聊天信息接收监听器
@@ -27,16 +29,20 @@ public class UserChatListener implements ChatManagerListener {
 			public void processMessage(Chat arg0, Message arg1) {
 				Log.v("lixiaosong", arg1.getFrom());
 				Log.v("lixiaosong", arg1.getTo());
-				// 将聊天内容，从哪来，到哪去以广播形式发送到相应的activity
 				Log.v("lixiaosong", arg1.getBody());
-				// 将这次聊天内容发送出去
 				Intent intent = new Intent(Constans.CHAT_ACTION);
-				intent.putExtra("from",
-						arg1.getFrom()
-								.substring(0, arg1.getFrom().indexOf("@")));
-				intent.putExtra("to",
-						arg1.getTo().substring(0, arg1.getTo().indexOf("@")));
-				intent.putExtra("content", arg1.getBody());
+				ChatOfflineInfo info = new ChatOfflineInfo();
+				info.setContent(arg1.getBody());
+				info.setIsFrom(arg1.getFrom().substring(0,
+						arg1.getFrom().indexOf("@")));
+				info.setIsTo(arg1.getTo().substring(0,
+						arg1.getTo().indexOf("@")));
+				info.setIsRead(0);
+				try {
+					JoocolaApplication.getInstance().getDB().save(info);
+				} catch (DbException e) {
+					e.printStackTrace();
+				}
 				JoocolaApplication.getInstance().sendBroadcast(intent);
 			}
 		});

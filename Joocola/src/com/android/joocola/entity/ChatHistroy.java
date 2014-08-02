@@ -1,7 +1,5 @@
 package com.android.joocola.entity;
 
-import com.lidroid.xutils.db.annotation.Id;
-
 /**
  * 聊天历史记录，仅保存最后的20条历史记录
  * 
@@ -12,16 +10,15 @@ public class ChatHistroy {
 	/**
 	 * 主键
 	 */
-	@Id
-	public int _id;
+	public int id;
 	/**
 	 * 这条消息从谁发出
 	 */
-	public String from;
+	public String isFrom;
 	/**
 	 * 这条消息的去向
 	 */
-	public String to;
+	public String isTo;
 	/**
 	 * 这条消息的内容
 	 */
@@ -31,40 +28,40 @@ public class ChatHistroy {
 	 */
 	public String sequence;
 
-	public int get_id() {
-		return _id;
+	public int getId() {
+		return id;
 	}
 
-	public String getFrom() {
-		return from;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getTo() {
-		return to;
+	public String getIsFrom() {
+		return isFrom;
+	}
+
+	public void setIsFrom(String isFrom) {
+		this.isFrom = isFrom;
+	}
+
+	public String getIsTo() {
+		return isTo;
+	}
+
+	public void setIsTo(String isTo) {
+		this.isTo = isTo;
 	}
 
 	public String getContent() {
 		return content;
 	}
 
-	public String getSequence() {
-		return sequence;
-	}
-
-	public void set_id(int _id) {
-		this._id = _id;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getSequence() {
+		return sequence;
 	}
 
 	public void setSequence(String sequence) {
@@ -73,8 +70,9 @@ public class ChatHistroy {
 
 	@Override
 	public String toString() {
-		return "ChatHistroy [_id=" + _id + ", from=" + from + ", to=" + to
-				+ ", content=" + content + ", sequence=" + sequence + "]";
+		return "ChatHistroy [id=" + id + ", isFrom=" + isFrom + ", isTo="
+				+ isTo + ", content=" + content + ", sequence=" + sequence
+				+ "]";
 	}
 
 }

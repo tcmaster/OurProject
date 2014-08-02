@@ -32,10 +32,13 @@ public class OfflineChatInfoManager {
 			while (it.hasNext()) {
 				Message msg = it.next();
 				String from = msg.getFrom().split("@")[0];
+				String to = msg.getTo().split("@")[0];
 				String content = msg.getBody();
 				ChatOfflineInfo info = new ChatOfflineInfo();
-				info.from = from;
-				info.content = content;
+				info.setIsFrom(from);
+				info.setIsTo(to);
+				info.setContent(content);
+				info.setIsRead(0);
 				Log.v("lixiaosong", "离线消息是" + info.toString());
 				db.save(info);
 			}
