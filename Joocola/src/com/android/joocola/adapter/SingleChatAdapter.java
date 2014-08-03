@@ -74,10 +74,10 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	public List<ChatOfflineInfo> getNoReadData() {
 		try {
-			List<ChatOfflineInfo> noreadData = db.findAll(Selector
-					.from(ChatOfflineInfo.class)
-					.where(WhereBuilder.b("isFrom", "=", from).or("isTo", "=",
-							from)).and("isRead", "=", "0"));
+			List<ChatOfflineInfo> noreadData = db.findAll(Selector.from(
+					ChatOfflineInfo.class)
+					.where(WhereBuilder.b("isFrom", "=", from).and("isRead",
+							"=", "0")));
 			if (noreadData == null)
 				return new ArrayList<ChatOfflineInfo>();
 			else

@@ -192,6 +192,8 @@ public class RegisterTwoActivity extends BaseActivity implements
 		interface1.addParams("sexID", info.getSex());
 		interface1.addParams("birthDay", info.getBirthday());
 		interface1.addParams("verifyCode", info.getAutoCode());
+		interface1.addParams("locationX", "0.0");
+		interface1.addParams("locationY", "0.0");
 		interface1.getData(REGISTERURL, new HttpPostCallBack() {
 
 			@Override
