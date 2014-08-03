@@ -65,6 +65,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private String replyUrl = "Bus.AppointController.QueryAppointReply.ashx";// 邀约评论的地址。
 	private String replyItUrl = "Bus.AppointController.PubAppointReply.ashx";// 回复地址。
 	private String collectUrl = "Sys.UserController.FavoriteAppoint.ashx";// 收藏该邀约
+	private String joinUrl = "Bus.AppointController.ApplyAppoint.ashx";// 加入某邀约
+	private String quaryUrl = "Bus.AppointController.QueryAppointUserState.ashx";// 查询用户在某邀约的状态
 	private int totalItemsCount; // 总共多少条
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
@@ -74,6 +76,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private SharedPreferences mSharedPreferences;
 	private String user_pid;
 	private CustomerDialog customerDialog;
+	private CustomerDialog issueDialog;//
+	private CustomerDialog clickJoinDialog;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -109,6 +113,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				mAutoListView.onRefreshComplete();
 				refreshReply();
 				break;
+
+			/**
+			 * 收藏之后的返回。
+			 */
 			case 3:
 				String result = (String) msg.obj;
 				try {
@@ -125,6 +133,36 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				break;
+			/**
+			 * 申请加入邀约后的回复
+			 */
+			case 4:
+				String joinResult = (String) msg.obj;
+				try {
+					JSONObject jsonObject = new JSONObject(joinResult);
+					boolean isJoinSucces = jsonObject.getBoolean("Item1");
+					String joinString = jsonObject.getString("Item2");
+					if (isJoinSucces) {
+						Utils.toast(IssuedinvitationDetailsActivity.this,
+								"申请成功,请等待发起者同意");
+					} else {
+						Utils.toast(IssuedinvitationDetailsActivity.this,
+								joinString);
+					}
+					if (issueDialog != null) {
+						issueDialog.dismissDlg();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				break;
+			/**
+			 * 查询该用户在该邀约中的状态
+			 */
+			case 5:
+				String resultString = (String) msg.obj;
+				showClickIssueDialog(resultString);
 				break;
 			default:
 				break;
@@ -369,6 +407,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			Log.e("reply_btn", "reply_btn");
 			break;
 		case R.id.apply_ll:// 报名按钮
+			queryUserinIssue();
 			break;
 		case R.id.collect_ll:// 收藏按钮
 			collectIssue();
@@ -473,5 +512,123 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	@Override
 	public void onRefresh() {
 		handler.sendEmptyMessage(2);
+	}
+
+	/**
+	 * 申请加入某邀约.
+	 */
+	private void joinIssue() {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("appointID", issue_pid + "");
+		httpPostInterface.addParams("userID", user_pid);
+		httpPostInterface.getData(joinUrl, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				Message message = Message.obtain();
+				message.what = 4;
+				message.obj = result;
+				handler.sendMessage(message);
+			}
+		});
+
+	}
+
+	/**
+	 * 点击我要报名后的对话框显示
+	 */
+	private void showClickIssueDialog(final String result) {
+
+		clickJoinDialog = new CustomerDialog(
+				IssuedinvitationDetailsActivity.this, R.layout.click_joinissue);
+		clickJoinDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				window.setGravity(Gravity.BOTTOM);
+				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+						WindowManager.LayoutParams.WRAP_CONTENT);
+
+				Button joinBtn = (Button) dlg.findViewById(R.id.click_joinbtn);
+				Button mangerBtn = (Button) dlg
+						.findViewById(R.id.click_issuemangerbtn);
+				if (result.equals("0")) {
+					joinBtn.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							showIssueDialog();
+						}
+					});
+				} else if (result.equals("10")) {
+					joinBtn.setOnClickListener(null);
+					joinBtn.setBackgroundResource(R.drawable.btnclick);
+					joinBtn.setText("已报名");
+					joinBtn.setTextColor(getResources().getColor(R.color.black));
+				}
+			}
+		});
+		clickJoinDialog.showDlg();
+	}
+
+	/**
+	 * 查询该用户在该邀约的状态
+	 */
+	private void queryUserinIssue() {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("appointID", issue_pid + "");
+		httpPostInterface.addParams("userID", user_pid);
+		httpPostInterface.getData(quaryUrl, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				Message message = Message.obtain();
+				message.what = 5;
+				message.obj = result;
+				handler.sendMessage(message);
+			}
+		});
+	}
+
+	/**
+	 * 显示是否加入邀约的对话框
+	 */
+	private void showIssueDialog() {
+		issueDialog = new CustomerDialog(this, R.layout.dlg_message);
+		issueDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				window.setGravity(Gravity.BOTTOM);
+				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+						WindowManager.LayoutParams.WRAP_CONTENT);
+				TextView title = (TextView) dlg.findViewById(R.id.dlg_pe_title);
+				TextView content = (TextView) dlg
+						.findViewById(R.id.dlg_message);
+				TextView ok = (TextView) dlg.findViewById(R.id.dlg_pe_ok);
+				TextView cancel = (TextView) dlg
+						.findViewById(R.id.dlg_pe_cancel);
+				content.setText("若被选中,您和发起人可以互相看到对方手机号");
+				ok.setText("确认");
+				cancel.setText("取消");
+				title.setText("确认报名");
+				ok.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						joinIssue();
+					}
+				});
+				cancel.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						issueDialog.dismissDlg();
+					}
+				});
+
+			}
+		});
+		issueDialog.showDlg();
 	}
 }

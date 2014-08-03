@@ -470,9 +470,6 @@ public class MainTabActivity extends FragmentActivity implements
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("x", LocationX);
 		httpPostInterface.addParams("y", LocatitonY);
-		Log.e("将X坐标发送给服务器", LocationX);
-		Log.e("将Y坐标发送给服务器", LocatitonY);
-		Log.e("该用户的pid", user_pid);
 		httpPostInterface.addParams("userID", user_pid);
 		httpPostInterface.getData(locationUrl, new HttpPostCallBack() {
 
