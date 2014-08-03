@@ -57,7 +57,7 @@ public class ChatActivity extends BaseActivity {
 	/**
 	 * 单人聊天时的聊天对象
 	 */
-	private String nickName = "test1";
+	private String nickName = "bb";
 	private SingleChatAdapter adapter;
 
 	@Override
@@ -66,11 +66,12 @@ public class ChatActivity extends BaseActivity {
 		setContentView(R.layout.activity_chat);
 		ViewUtils.inject(this);
 		initActionBar();
+		nickName = getIntent().getStringExtra("nickName");
 		if (isSingle) {
 			IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
 			receiver = new ChatReceiver();
 			registerReceiver(receiver, filter);
-			adapter = new SingleChatAdapter(this, "test1");
+			adapter = new SingleChatAdapter(this, nickName);
 			lv_container.setAdapter(adapter);
 			scrollBottom();
 		}
@@ -87,7 +88,7 @@ public class ChatActivity extends BaseActivity {
 	private void initActionBar() {
 		useCustomerActionBar();
 		getActionBarleft().setText("聊天");
-		getActionBarTitle().setText("test1");
+		getActionBarTitle().setText(nickName);
 		getActionBarRight().setText("");
 
 	}
@@ -109,7 +110,7 @@ public class ChatActivity extends BaseActivity {
 			return;
 		}
 		// 得到会话
-		Chat chat = SingleChat.getInstance().getFriendChat("test1", null);
+		Chat chat = SingleChat.getInstance().getFriendChat(nickName, null);
 		try {
 			chat.sendMessage(content);
 		} catch (XMPPException e) {
@@ -119,12 +120,11 @@ public class ChatActivity extends BaseActivity {
 		info.setContent(content);
 		info.setIsFrom(XMPPChat.getInstance().getConnection().getUser()
 				.split("@")[0]);
-		info.setIsTo("test1");
+		info.setIsTo(nickName);
 		info.setIsRead(0);
 		try {
 			JoocolaApplication.getInstance().getDB().save(info);
 		} catch (DbException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		adapter.updateNoReadData();
