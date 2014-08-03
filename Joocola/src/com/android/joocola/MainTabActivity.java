@@ -80,6 +80,8 @@ public class MainTabActivity extends FragmentActivity implements
 	private LocationManagerProxy aMapLocManager = null;
 	private AMapLocation aMapLocation; // 用于判断定位超时
 	private Editor editor;
+	private String user_pid;
+	private final String locationUrl = "Sys.UserController.UploadLocation.ashx";
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
@@ -106,6 +108,7 @@ public class MainTabActivity extends FragmentActivity implements
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
+		user_pid = sharedPreferences.getString("Constans.LOGIN_PID", "0");
 		initActionbar();
 		initView();
 		initViewPager();
@@ -126,7 +129,7 @@ public class MainTabActivity extends FragmentActivity implements
 		 * ，第一个参数是定位provider，第二个参数时间最短是2000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
 		 */
 		aMapLocManager.requestLocationUpdates(
-				LocationProviderProxy.AMapNetwork, 20000, 10, this);
+				LocationProviderProxy.AMapNetwork, 300000, 10, this);
 		mHandler.sendEmptyMessageDelayed(10, 10000);// 设置超过10秒还没有定位到就停止定位
 	}
 
@@ -202,7 +205,7 @@ public class MainTabActivity extends FragmentActivity implements
 
 	private void initActionbar() {
 		mActionBar = getActionBar();
-		mActionBar.setTitle(sharedPreferences.getString("LocationCity", "北京"));
+		mActionBar.setTitle("北京");
 		mActionBar.setDisplayShowHomeEnabled(false);
 	}
 
@@ -451,7 +454,23 @@ public class MainTabActivity extends FragmentActivity implements
 			editor.putString("LocationX", geoLat + "");
 			editor.putString("LocationY", geoLng + "");
 			String str = location.getCity();
-			Log.e("----------->", str);
+			getActionBar().setTitle(str);
+			sendLocationInfo(geoLat + "", geoLng + "");
+
 		}
+	}
+
+	private void sendLocationInfo(String LocationX, String LocatitonY) {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("x", LocationX);
+		httpPostInterface.addParams("y", LocatitonY);
+		httpPostInterface.addParams("userID", user_pid);
+		httpPostInterface.getData(locationUrl, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				Log.e("发送location", result);
+			}
+		});
 	}
 }
