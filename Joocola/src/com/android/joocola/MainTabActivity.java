@@ -108,7 +108,7 @@ public class MainTabActivity extends FragmentActivity implements
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
-		user_pid = sharedPreferences.getString("Constans.LOGIN_PID", "0");
+		user_pid = sharedPreferences.getString(Constans.LOGIN_PID, "0");
 		initActionbar();
 		initView();
 		initViewPager();
@@ -460,10 +460,19 @@ public class MainTabActivity extends FragmentActivity implements
 		}
 	}
 
+	/**
+	 * 将坐标地址发送给服务器。
+	 * 
+	 * @param LocationX
+	 * @param LocatitonY
+	 */
 	private void sendLocationInfo(String LocationX, String LocatitonY) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("x", LocationX);
 		httpPostInterface.addParams("y", LocatitonY);
+		Log.e("将X坐标发送给服务器", LocationX);
+		Log.e("将Y坐标发送给服务器", LocatitonY);
+		Log.e("该用户的pid", user_pid);
 		httpPostInterface.addParams("userID", user_pid);
 		httpPostInterface.getData(locationUrl, new HttpPostCallBack() {
 
