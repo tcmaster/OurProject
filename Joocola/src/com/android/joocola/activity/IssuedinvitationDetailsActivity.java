@@ -64,6 +64,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private String url = "Bus.AppointController.QueryAppoint.ashx";// 根据pid获得邀约详情的地址;
 	private String replyUrl = "Bus.AppointController.QueryAppointReply.ashx";// 邀约评论的地址。
 	private String replyItUrl = "Bus.AppointController.PubAppointReply.ashx";// 回复地址。
+	private String collectUrl = "Sys.UserController.FavoriteAppoint.ashx";// 收藏该邀约
 	private int totalItemsCount; // 总共多少条
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
@@ -106,6 +107,23 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				}
 				mAutoListView.onRefreshComplete();
 				refreshReply();
+				break;
+			case 3:
+				String result = (String) msg.obj;
+				try {
+					JSONObject jsonObject = new JSONObject(result);
+					boolean isCollect = jsonObject.getBoolean("Item1");
+					String reason = jsonObject.getString("Item2");
+					if (isCollect) {
+						Utils.toast(IssuedinvitationDetailsActivity.this,
+								"收藏成功");
+					} else {
+						Utils.toast(IssuedinvitationDetailsActivity.this,
+								reason);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				break;
 			default:
 				break;
@@ -352,11 +370,31 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		case R.id.apply_ll:// 报名按钮
 			break;
 		case R.id.collect_ll:// 收藏按钮
+			collectIssue();
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	/**
+	 * 收藏
+	 */
+	private void collectIssue() {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("opUserID", user_pid);
+		httpPostInterface.addParams("appointID", issue_pid + "");
+		httpPostInterface.getData(collectUrl, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				Message message = Message.obtain();
+				message.what = 3;
+				message.obj = result;
+				handler.sendMessage(message);
+			}
+		});
 	}
 
 	/**
