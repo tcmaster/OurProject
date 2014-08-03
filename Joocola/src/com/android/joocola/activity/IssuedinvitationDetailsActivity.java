@@ -94,7 +94,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				mAutoListView.onLoadComplete();
 				String replyJson = (String) msg.obj;
 				List<ReplyEntity> mlist = resolveJson(replyJson);
-				mAutoListView.setResultSize(list.size());
+				mAutoListView.setResultSize(mlist.size());
+				replycount.setText("回复(" + mlist.size() + ")");
 				list.addAll(mlist);
 				issueReplyAdapter.notifyDataSetChanged();
 				break;
