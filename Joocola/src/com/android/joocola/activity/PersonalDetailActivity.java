@@ -617,7 +617,8 @@ public class PersonalDetailActivity extends BaseActivity {
 
 	private void processTalk() {
 		Intent intent = new Intent(this, ChatActivity.class);
-		intent.putExtra("nickName", nickName_tv.getText());
+		intent.putExtra("nickName", nickName_tv.getText().toString()
+				.toLowerCase());
 		startActivity(intent);
 	}
 }
