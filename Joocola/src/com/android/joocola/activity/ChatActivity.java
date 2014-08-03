@@ -65,8 +65,8 @@ public class ChatActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		ViewUtils.inject(this);
-		initActionBar();
 		nickName = getIntent().getStringExtra("nickName");
+		initActionBar();
 		if (isSingle) {
 			IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
 			receiver = new ChatReceiver();
