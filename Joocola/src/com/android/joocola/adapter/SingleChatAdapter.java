@@ -46,16 +46,16 @@ public class SingleChatAdapter extends BaseAdapter {
 	/**
 	 * 这个字段代表用户在和谁聊天
 	 */
-	private String from;
+	private String user;
 
 	/**
 	 * 这个字段判断当前是否需要历史记录
 	 */
 
-	public SingleChatAdapter(Context context, String from) {
+	public SingleChatAdapter(Context context, String user) {
 		this.context = context;
 		db = JoocolaApplication.getInstance().getDB();
-		this.from = from;
+		this.user = user;
 		initData();
 	}
 
@@ -74,10 +74,10 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	public List<ChatOfflineInfo> getNoReadData() {
 		try {
-			List<ChatOfflineInfo> noreadData = db.findAll(Selector.from(
-					ChatOfflineInfo.class)
-					.where(WhereBuilder.b("isFrom", "=", from).and("isRead",
-							"=", "0")));
+			List<ChatOfflineInfo> noreadData = db.findAll(Selector
+					.from(ChatOfflineInfo.class)
+					.where(WhereBuilder.b("isFrom", "=", user).or("isTo", "=",
+							user)).and("isRead", "=", "0"));
 			if (noreadData == null)
 				return new ArrayList<ChatOfflineInfo>();
 			else
@@ -95,8 +95,8 @@ public class SingleChatAdapter extends BaseAdapter {
 		try {
 			List<ChatOfflineInfo> readData = db.findAll(Selector
 					.from(ChatOfflineInfo.class)
-					.where(WhereBuilder.b("isFrom", "=", from).or("isTo", "=",
-							from)).and("isRead", "=", "1"));
+					.where(WhereBuilder.b("isFrom", "=", user).or("isTo", "=",
+							user)).and("isRead", "=", "1"));
 			if (readData == null)
 				return new ArrayList<ChatOfflineInfo>();
 			else
@@ -104,18 +104,31 @@ public class SingleChatAdapter extends BaseAdapter {
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
+
 		return new ArrayList<ChatOfflineInfo>();
 	}
 
 	/**
 	 * 当有新的信息显示时，调用该方法
 	 */
-	public void updateReadData() {
+	public void showHistory() {
+		saveHistory();
 		this.readData = getReadData();
 		data.clear();
 		data.addAll(readData);
 		data.addAll(noReadData);
 		notifyDataSetChanged();
+	}
+
+	public void saveHistory() {
+		// 到这里说明即将显示未读信息，未读信息变为已读信息
+		for (int i = 0; i < noReadData.size(); i++)
+			noReadData.get(i).setIsRead(1);
+		try {
+			db.updateAll(noReadData, "isRead");
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void updateNoReadData() {

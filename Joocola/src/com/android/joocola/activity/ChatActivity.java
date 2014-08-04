@@ -136,6 +136,8 @@ public class ChatActivity extends BaseActivity {
 	protected void onDestroy() {
 		if (receiver != null)
 			unregisterReceiver(receiver);
+		// 将数据库中的未读信息变为已读信息
+		adapter.saveHistory();
 		super.onDestroy();
 	}
 
