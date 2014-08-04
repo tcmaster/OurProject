@@ -50,10 +50,10 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private Button btn_sureissue;
 	private double LocationX;
 	private double LocationY;
+	private String LocationCityName;
 	private String issueUrl = "Bus.AppointController.PubAppoint.ashx";// 发布地址
 	@SuppressLint("HandlerLeak")
-	private Handler issueHandler = new Handler()
-	{
+	private Handler issueHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
@@ -82,6 +82,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 			}
 		};
 	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +113,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 
 	private void initView() {
 		dingweiImg = (ImageView) this.findViewById(R.id.dingwei_img);
-		et_issue_theme =(EditText)this.findViewById(R.id.et_issue_theme);
+		et_issue_theme = (EditText) this.findViewById(R.id.et_issue_theme);
 		edit_location = (EditText) this.findViewById(R.id.edit_location);
 		edit_state = (EditText) this.findViewById(R.id.edit_state);
 		tv_issuetime = (TextView) this.findViewById(R.id.tv_issuetime);
@@ -122,10 +123,11 @@ public class IssuedinvitationActivity extends BaseActivity {
 		btn_sureissue = (Button) this.findViewById(R.id.btn_sureissue);
 		btn_sureissue.setOnClickListener(new IssueOnclick());
 		dingweiImg.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(IssuedinvitationActivity.this,GaodeMapActivity.class);
+				Intent intent = new Intent(IssuedinvitationActivity.this,
+						GaodeMapActivity.class);
 				String address = edit_location.getText().toString();
 				intent.putExtra("address", address);
 				startActivityForResult(intent, 30);
@@ -139,8 +141,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 		baseDataInfo.setItemName("不限");
 		baseDataInfo.setSortNo(Integer.MAX_VALUE);
 		infos.add(baseDataInfo);
-		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this,
- sexGroup,
+		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this, sexGroup,
 				infos);
 		initRadioGroup(Constans.basedata_AppointCost, cost_group);
 	}
@@ -149,10 +150,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
 				.getBaseInfo(string);
 		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this,
-				radioGroup,
-				infos);
+				radioGroup, infos);
 	}
-
 
 	private void doNext() {
 		if (issuedinvitationInfo != null) {
@@ -161,7 +160,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 				if (TextUtils.isEmpty(title)) {
 					Utils.toast(IssuedinvitationActivity.this, "主题不能为空");
 					return;
-				}else {
+				} else {
 					issuedinvitationInfo.setTitle(title);
 				}
 			}
@@ -195,10 +194,9 @@ public class IssuedinvitationActivity extends BaseActivity {
 			issuedinvitationInfo.setCostId(costID);
 			issuedinvitationInfo.setLocationX(LocationX);
 			issuedinvitationInfo.setLocationY(LocationY);
-			HttpPostInterface httpPostInterface = new HttpPostInterface(); 
+			HttpPostInterface httpPostInterface = new HttpPostInterface();
 			httpPostInterface.addParams(Constans.ISSUE_COSTID,
-					issuedinvitationInfo.getCostId()
-					+ "");
+					issuedinvitationInfo.getCostId() + "");
 			httpPostInterface.addParams(Constans.ISSUE_DESCRIPTION,
 					issuedinvitationInfo.getLocationDescription());
 			httpPostInterface.addParams(Constans.ISSUE_LOCATIONAME,
@@ -207,20 +205,21 @@ public class IssuedinvitationActivity extends BaseActivity {
 					issuedinvitationInfo.getLocationX() + "");
 			httpPostInterface.addParams(Constans.ISSUE_LOCATIONY,
 					issuedinvitationInfo.getLocationY() + "");
-			httpPostInterface
-.addParams(Constans.ISSUE_PUBLISHERID, userPid
+			httpPostInterface.addParams(Constans.ISSUE_PUBLISHERID, userPid
 					+ "");
 			httpPostInterface.addParams(Constans.ISSUE_RESERVEDATE,
 					issuedinvitationInfo.getReserveDate());
 			httpPostInterface.addParams(Constans.ISSUE_SEXID,
-					issuedinvitationInfo.getSexId()
-					+ "");
+					issuedinvitationInfo.getSexId() + "");
 			httpPostInterface.addParams(Constans.ISSUE_TITLE,
 					issuedinvitationInfo.getTitle());
 			httpPostInterface.addParams(Constans.ISSUE_TYPEID,
 					issuedinvitationInfo.getIssueId() + "");
+			httpPostInterface.addParams(Constans.ISSUE_LOCATIONCITYNAME,
+					LocationCityName);
+			Log.e("发布的时候的CityName", LocationCityName);
 			httpPostInterface.getData(issueUrl, new HttpPostCallBack() {
-				
+
 				@Override
 				public void httpPostResolveData(String result) {
 					Message message = Message.obtain();
@@ -272,6 +271,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 				LocationY = data.getDoubleExtra("locationY", 321.987654);
 				String address = data.getStringExtra("address");
 				edit_location.setText(address);
+				LocationCityName = data.getStringExtra("LocationCityName");
+				Log.e("返回回来的CityName", LocationCityName);
 			}
 			break;
 		default:

@@ -49,6 +49,7 @@ public class Constans {
 	public static final String ISSUE_LOCATIONY = "LocationY";
 	public static final String ISSUE_DESCRIPTION = "Description";
 	public static final String ISSUE_PUBLISHERID = "PublisherID";
+	public static final String ISSUE_LOCATIONCITYNAME = "LocationCityName";
 	/**
 	 * 获取省份信息
 	 */

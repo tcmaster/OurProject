@@ -45,12 +45,13 @@ public class GaodeMapActivity extends BaseActivity implements
 	private Button searchBtn;
 	private EditText editText, cityEdit;
 	private String cityString;
- 
+
 	private double locationX;
 	private double locationY;
 	private LatLonPoint latLonPoint;
 	private String locationCity;
 	private SharedPreferences sharedPreferences;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,7 +110,7 @@ public class GaodeMapActivity extends BaseActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 	}
-	
+
 	/**
 	 * 方法必须重写
 	 */
@@ -150,7 +151,6 @@ public class GaodeMapActivity extends BaseActivity implements
 		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
 	}
 
-
 	/**
 	 * 响应逆地理编码
 	 */
@@ -160,7 +160,7 @@ public class GaodeMapActivity extends BaseActivity implements
 				GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
 		geocoderSearch.getFromLocationAsyn(query);// 设置同步逆地理编码请求
 	}
-	
+
 	/**
 	 * 地理编码查询回调
 	 */
@@ -227,10 +227,12 @@ public class GaodeMapActivity extends BaseActivity implements
 		intent.putExtra("locationX", locationX);
 		intent.putExtra("locationY", locationY);
 		intent.putExtra("address", address);
+		String city = cityEdit.getText().toString();
+		intent.putExtra("LocationCityName", city);
 		setResult(40, intent);
 		finish();
 	}
-	
+
 	/**
 	 * 隐藏进度条对话框
 	 */
