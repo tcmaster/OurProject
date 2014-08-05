@@ -78,6 +78,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private CustomerDialog customerDialog;
 	private CustomerDialog issueDialog;//
 	private CustomerDialog clickJoinDialog;
+	private int publishid;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -88,6 +89,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			case 0:
 				String json = (String) msg.obj;
 				GetIssueInfoEntity getIssueInfoEntity = resloveJson(json);
+				publishid = getIssueInfoEntity.getPublisherID();
 				initView(getIssueInfoEntity);
 				break;
 
@@ -164,6 +166,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				String resultString = (String) msg.obj;
 				showClickIssueDialog(resultString);
 				break;
+			/**
+		    * 
+		    */
+			case 6:
+				showClickIssueDialog(100 + "");
+				break;
 			default:
 				break;
 			}
@@ -189,7 +197,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		BitmapCache bitmapCache = new BitmapCache();
 		mImageLoader = new ImageLoader(
 				Volley.newRequestQueue(IssuedinvitationDetailsActivity.this),
-				new BitmapCache());
+				bitmapCache);
 		issueReplyAdapter = new IssueReplyAdapter(list,
 				IssuedinvitationDetailsActivity.this, bitmapCache);
 		mAutoListView.setAdapter(issueReplyAdapter);
@@ -200,6 +208,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent
 					.getSerializableExtra("issueInfo");
 			issue_pid = getIssueInfoEntity.getPID();
+			publishid = getIssueInfoEntity.getPublisherID();
 			initView(getIssueInfoEntity);
 		} else {
 			getIssueInfoEntity(issue_pid);
@@ -315,11 +324,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 			age.setTextColor(getResources().getColor(R.color.fense));
 			astro.setTextColor(getResources().getColor(R.color.fense));
 		}
-		if (touxiangUrl.startsWith("h")) {
-			touxiang.setImageUrl(touxiangUrl, mImageLoader);
-		} else {
-			touxiang.setImageUrl(Constans.URL + touxiangUrl, mImageLoader);
-		}
+		touxiang.setImageUrl(Constans.URL + touxiangUrl, mImageLoader);
+
 		final int publishID = entity.getPublisherID(); // 用于传值到嵩哥界面
 		touxiang.setOnClickListener(new OnClickListener() {
 
@@ -552,6 +558,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				Button joinBtn = (Button) dlg.findViewById(R.id.click_joinbtn);
 				Button mangerBtn = (Button) dlg
 						.findViewById(R.id.click_issuemangerbtn);
+				mangerBtn.setVisibility(View.INVISIBLE);
 				if (result.equals("0")) {
 					joinBtn.setOnClickListener(new OnClickListener() {
 
@@ -565,6 +572,17 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 					joinBtn.setBackgroundResource(R.drawable.btnclick);
 					joinBtn.setText("已报名");
 					joinBtn.setTextColor(getResources().getColor(R.color.black));
+				} else if (result.equals("100")) {
+					joinBtn.setVisibility(View.INVISIBLE);
+					mangerBtn.setVisibility(View.VISIBLE);
+					mangerBtn.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							Utils.toast(IssuedinvitationDetailsActivity.this,
+									"该功能正在编写");
+						}
+					});
 				}
 			}
 		});
@@ -575,19 +593,24 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	 * 查询该用户在该邀约的状态
 	 */
 	private void queryUserinIssue() {
-		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		httpPostInterface.addParams("appointID", issue_pid + "");
-		httpPostInterface.addParams("userID", user_pid);
-		httpPostInterface.getData(quaryUrl, new HttpPostCallBack() {
+		if (user_pid.equals(publishid + "")) {
+			handler.sendEmptyMessage(6);
+		} else {
 
-			@Override
-			public void httpPostResolveData(String result) {
-				Message message = Message.obtain();
-				message.what = 5;
-				message.obj = result;
-				handler.sendMessage(message);
-			}
-		});
+			HttpPostInterface httpPostInterface = new HttpPostInterface();
+			httpPostInterface.addParams("appointID", issue_pid + "");
+			httpPostInterface.addParams("userID", user_pid);
+			httpPostInterface.getData(quaryUrl, new HttpPostCallBack() {
+
+				@Override
+				public void httpPostResolveData(String result) {
+					Message message = Message.obtain();
+					message.what = 5;
+					message.obj = result;
+					handler.sendMessage(message);
+				}
+			});
+		}
 	}
 
 	/**
@@ -599,7 +622,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 
 			@Override
 			public void getCustomerView(Window window, AlertDialog dlg) {
-				window.setGravity(Gravity.BOTTOM);
+				window.setGravity(Gravity.CENTER);
 				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
 						WindowManager.LayoutParams.WRAP_CONTENT);
 				TextView title = (TextView) dlg.findViewById(R.id.dlg_pe_title);

@@ -58,6 +58,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 			switch (msg.what) {
 			case 1:
 				String json = (String) msg.obj;
+				Log.e("发布的回应", json);
 				try {
 					JSONObject jsonObject = new JSONObject(json);
 					if (jsonObject.getInt("Item1") == 0) {
@@ -217,7 +218,6 @@ public class IssuedinvitationActivity extends BaseActivity {
 					issuedinvitationInfo.getIssueId() + "");
 			httpPostInterface.addParams(Constans.ISSUE_LOCATIONCITYNAME,
 					LocationCityName);
-			Log.e("发布的时候的CityName", LocationCityName);
 			httpPostInterface.getData(issueUrl, new HttpPostCallBack() {
 
 				@Override
@@ -272,7 +272,6 @@ public class IssuedinvitationActivity extends BaseActivity {
 				String address = data.getStringExtra("address");
 				edit_location.setText(address);
 				LocationCityName = data.getStringExtra("LocationCityName");
-				Log.e("返回回来的CityName", LocationCityName);
 			}
 			break;
 		default:

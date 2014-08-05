@@ -17,7 +17,6 @@ import com.android.joocola.utils.Constans;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
-
 public class GetIssueItemAdapter extends BaseAdapter {
 	private List<GetIssueInfoEntity> infos;
 	private LayoutInflater inflater;
@@ -33,6 +32,7 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		mImageLoader = imageLoader;
 
 	}
+
 	@Override
 	public int getCount() {
 		return infos.size();
@@ -52,7 +52,7 @@ public class GetIssueItemAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			holder = new ViewHolder();
-			convertView =inflater.inflate(R.layout.getissueitem, null);
+			convertView = inflater.inflate(R.layout.getissueitem, null);
 			holder.title = (TextView) convertView
 					.findViewById(R.id.issueitem_title);
 			holder.name = (TextView) convertView
@@ -85,20 +85,20 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-			GetIssueInfoEntity entity = infos.get(position);
-			holder.title.setText(entity.getTitle());
-			holder.name.setText(entity.getPublisherName());
-			holder.age.setText(entity.getPublisherAge() + "");
-			holder.astro.setText(entity.getPublisherAstro());
-			holder.issuetime.setText(entity.getReserveDate());
-			holder.issuesex.setText(entity.getSexName());
-			holder.issuecost.setText(entity.getCostName());
-			holder.location.setText(entity.getLocationName());
-			holder.description.setText(entity.getDescription());
-			holder.state.setText(entity.getState());
+		GetIssueInfoEntity entity = infos.get(position);
+		holder.title.setText(entity.getTitle());
+		holder.name.setText(entity.getPublisherName());
+		holder.age.setText(entity.getPublisherAge() + "");
+		holder.astro.setText(entity.getPublisherAstro());
+		holder.issuetime.setText(entity.getReserveDate());
+		holder.issuesex.setText(entity.getSexName());
+		holder.issuecost.setText(entity.getCostName());
+		holder.location.setText(entity.getLocationName());
+		holder.description.setText(entity.getDescription());
+		holder.state.setText(entity.getState());
 		holder.usercount.setText("报名(" + entity.getApplyUserCount() + ")");
 		holder.replycount.setText("回复(" + entity.getReplyCount() + ")");
-			String touxiangUrl = entity.getPublisherPhoto();
+		String touxiangUrl = entity.getPublisherPhoto();
 		if (entity.getPublisherSexID() == 1) {
 			holder.sexImageView.setImageResource(R.drawable.boy);
 			holder.age.setTextColor(mContext.getResources().getColor(
@@ -112,14 +112,9 @@ public class GetIssueItemAdapter extends BaseAdapter {
 			holder.astro.setTextColor(mContext.getResources().getColor(
 					R.color.fense));
 		}
-			holder.touxiang.setErrorImageResId(R.drawable.photobg);
+		holder.touxiang.setErrorImageResId(R.drawable.photobg);
 		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
-		if (touxiangUrl.startsWith("h")) {
-			holder.touxiang.setImageUrl(touxiangUrl, mImageLoader);
-		} else {
-			holder.touxiang.setImageUrl(Constans.URL + touxiangUrl,
-					mImageLoader);
-		}
+		holder.touxiang.setImageUrl(Constans.URL + touxiangUrl, mImageLoader);
 
 		return convertView;
 	}
