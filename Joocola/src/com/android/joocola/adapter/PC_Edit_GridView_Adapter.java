@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
@@ -72,7 +73,7 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 			BitmapDisplayConfig config = new BitmapDisplayConfig();
 			config.setBitmapMaxSize(new BitmapSize(iV.getWidth() - 5, iV
 					.getHeight() - 5));
-			utils.display(iV, imgUrls.get(position), config);
+			utils.display(iV, Constans.URL + imgUrls.get(position), config);
 		}
 		return convertView;
 	}

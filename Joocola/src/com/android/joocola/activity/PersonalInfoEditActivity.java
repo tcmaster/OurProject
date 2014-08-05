@@ -464,15 +464,6 @@ public class PersonalInfoEditActivity extends BaseActivity {
 					data = result;
 
 				if (data.equals("true")) {
-					handler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							Utils.toast(JoocolaApplication.getInstance(),
-									"用户资料已保存");
-
-						}
-					});
 					/**
 					 * 联网重新进行用户资料的获取
 					 */
@@ -1010,13 +1001,13 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						@Override
 						public void run() {
 							((PC_Edit_GridView_Adapter) pic_gv.getAdapter())
-									.addImgUrls(Constans.URL + res);
+									.addImgUrls(res);
 							/**
 							 * 将图片相册地址上传，这里还要调网络接口
 							 * 
 							 */
 							HttpPostInterface interface2 = new HttpPostInterface();
-							interface2.addParams("newUrls", Constans.URL + res);
+							interface2.addParams("newUrls", res);
 							interface2.addParams("userID", JoocolaApplication
 									.getInstance().getUserInfo().getPID());
 							interface2.addParams("delUrls", "");

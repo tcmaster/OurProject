@@ -18,7 +18,6 @@ import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.entity.ChatOfflineInfo;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
-import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
 
 /**
@@ -74,14 +73,16 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	public List<ChatOfflineInfo> getNoReadData() {
 		try {
-			List<ChatOfflineInfo> noreadData = db.findAll(Selector
-					.from(ChatOfflineInfo.class)
-					.where(WhereBuilder.b("isFrom", "=", user).or("isTo", "=",
-							user)).and("isRead", "=", "0"));
-			if (noreadData == null)
-				return new ArrayList<ChatOfflineInfo>();
-			else
-				return noreadData;
+			List<ChatOfflineInfo> noreadData1 = db.findAll(Selector
+					.from(ChatOfflineInfo.class).where("isFrom", "=", user)
+					.and("isRead", "=", "0"));
+			List<ChatOfflineInfo> noreadData2 = db.findAll(Selector
+					.from(ChatOfflineInfo.class).where("isTo", "=", user)
+					.and("isRead", "=", "0"));
+			List<ChatOfflineInfo> noReadData = new ArrayList<ChatOfflineInfo>();
+			noReadData.addAll(noreadData1);
+			noReadData.addAll(noreadData2);
+			return noReadData;
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
@@ -93,14 +94,16 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	public List<ChatOfflineInfo> getReadData() {
 		try {
-			List<ChatOfflineInfo> readData = db.findAll(Selector
-					.from(ChatOfflineInfo.class)
-					.where(WhereBuilder.b("isFrom", "=", user).or("isTo", "=",
-							user)).and("isRead", "=", "1"));
-			if (readData == null)
-				return new ArrayList<ChatOfflineInfo>();
-			else
-				return readData;
+			List<ChatOfflineInfo> readData1 = db.findAll(Selector
+					.from(ChatOfflineInfo.class).where("isFrom", "=", user)
+					.and("isRead", "=", "1"));
+			List<ChatOfflineInfo> readData2 = db.findAll(Selector
+					.from(ChatOfflineInfo.class).where("isTo", "=", user)
+					.and("isRead", "=", "1"));
+			List<ChatOfflineInfo> ReadData = new ArrayList<ChatOfflineInfo>();
+			ReadData.addAll(readData1);
+			ReadData.addAll(readData2);
+			return readData;
 		} catch (DbException e) {
 			e.printStackTrace();
 		}

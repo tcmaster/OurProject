@@ -292,7 +292,7 @@ public class RegisterTwoActivity extends BaseActivity implements
 			@Override
 			public void httpPostResolveData(String result) {
 				if (result != null) {
-					imgUrl = Utils.processResultStr(result, "_150_");
+					imgUrl = result;
 					file.delete();
 				}
 			}

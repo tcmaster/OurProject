@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.ViewUtils;
@@ -85,8 +86,8 @@ public class WatchBigPicActivity extends BaseActivity {
 
 					@Override
 					public void run() {
-						final String path = Utils.getNetBitmap(imgUrls
-								.get(photo_vp.getCurrentItem()));
+						final String path = Utils.getNetBitmap(Constans.URL
+								+ imgUrls.get(photo_vp.getCurrentItem()));
 						if (path == null) {
 							handler.post(new Runnable() {
 
@@ -154,7 +155,7 @@ public class WatchBigPicActivity extends BaseActivity {
 			View view = LayoutInflater.from(WatchBigPicActivity.this).inflate(
 					R.layout.item_vp_watchbigimg, null);
 			BitmapUtils utils = new BitmapUtils(WatchBigPicActivity.this);
-			utils.display(view, imgUrls.get(position),
+			utils.display(view, Constans.URL + imgUrls.get(position),
 					new BitmapLoadCallBack<View>() {
 						@Override
 						public void onPreLoad(View container, String uri,

@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
 
 /**
  * 
  * @author lixiaosong
- * @category 个人中心界面暂时不知道最终结构，先用activity来写
+ * @Destribe:个人中心界面
  * 
  */
 public class PersonalCenterActivity extends BaseActivity implements
@@ -99,8 +100,9 @@ public class PersonalCenterActivity extends BaseActivity implements
 		BitmapUtils utils = new BitmapUtils(this);
 		utils.display(
 				iv_photo,
-				Utils.processResultStr(JoocolaApplication.getInstance()
-						.getUserInfo().getPhotoUrl(), "_150_"));
+				Utils.processResultStr(Constans.URL
+						+ JoocolaApplication.getInstance().getUserInfo()
+								.getPhotoUrl(), "_150_"));
 		nickName.setText(JoocolaApplication.getInstance().getUserInfo()
 				.getNickName());
 		tv_AddCount.setText(JoocolaApplication.getInstance().getUserInfo()
