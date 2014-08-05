@@ -79,6 +79,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private CustomerDialog issueDialog;//
 	private CustomerDialog clickJoinDialog;
 	private int publishid;
+	private String stateString;
+	private String ReserveDate; // 邀约的到期日子。
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -167,10 +169,16 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 				showClickIssueDialog(resultString);
 				break;
 			/**
-		    * 
-		    */
+			 * 这是自己的邀约 显示管理。
+			 */
 			case 6:
 				showClickIssueDialog(100 + "");
+				break;
+			/**
+			 * 
+			 */
+			case 7:
+				showClickIssueDialog("quxiao");
 				break;
 			default:
 				break;
@@ -304,11 +312,13 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		age.setText(entity.getPublisherAge() + "");
 		astro.setText(entity.getPublisherAstro());
 		issuetime.setText(entity.getReserveDate());
+		ReserveDate = entity.getReserveDate();
 		issuesex.setText(entity.getSexName());
 		issuecost.setText(entity.getCostName());
 		location.setText(entity.getLocationName());
 		description.setText(entity.getDescription());
 		state.setText(entity.getState());
+		stateString = entity.getState();
 		usercount.setText("报名(" + entity.getApplyUserCount() + ")");
 		replycount.setText("回复(" + entity.getReplyCount() + ")");
 		String touxiangUrl = entity.getPublisherPhoto();
@@ -578,10 +588,24 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 
 						@Override
 						public void onClick(View v) {
-							Utils.toast(IssuedinvitationDetailsActivity.this,
-									"该功能正在编写");
+							Intent intent = new Intent(
+									IssuedinvitationDetailsActivity.this,
+									ApllyMangerActivity.class);
+							intent.putExtra("issue_pid", issue_pid + "");
+							intent.putExtra("ReserveDate", ReserveDate);
+							startActivity(intent);
 						}
 					});
+				} else if (result.equals("quxiao")) { // 活动结束了。
+					joinBtn.setOnClickListener(null);
+					joinBtn.setBackgroundResource(R.drawable.btnclick);
+					joinBtn.setText("已取消");
+					joinBtn.setTextColor(getResources().getColor(R.color.black));
+				} else if (result.equals("30")) {
+					joinBtn.setOnClickListener(null);
+					joinBtn.setBackgroundResource(R.drawable.btnclick);
+					joinBtn.setText("已加入");
+					joinBtn.setTextColor(getResources().getColor(R.color.black));
 				}
 			}
 		});
@@ -594,6 +618,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 	private void queryUserinIssue() {
 		if (user_pid.equals(publishid + "")) {
 			handler.sendEmptyMessage(6);
+		} else if (stateString.equals("已取消")) {
+			handler.sendEmptyMessage(7);
 		} else {
 
 			HttpPostInterface httpPostInterface = new HttpPostInterface();

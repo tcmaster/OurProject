@@ -118,6 +118,9 @@
             android:name="com.android.joocola.activity.ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
+        <activity
+            android:name="com.android.joocola.activity.ApllyMangerActivity" 
+            android:screenOrientation="portrait" /> 
     </application>
 
 </manifest>
