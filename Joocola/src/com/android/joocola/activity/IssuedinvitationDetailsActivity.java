@@ -189,7 +189,6 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements
 		mSharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
 				Context.MODE_PRIVATE);
 		user_pid = mSharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
-
 		// 初始化回复列表的listview。
 		mAutoListView = (AutoListView) this.findViewById(R.id.issue_listview);
 		mAutoListView.setOnLoadListener(this);

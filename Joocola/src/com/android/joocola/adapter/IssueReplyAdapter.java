@@ -16,6 +16,7 @@ import com.android.joocola.R;
 import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constans;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -35,6 +36,7 @@ public class IssueReplyAdapter extends BaseAdapter {
 		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
 				bitmapCache);
 	}
+
 	@Override
 	public int getCount() {
 		return mReplys.size();
@@ -73,18 +75,17 @@ public class IssueReplyAdapter extends BaseAdapter {
 		String touxiangUrl = replyEntity.getPublisherPhotoString();
 		holder.touxiang.setErrorImageResId(R.drawable.photobg);
 		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
-		holder.touxiang.setImageUrl(touxiangUrl, mImageLoader);
+		holder.touxiang.setImageUrl(Constans.URL + touxiangUrl, mImageLoader);
 		holder.touxiang.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(
-mContext,
+				Intent intent = new Intent(mContext,
 						PersonalDetailActivity.class);
 				intent.putExtra("userId", publishID + "");
 				Log.e("跳转的pid", publishID + "");
 				mContext.startActivity(intent);
-				
+
 			}
 		});
 		return convertView;
