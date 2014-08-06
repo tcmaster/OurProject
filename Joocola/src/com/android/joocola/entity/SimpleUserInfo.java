@@ -4,7 +4,7 @@ public class SimpleUserInfo {
 	private int pid;
 	private String UserName;
 	private String photoUrl;
-	private String Signature;
+	private String Signature; // 签名
 
 	public int getPid() {
 		return pid;
