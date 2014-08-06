@@ -122,6 +122,7 @@ public class ChatActivity extends BaseActivity {
 				.split("@")[0]);
 		info.setIsTo(nickName);
 		info.setIsRead(0);
+		info.setKey(info.getIsFrom() + "-" + info.getIsTo());
 		try {
 			JoocolaApplication.getInstance().getDB().save(info);
 		} catch (DbException e) {

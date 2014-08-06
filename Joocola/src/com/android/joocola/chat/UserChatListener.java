@@ -37,6 +37,7 @@ public class UserChatListener implements ChatManagerListener {
 						arg1.getFrom().indexOf("@")));
 				info.setIsTo(arg1.getTo().substring(0,
 						arg1.getTo().indexOf("@")));
+				info.setKey(info.getIsTo() + "-" + info.getIsFrom());
 				info.setIsRead(0);
 				try {
 					JoocolaApplication.getInstance().getDB().save(info);
