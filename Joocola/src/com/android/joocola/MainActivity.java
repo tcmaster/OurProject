@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,16 +40,19 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int mBackKeyPressedTimes = 0;
 	private SharedPreferences sharedPreferences;
 	private Editor editor;
+	private RelativeLayout loading;
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case LOGIN_ERROR:
+				loading.setVisibility(View.GONE);
 				Utils.toast(MainActivity.this, getString(R.string.loginerror));
 				break;
 			case LOGIN_SUCCESS:
 				// 登录成功的操作
+				loading.setVisibility(View.GONE);
 				String pid = (String) msg.obj;
 				JoocolaApplication.getInstance().initUserInfoAfterLogin(pid);
 				editor.putString(Constans.LOGIN_PID, pid);
@@ -84,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		loginButton = (Button) this.findViewById(R.id.login);
 		forget_pswd = (TextView) this.findViewById(R.id.forget_pswd);
 		registerButton = (Button) this.findViewById(R.id.register);
+		loading = (RelativeLayout) this.findViewById(R.id.loading);
 		registerButton.setOnClickListener(this);
 		loginButton.setOnClickListener(this);
 		forget_pswd.setOnClickListener(this);
@@ -117,6 +122,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
+				loading.setVisibility(View.VISIBLE);
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
