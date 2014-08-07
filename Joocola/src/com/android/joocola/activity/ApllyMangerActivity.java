@@ -3,6 +3,10 @@ package com.android.joocola.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,11 +38,19 @@ public class ApllyMangerActivity extends BaseActivity {
 			switch (msg.what) {
 			case 1:
 				String result = (String) msg.obj;
-				Log.e("111111111111", result);
+				joinList = resoloveUnjoinJson(result);
+				joinAdapter.setmUsers(joinList);
+				joinListView.setAdapter(joinAdapter);
 				break;
+			/**
+			 * 申请加入的
+			 */
 			case 2:
 				String result1 = (String) msg.obj;
 				Log.e("222222222222", result1);
+				unJoinList = resoloveUnjoinJson(result1);
+				unJoinAdapter.setmUsers(unJoinList);
+				unJoinListView.setAdapter(unJoinAdapter);
 				break;
 			default:
 				break;
@@ -65,11 +77,11 @@ public class ApllyMangerActivity extends BaseActivity {
 		unJoinListView = (AutoListView) this
 				.findViewById(R.id.unjoin_userlistview);
 		joinAdapter = new SimpleApllyUserAdapter(this, bitmapCache);
-		joinAdapter.setmUsers(joinList);
+		// joinAdapter.setmUsers(joinList);
 		unJoinAdapter = new SimpleApllyUserAdapter(this, bitmapCache);
-		unJoinAdapter.setmUsers(unJoinList);
-		joinListView.setAdapter(joinAdapter);
-		unJoinListView.setAdapter(unJoinAdapter);
+		// unJoinAdapter.setmUsers(unJoinList);
+		// joinListView.setAdapter(joinAdapter);
+		// unJoinListView.setAdapter(unJoinAdapter);
 		initJoinList();
 		initUnJoinList();
 
@@ -115,5 +127,29 @@ public class ApllyMangerActivity extends BaseActivity {
 				mHandler.sendMessage(message);
 			}
 		});
+	}
+
+	private List<SimpleUserInfo> resoloveUnjoinJson(String json) {
+		List<SimpleUserInfo> list = new ArrayList<SimpleUserInfo>();
+		try {
+			JSONObject jsonObject = new JSONObject(json);
+			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				SimpleUserInfo simpleUserInfo = new SimpleUserInfo();
+				JSONObject simpleJsonObject = jsonArray.getJSONObject(i);
+				simpleUserInfo.setPhotoUrl(simpleJsonObject
+						.getString("PhotoUrl"));
+				simpleUserInfo.setPid(simpleJsonObject.getInt("PID"));
+				simpleUserInfo.setSignature(simpleJsonObject
+						.getString("Signature"));
+				simpleUserInfo.setUserName(simpleJsonObject
+						.getString("UserName"));
+				list.add(simpleUserInfo);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return list;
+
 	}
 }
