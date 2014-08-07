@@ -73,15 +73,15 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	public List<ChatOfflineInfo> getNoReadData() {
 		try {
-			List<ChatOfflineInfo> noreadData1 = db.findAll(Selector
-					.from(ChatOfflineInfo.class).where("isFrom", "=", user)
-					.and("isRead", "=", "0"));
-			List<ChatOfflineInfo> noreadData2 = db.findAll(Selector
-					.from(ChatOfflineInfo.class).where("isTo", "=", user)
-					.and("isRead", "=", "0"));
-			List<ChatOfflineInfo> noReadData = new ArrayList<ChatOfflineInfo>();
-			noReadData.addAll(noreadData1);
-			noReadData.addAll(noreadData2);
+			List<ChatOfflineInfo> noReadData = db.findAll(Selector
+					.from(ChatOfflineInfo.class)
+					.where("key",
+							"=",
+							XMPPChat.getInstance().getConnection().getUser()
+									.split("@")[0]
+									+ "-" + user).and("isRead", "=", 0));
+			if (noReadData == null)
+				noReadData = new ArrayList<ChatOfflineInfo>();
 			return noReadData;
 		} catch (DbException e) {
 			e.printStackTrace();
@@ -94,16 +94,16 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	public List<ChatOfflineInfo> getReadData() {
 		try {
-			List<ChatOfflineInfo> readData1 = db.findAll(Selector
-					.from(ChatOfflineInfo.class).where("isFrom", "=", user)
-					.and("isRead", "=", "1"));
-			List<ChatOfflineInfo> readData2 = db.findAll(Selector
-					.from(ChatOfflineInfo.class).where("isTo", "=", user)
-					.and("isRead", "=", "1"));
-			List<ChatOfflineInfo> ReadData = new ArrayList<ChatOfflineInfo>();
-			ReadData.addAll(readData1);
-			ReadData.addAll(readData2);
-			return readData;
+			List<ChatOfflineInfo> ReadData = db.findAll(Selector
+					.from(ChatOfflineInfo.class)
+					.where("key",
+							"=",
+							XMPPChat.getInstance().getConnection().getUser()
+									.split("@")[0]
+									+ "-" + user).and("isRead", "=", 1));
+			if (ReadData == null)
+				ReadData = new ArrayList<ChatOfflineInfo>();
+			return ReadData;
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +137,6 @@ public class SingleChatAdapter extends BaseAdapter {
 	public void updateNoReadData() {
 		this.noReadData = getNoReadData();
 		data.clear();
-		data.addAll(readData);
 		data.addAll(noReadData);
 		notifyDataSetChanged();
 	}

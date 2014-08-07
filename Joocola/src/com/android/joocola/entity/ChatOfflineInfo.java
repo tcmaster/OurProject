@@ -28,6 +28,10 @@ public class ChatOfflineInfo {
 	 * 未读消息标志位,如果为1，就为已读，为0，仍然未读
 	 */
 	public int isRead;
+	/**
+	 * 用于标识一组聊天，组成：登陆User-其他聊天对象
+	 */
+	public String key;
 
 	public int getId() {
 		return id;
@@ -69,10 +73,19 @@ public class ChatOfflineInfo {
 		this.isRead = isRead;
 	}
 
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatOfflineInfo [id=" + id + ", isFrom=" + isFrom + ", isTo="
-				+ isTo + ", content=" + content + ", isRead=" + isRead + "]";
+				+ isTo + ", content=" + content + ", isRead=" + isRead
+				+ ", key=" + key + "]";
 	}
 
 }

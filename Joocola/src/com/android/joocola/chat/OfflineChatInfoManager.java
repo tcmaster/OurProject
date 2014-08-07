@@ -39,6 +39,7 @@ public class OfflineChatInfoManager {
 				info.setIsTo(to);
 				info.setContent(content);
 				info.setIsRead(0);
+				info.setKey(info.getIsTo() + "-" + info.getIsFrom());
 				Log.v("lixiaosong", "离线消息是" + info.toString());
 				db.save(info);
 			}
