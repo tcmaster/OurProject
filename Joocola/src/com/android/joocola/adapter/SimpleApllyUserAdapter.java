@@ -4,7 +4,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +20,8 @@ import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.entity.SimpleUserInfo;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.HttpPostInterface;
+import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -29,9 +32,21 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ImageLoader mImageLoader;
 	private ViewHolder holder;
+	private int state;
+	private String issue_pid;
+	private String publish_id;
+	private final String myUrl = "Bus.AppointController.ApproveAppoint.ashx";
+	private Handler mHandler;
 
-	public SimpleApllyUserAdapter(Context context, BitmapCache bitmapCache) {
+	// 0 代表，该用户未申请当前邀约。即当前邀约无任何关系
+	// 10 代表，用户已经申请加入当前邀约。
+	// 20 代表，用户自己已经取消
+	// 30 代表，用户已经被批准加入当前邀约
+
+	public SimpleApllyUserAdapter(Context context, BitmapCache bitmapCache,
+			Handler handler) {
 		mContext = context;
+		mHandler = handler;
 		inflater = LayoutInflater.from(context);
 		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
 				bitmapCache);
@@ -76,6 +91,7 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		SimpleUserInfo simpleUserInfo = mUsers.get(position);
+		final String applyUserID = simpleUserInfo.getPid() + "";
 		holder.name.setText(simpleUserInfo.getUserName());
 		holder.signature.setText(simpleUserInfo.getSignature());
 		String url = simpleUserInfo.getPhotoUrl();
@@ -90,16 +106,57 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 				Intent intent = new Intent(mContext,
 						PersonalDetailActivity.class);
 				intent.putExtra("userId", publishID + "");
-				Log.e("跳转的pid", publishID + "");
 				mContext.startActivity(intent);
 
 			}
 		});
+		if (state == 10) {
+			holder.accept.setVisibility(View.VISIBLE);
+			holder.accept.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					HttpPostInterface httpPostInterface = new HttpPostInterface();
+					httpPostInterface.addParams("appointID", issue_pid);
+					httpPostInterface.addParams("opUserID", publish_id);
+					httpPostInterface.addParams("applyUserID", publishID);
+					httpPostInterface.getData(myUrl, new HttpPostCallBack() {
+
+						@Override
+						public void httpPostResolveData(String result) {
+							Message message = Message.obtain();
+							message.what = 3;
+							message.obj = result;
+							mHandler.sendMessage(message);
+						}
+					});
+				}
+			});
+		} else if (state == 30) {
+			holder.evaluate.setVisibility(View.VISIBLE);
+
+		}
 		return convertView;
 	}
 
 	public void setmUsers(List<SimpleUserInfo> mUsers) {
 		this.mUsers = mUsers;
+	}
+
+	public List<SimpleUserInfo> getmUsers() {
+		return mUsers;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public void setIssue_pid(String issue_pid) {
+		this.issue_pid = issue_pid;
+	}
+
+	public void setPublish_id(String publish_id) {
+		this.publish_id = publish_id;
 	}
 
 	private class ViewHolder {

@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:weightSum="9"
+    android:weightSum="10"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/apply_time"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="5dp"
+        android:background="@color/gray2"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"  />
+    <TextView
+        android:id="@+id/join_count"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:paddingTop="5dp"
+        android:layout_gravity="left"
+        android:textStyle="bold"  />
+    
     <com.android.joocola.view.AutoListView
         android:id="@+id/join_userlistview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4" />
+     <TextView
+        android:id="@+id/unjoin_count"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:paddingTop="5dp"
+        android:layout_gravity="left"
+        android:textStyle="bold"  />
     <com.android.joocola.view.AutoListView
         android:id="@+id/unjoin_userlistview"
         android:layout_width="match_parent"
