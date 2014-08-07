@@ -47,12 +47,12 @@ public class MainActivity extends Activity implements OnClickListener {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case LOGIN_ERROR:
-				loading.setVisibility(View.GONE);
+				hideLoading();
 				Utils.toast(MainActivity.this, getString(R.string.loginerror));
 				break;
 			case LOGIN_SUCCESS:
 				// 登录成功的操作
-				loading.setVisibility(View.GONE);
+				hideLoading();
 				String pid = (String) msg.obj;
 				JoocolaApplication.getInstance().initUserInfoAfterLogin(pid);
 				editor.putString(Constans.LOGIN_PID, pid);
@@ -122,7 +122,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
-				loading.setVisibility(View.VISIBLE);
+				showLoading();
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
@@ -168,8 +168,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onBackPressed() {
+		if (isShow()) {
+			hideLoading();
+			return;
+		}
 		if (mBackKeyPressedTimes == 0) {
 			mBackKeyPressedTimes = 1;
+			Toast.makeText(this, "Press back button again for exit.",
+					Toast.LENGTH_SHORT).show();
 			new Thread() {
 				@Override
 				public void run() {
@@ -190,4 +196,23 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onBackPressed();
 	}
 
+	private void showLoading() {
+		if (loading != null) {
+			loading.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void hideLoading() {
+		if (loading != null) {
+			loading.setVisibility(View.GONE);
+		}
+	}
+
+	private boolean isShow() {
+		if (loading != null && loading.getVisibility() == View.VISIBLE) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
