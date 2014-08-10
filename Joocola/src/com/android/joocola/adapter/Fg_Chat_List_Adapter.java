@@ -33,6 +33,11 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		return data.length;
 	}
 
+	public void bindData(String[] datas) {
+		this.data = datas;
+		notifyDataSetChanged();
+	}
+
 	@Override
 	public Object getItem(int position) {
 		return data[position];
@@ -77,8 +82,13 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 	private String haveNoReadAndShow(String key) {
 		try {
 			List<ChatOfflineInfo> infos = db.findAll(Selector
-					.from(ChatOfflineInfo.class).where("isRead", "=", "0")
-					.and("key", "=", key));
+					.from(ChatOfflineInfo.class)
+					.where("isRead", "=", "0")
+					.and("key", "=", key)
+					.and("user",
+							"=",
+							JoocolaApplication.getInstance().getUserInfo()
+									.getUserName()));
 			if (infos == null || infos.size() == 0)
 				return null;
 			return infos.get(infos.size() - 1).getContent();
@@ -91,8 +101,13 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 	private String getReadData(String key) {
 		try {
 			List<ChatOfflineInfo> infos = db.findAll(Selector
-					.from(ChatOfflineInfo.class).where("isRead", "=", "1")
-					.and("key", "=", key));
+					.from(ChatOfflineInfo.class)
+					.where("isRead", "=", "1")
+					.and("key", "=", key)
+					.and("user",
+							"=",
+							JoocolaApplication.getInstance().getUserInfo()
+									.getUserName()));
 			if (infos == null || infos.size() == 0)
 				return "";
 			return infos.get(infos.size() - 1).getContent();

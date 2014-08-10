@@ -32,6 +32,10 @@ public class ChatOfflineInfo {
 	 * 用于标识一组聊天，组成：登陆User-其他聊天对象
 	 */
 	public String key;
+	/**
+	 * 用于标识是哪个用户的聊天记录
+	 */
+	public String user;
 
 	public int getId() {
 		return id;
@@ -81,11 +85,19 @@ public class ChatOfflineInfo {
 		this.key = key;
 	}
 
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatOfflineInfo [id=" + id + ", isFrom=" + isFrom + ", isTo="
 				+ isTo + ", content=" + content + ", isRead=" + isRead
-				+ ", key=" + key + "]";
+				+ ", key=" + key + ", user=" + user + "]";
 	}
 
 }

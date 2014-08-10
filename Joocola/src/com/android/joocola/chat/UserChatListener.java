@@ -39,6 +39,8 @@ public class UserChatListener implements ChatManagerListener {
 						arg1.getTo().indexOf("@")));
 				info.setKey(info.getIsTo() + "-" + info.getIsFrom());
 				info.setIsRead(0);
+				info.setUser(JoocolaApplication.getInstance().getUserInfo()
+						.getUserName());
 				try {
 					JoocolaApplication.getInstance().getDB().save(info);
 				} catch (DbException e) {

@@ -72,6 +72,7 @@ public class ChatActivity extends BaseActivity {
 			receiver = new ChatReceiver();
 			registerReceiver(receiver, filter);
 			adapter = new SingleChatAdapter(this, nickName);
+			adapter.updateNoReadData();
 			lv_container.setAdapter(adapter);
 			scrollBottom();
 		}
@@ -123,6 +124,8 @@ public class ChatActivity extends BaseActivity {
 		info.setIsTo(nickName);
 		info.setIsRead(0);
 		info.setKey(info.getIsFrom() + "-" + info.getIsTo());
+		info.setUser(JoocolaApplication.getInstance().getUserInfo()
+				.getUserName());
 		try {
 			JoocolaApplication.getInstance().getDB().save(info);
 		} catch (DbException e) {

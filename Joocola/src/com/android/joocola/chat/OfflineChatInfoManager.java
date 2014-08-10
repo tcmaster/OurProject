@@ -40,6 +40,8 @@ public class OfflineChatInfoManager {
 				info.setContent(content);
 				info.setIsRead(0);
 				info.setKey(info.getIsTo() + "-" + info.getIsFrom());
+				info.setUser(JoocolaApplication.getInstance().getUserInfo()
+						.getUserName());
 				Log.v("lixiaosong", "离线消息是" + info.toString());
 				db.save(info);
 			}

@@ -79,7 +79,12 @@ public class SingleChatAdapter extends BaseAdapter {
 							"=",
 							XMPPChat.getInstance().getConnection().getUser()
 									.split("@")[0]
-									+ "-" + user).and("isRead", "=", 0));
+									+ "-" + user)
+					.and("isRead", "=", 0)
+					.and("user",
+							"=",
+							JoocolaApplication.getInstance().getUserInfo()
+									.getUserName()));
 			if (noReadData == null)
 				noReadData = new ArrayList<ChatOfflineInfo>();
 			return noReadData;
@@ -100,7 +105,12 @@ public class SingleChatAdapter extends BaseAdapter {
 							"=",
 							XMPPChat.getInstance().getConnection().getUser()
 									.split("@")[0]
-									+ "-" + user).and("isRead", "=", 1));
+									+ "-" + user)
+					.and("isRead", "=", 1)
+					.and("user",
+							"=",
+							JoocolaApplication.getInstance().getUserInfo()
+									.getUserName()));
 			if (ReadData == null)
 				ReadData = new ArrayList<ChatOfflineInfo>();
 			return ReadData;
