@@ -23,7 +23,7 @@
         android:layout_gravity="left"
         android:textStyle="bold"  />
     
-    <com.android.joocola.view.AutoListView
+    <ListView
         android:id="@+id/join_userlistview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -36,7 +36,7 @@
         android:paddingTop="5dp"
         android:layout_gravity="left"
         android:textStyle="bold"  />
-    <com.android.joocola.view.AutoListView
+    <ListView
         android:id="@+id/unjoin_userlistview"
         android:layout_width="match_parent"
         android:layout_height="0dp"

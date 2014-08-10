@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -24,14 +25,13 @@ import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
-import com.android.joocola.view.AutoListView;
 
 public class ApllyMangerActivity extends BaseActivity {
 	private final String applyUrl = "Sys.UserController.GetUserSimpleInfos.ashx";
 	private String issue_pid;// 该邀约id.
 	private String user_pid;// 操纵者id
 	private String ReserveDate;// 到期时间
-	private AutoListView joinListView, unJoinListView;
+	private ListView joinListView, unJoinListView;
 	private List<SimpleUserInfo> joinList = new ArrayList<SimpleUserInfo>();
 	private List<SimpleUserInfo> unJoinList = new ArrayList<SimpleUserInfo>();
 	private TextView reserveDateTextView;
@@ -92,19 +92,20 @@ public class ApllyMangerActivity extends BaseActivity {
 		unjoin_count = (TextView) this.findViewById(R.id.unjoin_count);
 		reserveDateTextView = (TextView) this.findViewById(R.id.apply_time);
 		reserveDateTextView.setText("请在" + ReserveDate + "前做出选择");
-		joinListView = (AutoListView) this.findViewById(R.id.join_userlistview);
-		joinListView.setOnRefreshListener(null);
-		joinListView.setOnLoadListener(null);
-		unJoinListView = (AutoListView) this
-				.findViewById(R.id.unjoin_userlistview);
-		unJoinListView.setOnRefreshListener(null);
-		unJoinListView.setOnLoadListener(null);
+		joinListView = (ListView) this.findViewById(R.id.join_userlistview);
+		// joinListView.setOnRefreshListener(null);
+		// joinListView.setOnLoadListener(null);
+		unJoinListView = (ListView) this.findViewById(R.id.unjoin_userlistview);
+		// unJoinListView.setOnRefreshListener(null);
+		// unJoinListView.setOnLoadListener(null);
 		joinAdapter = new SimpleApllyUserAdapter(this, bitmapCache, mHandler);
 		joinAdapter.setState(30);
 		unJoinAdapter = new SimpleApllyUserAdapter(this, bitmapCache, mHandler);
 		unJoinAdapter.setState(10);
 		unJoinAdapter.setIssue_pid(issue_pid);
 		unJoinAdapter.setPublish_id(user_pid);
+		joinAdapter.setPublish_id(user_pid);
+		joinAdapter.setIssue_pid(issue_pid);
 		initJoinList();
 		initUnJoinList();
 
