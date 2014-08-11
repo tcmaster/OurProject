@@ -619,6 +619,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		Intent intent = new Intent(this, ChatActivity.class);
 		intent.putExtra("nickName", nickName_tv.getText().toString()
 				.toLowerCase());
+		intent.putExtra("userId", userId);
 		startActivity(intent);
 	}
 }

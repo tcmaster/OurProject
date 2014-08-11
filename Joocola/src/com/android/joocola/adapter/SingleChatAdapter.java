@@ -1,9 +1,12 @@
 package com.android.joocola.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.entity.ChatOfflineInfo;
+import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.exception.DbException;
@@ -31,30 +35,39 @@ public class SingleChatAdapter extends BaseAdapter {
 	private Context context;
 	private DbUtils db;
 	/**
+	 * 用户头像存放地址，key为用户名，values为地址
+	 */
+	private Map<String, String> photos;
+	/**
 	 * 未读消息
 	 */
-	List<ChatOfflineInfo> noReadData;
+	private List<ChatOfflineInfo> noReadData;
 	/**
 	 * 历史消息
 	 */
-	List<ChatOfflineInfo> readData;
+	private List<ChatOfflineInfo> readData;
 	/**
 	 * 需要显示的内容
 	 */
-	List<ChatOfflineInfo> data;
+	private List<ChatOfflineInfo> data;
 	/**
 	 * 这个字段代表用户在和谁聊天
 	 */
 	private String user;
 
 	/**
-	 * 这个字段判断当前是否需要历史记录
+	 * 图像下载工具
 	 */
+	private BitmapUtils bmUtils;
 
 	public SingleChatAdapter(Context context, String user) {
 		this.context = context;
 		db = JoocolaApplication.getInstance().getDB();
 		this.user = user;
+		photos = new HashMap<String, String>();
+		bmUtils = new BitmapUtils(context);
+		bmUtils.configDefaultLoadFailedImage(BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.ic_launcher));
 		initData();
 	}
 
@@ -121,6 +134,11 @@ public class SingleChatAdapter extends BaseAdapter {
 		return new ArrayList<ChatOfflineInfo>();
 	}
 
+	public void addPhotos(String key, String value) {
+		photos.put(key, value);
+		notifyDataSetChanged();
+	}
+
 	/**
 	 * 当有新的信息显示时，调用该方法
 	 */
@@ -129,6 +147,16 @@ public class SingleChatAdapter extends BaseAdapter {
 		this.readData = getReadData();
 		data.clear();
 		data.addAll(readData);
+		data.addAll(noReadData);
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * 隐藏历史信息
+	 */
+	public void hideHistory() {
+		this.noReadData = getNoReadData();
+		data.clear();
 		data.addAll(noReadData);
 		notifyDataSetChanged();
 	}
@@ -182,6 +210,10 @@ public class SingleChatAdapter extends BaseAdapter {
 		}
 		TextView name = (TextView) convertView.findViewById(R.id.chat_name);
 		ImageView photo = (ImageView) convertView.findViewById(R.id.chat_photo);
+		String imgUrls = photos.get(info.getIsFrom());
+		if (imgUrls == null)
+			imgUrls = "";
+		bmUtils.display(photo, imgUrls);
 		TextView content = (TextView) convertView
 				.findViewById(R.id.chat_content);
 		name.setText(info.getIsFrom());
