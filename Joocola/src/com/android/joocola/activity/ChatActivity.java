@@ -242,8 +242,10 @@ public class ChatActivity extends BaseActivity {
 								@Override
 								public void run() {
 									try {
-										adapter.addPhotos(userObject
-												.getString("NickName"),
+										adapter.addPhotos(
+												userObject
+														.getString("NickName")
+														.toLowerCase(),
 												userObject
 														.getString("PhotoUrl"));
 									} catch (JSONException e) {

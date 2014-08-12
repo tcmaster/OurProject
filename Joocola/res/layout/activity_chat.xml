@@ -52,7 +52,7 @@
         android:layout_below="@id/chat_showHistory_tv"
         android:layout_above="@id/layout"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:divider="@null" />
 
 </RelativeLayout>

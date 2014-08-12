@@ -19,6 +19,8 @@ import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.entity.ChatOfflineInfo;
+import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
@@ -213,7 +215,8 @@ public class SingleChatAdapter extends BaseAdapter {
 		String imgUrls = photos.get(info.getIsFrom());
 		if (imgUrls == null)
 			imgUrls = "";
-		bmUtils.display(photo, imgUrls);
+		bmUtils.display(photo,
+				Utils.processResultStr(Constans.URL + imgUrls, "_150_"));
 		TextView content = (TextView) convertView
 				.findViewById(R.id.chat_content);
 		name.setText(info.getIsFrom());
