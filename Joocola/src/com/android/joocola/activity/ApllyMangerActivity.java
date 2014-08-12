@@ -174,6 +174,10 @@ public class ApllyMangerActivity extends BaseActivity {
 						.getString("Signature"));
 				simpleUserInfo.setUserName(simpleJsonObject
 						.getString("UserName"));
+				simpleUserInfo.setAge(simpleJsonObject.getInt("Age"));
+				simpleUserInfo.setAstro(simpleJsonObject.getString("Astro"));
+				simpleUserInfo.setSexID(simpleJsonObject.getInt("SexID"));
+
 				list.add(simpleUserInfo);
 			}
 		} catch (JSONException e) {

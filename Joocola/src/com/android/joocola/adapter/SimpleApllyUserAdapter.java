@@ -88,6 +88,8 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 					.findViewById(R.id.simple_signature);
 			holder.state = (TextView) convertView
 					.findViewById(R.id.simple_state);
+			holder.astro = (TextView) convertView
+					.findViewById(R.id.simple_astro);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -98,6 +100,21 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 		holder.signature.setText(simpleUserInfo.getSignature());
 		String url = simpleUserInfo.getPhotoUrl();
 		final String publishID = simpleUserInfo.getPid() + "";
+		holder.astro.setText(simpleUserInfo.getAstro());
+		holder.age.setText(simpleUserInfo.getAge() + "");
+		if (simpleUserInfo.getSexID() == 1) {
+			holder.sex.setImageResource(R.drawable.boy);
+			holder.age.setTextColor(mContext.getResources().getColor(
+					R.color.lanse));
+			holder.astro.setTextColor(mContext.getResources().getColor(
+					R.color.lanse));
+		} else {
+			holder.sex.setImageResource(R.drawable.girl);
+			holder.age.setTextColor(mContext.getResources().getColor(
+					R.color.fense));
+			holder.astro.setTextColor(mContext.getResources().getColor(
+					R.color.fense));
+		}
 		holder.img.setErrorImageResId(R.drawable.photobg);
 		holder.img.setDefaultImageResId(R.drawable.photobg);
 		holder.img.setImageUrl(Constans.URL + url, mImageLoader);
@@ -181,7 +198,7 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 
 	private class ViewHolder {
 		NetworkImageView img;
-		TextView name, age, signature;
+		TextView name, age, signature, astro;// 签名
 		ImageView sex;
 		Button evaluate;// 评价
 		Button accept;// 接受
