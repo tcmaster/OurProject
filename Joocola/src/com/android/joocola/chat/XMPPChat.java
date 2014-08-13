@@ -38,6 +38,7 @@ import org.jivesoftware.smackx.provider.MUCOwnerProvider;
 import org.jivesoftware.smackx.provider.MUCUserProvider;
 import org.jivesoftware.smackx.provider.MessageEventProvider;
 import org.jivesoftware.smackx.provider.MultipleAddressesProvider;
+import org.jivesoftware.smackx.provider.RosterExchangeProvider;
 import org.jivesoftware.smackx.provider.StreamInitiationProvider;
 import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
@@ -125,6 +126,7 @@ public class XMPPChat {
 				Log.v("lixiaosong", config.getHostAddresses().toString());
 				connection = new XMPPConnection(config);
 				connection.connect();
+				configureConnection(ProviderManager.getInstance());
 				return true;
 			} catch (XMPPException e) {
 				e.printStackTrace();
@@ -277,19 +279,17 @@ public class XMPPChat {
 	}
 
 	/**
-	 * 
 	 * 加入providers的函数 ASmack在/META-INF缺少一个smack.providers 文件
 	 * 
 	 * @param pm
 	 */
-
 	public void configureConnection(ProviderManager pm) {
 
 		// Private Data Storage
 		pm.addIQProvider("query", "jabber:iq:private",
 				new PrivateDataManager.PrivateDataIQProvider());
-		// Time
 
+		// Time
 		try {
 			pm.addIQProvider("query", "jabber:iq:time",
 					Class.forName("org.jivesoftware.smackx.packet.Time"));
@@ -299,16 +299,14 @@ public class XMPPChat {
 		}
 
 		// Roster Exchange
-
-		pm.addExtensionProvider("x", "jabber:x:roster", new Object());
+		pm.addExtensionProvider("x", "jabber:x:roster",
+				new RosterExchangeProvider());
 
 		// Message Events
-
 		pm.addExtensionProvider("x", "jabber:x:event",
 				new MessageEventProvider());
 
 		// Chat State
-
 		pm.addExtensionProvider("active",
 				"http://jabber.org/protocol/chatstates",
 				new ChatStateExtension.Provider());
@@ -361,7 +359,6 @@ public class XMPPChat {
 				new DelayInformationProvider());
 
 		// Version
-
 		try {
 			pm.addIQProvider("query", "jabber:iq:version",
 					Class.forName("org.jivesoftware.smackx.packet.Version"));
@@ -373,12 +370,10 @@ public class XMPPChat {
 		pm.addIQProvider("vCard", "vcard-temp", new VCardProvider());
 
 		// Offline Message Requests
-
 		pm.addIQProvider("offline", "http://jabber.org/protocol/offline",
 				new OfflineMessageRequest.Provider());
 
 		// Offline Message Indicator
-
 		pm.addExtensionProvider("offline",
 				"http://jabber.org/protocol/offline",
 				new OfflineMessageInfo.Provider());
@@ -390,21 +385,19 @@ public class XMPPChat {
 		pm.addIQProvider("query", "jabber:iq:search", new UserSearch.Provider());
 
 		// SharedGroupsInfo
-
 		pm.addIQProvider("sharedgroup",
 				"http://www.jivesoftware.org/protocol/sharedgroup",
 				new SharedGroupsInfo.Provider());
 
 		// JEP-33: Extended Stanza Addressing
-
 		pm.addExtensionProvider("addresses",
 				"http://jabber.org/protocol/address",
 				new MultipleAddressesProvider());
 
 		// FileTransfer
-
 		pm.addIQProvider("si", "http://jabber.org/protocol/si",
 				new StreamInitiationProvider());
+
 		pm.addIQProvider("query", "http://jabber.org/protocol/bytestreams",
 				new BytestreamsProvider());
 
@@ -427,7 +420,6 @@ public class XMPPChat {
 		pm.addExtensionProvider("session-expired",
 				"http://jabber.org/protocol/commands",
 				new AdHocCommandDataProvider.SessionExpiredError());
-
 	}
 
 	/**

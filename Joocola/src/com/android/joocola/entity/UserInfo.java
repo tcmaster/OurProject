@@ -188,6 +188,17 @@ public class UserInfo implements Serializable {
 	 */
 	private String StaAppCommentCount;
 
+	/**
+	 * 该用户与查询用户的距离信息
+	 * 
+	 * @return
+	 */
+	private String LocDistince;
+	/**
+	 * 该用户最后位置时间信息
+	 */
+	private String LocDate;
+
 	public String getPID() {
 		return PID;
 	}
@@ -566,6 +577,22 @@ public class UserInfo implements Serializable {
 				+ ", StaAppFavoriteCount=" + StaAppFavoriteCount
 				+ ", StaAppWaitCommentCount=" + StaAppWaitCommentCount
 				+ ", StaAppCommentCount=" + StaAppCommentCount + "]";
+	}
+
+	public String getLocDistince() {
+		return LocDistince;
+	}
+
+	public void setLocDistince(String locDistince) {
+		LocDistince = locDistince;
+	}
+
+	public String getLocDate() {
+		return LocDate;
+	}
+
+	public void setLocDate(String locDate) {
+		LocDate = locDate;
 	}
 
 }
