@@ -169,6 +169,9 @@ public class JoocolaApplication extends Application {
 							XMPPChat.getInstance().getConnection()
 									.getChatManager()
 									.addChatListener(new UserChatListener());
+							// 开启心跳服务
+							XMPPChat.getInstance().startHeartService(
+									JoocolaApplication.getInstance());
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();

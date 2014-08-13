@@ -1,5 +1,7 @@
 package com.android.joocola.chat;
 
+import java.util.Date;
+
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.MessageListener;
@@ -11,6 +13,7 @@ import android.util.Log;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.ChatOfflineInfo;
 import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.exception.DbException;
 
 /**
@@ -41,6 +44,8 @@ public class UserChatListener implements ChatManagerListener {
 				info.setIsRead(0);
 				info.setUser(JoocolaApplication.getInstance().getUserInfo()
 						.getUserName());
+				info.setTime(Utils.formatDate(new Date(System
+						.currentTimeMillis())));
 				try {
 					JoocolaApplication.getInstance().getDB().save(info);
 				} catch (DbException e) {

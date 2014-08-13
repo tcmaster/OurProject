@@ -212,6 +212,7 @@ public class SingleChatAdapter extends BaseAdapter {
 		}
 		TextView name = (TextView) convertView.findViewById(R.id.chat_name);
 		ImageView photo = (ImageView) convertView.findViewById(R.id.chat_photo);
+		TextView time = (TextView) convertView.findViewById(R.id.chat_time);
 		String imgUrls = photos.get(info.getIsFrom());
 		if (imgUrls == null)
 			imgUrls = "";
@@ -221,6 +222,7 @@ public class SingleChatAdapter extends BaseAdapter {
 				.findViewById(R.id.chat_content);
 		name.setText(info.getIsFrom());
 		content.setText(info.getContent());
+		time.setText(info.getTime());
 		return convertView;
 	}
 }

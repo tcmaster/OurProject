@@ -394,4 +394,15 @@ public class Utils {
 		}
 		return null;
 	}
+
+	/**
+	 * 按照yyyy-MM-dd HH:mm:ss格式化时间
+	 * 
+	 * @param time
+	 *            时间
+	 */
+	public static String formatDate(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(date);
+	}
 }

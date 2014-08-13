@@ -31,6 +31,8 @@ public class OfflineChatInfoManager {
 			Iterator<Message> it = manager.getMessages();
 			while (it.hasNext()) {
 				Message msg = it.next();
+				// DelayInformation delay = (DelayInformation) msg.getExtension(
+				// "x", "jabber:x:delay");
 				String from = msg.getFrom().split("@")[0];
 				String to = msg.getTo().split("@")[0];
 				String content = msg.getBody();
@@ -39,6 +41,7 @@ public class OfflineChatInfoManager {
 				info.setIsTo(to);
 				info.setContent(content);
 				info.setIsRead(0);
+				// info.setTime(Utils.formatDate(delay.getStamp()));
 				info.setKey(info.getIsTo() + "-" + info.getIsFrom());
 				info.setUser(JoocolaApplication.getInstance().getUserInfo()
 						.getUserName());

@@ -43,6 +43,8 @@ import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 /**
@@ -72,6 +74,10 @@ public class XMPPChat {
 	 * XMPP的连接
 	 */
 	private XMPPConnection connection;
+	/**
+	 * 心跳服务，开启的话不断发送心跳包，需及时关闭
+	 */
+	private HeartService service;
 	/**
 	 * 下面几个字段代表本用户当前的几个状态 ONLINE，QME，BUSY，LEAVE，INVISIBLE,OFFLINE
 	 */
@@ -424,4 +430,15 @@ public class XMPPChat {
 
 	}
 
+	/**
+	 * 开启心跳服务
+	 */
+	public void startHeartService(Context context) {
+		Intent service = new Intent(context, HeartService.class);
+		context.startService(service);
+	}
+
+	public void stopHeartService(Context context) {
+		context.stopService(new Intent(context, HeartService.class));
+	}
 }

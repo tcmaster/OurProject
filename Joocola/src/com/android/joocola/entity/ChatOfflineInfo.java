@@ -36,6 +36,10 @@ public class ChatOfflineInfo {
 	 * 用于标识是哪个用户的聊天记录
 	 */
 	public String user;
+	/**
+	 * 该条消息的接收/发送时间
+	 */
+	public String time;
 
 	public int getId() {
 		return id;
@@ -93,11 +97,18 @@ public class ChatOfflineInfo {
 		this.user = user;
 	}
 
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatOfflineInfo [id=" + id + ", isFrom=" + isFrom + ", isTo="
 				+ isTo + ", content=" + content + ", isRead=" + isRead
-				+ ", key=" + key + ", user=" + user + "]";
+				+ ", key=" + key + ", user=" + user + ", time=" + time + "]";
 	}
-
 }

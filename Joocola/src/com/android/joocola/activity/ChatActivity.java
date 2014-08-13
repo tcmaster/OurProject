@@ -1,5 +1,7 @@
 package com.android.joocola.activity;
 
+import java.util.Date;
+
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
 import org.json.JSONArray;
@@ -154,6 +156,7 @@ public class ChatActivity extends BaseActivity {
 			info.setKey(info.getIsFrom() + "-" + info.getIsTo());
 			info.setUser(JoocolaApplication.getInstance().getUserInfo()
 					.getUserName());
+			info.setTime(Utils.formatDate(new Date(System.currentTimeMillis())));
 			try {
 				JoocolaApplication.getInstance().getDB().save(info);
 			} catch (DbException e) {

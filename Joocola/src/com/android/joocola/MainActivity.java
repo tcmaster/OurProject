@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -190,6 +191,15 @@ public class MainActivity extends Activity implements OnClickListener {
 			}.start();
 			return;
 		} else {
+			/**
+			 * 关闭心跳连接
+			 */
+			XMPPChat.getInstance().stopHeartService(
+					JoocolaApplication.getInstance());
+			/**
+			 * 关闭聊天服务
+			 */
+			XMPPChat.getInstance().closeConnection();
 			this.finish();
 			System.exit(0);
 		}
