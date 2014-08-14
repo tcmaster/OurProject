@@ -1,5 +1,7 @@
 package com.android.joocola.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import com.android.joocola.R;
 import com.android.joocola.adapter.NearByPersonAdapter;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.view.AutoListView;
@@ -25,6 +28,8 @@ public class NearbyPersonFragment extends Fragment implements
 	private NearByPersonAdapter mNearByPersonAdapter;
 	private BitmapCache bitmapCache;
 	private int distance = 1000;
+	private SharedPreferences sharedPreferences;
+	private String userId;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -42,6 +47,10 @@ public class NearbyPersonFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		sharedPreferences = getActivity().getSharedPreferences(
+				Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		userId = sharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
+
 	}
 
 	public android.view.View onCreateView(LayoutInflater inflater,
@@ -62,18 +71,22 @@ public class NearbyPersonFragment extends Fragment implements
 	}
 
 	private void initData() {
-		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		httpPostInterface.addParams("DistanceFromCurUser", distance + "");
-		httpPostInterface.getData(url, new HttpPostCallBack() {
+		if (!userId.equals("0")) {
+			HttpPostInterface httpPostInterface = new HttpPostInterface();
+			httpPostInterface.addParams("DistanceFromCurUser", distance + "");
+			httpPostInterface.addParams("CurUserID", userId);
+			httpPostInterface.getData(url, new HttpPostCallBack() {
 
-			@Override
-			public void httpPostResolveData(String result) {
-				Message message = Message.obtain();
-				message.obj = result;
-				message.what = 0;
-				mHandler.sendMessage(message);
-			}
-		});
+				@Override
+				public void httpPostResolveData(String result) {
+					Message message = Message.obtain();
+					message.obj = result;
+					message.what = 0;
+					mHandler.sendMessage(message);
+				}
+			});
+		}
+
 	}
 
 	@Override
