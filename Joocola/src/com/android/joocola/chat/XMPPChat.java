@@ -66,7 +66,7 @@ public class XMPPChat {
 	/**
 	 * 服务名
 	 */
-	private String SERVICE_NAME = "10.171.59.131";
+	private String SERVICE_NAME = "talk.joocola.com";
 	/**
 	 * 本类的单例对象
 	 */
