@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,14 +24,16 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
 public class NearByPersonAdapter extends BaseAdapter {
-	private List<UserInfo> mUserInfos;
+	private List<UserInfo> mUserInfos = new ArrayList<UserInfo>();
 	private Context ctx;
 	private LayoutInflater inflater;
 	private ImageLoader mImageLoader;
 	private ViewHolder holder;
 
-	public NearByPersonAdapter(Context context, BitmapCache bitmapCache) {
+	public NearByPersonAdapter(List<UserInfo> userInfos, Context context,
+			BitmapCache bitmapCache) {
 		ctx = context;
+		mUserInfos = userInfos;
 		inflater = LayoutInflater.from(context);
 		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
 				bitmapCache);
@@ -79,44 +82,41 @@ public class NearByPersonAdapter extends BaseAdapter {
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
-			UserInfo userInfo = mUserInfos.get(position);
-			final String publishID = userInfo.getPID();
-			String imgUrl = userInfo.getPhotoUrl();
-			holder.age.setText(userInfo.getAge());
-			holder.astro.setText(userInfo.getAstro());
-			holder.distance.setText(userInfo.getLocDistince());
-			holder.name.setText(userInfo.getUserName());
-			holder.signature.setText(userInfo.getSignature());
-			holder.time.setText(userInfo.getLocDate());
-			if (userInfo.getSexID().equals("1")) {
-				holder.sexImg.setImageResource(R.drawable.boy);
-				holder.age.setTextColor(ctx.getResources().getColor(
-						R.color.lanse));
-				holder.astro.setTextColor(ctx.getResources().getColor(
-						R.color.lanse));
-			} else {
-				holder.sexImg.setImageResource(R.drawable.girl);
-				holder.age.setTextColor(ctx.getResources().getColor(
-						R.color.fense));
-				holder.astro.setTextColor(ctx.getResources().getColor(
-						R.color.fense));
-			}
-			holder.img.setErrorImageResId(R.drawable.photobg);
-			holder.img.setDefaultImageResId(R.drawable.photobg);
-			holder.img.setImageUrl(Constans.URL + imgUrl, mImageLoader);
-			holder.img.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(ctx,
-							PersonalDetailActivity.class);
-					intent.putExtra("userId", publishID + "");
-					ctx.startActivity(intent);
-
-				}
-			});
 		}
+		UserInfo userInfo = mUserInfos.get(position);
+		final String publishID = userInfo.getPID();
+		String imgUrl = userInfo.getPhotoUrl();
+		holder.age.setText(userInfo.getAge());
+		holder.astro.setText(userInfo.getAstro());
+		holder.distance.setText(userInfo.getLocDistince());
+		holder.name.setText(userInfo.getNickName());
+		Log.e("bb--->getview时", userInfo.getNickName());
+		holder.signature.setText(userInfo.getSignature());
+		holder.time.setText(userInfo.getLocDate());
+		if (userInfo.getSexID().equals("1")) {
+			holder.sexImg.setImageResource(R.drawable.boy);
+			holder.age.setTextColor(ctx.getResources().getColor(R.color.lanse));
+			holder.astro.setTextColor(ctx.getResources()
+					.getColor(R.color.lanse));
+		} else {
+			holder.sexImg.setImageResource(R.drawable.girl);
+			holder.age.setTextColor(ctx.getResources().getColor(R.color.fense));
+			holder.astro.setTextColor(ctx.getResources()
+					.getColor(R.color.fense));
+		}
+		holder.img.setErrorImageResId(R.drawable.photobg);
+		holder.img.setDefaultImageResId(R.drawable.photobg);
+		holder.img.setImageUrl(Constans.URL + imgUrl, mImageLoader);
+		holder.img.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(ctx, PersonalDetailActivity.class);
+				intent.putExtra("userId", publishID + "");
+				ctx.startActivity(intent);
+
+			}
+		});
 		return convertView;
 	}
 
