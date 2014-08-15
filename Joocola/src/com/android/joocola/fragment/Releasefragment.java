@@ -33,7 +33,6 @@ import com.android.joocola.view.AutoListView.OnRefreshListener;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-
 /**
  * 发布预约界面
  * 
@@ -52,7 +51,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 	private int mCurPageIndex = 1;// 当前显示多少页
 
 	@SuppressLint("HandlerLeak")
-	private Handler releaseHandler  = new Handler(){
+	private Handler releaseHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 
@@ -78,6 +77,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 			}
 		};
 	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,10 +101,16 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		return view;
 	}
 
+	/**
+	 * 传入的state=1 为
+	 * 
+	 * @param type
+	 */
 	private void getData(final int type) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("ItemsPerPage", 10 + "");
 		httpPostInterface.addParams("CurrentPage", mCurPageIndex + "");
+		httpPostInterface.addParams("State", "1");
 		httpPostInterface.getData(issue_url, new HttpPostCallBack() {
 
 			@Override
@@ -116,6 +122,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 			}
 		});
 	}
+
 	@Override
 	public void onLoad() {
 		if (mCurPageIndex + 1 > mTotalPagesCount) {
@@ -137,11 +144,12 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			if (position < mEntities.size()) {
-			GetIssueInfoEntity getIssueInfoEntity = mEntities.get(position - 1);
-			Intent intent = new Intent(getActivity(),
-					IssuedinvitationDetailsActivity.class);
-			intent.putExtra("issueInfo", getIssueInfoEntity);
-			startActivity(intent);
+				GetIssueInfoEntity getIssueInfoEntity = mEntities
+						.get(position - 1);
+				Intent intent = new Intent(getActivity(),
+						IssuedinvitationDetailsActivity.class);
+				intent.putExtra("issueInfo", getIssueInfoEntity);
+				startActivity(intent);
 			}
 		}
 
