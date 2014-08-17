@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,6 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 	private List<GetIssueInfoEntity> mEntities = new ArrayList<GetIssueInfoEntity>();
 	private GetIssueItemAdapter getIssueItemAdapter;
 	private BitmapCache bitmapCache = new BitmapCache();
-	private int totalItemsCount;
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
 
@@ -64,8 +64,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 				getIssueItemAdapter.notifyDataSetChanged();
 				break;
 			case 1:
-				mAutoListView.onRefreshComplete();
-				mEntities.clear();
+				mAutoListView.onLoadComplete();
 				String json1 = (String) msg.obj;
 				List<GetIssueInfoEntity> newRefreshEntities = resolveJson(json1);
 				mEntities.addAll(newRefreshEntities);
@@ -125,6 +124,8 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 
 	@Override
 	public void onLoad() {
+		Log.e("load", "load");
+
 		if (mCurPageIndex + 1 > mTotalPagesCount) {
 			return;
 		}
@@ -134,6 +135,9 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 
 	@Override
 	public void onRefresh() {
+		Log.e("load", "onRefresh");
+		mAutoListView.onRefreshComplete();
+		mEntities.clear();
 		mCurPageIndex = 1;
 		getData(1);
 	}
@@ -165,7 +169,6 @@ public class Releasefragment extends Fragment implements OnRefreshListener,
 		List<GetIssueInfoEntity> data = new ArrayList<GetIssueInfoEntity>();
 		try {
 			JSONObject jsonObject = new JSONObject(json);
-			totalItemsCount = jsonObject.getInt("TotalItemsCount");
 			mTotalPagesCount = jsonObject.getInt("TotalPagesCount");
 			mCurPageIndex = jsonObject.getInt("CurPageIndex");
 			JSONArray jsonArray = jsonObject.getJSONArray("Entities");

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,7 +25,7 @@
         android:name="com.android.joocola.app.JoocolaApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
@@ -120,7 +120,15 @@
         </activity>
         <activity
             android:name="com.android.joocola.activity.ApllyMangerActivity" 
-            android:screenOrientation="portrait" /> 
+            android:screenOrientation="portrait" />
+        
+         <activity
+            android:name="com.android.joocola.activity.IssueListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <service android:name="com.android.joocola.chat.HeartService"
+            android:exported="false"/>
     </application>
 
 </manifest>
