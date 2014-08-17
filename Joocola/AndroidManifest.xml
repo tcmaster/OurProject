@@ -121,6 +121,12 @@
         <activity
             android:name="com.android.joocola.activity.ApllyMangerActivity" 
             android:screenOrientation="portrait" />
+        
+         <activity
+            android:name="com.android.joocola.activity.IssueListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
         <service android:name="com.android.joocola.chat.HeartService"
             android:exported="false"/>
     </application>

@@ -1,5 +1,6 @@
 package com.android.joocola.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -18,11 +19,18 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 public class GetIssueItemAdapter extends BaseAdapter {
-	private List<GetIssueInfoEntity> infos;
+	private List<GetIssueInfoEntity> infos = new ArrayList<GetIssueInfoEntity>();
 	private LayoutInflater inflater;
 	private ViewHolder holder;
 	private ImageLoader mImageLoader;
 	private Context mContext;
+
+	public GetIssueItemAdapter(Context context, BitmapCache bitmapCache,
+			ImageLoader imageLoader) {
+		mContext = context;
+		inflater = LayoutInflater.from(context);
+		mImageLoader = imageLoader;
+	}
 
 	public GetIssueItemAdapter(List<GetIssueInfoEntity> info, Context context,
 			BitmapCache bitmapCache, ImageLoader imageLoader) {
@@ -31,6 +39,10 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		inflater = LayoutInflater.from(context);
 		mImageLoader = imageLoader;
 
+	}
+
+	public void setData(List<GetIssueInfoEntity> mInfos) {
+		this.infos = mInfos;
 	}
 
 	@Override

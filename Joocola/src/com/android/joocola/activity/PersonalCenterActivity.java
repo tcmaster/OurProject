@@ -67,13 +67,20 @@ public class PersonalCenterActivity extends BaseActivity implements
 		ll_apply = (LinearLayout) findViewById(R.id.applayLayout);
 		ll_answer = (LinearLayout) findViewById(R.id.answerLayout);
 		ll_save = (LinearLayout) findViewById(R.id.saveLayout);
-		ll_commit = (LinearLayout) findViewById(R.id.commitLayout);
+		ll_commit = (LinearLayout) findViewById(R.id.waitapplyLayout);
 		ll_settings = (LinearLayout) findViewById(R.id.settingLayout);
 
 	}
 
 	private void initListeners() {
 		editButton.setOnClickListener(this);
+		ll_add.setOnClickListener(this);// 发起
+		ll_apply.setOnClickListener(this);// 报名
+		ll_answer.setOnClickListener(this);// 回复
+		ll_save.setOnClickListener(this);// 收藏
+		ll_commit.setOnClickListener(this);// 评价
+		ll_settings.setOnClickListener(this);// 设置
+
 	}
 
 	private void initActionBar() {
@@ -89,6 +96,31 @@ public class PersonalCenterActivity extends BaseActivity implements
 		case R.id.edit:
 			Intent intent = new Intent(this, PersonalInfoEditActivity.class);
 			startActivity(intent);
+			break;
+		case R.id.addLayout:
+			Intent addIntent = new Intent(this, IssueListActivity.class);
+			addIntent.putExtra("type", "我发起的邀约");
+			startActivity(addIntent);
+			break;
+		case R.id.applayLayout:
+			Intent applayIntent = new Intent(this, IssueListActivity.class);
+			applayIntent.putExtra("type", "我报名的邀约");
+			startActivity(applayIntent);
+			break;
+		case R.id.answerLayout:
+			Intent answerIntent = new Intent(this, IssueListActivity.class);
+			answerIntent.putExtra("type", "我回复的邀约");
+			startActivity(answerIntent);
+			break;
+		case R.id.saveLayout:
+			Intent saveIntent = new Intent(this, IssueListActivity.class);
+			saveIntent.putExtra("type", "我收藏的邀约");
+			startActivity(saveIntent);
+			break;
+		case R.id.waitapplyLayout:
+			Intent commitIntent = new Intent(this, IssueListActivity.class);
+			commitIntent.putExtra("type", "等我评价的邀约");
+			startActivity(commitIntent);
 			break;
 		default:
 			break;
