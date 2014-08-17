@@ -23,7 +23,6 @@ import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
-import com.android.joocola.utils.Utils;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -152,26 +151,26 @@ public class SimpleApllyUserAdapter extends BaseAdapter {
 				}
 			});
 		} else if (state == 30) {
-			holder.evaluate.setVisibility(View.VISIBLE);
-			if (publishID.equals(publish_id)) {
-				holder.evaluate.setText("查看自己的评价");
-				holder.evaluate.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						Utils.toast(mContext, "暂时不知道到底应该在哪查看评价");
-					}
-				});
-			} else {
-
-				holder.evaluate.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						showEvaluateDialog();
-					}
-				});
-			}
+			// holder.evaluate.setVisibility(View.VISIBLE);
+			// if (publishID.equals(publish_id)) {
+			// holder.evaluate.setText("查看自己的评价");
+			// holder.evaluate.setOnClickListener(new OnClickListener() {
+			//
+			// @Override
+			// public void onClick(View v) {
+			// Utils.toast(mContext, "暂时不知道到底应该在哪查看评价");
+			// }
+			// });
+			// } else {
+			//
+			// holder.evaluate.setOnClickListener(new OnClickListener() {
+			//
+			// @Override
+			// public void onClick(View v) {
+			// showEvaluateDialog();
+			// }
+			// });
+			// }
 		}
 		return convertView;
 	}
