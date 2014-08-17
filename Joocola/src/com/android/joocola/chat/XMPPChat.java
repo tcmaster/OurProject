@@ -1,7 +1,5 @@
 package com.android.joocola.chat;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -25,11 +23,6 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
-import org.jivesoftware.smackx.filetransfer.FileTransferListener;
-import org.jivesoftware.smackx.filetransfer.FileTransferManager;
-import org.jivesoftware.smackx.filetransfer.FileTransferRequest;
-import org.jivesoftware.smackx.filetransfer.IncomingFileTransfer;
-import org.jivesoftware.smackx.filetransfer.OutgoingFileTransfer;
 import org.jivesoftware.smackx.packet.ChatStateExtension;
 import org.jivesoftware.smackx.packet.LastActivity;
 import org.jivesoftware.smackx.packet.OfflineMessageInfo;
@@ -53,10 +46,7 @@ import org.jivesoftware.smackx.search.UserSearch;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.util.Log;
-
-import com.android.joocola.utils.Utils;
 
 /**
  * XMPP的工具类，定义了聊天所需的各种方法
@@ -85,11 +75,10 @@ public class XMPPChat {
 	 * XMPP的连接
 	 */
 	private XMPPConnection connection;
-
 	/**
-	 * 文件接收与发送的管理器
+	 * 心跳服务，开启的话不断发送心跳包，需及时关闭
 	 */
-	private FileTransferManager fileManager;
+	private HeartService service;
 	/**
 	 * 下面几个字段代表本用户当前的几个状态 ONLINE，QME，BUSY，LEAVE，INVISIBLE,OFFLINE
 	 */
@@ -115,7 +104,6 @@ public class XMPPChat {
 
 	private XMPPChat() {
 		getConnection();
-		fileManager = new FileTransferManager(connection);
 	}
 
 	public XMPPConnection getConnection() {
@@ -444,57 +432,5 @@ public class XMPPChat {
 
 	public void stopHeartService(Context context) {
 		context.stopService(new Intent(context, HeartService.class));
-	}
-
-	/**
-	 * 发送文件给对方
-	 * 
-	 * @param user
-	 *            对方用户名
-	 * @param file
-	 *            要发送的文件
-	 * @throws XMPPException
-	 * @throws InterruptedException
-	 */
-	public void sendFile(String user, File file) throws XMPPException,
-			InterruptedException {
-		String target = user + "@"
-				+ XMPPChat.getInstance().getConnection().getServiceName()
-				+ "/Smack";
-		Log.v("lixiaosong", target);
-		OutgoingFileTransfer out = fileManager
-				.createOutgoingFileTransfer(target);
-		out.sendFile(file, file.getName());
-	}
-
-	public void receiveFile(final Context context) {
-		fileManager.addFileTransferListener(new FileTransferListener() {
-
-			@Override
-			public void fileTransferRequest(FileTransferRequest arg0) {
-				IncomingFileTransfer transfer = arg0.accept();
-				if (Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					File file = new File(Environment
-							.getExternalStorageDirectory()
-							+ File.separator
-							+ (System.currentTimeMillis()
-									* (int) (Math.random() * 4) + 1) + ".jpg");
-					try {
-						file.createNewFile();
-						transfer.recieveFile(file);
-						Log.e("lixiaosong", file.getAbsolutePath());
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (XMPPException e) {
-						e.printStackTrace();
-					}
-
-				} else {
-					Utils.toast(context, "未检测到SD卡，无法接收图片");
-				}
-
-			}
-		});
 	}
 }

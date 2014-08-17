@@ -169,9 +169,6 @@ public class JoocolaApplication extends Application {
 							XMPPChat.getInstance().getConnection()
 									.getChatManager()
 									.addChatListener(new UserChatListener());
-							// 添加接收文件的监听器
-							XMPPChat.getInstance().receiveFile(
-									JoocolaApplication.getInstance());
 							// 开启心跳服务
 							XMPPChat.getInstance().startHeartService(
 									JoocolaApplication.getInstance());

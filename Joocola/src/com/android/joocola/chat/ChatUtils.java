@@ -62,4 +62,5 @@ public class ChatUtils {
 
 		return results;
 	}
+
 }
