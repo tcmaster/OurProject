@@ -85,6 +85,8 @@
     <string name="input">请在此输入消息</string>
     <string name="showHistory">点击查看历史记录</string>
     <string name="hideHistory">点击隐藏历史记录</string>
+    <string name="album">相册</string>
+    <string name="take_pic">拍摄</string>
     <!-- lixiaosongAddEnd -->
     <string name="title_activity_base">BaseActivity</string>
     <string name="title_activity_personal_center">PersonalCenterActivity</string>

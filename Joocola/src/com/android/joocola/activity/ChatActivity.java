@@ -1,5 +1,6 @@
 package com.android.joocola.activity;
 
+import java.io.File;
 import java.util.Date;
 
 import org.jivesoftware.smack.Chat;
@@ -8,15 +9,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +39,8 @@ import com.android.joocola.chat.SingleChat;
 import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.entity.ChatOfflineInfo;
 import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.CustomerDialog;
+import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -42,6 +56,9 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
  * 
  */
 public class ChatActivity extends BaseActivity {
+	// 标识位
+	private static final int PICKPICTURE = 1;
+	private static final int TAKEPHOTO = 2;
 	/**
 	 * 聊天窗口
 	 */
@@ -63,6 +80,9 @@ public class ChatActivity extends BaseActivity {
 	@ViewInject(R.id.chat_showHistory_tv)
 	private TextView tv_showHistoty;
 
+	@ViewInject(R.id.chat_add_pic_iv)
+	private ImageView iv_add_pic;
+
 	private ChatReceiver receiver;
 
 	/**
@@ -83,6 +103,10 @@ public class ChatActivity extends BaseActivity {
 	 * 显示还是隐藏历史记录，true为当前显示，false为当前隐藏
 	 */
 	private boolean isShowHistory = false;
+	/**
+	 * 得到图片的临时名称（拍照时）
+	 */
+	private String tempName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +155,7 @@ public class ChatActivity extends BaseActivity {
 		}
 	}
 
-	@OnClick({ R.id.send_btn, R.id.chat_showHistory_tv })
+	@OnClick({ R.id.send_btn, R.id.chat_showHistory_tv, R.id.chat_add_pic_iv })
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.send_btn:
@@ -178,6 +202,9 @@ public class ChatActivity extends BaseActivity {
 						R.string.showHistory));
 			}
 			isShowHistory = !isShowHistory;
+			break;
+		case R.id.chat_add_pic_iv:
+			doSendImage();
 			break;
 		default:
 			break;
@@ -266,5 +293,114 @@ public class ChatActivity extends BaseActivity {
 
 			}
 		});
+	}
+
+	private void doSendImage() {
+		final CustomerDialog cdlg = new CustomerDialog(this,
+				R.layout.dlg_chat_addpic);
+		cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				LinearLayout send_pic = (LinearLayout) window
+						.findViewById(R.id.send_pic_ll);
+				LinearLayout take_pic = (LinearLayout) window
+						.findViewById(R.id.take_pic_ll);
+				Button cancel = (Button) window.findViewById(R.id.dlg_cancel);
+				OnClickListener listener = new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						switch (v.getId()) {
+						case R.id.send_pic_ll:
+							getPhotoFromGallery();
+							cdlg.dismissDlg();
+							break;
+						case R.id.take_pic_ll:
+							getPhotoByTakePicture();
+							cdlg.dismissDlg();
+							break;
+						case R.id.dlg_cancel:
+							cdlg.dismissDlg();
+							break;
+						default:
+							break;
+						}
+					}
+				};
+				send_pic.setOnClickListener(listener);
+				take_pic.setOnClickListener(listener);
+				cancel.setOnClickListener(listener);
+			}
+		});
+		cdlg.showDlg();
+	}
+
+	private void getPhotoFromGallery() {
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_PICK);
+		intent.setType("image/*");
+		startActivityForResult(intent, PICKPICTURE);
+	}
+
+	private void getPhotoByTakePicture() {
+		String state = Environment.getExternalStorageState();
+		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			tempName = System.currentTimeMillis() + ".jpg";
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DCIM).getAbsolutePath()
+					+ File.separator + tempName);
+			Uri u = Uri.fromFile(file);
+			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
+			Intent getImageByCamera = new Intent(
+					"android.media.action.IMAGE_CAPTURE");
+			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
+			startActivityForResult(getImageByCamera, TAKEPHOTO);
+		} else {
+			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PICKPICTURE && resultCode == RESULT_OK) {
+			if (data != null) {
+				Uri uri = data.getData();
+				String path = Utils.getRealPathFromURI(uri, ChatActivity.this);
+				File file = new File(path);
+				// 上传
+				try {
+					XMPPChat.getInstance().sendFile(nickName, file);
+				} catch (XMPPException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		} else if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
+			File file = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DCIM).getAbsolutePath()
+					+ File.separator + tempName);
+
+			String phoneName = android.os.Build.MODEL;
+			Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
+			// 有些型号的手机不支持图片旋转
+			if (!phoneName.equals("HUAWEI C8813D")) {
+				// 这里需要对照片的角度进行校正
+				bm = Utils.rotaingImageView(
+						Utils.rotateImg(file.getAbsolutePath()), bm);
+			}
+			File resultFile = Utils.createBitmapFile(bm);
+			// 上传
+			try {
+				XMPPChat.getInstance().sendFile(nickName, resultFile);
+			} catch (XMPPException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }
