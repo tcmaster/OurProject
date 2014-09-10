@@ -9,9 +9,10 @@ public class HuanXinApp extends Application {
 
 	@Override
 	public void onCreate() {
-		// ÁÄÌìµÄ³õÊ¼»¯
-		EaseMobChat.getInstance().init(this);
+		// ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
 		self = this;
+		EaseMobChat.getInstance().init(this);
+		EaseMobChat.getInstance().beginWork();
 		super.onCreate();
 	}
 

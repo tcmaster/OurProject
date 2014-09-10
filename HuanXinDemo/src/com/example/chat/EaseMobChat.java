@@ -1,5 +1,7 @@
 package com.example.chat;
 
+import java.sql.Date;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,30 +14,33 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.ImageMessageBody;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.exceptions.EaseMobException;
 import com.example.huanxindemo.HuanXinApp;
 
 /**
- * »·ÐÅÁÄÌìÀà
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
  * @author lixiaosong
  * 
  */
 public class EaseMobChat {
 	/**
-	 * ±¾ÀàµÄµ¥Àý
+	 * ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½
 	 */
 	private static EaseMobChat chatServic;
 	/**
-	 * ±¾Àà³õÊ¼»¯µÄ±êÖ¾£¬ÓÃÓÚ±ê¼Çµ±Ç°½øÐÐµ½ÁËÄÄÒ»²½ 0ÎªÎ´³õÊ¼»¯£¬1Îª½øÐÐ×¢²áÍê±Ï£¬2ÎªµÇÂ¼Íê±Ï£¬3ÎªËùÓÐ³õÊ¼»¯Íê³É£¬-1Îª³õÊ¼»¯Ê§°Ü
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ä±ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½Çµï¿½Ç°ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+	 * 0ÎªÎ´ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½1Îªï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½Ï£ï¿½2Îªï¿½ï¿½Â¼ï¿½ï¿½Ï£ï¿½3Îªï¿½ï¿½ï¿½Ð³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½É£ï¿½-1Îªï¿½ï¿½Ê¼ï¿½ï¿½Ê§ï¿½ï¿½
 	 */
 	private int flag = 0;
 	/**
-	 * ÁÄÌìÏûÏ¢¼àÌý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
 	 */
 	private MyChatBroadCastReceiver receiver;
+	private SingleChat chat;
 
 	public synchronized static EaseMobChat getInstance() {
 		if (chatServic == null) {
@@ -48,25 +53,26 @@ public class EaseMobChat {
 	}
 
 	/**
-	 * ³õÊ¼»¯»·ÐÅÁÄÌìSDK£¬Õâ¸ö·½·¨½¨ÒéÔÚAPPÖÐµ÷ÓÃ
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½SDKï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½APPï¿½Ðµï¿½ï¿½ï¿½
 	 */
 	public void init(Context context) {
 		EMChat.getInstance().init(context);
 	}
 
 	/**
-	 * ¿ªÆôÁÄÌìÏà¹ØÄÚÈÝ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public void beginWork() {
 		if (receiver == null)
 			receiver = new MyChatBroadCastReceiver();
+		chat = new SingleChat();
 		IntentFilter intentFilter = new IntentFilter(EMChatManager
 				.getInstance().getNewMessageBroadcastAction());
 		HuanXinApp.getSelf().registerReceiver(receiver, intentFilter);
 	}
 
 	/**
-	 * Í£Ö¹ÁÄÌìÏà¹ØÄÚÈÝ
+	 * Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public void endWork() {
 		if (receiver != null) {
@@ -75,31 +81,41 @@ public class EaseMobChat {
 	}
 
 	/**
-	 * ×¢²áÕËºÅ
+	 * ×¢ï¿½ï¿½ï¿½Ëºï¿½
 	 * 
 	 * @param name
-	 *            ×¢²áµÄÓÃ»§Ãû
+	 *            ×¢ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½
 	 * @param passwd
-	 *            ×¢²áµÄÃÜÂë
+	 *            ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public void registerAccount(String name, String passwd) {
 		new RegisterTask(name, passwd).execute();
 	}
 
+	public void sendTxtMessage(String userName, ChatType chatType,
+			String content, final EMCallBack callBack) {
+		chat.sendTextMessage(userName, chatType, content, callBack);
+	}
+
+	public void sendImgMessage(String userName, ChatType chatType,
+			String content, final EMCallBack callBack) {
+		chat.sendImageMessage(userName, chatType, content, callBack);
+	}
+
 	/**
-	 * µÇÂ¼
+	 * ï¿½ï¿½Â¼
 	 * 
 	 * @param name
-	 *            ÓÃ»§Ãû
+	 *            ï¿½Ã»ï¿½ï¿½ï¿½
 	 * @param passwd
-	 *            ÃÜÂë
+	 *            ï¿½ï¿½ï¿½ï¿½
 	 */
 	public void login(String name, String passwd) {
 		EMChatManager.getInstance().login(name, passwd, new EMCallBack() {
 
 			@Override
 			public void onSuccess() {
-				// µÇÂ¼³É¹¦
+				// ï¿½ï¿½Â¼ï¿½É¹ï¿½
 				flag = 2;
 			}
 
@@ -114,10 +130,10 @@ public class EaseMobChat {
 		});
 	}
 
-	// ===================ÄÚ²¿Àà=========================//
+	// ===================ï¿½Ú²ï¿½ï¿½ï¿½=========================//
 	private class RegisterTask extends AsyncTask<Void, Void, String> {
 		/**
-		 * ×¢²áµÄÕËºÅºÍÃÜÂë
+		 * ×¢ï¿½ï¿½ï¿½ï¿½ËºÅºï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		private String name, passwd;
 
@@ -131,7 +147,7 @@ public class EaseMobChat {
 			try {
 				EMChatManager.getInstance().createAccountOnServer(name, passwd);
 			} catch (EaseMobException e) {
-				Log.e("lixiaosong", "Ã²ËÆ×¢²á³öÏÖÁËÎÊÌâ");
+				Log.e("lixiaosong", "Ã²ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 				return null;
 			}
 			return name;
@@ -140,10 +156,11 @@ public class EaseMobChat {
 		@Override
 		protected void onPostExecute(String result) {
 			if (result == null) {
-				Toast.makeText(HuanXinApp.getSelf(), "×¢²áÊ§°Ü", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(HuanXinApp.getSelf(), "×¢ï¿½ï¿½Ê§ï¿½ï¿½",
+						Toast.LENGTH_SHORT).show();
 			} else {
 				flag = 1;
+				login(name, passwd);
 			}
 			super.onPostExecute(result);
 		}
@@ -156,21 +173,28 @@ public class EaseMobChat {
 			String msgId = intent.getStringExtra("msgid");
 			EMMessage message = EMChatManager.getInstance().getMessage(msgId);
 			/**
-			 * ÔÝÊ±½ÓÊÕÍ¼Æ¬µÄÀàÐÍ¾ÍÕâÁ½ÖÖ
+			 * ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			 */
 			String content = "";
 			String from = "";
+			long time = 0l;
 			switch (message.getType()) {
 			case TXT:
 				TextMessageBody txtBody = (TextMessageBody) message.getBody();
+				content = txtBody.getMessage();
 				break;
 			case IMAGE:
 				ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
+				content = imgBody.getRemoteUrl();
 				break;
 			default:
 				break;
 			}
-
+			from = message.getFrom();
+			time = message.getMsgTime();
+			Log.v("test",
+					content + " " + from + " "
+							+ new Date(time).toLocaleString());
 		}
 
 	}
