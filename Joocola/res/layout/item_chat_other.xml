@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    >
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textColor="@color/lessgray"
+        android:textSize="16sp" />
+    <ImageView 
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="@string/image_description"
+        android:id="@+id/chat_photo"
+        android:layout_below="@id/chat_time"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentLeft="true"/>
+     
+     <FrameLayout
+        android:id="@+id/chat_img_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chat_time"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/chat_photo"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/chat_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/image_description"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher" />
+
+        <ProgressBar
+            android:id="@+id/chat_img_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:max="100"
+            android:visibility="gone" />
+    </FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/deepgray"
+        android:text="@string/app_name"
+        android:id="@+id/chat_name"
+        android:layout_below="@id/chat_time"
+        android:layout_toRightOf="@id/chat_photo"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chat_content"
+        android:textSize="16sp"
+        android:background="@drawable/chatfromother"
+        android:text="@string/app_name"
+        android:textColor="@color/deepgray"
+        android:layout_below="@id/chat_name"
+        android:layout_toRightOf="@id/chat_photo"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:paddingRight="10dp"
+        android:paddingLeft="20dp"
+        android:layout_marginRight="5dp"
+        />
+   
+
+</RelativeLayout>

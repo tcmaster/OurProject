@@ -1,0 +1,344 @@
+<LinearLayout  
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="10" 
+    android:orientation="vertical"
+    android:background="@color/white">
+    <ScrollView 
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="9" >
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" >
+           <TextView
+            android:id="@+id/issueitem_title"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" 
+            android:text="@string/app_name" />
+           <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"  >
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/issueitem_img"
+            android:layout_marginLeft="10dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true" 
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/photobg" />
+
+      <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true" 
+            android:layout_toRightOf="@+id/issueitem_img"
+            android:weightSum="3"
+            android:orientation="vertical" >
+         <TextView
+            android:id="@+id/issueitem_name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" 
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="24dp" 
+            android:textColor="@color/issue_txt_color"
+            android:text="@string/app_name" />
+
+             <LinearLayout
+                 android:layout_width="match_parent" 
+                 android:layout_marginTop="5dp"
+                 android:layout_height="0dp" 
+                 android:layout_weight="1"
+                 android:orientation="horizontal" >
+          <ImageView
+              android:id="@+id/issueitem_seximg"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="24dp"
+              android:layout_gravity="center_vertical"
+              android:contentDescription="@string/image_description"
+              android:src="@drawable/girl" />
+           <TextView
+              android:id="@+id/issueitem_age"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" 
+              android:layout_gravity="center_vertical" 
+              android:text="@string/app_name" />
+           <TextView
+            android:id="@+id/issueitem_astro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/app_name" />
+              </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="1" >
+           <TextView
+             android:id="@+id/issueitem_issuesex"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="25dp" 
+             android:paddingLeft="8dp"
+             android:paddingRight="8dp"
+             android:paddingTop="3dp"
+             android:paddingBottom="3dp"
+             android:background="@color/sex_bg"
+             android:text="@string/app_name" />
+           <TextView
+             android:id="@+id/issueitem_issuecost"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" 
+             android:layout_marginLeft="10dp"
+             android:paddingLeft="8dp"
+             android:paddingRight="8dp"
+             android:paddingTop="3dp"
+             android:paddingBottom="3dp"
+             android:background="@color/sex_bg"
+             android:text="@string/app_name" />
+             </LinearLayout>
+
+        </LinearLayout>
+         </RelativeLayout>
+    <LinearLayout  
+       android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_description"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/issue_time" />
+
+        <TextView
+            android:id="@+id/issueitem_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp" 
+            android:textColor="@color/issue_txt_color"
+            android:textSize="16sp" />
+
+   </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal">
+
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp" 
+            android:layout_marginTop="2dp"
+            android:layout_gravity="top"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/issue_location" />
+
+        <TextView
+            android:id="@+id/issueitem_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:layout_gravity="top"
+            android:textColor="@color/issue_txt_color"
+            android:text="地址" />
+
+         <ImageView
+            android:id="@+id/issueitem_locationbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/image_description"
+            android:visibility="gone"
+            android:src="@drawable/didian" />
+        
+    </LinearLayout>
+     
+  <LinearLayout 
+     android:layout_width="match_parent"
+        android:layout_height="wrap_content"  >
+
+      <ImageView 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="7dp"
+          android:layout_gravity="top"
+          android:contentDescription="@string/image_description"
+          android:src="@drawable/issue_description" />
+
+         <TextView
+             android:id="@+id/issueitem_description"
+             android:layout_width="match_parent" 
+             android:layout_marginRight="5dp"
+             android:layout_marginLeft="1dp"
+             android:layout_height="wrap_content" 
+             android:layout_gravity="center_vertical"
+             android:textColor="@color/issue_txt_color" 
+            android:text="说明" />
+
+        </LinearLayout>
+    
+    <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"  
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/sex_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent" 
+        android:weightSum="10"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/issueitem_state"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/issue_txt_color"
+            android:text="状态" />
+
+        <TextView
+            android:id="@+id/issueitem_usercount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/issue_txt_color"
+            android:text="报名" />
+
+        
+
+        <TextView
+            android:id="@+id/issueitem_replycount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/issue_txt_color"
+            android:text="回复" />
+
+    </LinearLayout>
+    <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"   
+            android:background="@color/gray" />
+    <com.android.joocola.view.MyListView
+        android:id="@+id/issue_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+     </LinearLayout> 
+     
+    
+   </ScrollView>
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btnclick_pd"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/apply_ll" >
+         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="我要报名"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:id="@+id/apply_lltxt"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/lessgray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btnclick_pd"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/reply_ll" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/answer"
+                android:contentDescription="@string/image_description" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="回复"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/lessgray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btnclick_pd"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/collect_ll" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/collect"
+                android:id="@+id/collect_img"
+                android:contentDescription="@string/image_description" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="收藏"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:id="@+id/collect_txt"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>  

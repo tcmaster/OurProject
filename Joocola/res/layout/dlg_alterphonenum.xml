@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+
+    <TextView
+        android:id="@+id/dlg_pe_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/alter_phonenum"
+        android:textColor="@color/green"
+        android:textSize="18sp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/green" 
+        />
+
+     <EditText
+         android:id="@+id/alter_phonenum_edit"
+         android:layout_width="match_parent"
+         android:layout_height="50dp"
+         android:hint="@string/input_newphonenum"
+         android:background="@drawable/edittext_bg"
+         android:inputType="number"
+         android:layout_margin="10dp"
+         android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lessgray" 
+        />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="@string/btn_ok"
+            android:id="@+id/dlg_pe_ok" 
+            android:gravity="center" 
+            android:background="@drawable/nextbtnclick"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
+            />
+        <View 
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lessgray"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="@string/btn_cancel"
+            android:id="@+id/dlg_pe_cancel" 
+            android:gravity="center" 
+            android:background="@drawable/nextbtnclick"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array 
+        name="AppointTimespanType">
+        <item>不限</item>
+        <item>今天</item>
+        <item>明天</item>
+        <item>未来一周</item>
+        <item>未来一月</item>
+    </string-array>
+    <string-array
+        name="AppointTimespanValue">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+    <string-array 
+        name="AgeName">
+        <item>不限</item>
+        <item>18&#8211;22</item>
+        <item>23&#8211;27</item>
+        <item>28&#8211;34</item>
+        <item>25及以上</item>
+        </string-array>
+        <string-array
+        name="AgeValue">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+</resources>
