@@ -13,6 +13,7 @@ import android.os.IBinder;
  * 
  */
 public class HeartService extends Service {
+
 	/**
 	 * 如果这个flag为true，则心跳包服务停止
 	 */
@@ -39,9 +40,7 @@ public class HeartService extends Service {
 						e.printStackTrace();
 					}
 					if (XMPPChat.getInstance().getConnection() != null && !flag) {
-						PingManager manager = PingManager
-								.getInstanceFor(XMPPChat.getInstance()
-										.getConnection());
+						PingManager manager = PingManager.getInstanceFor(XMPPChat.getInstance().getConnection());
 						manager.pingMyServer();
 					}
 				}
@@ -59,6 +58,7 @@ public class HeartService extends Service {
 
 	@Override
 	public void onDestroy() {
+		stopHeartService();
 		super.onDestroy();
 	}
 
