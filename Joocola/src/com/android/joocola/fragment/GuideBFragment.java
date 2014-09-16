@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 import com.android.joocola.R;
 
 public class GuideBFragment extends Fragment {
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.guideb, null);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.guideb, container, false);
 		return view;
 	}
 }

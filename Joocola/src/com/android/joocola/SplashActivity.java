@@ -27,10 +27,11 @@ import com.android.joocola.utils.Utils;
  * 
  */
 public class SplashActivity extends Activity {
+
 	private SharedPreferences isFirstPreferences;
 	private Editor mEditor;
 	public static final String IS_FIRST = "isfirst";
-	private Handler handler = new Handler();
+	private static Handler handler = new Handler();
 	private SharedPreferences loginPreferences;
 	private boolean isAutoMatic;
 	private String user_pid;
@@ -41,22 +42,20 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_splash);
-		isFirstPreferences = getSharedPreferences("IsFirstLogin",
-				Context.MODE_PRIVATE);
-		loginPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
-				Context.MODE_PRIVATE);
+		isFirstPreferences = getSharedPreferences("IsFirstLogin", Context.MODE_PRIVATE);
+		loginPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		editor = loginPreferences.edit();
-		isAutoMatic = loginPreferences.getBoolean(Constans.LOGIN_AUTOMATIC,
-				false);
+		isAutoMatic = loginPreferences.getBoolean(Constans.LOGIN_AUTOMATIC, false);
+		Log.e("bb", isAutoMatic + "");
 		if (isAutoMatic) {
 			user_pid = loginPreferences.getString(Constans.LOGIN_PID, "");
 			userName = loginPreferences.getString(Constans.LOGIN_ACCOUNT, "");
 		}
 		mEditor = isFirstPreferences.edit();
+		Log.e("bb", isFirst() + "");
 		if (isFirst()) {
 			mEditor.putBoolean(IS_FIRST, false);
 			mEditor.commit();
@@ -64,12 +63,12 @@ public class SplashActivity extends Activity {
 
 				@Override
 				public void run() {
-					Intent intent = new Intent(SplashActivity.this,
-							GuideActivity.class);
+					Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 					startActivity(intent);
 					SplashActivity.this.finish();
 				}
 			}, 1000);
+
 		} else {
 			/**
 			 * 可以进行自动登录
@@ -93,48 +92,35 @@ public class SplashActivity extends Activity {
 						HttpPostInterface httpPostInterface = new HttpPostInterface();
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("userName", userName);
-						httpPostInterface
-								.addParams("version", Constans.version);
-						httpPostInterface.getData(AutoUrl,
-								new HttpPostCallBack() {
+						httpPostInterface.addParams("version", Constans.version);
+						httpPostInterface.getData(AutoUrl, new HttpPostCallBack() {
+
+							@Override
+							public void httpPostResolveData(final String result) {
+								handler.post(new Runnable() {
 
 									@Override
-									public void httpPostResolveData(
-											final String result) {
-										handler.post(new Runnable() {
+									public void run() {
+										if (!result.equals("0")) {
+											editor.putString(Constans.LOGIN_PID, result);
+											editor.putString(Constans.LOGIN_ACCOUNT, userName);
+											editor.putBoolean(Constans.LOGIN_AUTOMATIC, true);
+											editor.commit();
+											// TODO Auto-generated
+											// method stub
+											// 需要进行聊天的注册。我不是太知道你那边逻辑怎么搞的。。
+											new AllWorkDoneTask(result).execute();
 
-											@Override
-											public void run() {
-												if (!result.equals("0")) {
-													editor.putString(
-															Constans.LOGIN_PID,
-															result);
-													editor.putString(
-															Constans.LOGIN_ACCOUNT,
-															userName);
-													editor.putBoolean(
-															Constans.LOGIN_AUTOMATIC,
-															true);
-													editor.commit();
-													// TODO Auto-generated
-													// method stub
-													// 需要进行聊天的注册。我不是太知道你那边逻辑怎么搞的。。
-													new AllWorkDoneTask(result)
-															.execute();
-												} else {
-													Utils.toast(
-															SplashActivity.this,
-															"自动登录失败");
-													editor.putBoolean(
-															Constans.LOGIN_AUTOMATIC,
-															false);
-													editor.commit();
-													gotoMainActivity();
-												}
-											}
-										});
+										} else {
+											Utils.toast(SplashActivity.this, "自动登录失败");
+											editor.putBoolean(Constans.LOGIN_AUTOMATIC, false);
+											editor.commit();
+											gotoMainActivity();
+										}
 									}
 								});
+							}
+						});
 					}
 				});
 			} else {
@@ -145,6 +131,7 @@ public class SplashActivity extends Activity {
 
 					@Override
 					public void run() {
+						Log.e("bb", "不能进行自动登录 进入正常登录页");
 						gotoMainActivity();
 					}
 				}, 1000);
@@ -168,6 +155,7 @@ public class SplashActivity extends Activity {
 	}
 
 	private class AllWorkDoneTask extends AsyncTask<Void, Void, Integer> {
+
 		private String userPid;
 
 		public AllWorkDoneTask(String result) {
@@ -230,8 +218,7 @@ public class SplashActivity extends Activity {
 				break;
 			case -1:
 				// 这里说明可以登录了
-				Intent intent = new Intent(SplashActivity.this,
-						MainTabActivity.class);
+				Intent intent = new Intent(SplashActivity.this, MainTabActivity.class);
 				startActivity(intent);
 				SplashActivity.this.finish();
 				break;

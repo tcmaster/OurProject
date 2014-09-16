@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.android.joocola.fragment.GuideCFragment;
 import com.android.joocola.fragment.MyFragmentPagerAdapter;
 
 public class GuideActivity extends FragmentActivity {
+
 	// 定义ViewPager对象
 	private ViewPager viewPager;
 
@@ -32,10 +34,10 @@ public class GuideActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.guide);
+		Log.e("bb", "进入GuideActivity");
 		initView();
 		initData();
 	}
@@ -71,37 +73,31 @@ public class GuideActivity extends FragmentActivity {
 		// 设置监听
 		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 		// 设置适配器数据
-		viewPager.setAdapter(new MyFragmentPagerAdapter(
-				getSupportFragmentManager(), views));
+		viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), views));
 		viewPager.setCurrentItem(0);
 		viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
 	}
 
 	public class MyOnPageChangeListener implements OnPageChangeListener {
+
 		@Override
 		public void onPageSelected(int position) {
 			switch (position) {
 			case 0:
 				pointImage0.setImageResource(R.drawable.page_indicator_focused);
-				pointImage1
-						.setImageResource(R.drawable.page_indicator_unfocused);
-				pointImage2
-						.setImageResource(R.drawable.page_indicator_unfocused);
+				pointImage1.setImageResource(R.drawable.page_indicator_unfocused);
+				pointImage2.setImageResource(R.drawable.page_indicator_unfocused);
 				break;
 			case 1:
-				pointImage0
-						.setImageResource(R.drawable.page_indicator_unfocused);
+				pointImage0.setImageResource(R.drawable.page_indicator_unfocused);
 				pointImage1.setImageResource(R.drawable.page_indicator_focused);
-				pointImage2
-						.setImageResource(R.drawable.page_indicator_unfocused);
+				pointImage2.setImageResource(R.drawable.page_indicator_unfocused);
 				break;
 			case 2:
 
-				pointImage0
-						.setImageResource(R.drawable.page_indicator_unfocused);
-				pointImage1
-						.setImageResource(R.drawable.page_indicator_unfocused);
+				pointImage0.setImageResource(R.drawable.page_indicator_unfocused);
+				pointImage1.setImageResource(R.drawable.page_indicator_unfocused);
 				pointImage2.setImageResource(R.drawable.page_indicator_focused);
 				break;
 			}
