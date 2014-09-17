@@ -32,8 +32,9 @@ import com.android.joocola.utils.AMapUtil;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 
-public class GaodeMapActivity extends BaseActivity implements
-		OnGeocodeSearchListener, OnClickListener, OnMapClickListener {
+public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchListener, OnClickListener,
+		OnMapClickListener {
+
 	private MapView mapView;
 	private AMap aMap;
 	private ProgressDialog progDialog = null;
@@ -61,8 +62,7 @@ public class GaodeMapActivity extends BaseActivity implements
 		address = intent.getStringExtra("address");
 		mapView = (MapView) findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
-				Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		locationCity = sharedPreferences.getString("LocationCity", "北京");
 		init();
 		getLatlon(address);
@@ -76,12 +76,8 @@ public class GaodeMapActivity extends BaseActivity implements
 		if (aMap == null) {
 			aMap = mapView.getMap();
 			aMap.setOnMapClickListener(this);
-			geoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-					.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-			regeoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-					.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+			geoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+			regeoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 		}
 		editText = (EditText) this.findViewById(R.id.issue_map_edit);
 		searchBtn = (Button) this.findViewById(R.id.issue_map_searchbtn);
@@ -156,8 +152,7 @@ public class GaodeMapActivity extends BaseActivity implements
 	 */
 	public void getAddress(final LatLonPoint latLonPoint) {
 		showDialog();
-		RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200,
-				GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+		RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
 		geocoderSearch.getFromLocationAsyn(query);// 设置同步逆地理编码请求
 	}
 
@@ -168,18 +163,14 @@ public class GaodeMapActivity extends BaseActivity implements
 	public void onGeocodeSearched(GeocodeResult result, int rCode) {
 		dismissDialog();
 		if (rCode == 0) {
-			if (result != null && result.getGeocodeAddressList() != null
-					&& result.getGeocodeAddressList().size() > 0) {
+			if (result != null && result.getGeocodeAddressList() != null && result.getGeocodeAddressList().size() > 0) {
 				GeocodeAddress address = result.getGeocodeAddressList().get(0);
-				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-						AMapUtil.convertToLatLng(address.getLatLonPoint()), 15));
-				geoMarker.setPosition(AMapUtil.convertToLatLng(address
-						.getLatLonPoint()));
+				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(address.getLatLonPoint()), 15));
+				geoMarker.setPosition(AMapUtil.convertToLatLng(address.getLatLonPoint()));
 				Log.e("address.getLatLonPoint()", address.getLatLonPoint() + "");
 				locationX = address.getLatLonPoint().getLatitude();
 				locationY = address.getLatLonPoint().getLongitude();
-				addressName = "经纬度值:" + address.getLatLonPoint() + "\n位置描述:"
-						+ address.getFormatAddress();
+				addressName = "经纬度值:" + address.getLatLonPoint() + "\n位置描述:" + address.getFormatAddress();
 				Utils.toast(GaodeMapActivity.this, addressName);
 			} else {
 				Utils.toast(GaodeMapActivity.this, "没找到这个位置");
@@ -198,12 +189,9 @@ public class GaodeMapActivity extends BaseActivity implements
 	public void onRegeocodeSearched(RegeocodeResult result, int rCode) {
 		dismissDialog();
 		if (rCode == 0) {
-			if (result != null && result.getRegeocodeAddress() != null
-					&& result.getRegeocodeAddress().getFormatAddress() != null) {
-				addressName = result.getRegeocodeAddress().getFormatAddress()
-						+ "附近";
-				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-						AMapUtil.convertToLatLng(latLonPoint), 15));
+			if (result != null && result.getRegeocodeAddress() != null && result.getRegeocodeAddress().getFormatAddress() != null) {
+				addressName = result.getRegeocodeAddress().getFormatAddress() + "附近";
+				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(latLonPoint), 15));
 				regeoMarker.setPosition(AMapUtil.convertToLatLng(latLonPoint));
 				address = addressName;
 				editText.setText(addressName);

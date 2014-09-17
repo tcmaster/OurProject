@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +28,6 @@ import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.IssuedinvitationInfo;
 import com.android.joocola.utils.Constans;
-import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.ShowLoadingDialog;
@@ -41,6 +41,7 @@ import com.android.joocola.utils.ViewHelper;
  * 
  */
 public class IssuedinvitationActivity extends BaseActivity {
+
 	private RadioGroup sexGroup, cost_group;
 	private int issueID;
 	private int userPid;
@@ -54,27 +55,25 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private double LocationY;
 	private String LocationCityName;
 	private String issueUrl = "Bus.AppointController.PubAppoint.ashx";// 发布地址
-	private CustomerDialog customerDialog;
+	private ProgressDialog customerDialog;
 	@SuppressLint("HandlerLeak")
 	private Handler issueHandler = new Handler() {
+
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
 				if (customerDialog != null) {
-					customerDialog.dismissDlg();
+					customerDialog.dismiss();
 				}
 				String json = (String) msg.obj;
 				Log.e("发布的回应", json);
 				try {
 					JSONObject jsonObject = new JSONObject(json);
 					if (jsonObject.getInt("Item1") == 0) {
-						Utils.toast(IssuedinvitationActivity.this,
-								jsonObject.getString("Item2"));
+						Utils.toast(IssuedinvitationActivity.this, jsonObject.getString("Item2"));
 					} else {
 						int issue_pid = jsonObject.getInt("Item1");
-						Intent intent = new Intent(
-								IssuedinvitationActivity.this,
-								IssuedinvitationCActivity.class);
+						Intent intent = new Intent(IssuedinvitationActivity.this, IssuedinvitationCActivity.class);
 						intent.putExtra("issue_pid", issue_pid);
 						startActivity(intent);
 						IssuedinvitationActivity.this.finish();
@@ -98,10 +97,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 		Bundle bundle = intent.getExtras();
 		String title = bundle.getString("title");
 		issueID = bundle.getInt("PID");
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE,
-				Context.MODE_PRIVATE);
-		String userpidString = sharedPreferences.getString(Constans.LOGIN_PID,
-				"0");
+		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		String userpidString = sharedPreferences.getString(Constans.LOGIN_PID, "0");
 		userPid = Integer.parseInt(userpidString);
 		issuedinvitationInfo.setIssueUserID(userPid);
 		issuedinvitationInfo.setIssueId(issueID);
@@ -133,31 +130,26 @@ public class IssuedinvitationActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(IssuedinvitationActivity.this,
-						GaodeMapActivity.class);
+				Intent intent = new Intent(IssuedinvitationActivity.this, GaodeMapActivity.class);
 				String address = edit_location.getText().toString();
 				intent.putExtra("address", address);
 				startActivityForResult(intent, 30);
 			}
 		});
 		// initRadioGroup(Constans.basedata_Sex, sexGroup);
-		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
-				.getBaseInfo(Constans.basedata_Sex);
+		List<BaseDataInfo> infos = JoocolaApplication.getInstance().getBaseInfo(Constans.basedata_Sex);
 		BaseDataInfo baseDataInfo = new BaseDataInfo();
 		baseDataInfo.setPID(0);
 		baseDataInfo.setItemName("不限");
 		baseDataInfo.setSortNo(Integer.MAX_VALUE);
 		infos.add(baseDataInfo);
-		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this, sexGroup,
-				infos);
+		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this, sexGroup, infos);
 		initRadioGroup(Constans.basedata_AppointCost, cost_group);
 	}
 
 	private void initRadioGroup(String string, RadioGroup radioGroup) {
-		List<BaseDataInfo> infos = JoocolaApplication.getInstance()
-				.getBaseInfo(string);
-		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this,
-				radioGroup, infos);
+		List<BaseDataInfo> infos = JoocolaApplication.getInstance().getBaseInfo(string);
+		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this, radioGroup, infos);
 	}
 
 	private void doNext() {
@@ -193,40 +185,25 @@ public class IssuedinvitationActivity extends BaseActivity {
 				String issueTime = tv_issuetime.getText().toString();
 				issuedinvitationInfo.setReserveDate(issueTime);
 			}
-			int sexID = (Integer) sexGroup.findViewById(
-					sexGroup.getCheckedRadioButtonId()).getTag();
+			int sexID = (Integer) sexGroup.findViewById(sexGroup.getCheckedRadioButtonId()).getTag();
 			issuedinvitationInfo.setSexId(sexID);
-			int costID = (Integer) cost_group.findViewById(
-					cost_group.getCheckedRadioButtonId()).getTag();
+			int costID = (Integer) cost_group.findViewById(cost_group.getCheckedRadioButtonId()).getTag();
 			issuedinvitationInfo.setCostId(costID);
 			issuedinvitationInfo.setLocationX(LocationX);
 			issuedinvitationInfo.setLocationY(LocationY);
-			customerDialog = ShowLoadingDialog
-					.showCustomerDialog(IssuedinvitationActivity.this);
-			customerDialog.setDlgIfClick(false);
+			customerDialog = ShowLoadingDialog.showProgressDialog(IssuedinvitationActivity.this, "发布中");
 			HttpPostInterface httpPostInterface = new HttpPostInterface();
-			httpPostInterface.addParams(Constans.ISSUE_COSTID,
-					issuedinvitationInfo.getCostId() + "");
-			httpPostInterface.addParams(Constans.ISSUE_DESCRIPTION,
-					issuedinvitationInfo.getLocationDescription());
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONAME,
-					issuedinvitationInfo.getLocationName());
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONX,
-					issuedinvitationInfo.getLocationX() + "");
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONY,
-					issuedinvitationInfo.getLocationY() + "");
-			httpPostInterface.addParams(Constans.ISSUE_PUBLISHERID, userPid
-					+ "");
-			httpPostInterface.addParams(Constans.ISSUE_RESERVEDATE,
-					issuedinvitationInfo.getReserveDate());
-			httpPostInterface.addParams(Constans.ISSUE_SEXID,
-					issuedinvitationInfo.getSexId() + "");
-			httpPostInterface.addParams(Constans.ISSUE_TITLE,
-					issuedinvitationInfo.getTitle());
-			httpPostInterface.addParams(Constans.ISSUE_TYPEID,
-					issuedinvitationInfo.getIssueId() + "");
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONCITYNAME,
-					LocationCityName);
+			httpPostInterface.addParams(Constans.ISSUE_COSTID, issuedinvitationInfo.getCostId() + "");
+			httpPostInterface.addParams(Constans.ISSUE_DESCRIPTION, issuedinvitationInfo.getLocationDescription());
+			httpPostInterface.addParams(Constans.ISSUE_LOCATIONAME, issuedinvitationInfo.getLocationName());
+			httpPostInterface.addParams(Constans.ISSUE_LOCATIONX, issuedinvitationInfo.getLocationX() + "");
+			httpPostInterface.addParams(Constans.ISSUE_LOCATIONY, issuedinvitationInfo.getLocationY() + "");
+			httpPostInterface.addParams(Constans.ISSUE_PUBLISHERID, userPid + "");
+			httpPostInterface.addParams(Constans.ISSUE_RESERVEDATE, issuedinvitationInfo.getReserveDate());
+			httpPostInterface.addParams(Constans.ISSUE_SEXID, issuedinvitationInfo.getSexId() + "");
+			httpPostInterface.addParams(Constans.ISSUE_TITLE, issuedinvitationInfo.getTitle());
+			httpPostInterface.addParams(Constans.ISSUE_TYPEID, issuedinvitationInfo.getIssueId() + "");
+			httpPostInterface.addParams(Constans.ISSUE_LOCATIONCITYNAME, LocationCityName);
 			httpPostInterface.getData(issueUrl, new HttpPostCallBack() {
 
 				@Override
@@ -253,8 +230,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(IssuedinvitationActivity.this,
-					TimeActivity.class);
+			Intent intent = new Intent(IssuedinvitationActivity.this, TimeActivity.class);
 			startActivityForResult(intent, Constans.INTENT_TIME);
 		}
 

@@ -3,6 +3,7 @@ package com.android.joocola;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +29,6 @@ import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.service.DefineService;
 import com.android.joocola.utils.Constans;
-import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.ShowLoadingDialog;
@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int mBackKeyPressedTimes = 0;
 	private SharedPreferences sharedPreferences;
 	private Editor editor;
-	private CustomerDialog customerDialog;
+	private ProgressDialog progDialog = null;// 搜索时进度条
 	private AlertDialog mConnectionDialog;// 网络的对话框。
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
@@ -54,14 +54,14 @@ public class MainActivity extends Activity implements OnClickListener {
 			switch (msg.what) {
 			case LOGIN_ERROR:
 				Utils.toast(MainActivity.this, getString(R.string.loginerror));
-				if (customerDialog != null) {
-					customerDialog.dismissDlg();
+				if (progDialog != null) {
+					progDialog.dismiss();
 				}
 				break;
 			case LOGIN_SUCCESS:
 				// 登录成功的操作
-				if (customerDialog != null) {
-					customerDialog.dismissDlg();
+				if (progDialog != null) {
+					progDialog.dismiss();
 				}
 				String pid = (String) msg.obj;
 				editor.putString(Constans.LOGIN_PID, pid);
@@ -143,8 +143,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
-				customerDialog = ShowLoadingDialog.showCustomerDialog(MainActivity.this);
-				customerDialog.setDlgIfClick(false);
+				// customerDialog = ShowLoadingDialog.showCustomerDialog(MainActivity.this);
+				// customerDialog.setDlgIfClick(false);
+				progDialog = ShowLoadingDialog.showProgressDialog(MainActivity.this, "登录中");
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
 				mHttpPostInterface.addParams("version", Constans.version);
@@ -314,8 +315,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
-				customerDialog = ShowLoadingDialog.showCustomerDialog(MainActivity.this);
-				customerDialog.setDlgIfClick(false);
+				progDialog = ShowLoadingDialog.showProgressDialog(MainActivity.this, "登录中");
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
 				mHttpPostInterface.addParams("version", Constans.version);
@@ -339,4 +339,5 @@ public class MainActivity extends Activity implements OnClickListener {
 			super.onNewIntent(intent);
 		}
 	}
+
 }

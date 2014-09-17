@@ -18,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -81,7 +82,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	private final String locationUrl = "Sys.UserController.UploadLocation.ashx";
 	private ImageView mRedPoint;
 	private final int REQUEST_CODE = 221;
-
+	private CustomerDialog customerDialog;
 	private ImageView img_tab_realease, img_tab_nearby, img_tab_message;
 	private TextView tv_tab_realease, tv_tab_nearby, tv_tab_message;
 	private Resources res;
@@ -338,7 +339,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	}
 
 	private void showIssueDialog(final ArrayList<IssueInfo> issueInfos, final BitmapCache bitmapCache) {
-		CustomerDialog customerDialog = new CustomerDialog(MainTabActivity.this, R.layout.dialog_issuedinvitation);
+		customerDialog = new CustomerDialog(MainTabActivity.this, R.layout.dialog_issuedinvitation);
 		customerDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
 
 			@Override
@@ -358,6 +359,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 						bundle.putString("title", issueInfos.get(arg2).getTypeName());
 						intent.putExtras(bundle);
 						startActivity(intent);
+						customerDialog.dismissDlg();
 					}
 				});
 
@@ -395,7 +397,9 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 			editor.putString("LocationX", geoLat + "");
 			editor.putString("LocationY", geoLng + "");
 			String str = location.getCity();
-			getActionBar().setTitle(str);
+			if (!TextUtils.isEmpty(str)) {
+				getActionBar().setTitle(str);
+			}
 			sendLocationInfo(geoLat + "", geoLng + "");
 
 		}

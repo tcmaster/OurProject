@@ -3,18 +3,18 @@
      <item
         android:id="@+id/action_add"
         android:icon="@drawable/maintab_add"
-        android:title="add" 
+        android:title="发布邀约" 
         android:showAsAction="always"/>
     
     <item
         android:id="@+id/action_loudou"
         android:icon="@drawable/maintab_loudou"
         android:showAsAction= "always" 
-        android:title="loudou"/>
+        android:title="筛选条件"/>
     <item
         android:id="@+id/action_me"
         android:icon="@drawable/maintab_me" 
         android:showAsAction= "always"
-        android:title="me"/>
+        android:title="个人中心"/>
 
 </menu>
