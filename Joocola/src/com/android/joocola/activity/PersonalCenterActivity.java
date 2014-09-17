@@ -21,8 +21,8 @@ import com.lidroid.xutils.BitmapUtils;
  * @Destribe:个人中心界面
  * 
  */
-public class PersonalCenterActivity extends BaseActivity implements
-		OnClickListener {
+public class PersonalCenterActivity extends BaseActivity implements OnClickListener {
+
 	// 用户头像
 	private ImageView iv_photo;
 	// 红点，依次是头像上的红点，发起邀约的红点，设置的红点
@@ -36,8 +36,7 @@ public class PersonalCenterActivity extends BaseActivity implements
 	// 编辑按钮
 	private Button editButton;
 	// 几个点击跳转的布局,依次是发起，报名，回复，收藏，评价，设置
-	private LinearLayout ll_add, ll_apply, ll_answer, ll_save, ll_commit,
-			ll_settings;
+	private LinearLayout ll_add, ll_apply, ll_answer, ll_save, ll_commit, ll_settings;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class PersonalCenterActivity extends BaseActivity implements
 		initViews();
 		initActionBar();
 		initListeners();
-		initUserInfo();
 	}
 
 	private void initViews() {
@@ -132,31 +130,26 @@ public class PersonalCenterActivity extends BaseActivity implements
 
 	}
 
+	@Override
+	protected void onStart() {
+		initUserInfo();
+		super.onResume();
+	}
+
 	private void initUserInfo() {
 		BitmapUtils utils = new BitmapUtils(this);
 		utils.configDefaultLoadFailedImage(R.drawable.logo);
-		String photoUrl = JoocolaApplication.getInstance().getUserInfo()
-				.getPhotoUrl();
+		String photoUrl = JoocolaApplication.getInstance().getUserInfo().getPhotoUrl();
 		if (photoUrl != null)
-			utils.display(
-					iv_photo,
-					Utils.processResultStr(Constans.URL
-							+ JoocolaApplication.getInstance().getUserInfo()
-									.getPhotoUrl(), "_150_"));
+			utils.display(iv_photo, Utils.processResultStr(Constans.URL + JoocolaApplication.getInstance().getUserInfo().getPhotoUrl(), "_150_"));
 		else {
 			utils.display(iv_photo, "errorurl");
 		}
-		nickName.setText(JoocolaApplication.getInstance().getUserInfo()
-				.getNickName());
-		tv_AddCount.setText(JoocolaApplication.getInstance().getUserInfo()
-				.getStaAppMyCount());
-		tv_applyCount.setText(JoocolaApplication.getInstance().getUserInfo()
-				.getStaAppJoinCount());
-		tv_answerCount.setText(JoocolaApplication.getInstance().getUserInfo()
-				.getStaAppReplyCount());
-		tv_saveCount.setText(JoocolaApplication.getInstance().getUserInfo()
-				.getStaAppFavoriteCount());
-		tv_commitPoint.setText(JoocolaApplication.getInstance().getUserInfo()
-				.getStaAppWaitCommentCount());
+		nickName.setText(JoocolaApplication.getInstance().getUserInfo().getNickName());
+		tv_AddCount.setText(JoocolaApplication.getInstance().getUserInfo().getStaAppMyCount());
+		tv_applyCount.setText(JoocolaApplication.getInstance().getUserInfo().getStaAppJoinCount());
+		tv_answerCount.setText(JoocolaApplication.getInstance().getUserInfo().getStaAppReplyCount());
+		tv_saveCount.setText(JoocolaApplication.getInstance().getUserInfo().getStaAppFavoriteCount());
+		tv_commitPoint.setText(JoocolaApplication.getInstance().getUserInfo().getStaAppWaitCommentCount());
 	}
 }
