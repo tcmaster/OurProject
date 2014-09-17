@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Application;
-import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 
@@ -20,7 +19,6 @@ import com.android.joocola.entity.BaseCityInfo;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.entity.UserInfo;
-import com.android.joocola.service.DefineService;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
@@ -69,7 +67,7 @@ public class JoocolaApplication extends Application {
 		// crashHandler.init(getApplicationContext());
 		// }
 		cache = new BitmapCache();
-		startService(new Intent(this, DefineService.class));
+		// startService(new Intent(this, DefineService.class));
 
 	}
 

@@ -27,7 +27,6 @@ import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.XMPPChat;
-import com.android.joocola.service.DefineService;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -203,7 +202,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			return;
 		} else {
 			this.finish();
-			stopService(new Intent(this, DefineService.class));
+			// stopService(new Intent(this, DefineService.class));
 			System.exit(0);
 		}
 		super.onBackPressed();

@@ -49,7 +49,6 @@ import com.android.joocola.fragment.Messagefragment;
 import com.android.joocola.fragment.MyFragmentPagerAdapter;
 import com.android.joocola.fragment.Nearbyfragment;
 import com.android.joocola.fragment.Releasefragment;
-import com.android.joocola.service.DefineService;
 import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
@@ -325,7 +324,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 			return;
 		} else {
 			XMPPChat.stopEveryThing();
-			stopService(new Intent(this, DefineService.class));
+			// stopService(new Intent(this, DefineService.class));
 			System.exit(0);
 
 		}

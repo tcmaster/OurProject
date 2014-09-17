@@ -49,7 +49,6 @@ public class SplashActivity extends Activity {
 		loginPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		editor = loginPreferences.edit();
 		isAutoMatic = loginPreferences.getBoolean(Constans.LOGIN_AUTOMATIC, false);
-		Log.e("bb", isAutoMatic + "");
 		if (isAutoMatic) {
 			user_pid = loginPreferences.getString(Constans.LOGIN_PID, "");
 			userName = loginPreferences.getString(Constans.LOGIN_ACCOUNT, "");
@@ -63,7 +62,7 @@ public class SplashActivity extends Activity {
 
 				@Override
 				public void run() {
-					Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+					Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
 					startActivity(intent);
 					SplashActivity.this.finish();
 				}
@@ -124,17 +123,14 @@ public class SplashActivity extends Activity {
 					}
 				});
 			} else {
-				/**
-				 * 不能进行自动登录 进入正常登录页
-				 */
 				handler.postDelayed(new Runnable() {
 
 					@Override
 					public void run() {
-						Log.e("bb", "不能进行自动登录 进入正常登录页");
 						gotoMainActivity();
+
 					}
-				}, 1000);
+				}, 2000);
 			}
 		}
 
