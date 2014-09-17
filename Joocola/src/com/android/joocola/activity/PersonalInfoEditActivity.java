@@ -242,8 +242,10 @@ public class PersonalInfoEditActivity extends BaseActivity {
 
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-				if (!(((AdapterContextMenuInfo) menuInfo).position == (pic_gv.getAdapter().getCount() - 1)))
+				if (!(((AdapterContextMenuInfo) menuInfo).position == (pic_gv.getAdapter().getCount() - 1))) {
 					menu.add(0, 0, 0, "删除");
+					menu.add(0, 1, 1, "设置为头像");
+				}
 			}
 		});
 	}
@@ -260,13 +262,13 @@ public class PersonalInfoEditActivity extends BaseActivity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		final AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
+		String url = ((PC_Edit_GridView_Adapter) pic_gv.getAdapter()).getImageUrls().get(menuInfo.position);
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("userID", JoocolaApplication.getInstance().getUserInfo().getPID());
 		if (item.getItemId() == 0) {
-			final AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
-			String deleteUrl = ((PC_Edit_GridView_Adapter) pic_gv.getAdapter()).getImageUrls().get(menuInfo.position);
-			HttpPostInterface interface1 = new HttpPostInterface();
-			interface1.addParams("userID", JoocolaApplication.getInstance().getUserInfo().getPID());
 			interface1.addParams("newUrls", "");
-			interface1.addParams("delUrls", deleteUrl);
+			interface1.addParams("delUrls", url);
 			interface1.getData(Constans.ALBUMURL, new HttpPostCallBack() {
 
 				@Override
@@ -290,6 +292,32 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							@Override
 							public void run() {
 								Utils.toast(PersonalInfoEditActivity.this, "删除失败，网络状况不佳,请在次尝试");
+							}
+						});
+					}
+
+				}
+			});
+		} else if (item.getItemId() == 1) {
+			interface1.addParams("newPhotoUrl", url);
+			interface1.getData(Constans.PHOTOURL, new HttpPostCallBack() {
+
+				@Override
+				public void httpPostResolveData(String result) {
+					if (result != null) {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								Utils.toast(PersonalInfoEditActivity.this, "设置用户头像成功");
+							}
+						});
+					} else {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								Utils.toast(PersonalInfoEditActivity.this, "用户头像设置失败,请重新设置");
 							}
 						});
 					}

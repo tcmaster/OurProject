@@ -98,7 +98,7 @@ public class Constans {
 	 */
 	public static final String ALBUMURL = "Sys.UserController.SetUserAlbumPhotoUrls.ashx";
 	/**
-	 * 用户相册地址
+	 * 用户头像地址
 	 */
 	public static final String PHOTOURL = "Sys.UserController.SetUserPhoto.ashx";
 	/**

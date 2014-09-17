@@ -18,6 +18,7 @@ import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
 import com.lidroid.xutils.bitmap.core.BitmapSize;
 
 public class PC_Edit_GridView_Adapter extends BaseAdapter {
+
 	private ArrayList<String> imgUrls;
 	private ArrayList<String> bigimgUrls;
 	private LayoutInflater mInflater;
@@ -59,27 +60,24 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null)
-			convertView = mInflater.inflate(R.layout.item_pc_edit_gridview,
-					null);
+			convertView = mInflater.inflate(R.layout.item_pc_edit_gridview, null);
 		ImageView iV = (ImageView) convertView.findViewById(R.id.imageView);
 		if (position == imgUrls.size()) {
 			iV.setImageResource(R.drawable.addpic);
 		} else {
 			iV.setBackgroundResource(R.drawable.photobg);
-			iV.setPadding(Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3),
-					Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3));
+			iV.setPadding(Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3), Utils.dip2px(mContext, 3));
 			Log.v("图片即将下载", imgUrls.get(position));
 			BitmapUtils utils = new BitmapUtils(mContext);
 			BitmapDisplayConfig config = new BitmapDisplayConfig();
-			config.setBitmapMaxSize(new BitmapSize(iV.getWidth() - 5, iV
-					.getHeight() - 5));
+			config.setBitmapMaxSize(new BitmapSize(iV.getWidth() - 5, iV.getHeight() - 5));
 			utils.display(iV, Constans.URL + imgUrls.get(position), config);
 		}
 		return convertView;
 	}
 
 	public void addImgUrls(String url) {
-		imgUrls.add(Utils.processResultStr(url, "_150_"));
+		imgUrls.add(Utils.processResultStr(url, "_50_"));
 		bigimgUrls.add(url);
 		notifyDataSetChanged();
 	}
