@@ -59,13 +59,13 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		setContentView(R.layout.issue_gaodeditu);
 		getActionBar().hide();
 		Intent intent = getIntent();
-		address = intent.getStringExtra("address");
+		// address = intent.getStringExtra("address");
 		mapView = (MapView) findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		locationCity = sharedPreferences.getString("LocationCity", "北京");
 		init();
-		getLatlon(address);
+		// getLatlon(address);
 
 	}
 

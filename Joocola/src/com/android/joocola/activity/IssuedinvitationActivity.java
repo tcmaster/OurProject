@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -30,7 +29,6 @@ import com.android.joocola.entity.IssuedinvitationInfo;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
-import com.android.joocola.utils.ShowLoadingDialog;
 import com.android.joocola.utils.Utils;
 import com.android.joocola.utils.ViewHelper;
 
@@ -45,25 +43,25 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private RadioGroup sexGroup, cost_group;
 	private int issueID;
 	private int userPid;
-	private ImageView dingweiImg;
 	private SharedPreferences sharedPreferences;
 	private IssuedinvitationInfo issuedinvitationInfo = new IssuedinvitationInfo();
-	private EditText et_issue_theme, edit_location, edit_state;
+	private EditText et_issue_theme, edit_state;
+	private TextView btn_location;
 	private TextView tv_issuetime;
 	private Button btn_sureissue;
 	private double LocationX;
 	private double LocationY;
 	private String LocationCityName;
 	private String issueUrl = "Bus.AppointController.PubAppoint.ashx";// 发布地址
-	private ProgressDialog customerDialog;
+	private ProgressDialog progDialog = null;
 	@SuppressLint("HandlerLeak")
 	private Handler issueHandler = new Handler() {
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				if (customerDialog != null) {
-					customerDialog.dismiss();
+				if (progDialog != null) {
+					progDialog.dismiss();
 				}
 				String json = (String) msg.obj;
 				Log.e("发布的回应", json);
@@ -116,9 +114,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 	}
 
 	private void initView() {
-		dingweiImg = (ImageView) this.findViewById(R.id.dingwei_img);
 		et_issue_theme = (EditText) this.findViewById(R.id.et_issue_theme);
-		edit_location = (EditText) this.findViewById(R.id.edit_location);
+		btn_location = (TextView) this.findViewById(R.id.btn_location);
 		edit_state = (EditText) this.findViewById(R.id.edit_state);
 		tv_issuetime = (TextView) this.findViewById(R.id.tv_issuetime);
 		tv_issuetime.setOnClickListener(new TimeOnclickListenr());
@@ -126,13 +123,11 @@ public class IssuedinvitationActivity extends BaseActivity {
 		cost_group = (RadioGroup) this.findViewById(R.id.issue_cost_group);
 		btn_sureissue = (Button) this.findViewById(R.id.btn_sureissue);
 		btn_sureissue.setOnClickListener(new IssueOnclick());
-		dingweiImg.setOnClickListener(new OnClickListener() {
+		btn_location.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(IssuedinvitationActivity.this, GaodeMapActivity.class);
-				String address = edit_location.getText().toString();
-				intent.putExtra("address", address);
 				startActivityForResult(intent, 30);
 			}
 		});
@@ -163,8 +158,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 					issuedinvitationInfo.setTitle(title);
 				}
 			}
-			if (edit_location != null) {
-				String location = edit_location.getText().toString();
+			if (btn_location != null) {
+				String location = btn_location.getText().toString();
 				if (TextUtils.isEmpty(location)) {
 					Utils.toast(IssuedinvitationActivity.this, "邀约地点不能为空");
 					return;
@@ -191,7 +186,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 			issuedinvitationInfo.setCostId(costID);
 			issuedinvitationInfo.setLocationX(LocationX);
 			issuedinvitationInfo.setLocationY(LocationY);
-			customerDialog = ShowLoadingDialog.showProgressDialog(IssuedinvitationActivity.this, "发布中");
+			showProgressDialog("发布中");
 			HttpPostInterface httpPostInterface = new HttpPostInterface();
 			httpPostInterface.addParams(Constans.ISSUE_COSTID, issuedinvitationInfo.getCostId() + "");
 			httpPostInterface.addParams(Constans.ISSUE_DESCRIPTION, issuedinvitationInfo.getLocationDescription());
@@ -255,7 +250,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 				LocationX = data.getDoubleExtra("locationX", 123.123456);
 				LocationY = data.getDoubleExtra("locationY", 321.987654);
 				String address = data.getStringExtra("address");
-				edit_location.setText(address);
+				btn_location.setText(address);
 				LocationCityName = data.getStringExtra("LocationCityName");
 			}
 			break;
@@ -263,5 +258,27 @@ public class IssuedinvitationActivity extends BaseActivity {
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	/**
+	 * 显示进度框
+	 */
+	private void showProgressDialog(String title) {
+
+		progDialog = new ProgressDialog(this);
+		progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progDialog.setIndeterminate(false);
+		progDialog.setCancelable(false);
+		progDialog.setMessage(title);
+		progDialog.show();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if (progDialog != null) {
+			progDialog.dismiss();
+		}
 	}
 }

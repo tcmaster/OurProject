@@ -30,7 +30,6 @@ import com.android.joocola.chat.XMPPChat;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
-import com.android.joocola.utils.ShowLoadingDialog;
 import com.android.joocola.utils.Utils;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -142,9 +141,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
-				// customerDialog = ShowLoadingDialog.showCustomerDialog(MainActivity.this);
-				// customerDialog.setDlgIfClick(false);
-				progDialog = ShowLoadingDialog.showProgressDialog(MainActivity.this, "登录中");
+				showProgressDialog("登录中");
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
 				mHttpPostInterface.addParams("version", Constans.version);
@@ -178,6 +175,15 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		default:
 			break;
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+
+		super.onDestroy();
+		if (progDialog != null) {
+			progDialog.dismiss();
 		}
 	}
 
@@ -314,7 +320,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (Utils.judgeAccount(nameEdit.getText().toString())) {
 
 				HttpPostInterface mHttpPostInterface = new HttpPostInterface();
-				progDialog = ShowLoadingDialog.showProgressDialog(MainActivity.this, "登录中");
+				showProgressDialog("登录中");
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
 				mHttpPostInterface.addParams("version", Constans.version);
@@ -337,6 +343,20 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 			super.onNewIntent(intent);
 		}
+	}
+
+	/**
+	 * 显示进度框
+	 */
+	private void showProgressDialog(String title) {
+		if (progDialog == null) {
+			progDialog = new ProgressDialog(this);
+		}
+		progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progDialog.setIndeterminate(false);
+		progDialog.setCancelable(false);
+		progDialog.setMessage(title);
+		progDialog.show();
 	}
 
 }
