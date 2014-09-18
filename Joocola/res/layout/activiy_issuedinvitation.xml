@@ -109,6 +109,7 @@
          android:layout_marginLeft="20dp"
          android:layout_marginRight="20dp"
          android:text="点击选择邀约地址"
+         android:background="@drawable/btnclick"
          android:textStyle="bold"
          android:gravity="center"
          />

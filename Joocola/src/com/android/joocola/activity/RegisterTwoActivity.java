@@ -173,6 +173,7 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 	private void register() {
 		final ProgressDialog pdlg = new ProgressDialog(this);
 		pdlg.show();
+		pdlg.setTitle("注册中");
 		nickName = et_nickName.getText().toString();
 		birthday = tv_birthday.getText().toString();
 		if (birthday.equals("请选择生日")) {

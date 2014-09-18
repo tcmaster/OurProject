@@ -148,7 +148,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
 					@Override
-					public void httpPostResolveData(String result) {
+					public void httpPostResolveData(final String result) {
 						// 在这里用handler 把json 发出去 进行更新UI的操作
 
 						if (result.equals("0")) {
@@ -157,7 +157,14 @@ public class MainActivity extends Activity implements OnClickListener {
 							error.obj = result;
 							mHandler.sendMessage(error);
 						} else {
-							new AllWorkDoneTask(result).execute();
+							mHandler.post(new Runnable() {
+
+								@Override
+								public void run() {
+
+									new AllWorkDoneTask(result).execute();
+								}
+							});
 						}
 					}
 				});
@@ -327,7 +334,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
 					@Override
-					public void httpPostResolveData(String result) {
+					public void httpPostResolveData(final String result) {
 						// 在这里用handler 把json 发出去 进行更新UI的操作
 
 						if (result.equals("0")) {
@@ -336,7 +343,13 @@ public class MainActivity extends Activity implements OnClickListener {
 							error.obj = result;
 							mHandler.sendMessage(error);
 						} else {
-							new AllWorkDoneTask(result).execute();
+							mHandler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									new AllWorkDoneTask(result).execute();
+								}
+							});
 						}
 					}
 				});
