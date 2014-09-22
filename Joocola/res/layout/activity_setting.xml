@@ -26,12 +26,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/pswdlayout"
-            android:layout_marginTop="10dp" >
+            android:background="@drawable/item_click"
+              >
 
             <TextView 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/alter_pswd"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
@@ -40,20 +43,21 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:background="@color/lessgray3" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/item_click"
             android:id="@+id/phonenumlayout" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/alter_phonenum"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
@@ -61,21 +65,22 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="1px" 
             android:background="@color/lessgray3" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/item_click"
             android:id="@+id/mailLayout" >
 
             <TextView 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/alter_mail"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
@@ -84,21 +89,22 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="1px" 
             android:background="@color/lessgray3" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/item_click"
             android:id="@+id/updatelayout" >
 
             <TextView 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/update"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
@@ -107,21 +113,22 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="1px" 
             android:background="@color/lessgray3" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/item_click"
             android:id="@+id/feedbackLayout" >
 
             <TextView 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/feedback"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
@@ -129,15 +136,14 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="1px" 
             android:background="@color/lessgray3" />
 
          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/item_click"
             android:id="@+id/exitLayout" >
 
             <TextView
@@ -145,6 +151,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/logout_exit"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
@@ -153,9 +161,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="1px" 
             android:background="@color/lessgray3" />
     </LinearLayout>
 

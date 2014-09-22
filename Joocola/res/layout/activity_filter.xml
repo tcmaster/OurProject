@@ -177,6 +177,7 @@
                 android:layout_marginRight="10dp"
                 android:id="@+id/filter_choiceTime"
                 android:gravity="center"
+                android:background="@drawable/item_click"
                 android:text="@string/unlimited"
                 android:textColor="@color/deepgray"
                 android:textSize="18sp" />
