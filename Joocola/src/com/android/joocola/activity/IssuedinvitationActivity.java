@@ -19,7 +19,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -54,6 +56,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private String LocationCityName;
 	private String issueUrl = "Bus.AppointController.PubAppoint.ashx";// 发布地址
 	private ProgressDialog progDialog = null;
+	private RelativeLayout time_layout;
+	private LinearLayout location_layout;
 	@SuppressLint("HandlerLeak")
 	private Handler issueHandler = new Handler() {
 
@@ -114,16 +118,18 @@ public class IssuedinvitationActivity extends BaseActivity {
 	}
 
 	private void initView() {
+		time_layout = (RelativeLayout) this.findViewById(R.id.layout_issue_time);
+		location_layout = (LinearLayout) this.findViewById(R.id.layout_location);
 		et_issue_theme = (EditText) this.findViewById(R.id.et_issue_theme);
 		btn_location = (TextView) this.findViewById(R.id.btn_location);
 		edit_state = (EditText) this.findViewById(R.id.edit_state);
 		tv_issuetime = (TextView) this.findViewById(R.id.tv_issuetime);
-		tv_issuetime.setOnClickListener(new TimeOnclickListenr());
+		time_layout.setOnClickListener(new TimeOnclickListenr());
 		sexGroup = (RadioGroup) this.findViewById(R.id.issue_sex_Group);
 		cost_group = (RadioGroup) this.findViewById(R.id.issue_cost_group);
 		btn_sureissue = (Button) this.findViewById(R.id.btn_sureissue);
 		btn_sureissue.setOnClickListener(new IssueOnclick());
-		btn_location.setOnClickListener(new OnClickListener() {
+		location_layout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

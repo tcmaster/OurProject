@@ -86,7 +86,7 @@
             <LinearLayout
                 android:id="@+id/addLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content" 
                 android:orientation="horizontal" >
 
                 <TextView
@@ -129,7 +129,7 @@
             <LinearLayout
                 android:id="@+id/applayLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content" 
                 android:orientation="horizontal" >
 
                 <TextView
