@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import com.android.joocola.MainActivity;
 import com.android.joocola.R;
-import com.android.joocola.chat.XMPPChat;
+import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
@@ -513,10 +513,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 					@Override
 					public void onClick(View v) {
-						XMPPChat.stopEveryThing();
+						EaseMobChat.getInstance().endWork();
 						editor.putBoolean(Constans.LOGIN_AUTOMATIC, false);
 						editor.commit();
-						XMPPChat.stopEveryThing();
 						Intent intent = new Intent(SettingActivity.this, MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);

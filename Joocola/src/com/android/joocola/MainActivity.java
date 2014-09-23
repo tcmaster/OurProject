@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.chat.XMPPChat;
+import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
@@ -216,6 +216,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		} else {
 			this.finish();
 			// stopService(new Intent(this, DefineService.class));
+			EaseMobChat.getInstance().endWork();
 			System.exit(0);
 		}
 		super.onBackPressed();
@@ -232,31 +233,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		protected Integer doInBackground(Void... params) {
 			JoocolaApplication.getInstance().initUserInfoAfterLogin(userPid);
-			// while (XMPPChat.getInstance().flag1 == 0)
-			// ;
-			// if (XMPPChat.getInstance().flag1 != 1
-			// || XMPPChat.getInstance().flag1 != 2) {
-			// // 注册失败
-			// }
-			while (XMPPChat.getInstance().flag2 == 0)
+			while (EaseMobChat.getInstance().getFlag() == 0)
 				;
-			if (XMPPChat.getInstance().flag2 != 1) {
-				// 连接失败
-				return 2;
-			}
-			while (XMPPChat.getInstance().flag3 == 0)
-				;
-			if (XMPPChat.getInstance().flag3 != 1) {
-				// 登录失败
-				return 3;
-			}
-			while (XMPPChat.getInstance().flag4 == 0)
-				;
-			if (XMPPChat.getInstance().flag4 != 1) {
-				// 设置在线状态失败
-				return 4;
-			}
-			return -1;
+			return EaseMobChat.getInstance().getFlag();
 		}
 
 		@Override

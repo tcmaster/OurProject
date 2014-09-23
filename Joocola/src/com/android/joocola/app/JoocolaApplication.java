@@ -11,9 +11,7 @@ import android.app.Application;
 import android.os.Handler;
 import android.util.Log;
 
-import com.android.joocola.chat.OfflineChatInfoManager;
-import com.android.joocola.chat.UserChatListener;
-import com.android.joocola.chat.XMPPChat;
+import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.dbmanger.BaseDataInfoManger;
 import com.android.joocola.entity.BaseCityInfo;
 import com.android.joocola.entity.BaseDataInfo;
@@ -67,6 +65,7 @@ public class JoocolaApplication extends Application {
 		// crashHandler.init(getApplicationContext());
 		// }
 		cache = new BitmapCache();
+		EaseMobChat.getInstance().init(this);
 		// startService(new Intent(this, DefineService.class));
 
 	}
@@ -175,22 +174,8 @@ public class JoocolaApplication extends Application {
 						JSONObject userObject = array.getJSONObject(0);
 						JsonUtils.getUserInfo(userObject, userInfo);
 						PID = userInfo.getPID();
-						// // 在用户信息获取完成后，进行聊天的注册
-						// String register = XMPPChat.getInstance().register(
-						// userInfo.getNickName(), "123456",
-						// userInfo.getNickName());
-						// 如果该账号已经被注册或者注册成功，说明可以进行登录
-						XMPPChat.getInstance().login("u" + userInfo.getPID(), "123456");
-						// 得到所有一对一的离线消息,并将其存入数据库
-						OfflineChatInfoManager.getOfflineInfo();
-						// 将账号设置为在线状态
-						XMPPChat.getInstance().setPresence(XMPPChat.ONLINE);
-						// 添加接收消息的监听器
-						XMPPChat.getInstance().getConnection().getChatManager().addChatListener(new UserChatListener());
-						// 添加接收文件的监听器
-						XMPPChat.getInstance().receiveFile(JoocolaApplication.getInstance());
-						// 开启心跳服务
-						XMPPChat.getInstance().startHeartService(JoocolaApplication.getInstance());
+						EaseMobChat.getInstance().beginWork();
+						EaseMobChat.getInstance().login("u" + PID, "123456");
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}

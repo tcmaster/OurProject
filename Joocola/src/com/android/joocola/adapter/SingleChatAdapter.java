@@ -1,7 +1,5 @@
 package com.android.joocola.adapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,11 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -21,16 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
-import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.chat.XMPPChat;
-import com.android.joocola.entity.ChatOfflineInfo;
-import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.Type;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.DbUtils;
-import com.lidroid.xutils.db.sqlite.Selector;
-import com.lidroid.xutils.exception.DbException;
 
 /**
  * 用于更新得到消息的视图信息
@@ -51,18 +45,6 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	private Map<String, String> names;
 	/**
-	 * 未读消息
-	 */
-	private List<ChatOfflineInfo> noReadData;
-	/**
-	 * 历史消息
-	 */
-	private List<ChatOfflineInfo> readData;
-	/**
-	 * 需要显示的内容
-	 */
-	private List<ChatOfflineInfo> data;
-	/**
 	 * 这个字段代表用户在和谁聊天
 	 */
 	private String user;
@@ -71,6 +53,34 @@ public class SingleChatAdapter extends BaseAdapter {
 	 * 图像下载工具
 	 */
 	private BitmapUtils bmUtils;
+	/**
+	 * 数据源，用于存放当前需要显示的消息
+	 */
+	private List<EMMessage> data;
+	/**
+	 * 本界面的会话，根据这个会话得到聊天数据
+	 */
+	private EMConversation conversation;
+	/**
+	 * 在消息内存中最早的一条消息msgId
+	 * 
+	 * @describe messageInMemory
+	 */
+	private EMMessage messageInM;
+	/**
+	 * 当前页面最早的一条消息
+	 * 
+	 * @describe messageInCurrentPage
+	 */
+	private EMMessage messageInCP;
+	/**
+	 * 当前的剩余未展示历史消息数量
+	 */
+	private int currentCount;
+	/**
+	 * 当前已展示的页面
+	 */
+	private int page;
 
 	public SingleChatAdapter(Context context, String user) {
 		this.context = context;
@@ -79,74 +89,100 @@ public class SingleChatAdapter extends BaseAdapter {
 		photos = new HashMap<String, String>();
 		names = new HashMap<String, String>();
 		bmUtils = new BitmapUtils(context);
-		bmUtils.configDefaultLoadFailedImage(BitmapFactory.decodeResource(
-				context.getResources(), R.drawable.logo));
+		bmUtils.configDefaultLoadFailedImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo));
 		initData();
 	}
 
 	public void initData() {
-		// 下面三句防止报空
-		data = new ArrayList<ChatOfflineInfo>();
-		noReadData = new ArrayList<ChatOfflineInfo>();
-		readData = new ArrayList<ChatOfflineInfo>();
-		noReadData = getNoReadData();
-		data.addAll(readData);
-		data.addAll(noReadData);
+		data = new ArrayList<EMMessage>();
+		page = 1;
+		currentCount = 0;
+		// test2仅作为测试使用
+		conversation = EMChatManager.getInstance().getConversation(user);
+		// 这里的逻辑，先从内存中取消息记录，没有的话从数据库中取
+		List<EMMessage> temp = conversation.getAllMessages();
+		if (temp == null || temp.size() == 0) {// 到这里说明没有消息记录，为最初时的状态
+
+		} else {
+			data.addAll(temp);
+			messageInM = data.get(0);
+			// newestMessage = data.get(data.size() - 1);
+		}
 	}
 
 	/**
-	 * 得到当前未读的消息
+	 * 更新当前最后一条消息，根据这条消息查找消息记录
+	 * 
+	 * @author: LiXiaoSong
+	 * @date:2014-9-19
 	 */
-	public List<ChatOfflineInfo> getNoReadData() {
-		try {
-			List<ChatOfflineInfo> noReadData = db.findAll(Selector
-					.from(ChatOfflineInfo.class)
-					.where("key",
-							"=",
-							XMPPChat.getInstance().getConnection().getUser()
-									.split("@")[0]
-									+ "-" + user)
-					.and("isRead", "=", 0)
-					.and("user",
-							"=",
-							"u"
-									+ JoocolaApplication.getInstance()
-											.getUserInfo().getPID()));
-			if (noReadData == null)
-				noReadData = new ArrayList<ChatOfflineInfo>();
-			return noReadData;
-		} catch (DbException e) {
-			e.printStackTrace();
-		}
-		return new ArrayList<ChatOfflineInfo>();
+	private void updateLast(String msgId) {
+		// newestMessage = conversation.getMessage(msgId);
 	}
 
 	/**
-	 * 得到当前已读的消息
+	 * 以最新的一条消息更新最后一条消息
 	 */
-	public List<ChatOfflineInfo> getReadData() {
-		try {
-			List<ChatOfflineInfo> ReadData = db.findAll(Selector
-					.from(ChatOfflineInfo.class)
-					.where("key",
-							"=",
-							XMPPChat.getInstance().getConnection().getUser()
-									.split("@")[0]
-									+ "-" + user)
-					.and("isRead", "=", 1)
-					.and("user",
-							"=",
-							"u"
-									+ JoocolaApplication.getInstance()
-											.getUserInfo().getPID()));
-			if (ReadData == null)
-				ReadData = new ArrayList<ChatOfflineInfo>();
-			return ReadData;
-		} catch (DbException e) {
-			e.printStackTrace();
-		}
+	public void updateLast() {
+		// newestMessage = conversation.getLastMessage();
+	}
 
-		return new ArrayList<ChatOfflineInfo>();
+	/**
+	 * 将当前显示的数据更新
+	 * 
+	 * @author: LiXiaoSong
+	 * @date:2014-9-19
+	 */
+	public void updateChatList() {
+		data.clear();
+		data.addAll(conversation.getAllMessages());
+		messageInM = data.get(0);
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * 清除当前聊天列表的信息
+	 * 
+	 * @author: LiXiaoSong
+	 * @date:2014-9-19
+	 */
+	public void clearChatList() {
+		data.clear();
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * 将当前最新的消息重置
+	 * 
+	 * @author: LiXiaoSong
+	 * @date:2014-9-19
+	 */
+	public void resetLast() {
+		// newestMessage = conversation.getLastMessage();
+	}
+
+	/**
+	 * 得到更早的历史记录
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-9-23
+	 */
+	public void getHistory() {
+		if (messageInCP == null || messageInM == null) {
+			Utils.toast(context, "没有更多历史消息了");
+		}
+		if (messageInCP.getMsgId().equals(messageInM.getMsgId())) {// 当前的页面已经将内存中所有的消息展示了
+			List<EMMessage> msg = conversation.loadMoreMsgFromDB(messageInM.getMsgId(), 40);
+			if (msg == null || msg.size() == 0) {
+				Utils.toast(context, "没有更多历史消息了");
+				return;
+			}
+			// 增加新的数据
+			data = conversation.getAllMessages();
+			messageInM = data.get(0);
+		}
+		page++;
+		notifyDataSetChanged();
 	}
 
 	public void addPhotos(String key, String value) {
@@ -159,88 +195,52 @@ public class SingleChatAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	/**
-	 * 当有新的信息显示时，调用该方法
-	 */
-	public void showHistory() {
-		saveHistory();
-		this.readData = getReadData();
-		data.clear();
-		data.addAll(readData);
-		notifyDataSetChanged();
-	}
-
-	/**
-	 * 隐藏历史信息
-	 */
-	public void hideHistory() {
-		this.noReadData = getNoReadData();
-		data.clear();
-		data.addAll(noReadData);
-		notifyDataSetChanged();
-	}
-
-	public void saveHistory() {
-		// 到这里说明即将显示未读信息，未读信息变为已读信息
-		for (int i = 0; i < noReadData.size(); i++)
-			noReadData.get(i).setIsRead(1);
-		try {
-			db.updateAll(noReadData, "isRead");
-		} catch (DbException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void updateNoReadData() {
-		this.noReadData = getNoReadData();
-		data.clear();
-		data.addAll(noReadData);
-		notifyDataSetChanged();
-	}
-
 	@Override
 	public int getCount() {
-		return data.size();
+		if (data.size() > 15 * page) {
+			currentCount = data.size() - 15 * page;
+			messageInCP = data.get(currentCount + 0);
+			return 15 * page;
+		} else if (data.size() <= 15 * page) {
+			currentCount = 0;
+			if (data.size() != 0)
+				messageInCP = data.get(0);
+			return data.size();
+		} else {
+			// 还能有这情况？
+			return 0;
+		}
+
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return data.get(position);
+		return data.get(position + currentCount);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		return position + currentCount;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ChatOfflineInfo info = data.get(position);
 		ViewHolder holder = null;
-		boolean flag = info.getIsFrom().equals(
-				XMPPChat.getInstance().getConnection().getUser().split("@")[0]) ? true
-				: false;
+		EMMessage message = data.get(position + currentCount);
+		boolean flag = conversation.getUserName().equals(message.getFrom()) ? true : false;
 		if (convertView == null) {
 			holder = new ViewHolder();
 			if (flag)
-				convertView = LayoutInflater.from(context).inflate(
-						R.layout.item_chat_me, null, false);
+				convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_me, null, false);
 			else
-				convertView = LayoutInflater.from(context).inflate(
-						R.layout.item_chat_other, null, false);
+				convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_other, null, false);
 			holder.flag = flag;
-			holder.iv_photo = (ImageView) convertView
-					.findViewById(R.id.chat_photo);
-			holder.tv_content = (TextView) convertView
-					.findViewById(R.id.chat_content);
-			holder.tv_name = (TextView) convertView
-					.findViewById(R.id.chat_name);
-			holder.tv_time = (TextView) convertView
-					.findViewById(R.id.chat_time);
-			holder.iv_getImg = (ImageView) convertView
-					.findViewById(R.id.chat_img);
-			holder.fl = (FrameLayout) convertView
-					.findViewById(R.id.chat_img_container);
+			holder.iv_photo = (ImageView) convertView.findViewById(R.id.chat_photo);
+			holder.tv_content = (TextView) convertView.findViewById(R.id.chat_content);
+			holder.tv_name = (TextView) convertView.findViewById(R.id.chat_name);
+			holder.tv_time = (TextView) convertView.findViewById(R.id.chat_time);
+			holder.iv_getImg = (ImageView) convertView.findViewById(R.id.chat_img);
+			holder.fl = (FrameLayout) convertView.findViewById(R.id.chat_img_container);
 			convertView.setTag(R.id.viewholder, holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag(R.id.viewholder);
@@ -248,85 +248,33 @@ public class SingleChatAdapter extends BaseAdapter {
 			} else {
 				holder = new ViewHolder();
 				if (flag)
-					convertView = LayoutInflater.from(context).inflate(
-							R.layout.item_chat_me, null, false);
+					convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_me, null, false);
 				else
-					convertView = LayoutInflater.from(context).inflate(
-							R.layout.item_chat_other, null, false);
+					convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_other, null, false);
 				holder.flag = flag;
-				holder.iv_photo = (ImageView) convertView
-						.findViewById(R.id.chat_photo);
-				holder.tv_content = (TextView) convertView
-						.findViewById(R.id.chat_content);
-				holder.tv_name = (TextView) convertView
-						.findViewById(R.id.chat_name);
-				holder.tv_time = (TextView) convertView
-						.findViewById(R.id.chat_time);
-				holder.iv_getImg = (ImageView) convertView
-						.findViewById(R.id.chat_img);
-				holder.fl = (FrameLayout) convertView
-						.findViewById(R.id.chat_img_container);
+				holder.iv_photo = (ImageView) convertView.findViewById(R.id.chat_photo);
+				holder.tv_content = (TextView) convertView.findViewById(R.id.chat_content);
+				holder.tv_name = (TextView) convertView.findViewById(R.id.chat_name);
+				holder.tv_time = (TextView) convertView.findViewById(R.id.chat_time);
+				holder.iv_getImg = (ImageView) convertView.findViewById(R.id.chat_img);
+				holder.fl = (FrameLayout) convertView.findViewById(R.id.chat_img_container);
 				convertView.setTag(R.id.viewholder, holder);
 			}
 		}
 		holder.fl.setVisibility(View.INVISIBLE);
 		holder.tv_content.setVisibility(View.VISIBLE);
-		String imgUrls = photos.get(info.getIsFrom());
-		if (imgUrls == null)
-			imgUrls = "";
-		bmUtils.display(holder.iv_photo,
-				Utils.processResultStr(Constans.URL + imgUrls, "_150_"));
-		// 时间需进行处理，如果两次间隔5分钟以内，则无需示时间
-		if (position == 0) {
-			// 第一个语句必须显示时间
-			holder.tv_time.setVisibility(View.VISIBLE);
-			holder.tv_time.setText(info.getTime());
-		} else {
-			SimpleDateFormat format = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
-			try {
-				Date nowDate = format.parse(data.get(position).getTime());
-				Date lastDate = format.parse(data.get(position - 1).getTime());
-				long second = Math
-						.abs((lastDate.getTime() - nowDate.getTime()) / 1000);
-				if (second > 300) {
-					// 两次间隔大于300秒
-					holder.tv_time.setVisibility(View.VISIBLE);
-					holder.tv_time.setText(info.getTime());
-				} else {
-					// 两次间隔小于300秒，无需显示时间
-					holder.tv_time.setVisibility(View.INVISIBLE);
-					holder.tv_time.setText("");
-				}
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		if (!info.getImgUrl().equals("")) {
-			holder.fl.setVisibility(View.VISIBLE);
-			holder.tv_content.setVisibility(View.INVISIBLE);
-			holder.iv_getImg.setVisibility(View.VISIBLE);
-			bmUtils.display(holder.iv_getImg, info.getImgUrl());
-		} else {
-			holder.tv_name.setText(names.get(info.getIsFrom()));
-			holder.tv_content.setText(info.getContent());
-		}
-		// 为photo设置一个监听器，点击可进入详情
-		final String userId = info.getIsFrom().split("@")[0].substring(1);
-		holder.iv_photo.setOnClickListener(new OnClickListener() {
+		if (message.getType() == Type.TXT) {
+			holder.tv_name.setText(message.getTo());
+			holder.tv_content.setText(message.getBody().toString());
+			holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
+		} else if (message.getType() == Type.IMAGE) {
 
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(context,
-						PersonalDetailActivity.class);
-				intent.putExtra("userId", userId);
-				context.startActivity(intent);
-			}
-		});
+		}
 		return convertView;
 	}
 
 	private class ViewHolder {
+
 		// 这个flag代表该视图发起的对象是“我”，还是“其他人”，如果是“我”，为true，其他人为false
 		boolean flag;
 		TextView tv_name;

@@ -1,0 +1,57 @@
+package com.android.joocola.entity;
+
+import com.lidroid.xutils.db.annotation.Id;
+
+/**
+ * 
+ * 用于存放聊天消息的相关信息（用于在消息列表使用）
+ * 
+ * @author lixiaosong
+ * 
+ */
+public class MyChatInfo {
+
+	/**
+	 * 主键
+	 */
+	@Id
+	public int id;
+	/**
+	 * 会话用户/组用户
+	 */
+	public String user;
+	/**
+	 * 最后一条消息的id
+	 */
+	public String messageId;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
+	}
+
+	@Override
+	public String toString() {
+		return "ChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + "]";
+	}
+
+}

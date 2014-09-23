@@ -43,7 +43,7 @@ import com.android.joocola.activity.IssuedinvitationActivity;
 import com.android.joocola.activity.PersonalCenterActivity;
 import com.android.joocola.adapter.IssueAdapter;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.chat.XMPPChat;
+import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.fragment.Messagefragment;
 import com.android.joocola.fragment.MyFragmentPagerAdapter;
@@ -323,7 +323,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 			}.start();
 			return;
 		} else {
-			XMPPChat.stopEveryThing();
+			EaseMobChat.getInstance().endWork();
 			// stopService(new Intent(this, DefineService.class));
 			System.exit(0);
 
