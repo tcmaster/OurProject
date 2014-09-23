@@ -121,7 +121,6 @@ public class ChatActivity extends BaseActivity {
 		handler = new Handler();
 		scrollBottom();
 		receive = new MyReceive();
-		// userName = "u" + getIntent().getStringExtra("user");
 		IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
 		registerReceiver(receive, filter);
 	}

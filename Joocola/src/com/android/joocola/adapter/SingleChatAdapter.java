@@ -23,8 +23,10 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.Type;
+import com.easemob.chat.TextMessageBody;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.DbUtils;
+import com.lidroid.xutils.util.LogUtils;
 
 /**
  * 用于更新得到消息的视图信息
@@ -81,6 +83,11 @@ public class SingleChatAdapter extends BaseAdapter {
 	 * 当前已展示的页面
 	 */
 	private int page;
+	/**
+	 * 本界面的TAG标志
+	 */
+	private final String TAG = "SingleChatAdapter";
+	public boolean DEBUG = true;
 
 	public SingleChatAdapter(Context context, String user) {
 		this.context = context;
@@ -227,7 +234,12 @@ public class SingleChatAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		EMMessage message = data.get(position + currentCount);
-		boolean flag = conversation.getUserName().equals(message.getFrom()) ? true : false;
+		if (DEBUG) {
+			LogUtils.e(message.getFrom() + " is from " + message.getTo() + " is to " + message.getBody() + " is body");
+			LogUtils.e(conversation.getUserName());
+		}
+		boolean flag = ("u" + JoocolaApplication.getInstance().getPID()).equals(message.getFrom()) ? true : false;
+
 		if (convertView == null) {
 			holder = new ViewHolder();
 			if (flag)
@@ -265,7 +277,7 @@ public class SingleChatAdapter extends BaseAdapter {
 		holder.tv_content.setVisibility(View.VISIBLE);
 		if (message.getType() == Type.TXT) {
 			holder.tv_name.setText(message.getTo());
-			holder.tv_content.setText(message.getBody().toString());
+			holder.tv_content.setText(((TextMessageBody) message.getBody()).getMessage());
 			holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
 		} else if (message.getType() == Type.IMAGE) {
 
