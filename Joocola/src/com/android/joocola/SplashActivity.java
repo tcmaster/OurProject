@@ -38,6 +38,7 @@ public class SplashActivity extends Activity {
 	private String userName;
 	private static final String AutoUrl = "Sys.UserController.AppAutoLogon.ashx";
 	private Editor editor;
+	private int versioncodeByPackage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class SplashActivity extends Activity {
 		mEditor = isFirstPreferences.edit();
 		Log.e("bb", isFirst() + "");
 		if (isFirst()) {
-			mEditor.putBoolean(IS_FIRST, false);
+			mEditor.putInt(IS_FIRST, versioncodeByPackage);
 			mEditor.commit();
 			handler.postDelayed(new Runnable() {
 
@@ -137,8 +138,14 @@ public class SplashActivity extends Activity {
 	}
 
 	private boolean isFirst() {
-		boolean isfirst = isFirstPreferences.getBoolean(IS_FIRST, true);
-		return isfirst;
+		int versioncodeByshare = isFirstPreferences.getInt(IS_FIRST, 0);
+		versioncodeByPackage = Utils.getVersionCode(SplashActivity.this);
+		if (versioncodeByPackage != versioncodeByshare)
+			return true;
+		else {
+
+			return false;
+		}
 	}
 
 	/**
