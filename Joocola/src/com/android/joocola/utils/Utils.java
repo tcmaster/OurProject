@@ -25,6 +25,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -423,5 +426,19 @@ public class Utils {
 			}
 		});
 		return mConnectionDialog;
+	}
+
+	public static int getVersionCode(Activity mActivity) {
+		// 获取packagemanager的实例
+		PackageManager packageManager = mActivity.getPackageManager();
+		// getPackageName()是你当前类的包名，0代表是获取版本信息
+		PackageInfo packInfo = null;
+		try {
+			packInfo = packageManager.getPackageInfo(mActivity.getPackageName(), 0);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		int version = packInfo.versionCode;
+		return version;
 	}
 }
