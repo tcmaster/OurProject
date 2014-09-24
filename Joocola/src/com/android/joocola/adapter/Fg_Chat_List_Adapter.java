@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
+import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
@@ -24,6 +25,7 @@ import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.TextMessageBody;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.DbUtils;
+import com.lidroid.xutils.util.LogUtils;
 
 /**
  * 消息列表界面列表的适配器
@@ -92,6 +94,7 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// 得到当前的用户
 		String user = data.get(position).getUser();
+		LogUtils.e("确定了，user是 " + user);
 		// 得到当前用户的会话
 		EMConversation conversation = EMChatManager.getInstance().getConversation(user);
 		// 得到当前用户会话的最后一条消息
@@ -110,7 +113,11 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		holder.tv_nickName.setText(names.get(user));
 		holder.tv_date.setText(Utils.formatDate(new Date(lastMessage.getMsgTime())));
-		utils.display(holder.iv_photo, photos.get(user));
+		if (photos.get(user) != null) {
+			String url = Constans.URL + Utils.processResultStr(photos.get(user), "_150_");
+			LogUtils.e(url);
+			utils.display(holder.iv_photo, url);
+		}
 		// 看类型
 		if (lastMessage.getType() == Type.TXT) {
 			holder.tv_message.setText(((TextMessageBody) lastMessage.getBody()).getMessage());

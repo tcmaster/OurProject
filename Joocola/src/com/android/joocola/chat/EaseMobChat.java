@@ -164,6 +164,7 @@ public class EaseMobChat {
 			MyChatInfo info = new MyChatInfo();
 			info.messageId = msgId;
 			info.user = from;
+			info.PID = JoocolaApplication.getInstance().getPID();
 			try {
 				temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", from));
 				if (temp == null || temp.size() == 0) {

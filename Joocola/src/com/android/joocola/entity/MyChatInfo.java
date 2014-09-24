@@ -24,6 +24,10 @@ public class MyChatInfo {
 	 * 最后一条消息的id
 	 */
 	public String messageId;
+	/**
+	 * 该条消息记录所属的用户
+	 */
+	public String PID;
 
 	public int getId() {
 		return id;
@@ -49,9 +53,17 @@ public class MyChatInfo {
 		this.messageId = messageId;
 	}
 
+	public String getPID() {
+		return PID;
+	}
+
+	public void setPID(String pID) {
+		PID = pID;
+	}
+
 	@Override
 	public String toString() {
-		return "ChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + "]";
+		return "MyChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + ", PID=" + PID + "]";
 	}
 
 }

@@ -31,6 +31,7 @@ import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
@@ -67,6 +68,8 @@ public class Messagefragment extends Fragment {
 	 * 是否第一次显示界面
 	 */
 	private boolean isFirst = true;
+	// 本页面的数据源
+	private List<MyChatInfo> tResult;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,61 +102,62 @@ public class Messagefragment extends Fragment {
 	}
 
 	private void updateData() {
-		List<MyChatInfo> tResult;
+
 		try {
-			tResult = db.findAll(MyChatInfo.class);
-			HttpPostInterface interface1 = new HttpPostInterface();
-			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < tResult.size(); i++) {
-				if (i == tResult.size() - 1)
-					;
-				// builder.append(tResult[i].split("-")[1].substring(1));
-				else
-					;
-				// builder.append(tResult[i].split("-")[1].substring(1) + ",");
-			}
-			interface1.addParams("UserIDs", builder.toString());
-			interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
-
-				@Override
-				public void httpPostResolveData(String result) {
-					if (result == null || result.equals("")) {
-						handler.post(new Runnable() {
-
-							@Override
-							public void run() {
-								Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
-							}
-						});
-					} else {
-						JSONObject object;
-						try {
-							object = new JSONObject(result);
-							JSONArray array = object.getJSONArray("Entities");
-							for (int i = 0; i < array.length(); i++) {
-								final JSONObject tempData = array.getJSONObject(i);
-								handler.post(new Runnable() {
-
-									@Override
-									public void run() {
-										try {
-											adapter.addName("u" + tempData.getString("PID"), tempData.getString("NickName"));
-											adapter.addPhotos("u" + tempData.getString("PID"), tempData.getString("PhotoUrl"));
-										} catch (JSONException e) {
-											e.printStackTrace();
-										}
-									}
-								});
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-
-					}
+			tResult = db.findAll(Selector.from(MyChatInfo.class).where("PID", "=", JoocolaApplication.getInstance().getPID()));
+			// 绑定最新数据
+			if (tResult != null) {
+				adapter.bindData(tResult);
+				// 下面这段是为了获得当前的用户昵称,用户头像
+				HttpPostInterface interface1 = new HttpPostInterface();
+				StringBuilder builder = new StringBuilder();
+				for (int i = 0; i < tResult.size(); i++) {
+					if (i == tResult.size() - 1)
+						builder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()));
+					else
+						builder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
 				}
-			});
+				interface1.addParams("UserIDs", builder.toString());
+				interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+
+					@Override
+					public void httpPostResolveData(String result) {
+						if (result == null || result.equals("")) {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
+								}
+							});
+						} else {
+							JSONObject object;
+							try {
+								object = new JSONObject(result);
+								JSONArray array = object.getJSONArray("Entities");
+								for (int i = 0; i < array.length(); i++) {
+									final JSONObject tempData = array.getJSONObject(i);
+									handler.post(new Runnable() {
+
+										@Override
+										public void run() {
+											try {
+												adapter.addName("u" + tempData.getString("PID"), tempData.getString("NickName"));
+												adapter.addPhotos("u" + tempData.getString("PID"), tempData.getString("PhotoUrl"));
+											} catch (JSONException e) {
+												e.printStackTrace();
+											}
+										}
+									});
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				});
+			}
 		} catch (DbException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -162,7 +166,7 @@ public class Messagefragment extends Fragment {
 	public void onlistItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Intent intent = new Intent(getActivity(), ChatActivity.class);
 		intent.putExtra("nickName", "");
-		intent.putExtra("userId", "");
+		intent.putExtra("userId", tResult.get(position).user.substring(1));
 		intent.putExtra("userNickName", "");
 		intent.putExtra("isSingle", true);
 		startActivity(intent);

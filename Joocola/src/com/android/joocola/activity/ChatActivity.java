@@ -31,9 +31,11 @@ import com.android.joocola.adapter.SingleChatAdapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.entity.MyChatInfo;
+import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
+import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.utils.Utils;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
@@ -44,6 +46,7 @@ import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.exception.DbException;
+import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
@@ -117,6 +120,7 @@ public class ChatActivity extends BaseActivity {
 		iv_add_pic.setVisibility(View.GONE);
 		db = JoocolaApplication.getInstance().getDB();
 		adapter = new SingleChatAdapter(this, userName);
+		getUserImgUrl(new String[] { "u" + JoocolaApplication.getInstance().getPID(), "u" + userName });
 		lv_container.setAdapter(adapter);
 		handler = new Handler();
 		scrollBottom();
@@ -157,10 +161,12 @@ public class ChatActivity extends BaseActivity {
 					if (DEBUG)
 						Log.e(TAG, "发送消息成功 ");
 					MyChatInfo info = new MyChatInfo();
+					LogUtils.e("确定了，userName在发送时是 " + userName);
 					EMConversation conversation = EMChatManager.getInstance().getConversation(userName);
 					EMMessage message = conversation.getLastMessage();
 					info.messageId = message.getMsgId();
 					info.user = userName;
+					info.PID = JoocolaApplication.getInstance().getPID();
 					List<MyChatInfo> temp = null;
 					try {
 						temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", userName));
@@ -179,7 +185,6 @@ public class ChatActivity extends BaseActivity {
 
 						@Override
 						public void run() {
-							// TODO Auto-generated method stub
 							adapter.updateChatList();
 							et_content.setText("");
 							scrollBottom();
@@ -292,10 +297,11 @@ public class ChatActivity extends BaseActivity {
 						for (int i = 0; i < array.length(); i++) {
 							final int temp = i;
 							final JSONObject userObject = array.getJSONObject(i);
-
+							UserInfo info = new UserInfo();
+							JsonUtils.getUserInfo(userObject, info);
+							adapter.addPhotos("u" + info.getPID(), info.getPhotoUrl());
 						}
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
