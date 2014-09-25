@@ -31,6 +31,7 @@ public class JoocolaApplication extends Application {
 	// 存储基础数据
 	private ArrayList<BaseDataInfo> baseInfoList;
 	private static final String BASEDATAURL = "Sys.BaseDataController.GetDatas.ashx";
+	private static final String CITYURL = "Bus.AppointController.QueryAppointCities.ashx";
 	// 发布邀约的类别实体类
 	private ArrayList<IssueInfo> issueInfos = new ArrayList<IssueInfo>();
 	// 当前登录用户信息,只有本次登录成功才可使用
@@ -51,6 +52,11 @@ public class JoocolaApplication extends Application {
 	 */
 	private BitmapCache cache;
 
+	/**
+	 * 
+	 */
+	private ArrayList<String> mCitys = new ArrayList<String>();
+
 	@Override
 	public void onCreate() {
 		instance = this;
@@ -66,6 +72,7 @@ public class JoocolaApplication extends Application {
 		// }
 		cache = new BitmapCache();
 		EaseMobChat.getInstance().init(this);
+
 		// startService(new Intent(this, DefineService.class));
 
 	}
@@ -74,6 +81,28 @@ public class JoocolaApplication extends Application {
 		if (cache == null)
 			cache = new BitmapCache();
 		return cache;
+	}
+
+	/**
+	 * 获取邀约城市列表
+	 * 
+	 * @see:
+	 * @since:
+	 * @author: bb
+	 * @date:2014年9月24日
+	 */
+	public void getIssueCitys() {
+		Log.e("bb", "getIssueCitys");
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		if (Utils.isNetConn(this)) {
+			httpPostInterface.getData(CITYURL, new HttpPostCallBack() {
+
+				@Override
+				public void httpPostResolveData(String result) {
+					Log.e("bb", "------------------->" + result);
+				}
+			});
+		}
 	}
 
 	// 得到基础数据信息
@@ -314,6 +343,14 @@ public class JoocolaApplication extends Application {
 		});
 		mApplication.setIssueInfos(mInfos);
 		return mInfos;
+	}
+
+	public ArrayList<String> getmCitys() {
+		return mCitys;
+	}
+
+	public void setmCitys(ArrayList<String> mCitys) {
+		this.mCitys = mCitys;
 	}
 
 }

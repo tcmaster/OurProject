@@ -1,5 +1,8 @@
 package com.android.joocola.activity;
 
+import java.util.ArrayList;
+
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +11,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.AMap.InfoWindowAdapter;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
+import com.amap.api.maps2d.AMap.OnMarkerClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
@@ -27,13 +34,18 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.GeocodeSearch.OnGeocodeSearchListener;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.poisearch.PoiItemDetail;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
+import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
+import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.android.joocola.R;
 import com.android.joocola.utils.AMapUtil;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 
-public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchListener, OnClickListener,
-		OnMapClickListener {
+public class GaodeMapActivity extends Activity implements OnGeocodeSearchListener, OnClickListener,
+		OnMapClickListener, OnPoiSearchListener, InfoWindowAdapter, OnMarkerClickListener {
 
 	private MapView mapView;
 	private AMap aMap;
@@ -43,29 +55,32 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 	private Marker geoMarker;
 	private Marker regeoMarker;
 	private String address;
-	private Button searchBtn;
-	private EditText editText, cityEdit;
 	private String cityString;
-
+	private String[] itemDeep = { "餐饮", "景区", "酒店", "影院" };
 	private double locationX;
 	private double locationY;
 	private LatLonPoint latLonPoint;
 	private String locationCity;
 	private SharedPreferences sharedPreferences;
+	private Spinner mSpinner;
+	private ListView mListView;
+	private PoiSearch poiSearch;
+	private PoiSearch.Query mQuery;// Poi查询条件类
+	private ArrayList<String> mSearchList = new ArrayList<String>();
+	private ArrayAdapter<String> mSearchAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issue_gaodeditu);
-		getActionBar().hide();
+
 		Intent intent = getIntent();
-		// address = intent.getStringExtra("address");
 		mapView = (MapView) findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		locationCity = sharedPreferences.getString("LocationCity", "北京");
+		getActionBar().setTitle(locationCity);
 		init();
-		// getLatlon(address);
 
 	}
 
@@ -76,17 +91,21 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		if (aMap == null) {
 			aMap = mapView.getMap();
 			aMap.setOnMapClickListener(this);
+			aMap.setOnMarkerClickListener(this);// 添加点击marker监听事件
+			aMap.setInfoWindowAdapter(this);// 添加显示infowindow监听事件
 			geoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 			regeoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 		}
-		editText = (EditText) this.findViewById(R.id.issue_map_edit);
-		searchBtn = (Button) this.findViewById(R.id.issue_map_searchbtn);
-		searchBtn.setOnClickListener(this);
-		cityEdit = (EditText) this.findViewById(R.id.issue_city_edit);
-		cityEdit.setText(locationCity);
+		;
 		geocoderSearch = new GeocodeSearch(this);
 		geocoderSearch.setOnGeocodeSearchListener(this);
 		progDialog = new ProgressDialog(this);
+		mListView = (ListView) this.findViewById(R.id.map_listview);
+		mSpinner = (Spinner) this.findViewById(R.id.map_spinner);
+		ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemDeep);
+		mSpinner.setAdapter(mAdapter);
+		mSearchAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mSearchList);
+		mListView.setAdapter(mSearchAdapter);
 
 	}
 
@@ -161,7 +180,7 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 	 */
 	@Override
 	public void onGeocodeSearched(GeocodeResult result, int rCode) {
-		dismissDialog();
+		// dismissDialog();
 		if (rCode == 0) {
 			if (result != null && result.getGeocodeAddressList() != null && result.getGeocodeAddressList().size() > 0) {
 				GeocodeAddress address = result.getGeocodeAddressList().get(0);
@@ -185,16 +204,20 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		}
 	}
 
+	/**
+	 * 点击地图后走这
+	 */
 	@Override
 	public void onRegeocodeSearched(RegeocodeResult result, int rCode) {
-		dismissDialog();
+		// dismissDialog();
 		if (rCode == 0) {
 			if (result != null && result.getRegeocodeAddress() != null && result.getRegeocodeAddress().getFormatAddress() != null) {
 				addressName = result.getRegeocodeAddress().getFormatAddress() + "附近";
 				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(latLonPoint), 15));
 				regeoMarker.setPosition(AMapUtil.convertToLatLng(latLonPoint));
 				address = addressName;
-				editText.setText(addressName);
+				doSearchQuery(result.getRegeocodeQuery().getPoint());
+				Toast.makeText(GaodeMapActivity.this, address, Toast.LENGTH_SHORT).show();
 			} else {
 				Utils.toast(GaodeMapActivity.this, "无此地址");
 			}
@@ -215,8 +238,8 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		intent.putExtra("locationX", locationX);
 		intent.putExtra("locationY", locationY);
 		intent.putExtra("address", address);
-		String city = cityEdit.getText().toString();
-		intent.putExtra("LocationCityName", city);
+		// String city = cityEdit.getText().toString();
+		// intent.putExtra("LocationCityName", city);
 		setResult(40, intent);
 		finish();
 	}
@@ -233,11 +256,6 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.issue_map_searchbtn:
-			address = editText.getText().toString();
-			cityString = cityEdit.getText().toString();
-			getLatlon(address, cityString);
-			break;
 
 		default:
 			break;
@@ -251,4 +269,71 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		locationY = arg0.longitude;
 		getAddress(latLonPoint);
 	}
+
+	@Override
+	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
+
+	}
+
+	@Override
+	public void onPoiSearched(PoiResult result, int rCode) {
+		dismissDialog();
+		if (rCode == 0) {
+			if (result != null && result.getQuery() != null) {// 搜索poi的结果
+				mSearchList.clear();
+				for (int i = 0; i < result.getPois().size(); i++) {
+					Log.e("bb", "getAdName" + result.getPois().get(i).getAdName());
+					Log.e("bb", "getDirection" + result.getPois().get(i).getDirection());
+					Log.e("bb", "getAdName" + result.getPois().get(i).getDistance());
+					Log.e("bb", "getProvinceName" + result.getPois().get(i).getProvinceName());
+					Log.e("bb", "getTitle" + result.getPois().get(i).getTitle());
+					Log.e("bb", "getDistance" + result.getPois().get(i).getDistance());
+					Log.e("bb", "getLatitude" + result.getPois().get(i).getLatLonPoint().getLongitude());
+					Log.e("bb", "getLongitude" + result.getPois().get(i).getLatLonPoint().getLatitude());
+					mSearchList.add(result.getPois().get(i).getTitle());
+				}
+				mSearchAdapter.notifyDataSetChanged();
+
+			} else {
+				Utils.toast(GaodeMapActivity.this, "对不起，没有搜索到相关数据！");
+			}
+		} else if (rCode == 27) {
+			Utils.toast(GaodeMapActivity.this, "搜索失败,请检查网络连接！");
+		} else if (rCode == 32) {
+			Utils.toast(GaodeMapActivity.this, "key验证无效！");
+		} else {
+			Utils.toast(GaodeMapActivity.this, getString(R.string.error_other) + rCode);
+		}
+	}
+
+	@Override
+	public View getInfoContents(Marker arg0) {
+		return null;
+	}
+
+	@Override
+	public View getInfoWindow(Marker arg0) {
+		return null;
+	}
+
+	@Override
+	public boolean onMarkerClick(Marker arg0) {
+		return false;
+	}
+
+	/**
+	 * 开始进行poi搜索
+	 */
+	protected void doSearchQuery(LatLonPoint lp) {
+		mQuery = new PoiSearch.Query("", mSpinner.getSelectedItem().toString(), "北京市");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+		mQuery.setPageSize(30);// 设置每页最多返回多少条poiitem
+
+		if (lp != null) {
+			poiSearch = new PoiSearch(this, mQuery);
+			poiSearch.setOnPoiSearchListener(this);
+			poiSearch.setBound(new SearchBound(lp, 2000, true));//
+			poiSearch.searchPOIAsyn();// 异步搜索
+		}
+	}
+
 }
