@@ -183,4 +183,12 @@ public class Constans {
 	public static final int INTENT_TIME = 1;
 	public static final int BACKTOISSUE_OK = 2;
 	public static final int BACKTOISSUE_CANCEL = 3;
+	/**
+	 * 聊天类型，单聊
+	 */
+	public static final int CHAT_TYPE_SINGLE = 1;
+	/**
+	 * 聊天类型，群聊
+	 */
+	public static final int CHAT_TYPE_MULTI = 2;
 }

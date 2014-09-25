@@ -7,8 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -59,7 +61,13 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 public class ChatActivity extends BaseActivity {
 
 	// 标识位
+	/**
+	 * 相册
+	 */
 	private static final int PICKPICTURE = 1;
+	/**
+	 * 拍照
+	 */
 	private static final int TAKEPHOTO = 2;
 
 	/**
@@ -90,9 +98,13 @@ public class ChatActivity extends BaseActivity {
 	 */
 	private ChatType chatType = ChatType.Chat;
 	/**
-	 * 聊天用户,由上一个页面传入(得到的值为userId)
+	 * 聊天用户昵称/房间名
 	 */
 	private String userName = "test1";
+	/**
+	 * 与该界面聊天的用户ID/房间ID(注意，是uX或aX,不是X)
+	 */
+	private String userId = "u0";
 	private String TAG = "ChatActivity";
 	private boolean DEBUG = true;
 	/**
@@ -114,19 +126,8 @@ public class ChatActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		ViewUtils.inject(this);
-		initActionBar();
-		userName = "u" + getIntent().getStringExtra("userId");
-		// 多人聊天时没有传送图片功能，单人也暂时没有了。。
-		iv_add_pic.setVisibility(View.GONE);
-		db = JoocolaApplication.getInstance().getDB();
-		adapter = new SingleChatAdapter(this, userName);
-		getUserImgUrl(new String[] { "u" + JoocolaApplication.getInstance().getPID(), "u" + userName });
-		lv_container.setAdapter(adapter);
-		handler = new Handler();
-		scrollBottom();
-		receive = new MyReceive();
-		IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
-		registerReceiver(receive, filter);
+		initData();
+		initViews();
 	}
 
 	@Override
@@ -136,7 +137,41 @@ public class ChatActivity extends BaseActivity {
 
 	private void initActionBar() {
 		useCustomerActionBar();
-		getActionBarleft().setText("聊天");
+		getActionBarleft().setText(userName);
+		getActionBarTitle().setText("");
+		getActionBarRight().setText("");
+	}
+
+	/**
+	 * 初始化本界面相关数据
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-9-25
+	 */
+	private void initData() {
+		userId = "u" + getIntent().getStringExtra("userId");
+		userName = getIntent().getStringExtra("userNickName");
+		db = JoocolaApplication.getInstance().getDB();
+		adapter = new SingleChatAdapter(this, userId);
+		handler = new Handler();
+		receive = new MyReceive();
+		IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
+		registerReceiver(receive, filter);
+	}
+
+	/**
+	 * 初始化本界面视图
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-9-25
+	 */
+	private void initViews() {
+		initActionBar();
+		// 下面这句话可以屏蔽聊天功能
+		// iv_add_pic.setVisibility(View.GONE);
+		getUserImgUrl(new String[] { JoocolaApplication.getInstance().getPID(), getIntent().getStringExtra("userId") });
+		lv_container.setAdapter(adapter);
+		scrollBottom();
 	}
 
 	@OnClick({ R.id.send_btn, R.id.chat_showHistory_tv, R.id.chat_add_pic_iv })
@@ -149,48 +184,16 @@ public class ChatActivity extends BaseActivity {
 				return;
 			}
 			if (DEBUG) {
-				Log.e(TAG, userName);
+				Log.e(TAG, userId);
 				Log.e(TAG, chatType.toString());
 				Log.e(TAG, content);
 			}
-			EaseMobChat.getInstance().sendTxtMessage(userName, chatType, content, new EMCallBack() {
+			EaseMobChat.getInstance().sendTxtMessage(userId, chatType, content, new EMCallBack() {
 
 				@Override
 				public void onSuccess() {
-					// 发送成功，发送的消息需要显示在聊天会话上
-					if (DEBUG)
-						Log.e(TAG, "发送消息成功 ");
-					MyChatInfo info = new MyChatInfo();
-					LogUtils.e("确定了，userName在发送时是 " + userName);
-					EMConversation conversation = EMChatManager.getInstance().getConversation(userName);
-					EMMessage message = conversation.getLastMessage();
-					info.messageId = message.getMsgId();
-					info.user = userName;
-					info.PID = JoocolaApplication.getInstance().getPID();
-					List<MyChatInfo> temp = null;
-					try {
-						temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", userName));
-						if (temp == null || temp.size() == 0) {
-							db.save(info);
-						} else {
-							info = temp.get(0);
-							info.messageId = message.getMsgId();
-							db.update(info, "user");
-						}
-					} catch (DbException e) {
-						e.printStackTrace();
-					}
-					// 这里需要更新adapter,过了测试阶段这些代码需要加上
-					handler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							adapter.updateChatList();
-							et_content.setText("");
-							scrollBottom();
-						}
-					});
-
+					// 发送成功
+					doSendMessageSuccess();
 				}
 
 				@Override
@@ -200,26 +203,25 @@ public class ChatActivity extends BaseActivity {
 
 				@Override
 				public void onError(int arg0, String arg1) {
-					// 发送失败，该条消息发送作废
-					if (DEBUG)
-						Log.e(TAG, "发送消息失败 " + arg0 + " " + arg1);
-					handler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							et_content.setText("");
-							scrollBottom();
-						}
-					});
-
+					// 发送失败
+					doSendMessageFail();
 				}
 			});
 
 			break;
 		case R.id.chat_showHistory_tv:
-			adapter.getHistory();
+			final int pos = adapter.getHistory();
+			lv_container.post(new Runnable() {
+
+				@Override
+				public void run() {
+					lv_container.setSelection(pos);
+				}
+			});
+
 			break;
 		case R.id.chat_add_pic_iv:
+			findPic();
 			break;
 
 		default:
@@ -228,6 +230,12 @@ public class ChatActivity extends BaseActivity {
 
 	}
 
+	/**
+	 * 从图库获取图片
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-9-25
+	 */
 	private void getPhotoFromGallery() {
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_PICK);
@@ -235,6 +243,12 @@ public class ChatActivity extends BaseActivity {
 		startActivityForResult(intent, PICKPICTURE);
 	}
 
+	/**
+	 * 拍照获取图片
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-9-25
+	 */
 	private void getPhotoByTakePicture() {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED)) {
@@ -297,9 +311,16 @@ public class ChatActivity extends BaseActivity {
 						for (int i = 0; i < array.length(); i++) {
 							final int temp = i;
 							final JSONObject userObject = array.getJSONObject(i);
-							UserInfo info = new UserInfo();
+							final UserInfo info = new UserInfo();
 							JsonUtils.getUserInfo(userObject, info);
-							adapter.addPhotos("u" + info.getPID(), info.getPhotoUrl());
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									adapter.addPhotos("u" + info.getPID(), info.getPhotoUrl());
+								}
+							});
+
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -317,7 +338,8 @@ public class ChatActivity extends BaseActivity {
 				Uri uri = data.getData();
 				String path = Utils.getRealPathFromURI(uri, ChatActivity.this);
 				File file = new File(path);
-				// 上传
+				// 发送
+				sendImgToOther(file);
 
 			}
 		} else if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
@@ -330,9 +352,109 @@ public class ChatActivity extends BaseActivity {
 				bm = Utils.rotaingImageView(Utils.rotateImg(file.getAbsolutePath()), bm);
 			}
 			File resultFile = Utils.createBitmapFile(bm);
-			// 上传
+			// 发送
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	public void sendImgToOther(File file) {
+		EaseMobChat.getInstance().sendImgMessage(userId, chatType, file.getAbsolutePath(), new EMCallBack() {
+
+			@Override
+			public void onSuccess() {
+				// 发送成功
+				doSendMessageSuccess();
+			}
+
+			@Override
+			public void onProgress(int arg0, String arg1) {
+				// 处理中
+			}
+
+			@Override
+			public void onError(int arg0, String arg1) {
+				// 发送消息失败
+				doSendMessageFail();
+			}
+		});
+	}
+
+	/**
+	 * 发送消息成功的后续处理
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-9-25
+	 */
+	public void doSendMessageSuccess() {
+		// 发送成功，发送的消息需要显示在聊天会话上
+		if (DEBUG)
+			Log.e(TAG, "发送消息成功 ");
+		MyChatInfo info = new MyChatInfo();
+		LogUtils.e("确定了，userId在发送时是 " + userId);
+		EMConversation conversation = EMChatManager.getInstance().getConversation(userId);
+		EMMessage message = conversation.getLastMessage();
+		info.messageId = message.getMsgId();
+		info.user = userId;
+		info.PID = JoocolaApplication.getInstance().getPID();
+		List<MyChatInfo> temp = null;
+		try {
+			temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", userId));
+			if (temp == null || temp.size() == 0) {
+				db.save(info);
+			} else {
+				info = temp.get(0);
+				info.messageId = message.getMsgId();
+				db.update(info, "user");
+			}
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+		// 这里需要更新adapter,过了测试阶段这些代码需要加上
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				adapter.updateChatList();
+				et_content.setText("");
+				scrollBottom();
+			}
+		});
+	}
+
+	public void doSendMessageFail() {
+		// 发送失败，该条消息发送作废
+		if (DEBUG)
+			Log.e(TAG, "发送消息失败 ");
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				Utils.toast(ChatActivity.this, "消息发送失败");
+				et_content.setText("");
+				scrollBottom();
+			}
+		});
+	}
+
+	public void findPic() {
+		/**
+		 * 增加图片并上传的逻辑
+		 */
+		AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+		builder.setTitle("添加照片").setMessage("选择从哪添加照片").setPositiveButton("相册", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				getPhotoFromGallery();
+			}
+		}).setNegativeButton("拍照", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				getPhotoByTakePicture();
+			}
+		});
+		builder.create().show();
 	}
 
 	private class MyReceive extends BroadcastReceiver {

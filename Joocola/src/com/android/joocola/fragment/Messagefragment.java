@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.activity.ChatActivity;
@@ -37,6 +38,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
 
 /**
+ * 聊天列表界面（单聊，群聊）
  * 
  * @author bb，lixiaosong
  * 
@@ -164,10 +166,10 @@ public class Messagefragment extends Fragment {
 
 	@OnItemClick(R.id.chatlist)
 	public void onlistItemClick(AdapterView<?> parent, View view, int position, long id) {
+		TextView nickName_tv = (TextView) view.findViewById(R.id.ml_nickName_tv);
 		Intent intent = new Intent(getActivity(), ChatActivity.class);
-		intent.putExtra("nickName", "");
 		intent.putExtra("userId", tResult.get(position).user.substring(1));
-		intent.putExtra("userNickName", "");
+		intent.putExtra("userNickName", nickName_tv.getText().toString());
 		intent.putExtra("isSingle", true);
 		startActivity(intent);
 	}
@@ -191,6 +193,5 @@ public class Messagefragment extends Fragment {
 		public void onReceive(Context context, Intent intent) {
 			updateData();
 		}
-
 	}
 }

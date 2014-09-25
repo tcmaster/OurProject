@@ -28,6 +28,10 @@ public class MyChatInfo {
 	 * 该条消息记录所属的用户
 	 */
 	public String PID;
+	/**
+	 * 该条消息的类型,取值见Constance类
+	 */
+	public String chatType;
 
 	public int getId() {
 		return id;
@@ -61,9 +65,17 @@ public class MyChatInfo {
 		PID = pID;
 	}
 
+	public String getChatType() {
+		return chatType;
+	}
+
+	public void setChatType(String chatType) {
+		this.chatType = chatType;
+	}
+
 	@Override
 	public String toString() {
-		return "MyChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + ", PID=" + PID + "]";
+		return "MyChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + ", PID=" + PID + ", chatType=" + chatType + "]";
 	}
 
 }

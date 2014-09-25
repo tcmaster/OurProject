@@ -318,7 +318,7 @@ public class PersonalDetailActivity extends BaseActivity {
 
 							@Override
 							public void run() {
-								like_tv.setText("已喜欢");
+								like_tv.setText("已关注");
 							}
 						});
 					} else {
@@ -326,7 +326,7 @@ public class PersonalDetailActivity extends BaseActivity {
 
 							@Override
 							public void run() {
-								like_tv.setText("喜欢");
+								like_tv.setText("关注");
 							}
 						});
 					}
@@ -402,7 +402,7 @@ public class PersonalDetailActivity extends BaseActivity {
 								@Override
 								public void run() {
 									Utils.toast(PersonalDetailActivity.this, "喜欢成功");
-									like_tv.setText("已喜欢");
+									like_tv.setText("已关注");
 								}
 							});
 
@@ -451,7 +451,7 @@ public class PersonalDetailActivity extends BaseActivity {
 							@Override
 							public void run() {
 								Utils.toast(PersonalDetailActivity.this, "已取消喜欢");
-								like_tv.setText("喜欢");
+								like_tv.setText("关注");
 							}
 						});
 
@@ -641,7 +641,7 @@ public class PersonalDetailActivity extends BaseActivity {
 				TextView cancel_btn = (TextView) window.findViewById(R.id.dlg_pe_cancel);
 				TextView message_tv = (TextView) window.findViewById(R.id.dlg_message);
 				message_tv.setText(getResources().getString(R.string.unlikeprompt));
-				title_tv.setText("取消喜欢");
+				title_tv.setText("取消关注");
 				ok_btn.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -673,7 +673,7 @@ public class PersonalDetailActivity extends BaseActivity {
 				TextView cancel_btn = (TextView) window.findViewById(R.id.dlg_pe_cancel);
 				TextView message_tv = (TextView) window.findViewById(R.id.dlg_message);
 				message_tv.setText(getResources().getString(R.string.likeprompt));
-				title_tv.setText("确认喜欢");
+				title_tv.setText("确认关注");
 				ok_btn.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -700,10 +700,10 @@ public class PersonalDetailActivity extends BaseActivity {
 			return;
 		}
 		Intent intent = new Intent(this, ChatActivity.class);
-		intent.putExtra("nickName", "u" + userId);
 		intent.putExtra("userId", userId);
 		intent.putExtra("isSingle", true);
 		intent.putExtra("userNickName", nickName_tv.getText().toString());
+		intent.putExtra("type", Constans.CHAT_TYPE_SINGLE);
 		startActivity(intent);
 	}
 }

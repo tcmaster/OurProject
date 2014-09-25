@@ -24,6 +24,7 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.Type;
+import com.easemob.chat.ImageMessageBody;
 import com.easemob.chat.TextMessageBody;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.DbUtils;
@@ -175,7 +176,7 @@ public class SingleChatAdapter extends BaseAdapter {
 	 * @author: LiXiaosong
 	 * @date:2014-9-23
 	 */
-	public void getHistory() {
+	public int getHistory() {
 		if (messageInCP == null || messageInM == null) {
 			Utils.toast(context, "没有更多历史消息了");
 		}
@@ -183,7 +184,7 @@ public class SingleChatAdapter extends BaseAdapter {
 			List<EMMessage> msg = conversation.loadMoreMsgFromDB(messageInM.getMsgId(), 40);
 			if (msg == null || msg.size() == 0) {
 				Utils.toast(context, "没有更多历史消息了");
-				return;
+				return 0;
 			}
 			// 增加新的数据
 			data = conversation.getAllMessages();
@@ -191,6 +192,7 @@ public class SingleChatAdapter extends BaseAdapter {
 		}
 		page++;
 		notifyDataSetChanged();
+		return data.size() - currentCount;
 	}
 
 	public void addPhotos(String key, String value) {
@@ -257,6 +259,9 @@ public class SingleChatAdapter extends BaseAdapter {
 			convertView.setTag(R.id.viewholder, holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag(R.id.viewholder);
+			// 这里要做一个处理，将一条消息的View恢复到默认的状态
+			holder.tv_content.setVisibility(View.VISIBLE);
+			holder.iv_getImg.setVisibility(View.GONE);
 			if (holder.flag == flag) {
 			} else {
 				holder = new ViewHolder();
@@ -286,7 +291,10 @@ public class SingleChatAdapter extends BaseAdapter {
 			holder.tv_content.setText(((TextMessageBody) message.getBody()).getMessage());
 			holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
 		} else if (message.getType() == Type.IMAGE) {
-
+			holder.tv_content.setVisibility(View.GONE);
+			holder.iv_getImg.setVisibility(View.VISIBLE);
+			ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
+			bmUtils.display(holder.iv_photo, imgBody.getRemoteUrl());
 		}
 		return convertView;
 	}
