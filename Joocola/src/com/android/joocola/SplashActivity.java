@@ -87,8 +87,6 @@ public class SplashActivity extends Activity {
 							return;
 						}
 
-						Log.e("bb", "自动登录user_pid" + user_pid);
-						Log.e("bb", "自动登录时userName" + userName);
 						HttpPostInterface httpPostInterface = new HttpPostInterface();
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("userName", userName);
@@ -143,7 +141,6 @@ public class SplashActivity extends Activity {
 		if (versioncodeByPackage != versioncodeByshare)
 			return true;
 		else {
-
 			return false;
 		}
 	}

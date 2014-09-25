@@ -120,7 +120,6 @@ public class Releasefragment extends Fragment implements OnRefreshListener, OnLo
 				httpPostInterface.addParams("TypeID", TypeID);
 			httpPostInterface.addParams("PublisherAgeType", PublisherAge);
 			// flag = false;
-			Log.e("bb", flag + "");
 		}
 		httpPostInterface.getData(issue_url, new HttpPostCallBack() {
 
@@ -130,7 +129,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener, OnLo
 				message.what = 0;
 				message.obj = result;
 				releaseHandler.sendMessage(message);
-				Log.e("bb->", result);
+
 			}
 		});
 	}

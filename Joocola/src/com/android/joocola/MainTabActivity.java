@@ -247,7 +247,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 		@Override
 		public void onPageSelected(int arg0) {
-			Log.i("bb maintab", arg0 + "");
 			switch (arg0) {
 			case 0:
 				tab_realease.setBackgroundResource(R.drawable.button_normal);
