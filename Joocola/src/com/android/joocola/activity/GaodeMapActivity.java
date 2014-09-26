@@ -283,6 +283,7 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		intent.putExtra("locationX", locationX);
 		intent.putExtra("locationY", locationY);
 		intent.putExtra("address", address);
+		intent.putExtra("LocationCityName", locationCity);
 		setResult(40, intent);
 		finish();
 	}
