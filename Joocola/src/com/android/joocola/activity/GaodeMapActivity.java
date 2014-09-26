@@ -2,15 +2,20 @@ package com.android.joocola.activity;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -44,7 +49,7 @@ import com.android.joocola.utils.AMapUtil;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
 
-public class GaodeMapActivity extends Activity implements OnGeocodeSearchListener, OnClickListener,
+public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchListener, OnClickListener,
 		OnMapClickListener, OnPoiSearchListener, InfoWindowAdapter, OnMarkerClickListener {
 
 	private MapView mapView;
@@ -80,8 +85,36 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		locationCity = sharedPreferences.getString("LocationCity", "北京");
 		getActionBar().setTitle(locationCity);
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayShowHomeEnabled(true);
 		init();
 
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.search, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		switch (id) {
+		case R.id.action_search:
+			Intent intent = new Intent();
+			intent.setClass(GaodeMapActivity.this, GaodeMapSearchActiviy.class);
+			intent.putExtra("locationCity", locationCity);
+			startActivityForResult(intent, 10);
+			break;
+		case android.R.id.home:
+			backToIssue();
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -106,6 +139,15 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 		mSpinner.setAdapter(mAdapter);
 		mSearchAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mSearchList);
 		mListView.setAdapter(mSearchAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				String name = mSearchList.get(position);
+				address = address + " - " + name;
+				backToIssue();
+			}
+		});
 
 	}
 
@@ -151,7 +193,7 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 	 */
 	public void getLatlon(final String name) {
 		showDialog();
-		GeocodeQuery query = new GeocodeQuery(name, "010");// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
+		GeocodeQuery query = new GeocodeQuery(name, locationCity);// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
 		// 需要控制第2个参数,第2个参数为城市编码。
 		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
 	}
@@ -186,7 +228,6 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 				GeocodeAddress address = result.getGeocodeAddressList().get(0);
 				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(address.getLatLonPoint()), 15));
 				geoMarker.setPosition(AMapUtil.convertToLatLng(address.getLatLonPoint()));
-				Log.e("address.getLatLonPoint()", address.getLatLonPoint() + "");
 				locationX = address.getLatLonPoint().getLatitude();
 				locationY = address.getLatLonPoint().getLongitude();
 				addressName = "经纬度值:" + address.getLatLonPoint() + "\n位置描述:" + address.getFormatAddress();
@@ -212,7 +253,7 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 		// dismissDialog();
 		if (rCode == 0) {
 			if (result != null && result.getRegeocodeAddress() != null && result.getRegeocodeAddress().getFormatAddress() != null) {
-				addressName = result.getRegeocodeAddress().getFormatAddress() + "附近";
+				addressName = result.getRegeocodeAddress().getFormatAddress();
 				aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(latLonPoint), 15));
 				regeoMarker.setPosition(AMapUtil.convertToLatLng(latLonPoint));
 				address = addressName;
@@ -234,12 +275,14 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 
 	@Override
 	public void onBackPressed() {
+		backToIssue();
+	}
+
+	private void backToIssue() {
 		Intent intent = new Intent();
 		intent.putExtra("locationX", locationX);
 		intent.putExtra("locationY", locationY);
 		intent.putExtra("address", address);
-		// String city = cityEdit.getText().toString();
-		// intent.putExtra("LocationCityName", city);
 		setResult(40, intent);
 		finish();
 	}
@@ -282,12 +325,7 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 			if (result != null && result.getQuery() != null) {// 搜索poi的结果
 				mSearchList.clear();
 				for (int i = 0; i < result.getPois().size(); i++) {
-					Log.e("bb", "getAdName" + result.getPois().get(i).getAdName());
-					Log.e("bb", "getDirection" + result.getPois().get(i).getDirection());
-					Log.e("bb", "getAdName" + result.getPois().get(i).getDistance());
-					Log.e("bb", "getProvinceName" + result.getPois().get(i).getProvinceName());
 					Log.e("bb", "getTitle" + result.getPois().get(i).getTitle());
-					Log.e("bb", "getDistance" + result.getPois().get(i).getDistance());
 					Log.e("bb", "getLatitude" + result.getPois().get(i).getLatLonPoint().getLongitude());
 					Log.e("bb", "getLongitude" + result.getPois().get(i).getLatLonPoint().getLatitude());
 					mSearchList.add(result.getPois().get(i).getTitle());
@@ -336,4 +374,18 @@ public class GaodeMapActivity extends Activity implements OnGeocodeSearchListene
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 10) {
+			String backAddress = data.getStringExtra("address");
+			if (TextUtils.isEmpty(backAddress)) {
+				return;
+			}
+			locationX = data.getDoubleExtra("locationX", 123.123456);
+			locationY = data.getDoubleExtra("locationY", 123.123456);
+			address = backAddress;
+			backToIssue();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

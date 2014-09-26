@@ -104,7 +104,6 @@ public class IssuedinvitationActivity extends BaseActivity {
 		userPid = Integer.parseInt(userpidString);
 		issuedinvitationInfo.setIssueUserID(userPid);
 		issuedinvitationInfo.setIssueId(issueID);
-		Log.e("userPid", userPid + "");
 		initActionbar(title);
 		initView();
 	}
@@ -253,9 +252,12 @@ public class IssuedinvitationActivity extends BaseActivity {
 			break;
 		case 30:
 			if (resultCode == 40) {
+				String address = data.getStringExtra("address");
+				if (TextUtils.isEmpty(address)) {
+					return;
+				}
 				LocationX = data.getDoubleExtra("locationX", 123.123456);
 				LocationY = data.getDoubleExtra("locationY", 321.987654);
-				String address = data.getStringExtra("address");
 				btn_location.setText(address);
 				LocationCityName = data.getStringExtra("LocationCityName");
 			}

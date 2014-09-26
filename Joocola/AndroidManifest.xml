@@ -137,6 +137,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.android.joocola.activity.GaodeMapSearchActiviy"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.android.joocola.activity.ChatActivity"
             android:label="@string/title_activity_chat"
             android:launchMode="singleTop"
