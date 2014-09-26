@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -261,7 +263,7 @@ public class SingleChatAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag(R.id.viewholder);
 			// 这里要做一个处理，将一条消息的View恢复到默认的状态
 			holder.tv_content.setVisibility(View.VISIBLE);
-			holder.iv_getImg.setVisibility(View.GONE);
+			holder.fl.setVisibility(View.GONE);
 			if (holder.flag == flag) {
 			} else {
 				holder = new ViewHolder();
@@ -279,22 +281,30 @@ public class SingleChatAdapter extends BaseAdapter {
 				convertView.setTag(R.id.viewholder, holder);
 			}
 		}
-		holder.fl.setVisibility(View.INVISIBLE);
-		holder.tv_content.setVisibility(View.VISIBLE);
 		if (photos.get(message.getFrom()) != null) {
 			String url = Constans.URL + Utils.processResultStr(photos.get(message.getFrom()), "_150_");
 			LogUtils.e(url);
 			bmUtils.display(holder.iv_photo, url);
 		}
+		holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
 		if (message.getType() == Type.TXT) {
 			holder.tv_name.setText(message.getTo());
 			holder.tv_content.setText(((TextMessageBody) message.getBody()).getMessage());
-			holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
+
 		} else if (message.getType() == Type.IMAGE) {
+			holder.fl.setVisibility(View.VISIBLE);
 			holder.tv_content.setVisibility(View.GONE);
-			holder.iv_getImg.setVisibility(View.VISIBLE);
 			ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
-			bmUtils.display(holder.iv_photo, imgBody.getRemoteUrl());
+			String remoteUrl = imgBody.getThumbnailUrl();
+			String localUrl = imgBody.getLocalUrl();
+			Bitmap bm = BitmapFactory.decodeFile(localUrl);
+			// 本地若没这张图片，从网络获取
+			if (bm != null) {
+				holder.iv_getImg.setImageBitmap(ThumbnailUtils.extractThumbnail(bm, Utils.dip2px(context, 100), Utils.dip2px(context, 100)));
+			} else {
+				bmUtils.display(holder.iv_getImg, imgBody.getThumbnailUrl());
+			}
+
 		}
 		return convertView;
 	}

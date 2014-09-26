@@ -32,6 +32,10 @@ public class MyChatInfo {
 	 * 该条消息的类型,取值见Constance类
 	 */
 	public String chatType;
+	/**
+	 * 标记当前聊天是否有未读消息,false说明有未读消息存在
+	 */
+	public boolean isRead;
 
 	public int getId() {
 		return id;
@@ -73,9 +77,17 @@ public class MyChatInfo {
 		this.chatType = chatType;
 	}
 
+	public boolean isRead() {
+		return isRead;
+	}
+
+	public void setRead(boolean isRead) {
+		this.isRead = isRead;
+	}
+
 	@Override
 	public String toString() {
-		return "MyChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + ", PID=" + PID + ", chatType=" + chatType + "]";
+		return "MyChatInfo [id=" + id + ", user=" + user + ", messageId=" + messageId + ", PID=" + PID + ", chatType=" + chatType + ", isRead=" + isRead + "]";
 	}
 
 }

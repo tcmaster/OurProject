@@ -124,6 +124,11 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		} else if (lastMessage.getType() == Type.IMAGE) {
 			holder.tv_message.setText("[图片文件]");
 		}
+		if (data.get(position).isRead) {// 该对话没有未读的消息
+			holder.iv_redPoint.setVisibility(View.INVISIBLE);
+		} else {// 该对话还有未读消息
+			holder.iv_redPoint.setVisibility(View.VISIBLE);
+		}
 		return convertView;
 	}
 

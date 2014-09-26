@@ -30,10 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/chat_time"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@id/chat_photo"
-        android:visibility="gone" >
+        android:visibility="gone"
+      	 >
 
         <ImageView
             android:id="@+id/chat_img"
@@ -41,7 +41,8 @@
             android:layout_height="100dp"
             android:contentDescription="@string/image_description"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_launcher"
+            android:layout_marginRight="15dp" />
 
         <ProgressBar
             android:id="@+id/chat_img_progress"
@@ -83,6 +84,7 @@
         android:paddingRight="20dp"
         android:text="@string/app_name"
         android:textColor="@color/deepgray"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+         />
 
 </RelativeLayout>

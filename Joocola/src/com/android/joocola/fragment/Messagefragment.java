@@ -182,6 +182,12 @@ public class Messagefragment extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		updateData();
+		super.onResume();
+	}
+
+	@Override
 	public void onDestroy() {
 		getActivity().unregisterReceiver(receiver);
 		super.onDestroy();

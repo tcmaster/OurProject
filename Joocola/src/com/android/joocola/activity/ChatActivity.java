@@ -47,6 +47,7 @@ import com.easemob.chat.EMMessage.ChatType;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
+import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -157,6 +158,14 @@ public class ChatActivity extends BaseActivity {
 		receive = new MyReceive();
 		IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
 		registerReceiver(receive, filter);
+		// 将数据库中的本次对话设置为已读
+		MyChatInfo info = new MyChatInfo();
+		info.isRead = true;
+		try {
+			db.update(info, WhereBuilder.b("user", "=", userId), "isRead");
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -395,6 +404,7 @@ public class ChatActivity extends BaseActivity {
 		EMMessage message = conversation.getLastMessage();
 		info.messageId = message.getMsgId();
 		info.user = userId;
+		info.isRead = true;
 		info.PID = JoocolaApplication.getInstance().getPID();
 		List<MyChatInfo> temp = null;
 		try {
@@ -404,7 +414,7 @@ public class ChatActivity extends BaseActivity {
 			} else {
 				info = temp.get(0);
 				info.messageId = message.getMsgId();
-				db.update(info, "user");
+				db.update(info, WhereBuilder.b("user", "=", userId), "messageId", "PID", "isRead");
 			}
 		} catch (DbException e) {
 			e.printStackTrace();

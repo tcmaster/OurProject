@@ -24,6 +24,7 @@ import com.easemob.chat.TextMessageBody;
 import com.easemob.exceptions.EaseMobException;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
+import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
 
 public class EaseMobChat {
@@ -165,6 +166,8 @@ public class EaseMobChat {
 			info.messageId = msgId;
 			info.user = from;
 			info.PID = JoocolaApplication.getInstance().getPID();
+			// 接收到消息，说明有未读消息
+			info.isRead = false;
 			try {
 				temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", from));
 				if (temp == null || temp.size() == 0) {
@@ -172,7 +175,7 @@ public class EaseMobChat {
 				} else {
 					info = temp.get(0);
 					info.messageId = message.getMsgId();
-					db.update(info, "user");
+					db.update(info, WhereBuilder.b("user", "=", from), "messageId", "PID", "isRead");
 				}
 			} catch (DbException e) {
 				e.printStackTrace();
