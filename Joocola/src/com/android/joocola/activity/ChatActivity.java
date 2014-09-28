@@ -13,8 +13,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -353,15 +351,16 @@ public class ChatActivity extends BaseActivity {
 			}
 		} else if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
 			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
-			String phoneName = android.os.Build.MODEL;
-			Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
-			// 有些型号的手机不支持图片旋转
-			if (!phoneName.equals("HUAWEI C8813D")) {
-				// 这里需要对照片的角度进行校正
-				bm = Utils.rotaingImageView(Utils.rotateImg(file.getAbsolutePath()), bm);
-			}
-			File resultFile = Utils.createBitmapFile(bm);
+			// String phoneName = android.os.Build.MODEL;
+			// Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
+			// // 有些型号的手机不支持图片旋转
+			// // if (!phoneName.equals("HUAWEI C8813D")) {
+			// // // 这里需要对照片的角度进行校正
+			// // bm = Utils.rotaingImageView(Utils.rotateImg(file.getAbsolutePath()), bm);
+			// // }
+			// File resultFile = Utils.createBitmapFile(bm);
 			// 发送
+			sendImgToOther(file);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

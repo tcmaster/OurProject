@@ -297,7 +297,7 @@ public class SingleChatAdapter extends BaseAdapter {
 			ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
 			String remoteUrl = imgBody.getThumbnailUrl();
 			String localUrl = imgBody.getLocalUrl();
-			Bitmap bm = BitmapFactory.decodeFile(localUrl);
+			Bitmap bm = com.android.joocola.utils.BitmapUtils.decodeFile(localUrl, Utils.dip2px(context, 100), Utils.dip2px(context, 100));
 			// 本地若没这张图片，从网络获取
 			if (bm != null) {
 				holder.iv_getImg.setImageBitmap(ThumbnailUtils.extractThumbnail(bm, Utils.dip2px(context, 100), Utils.dip2px(context, 100)));
