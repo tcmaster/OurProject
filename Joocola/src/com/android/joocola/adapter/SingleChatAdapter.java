@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.utils.Constans;
 import com.android.joocola.utils.Utils;
@@ -33,7 +36,7 @@ import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.util.LogUtils;
 
 /**
- * 用于更新得到消息的视图信息
+ * 单人聊天的适配器
  * 
  * @author lixiaosong
  * 
@@ -179,7 +182,7 @@ public class SingleChatAdapter extends BaseAdapter {
 	 * @date:2014-9-23
 	 */
 	public int getHistory() {
-		if (messageInCP == null || messageInM == null) {
+		if (messageInCP == null || messageInM == null || messageInCP.getMsgId() == null || messageInM.getMsgId() == null) {
 			Utils.toast(context, "没有更多历史消息了");
 		}
 		if (messageInCP.getMsgId().equals(messageInM.getMsgId())) {// 当前的页面已经将内存中所有的消息展示了
@@ -238,7 +241,7 @@ public class SingleChatAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		EMMessage message = data.get(position + currentCount);
+		final EMMessage message = data.get(position + currentCount);
 		if (DEBUG) {
 			LogUtils.e(message.getFrom() + " is from " + message.getTo() + " is to " + message.getBody() + " is body");
 			LogUtils.e(conversation.getUserName());
@@ -304,8 +307,20 @@ public class SingleChatAdapter extends BaseAdapter {
 			} else {
 				bmUtils.display(holder.iv_getImg, imgBody.getThumbnailUrl());
 			}
+			// 如果有图片，需要为图片设置一个点击事件（点击看大图)
 
 		}
+		// 这里为聊天用户的头像设置点击事件,点击进入用户详情
+		holder.iv_photo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, PersonalDetailActivity.class);
+				// 发送用户id
+				intent.putExtra("userId", message.getFrom().substring(1));
+				context.startActivity(intent);
+			}
+		});
 		return convertView;
 	}
 
