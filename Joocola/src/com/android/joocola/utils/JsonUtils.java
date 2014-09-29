@@ -9,6 +9,7 @@ import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.entity.UserInfo;
 
 public class JsonUtils {
+
 	/**
 	 * 解析用户信息JSON对象
 	 * 
@@ -20,8 +21,7 @@ public class JsonUtils {
 	 * @throws JSONException
 	 *             JSON异常
 	 */
-	public static UserInfo getUserInfo(JSONObject object, UserInfo userInfo)
-			throws JSONException {
+	public static UserInfo getUserInfo(JSONObject object, UserInfo userInfo) throws JSONException {
 		if (userInfo != null) {
 			userInfo.setDrinkName(object.getString("DrinkName"));
 			userInfo.setPhone(object.getString("Phone"));
@@ -64,23 +64,16 @@ public class JsonUtils {
 			userInfo.setStaAppMyCount(object.getInt("StaAppMyCount") + "");
 			userInfo.setStaAppJoinCount(object.getInt("StaAppJoinCount") + "");
 			userInfo.setStaAppReplyCount(object.getInt("StaAppReplyCount") + "");
-			userInfo.setStaAppFavoriteCount(object
-					.getInt("StaAppFavoriteCount") + "");
-			userInfo.setStaAppWaitCommentCount(object
-					.getInt("StaAppWaitCommentCount") + "");
-			userInfo.setStaAppCommentCount(object.getInt("StaAppCommentCount")
-					+ "");
-			userInfo.setAppointScoreStateID(object
-					.getInt("AppointScoreStateID"));
+			userInfo.setStaAppFavoriteCount(object.getInt("StaAppFavoriteCount") + "");
+			userInfo.setStaAppWaitCommentCount(object.getInt("StaAppWaitCommentCount") + "");
+			userInfo.setStaAppCommentCount(object.getInt("StaAppCommentCount") + "");
+			userInfo.setAppointScoreStateID(object.getInt("AppointScoreStateID"));
 			userInfo.setLocDistince(object.getString("LocDistince"));
 			userInfo.setLocDate(object.getString("LocDate"));
 			userInfo.setStaAppScoredCount(object.getInt("StaAppScoredCount"));
-			userInfo.setStaAppScoredGoodCount(object
-					.getInt("StaAppScoredGoodCount"));
-			userInfo.setStaAppScoredNormalCount(object
-					.getInt("StaAppScoredNormalCount"));
-			userInfo.setStaAppScoredBadCount(object
-					.getInt("StaAppScoredBadCount"));
+			userInfo.setStaAppScoredGoodCount(object.getInt("StaAppScoredGoodCount"));
+			userInfo.setStaAppScoredNormalCount(object.getInt("StaAppScoredNormalCount"));
+			userInfo.setStaAppScoredBadCount(object.getInt("StaAppScoredBadCount"));
 		}
 		return userInfo;
 	}
@@ -93,35 +86,28 @@ public class JsonUtils {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static GetIssueInfoEntity getIssueInfoEntity(JSONObject object,
-			GetIssueInfoEntity getIssueInfoEntity) throws JSONException {
+	public static GetIssueInfoEntity getIssueInfoEntity(JSONObject object, GetIssueInfoEntity getIssueInfoEntity) throws JSONException {
 		if (getIssueInfoEntity != null) {
 			getIssueInfoEntity.setTitle(object.getString("Title"));
-			getIssueInfoEntity.setApplyUserCount(object
-					.getInt("ApplyUserCount"));
+			getIssueInfoEntity.setApplyUserCount(object.getInt("ApplyUserCount"));
 			getIssueInfoEntity.setCostName(object.getString("CostName"));
 			getIssueInfoEntity.setDescription(object.getString("Description"));
-			getIssueInfoEntity
-					.setLocationName(object.getString("LocationName"));
+			getIssueInfoEntity.setLocationName(object.getString("LocationName"));
 			getIssueInfoEntity.setPID(object.getInt("PID"));
 			getIssueInfoEntity.setPublishDate(object.getString("PublishDate"));
 			getIssueInfoEntity.setPublisherAge(object.getInt("PublisherAge"));
-			getIssueInfoEntity.setPublisherAstro(object
-					.getString("PublisherAstro"));
-			getIssueInfoEntity.setPublisherBirthday(object
-					.getString("PublisherBirthday"));
-			getIssueInfoEntity.setPublisherName(object
-					.getString("PublisherName"));
-			getIssueInfoEntity.setPublisherPhoto(object
-					.getString("PublisherPhoto"));
+			getIssueInfoEntity.setPublisherAstro(object.getString("PublisherAstro"));
+			getIssueInfoEntity.setPublisherBirthday(object.getString("PublisherBirthday"));
+			getIssueInfoEntity.setPublisherName(object.getString("PublisherName"));
+			getIssueInfoEntity.setPublisherPhoto(object.getString("PublisherPhoto"));
 			getIssueInfoEntity.setReplyCount(object.getInt("ReplyCount"));
 			getIssueInfoEntity.setReserveDate(object.getString("ReserveDate"));
 			getIssueInfoEntity.setPublisherID(object.getInt("PublisherID"));
 			getIssueInfoEntity.setSexName(object.getString("SexName"));
 			getIssueInfoEntity.setState(object.getString("State"));
 			getIssueInfoEntity.setTitle(object.getString("Title"));
-			getIssueInfoEntity.setPublisherSexID(object
-					.getInt("PublisherSexID"));
+			getIssueInfoEntity.setPublisherSexID(object.getInt("PublisherSexID"));
+			getIssueInfoEntity.setRoomID(object.getString("RoomID"));
 		}
 		return getIssueInfoEntity;
 	}
@@ -131,15 +117,13 @@ public class JsonUtils {
 	 * 
 	 * @throws JSONException
 	 */
-	public static ReplyEntity getReplyEntity(JSONObject jsonObject,
-			ReplyEntity replyEntity) throws JSONException {
+	public static ReplyEntity getReplyEntity(JSONObject jsonObject, ReplyEntity replyEntity) throws JSONException {
 		if (replyEntity != null) {
 			replyEntity.setContent(jsonObject.getString("Content"));
 			replyEntity.setPublishDate(jsonObject.getString("PublishDate"));
 			replyEntity.setPublisherID(jsonObject.getInt("PublisherID"));
 			replyEntity.setPublisherName(jsonObject.getString("PublisherName"));
-			replyEntity.setPublisherPhotoString(jsonObject
-					.getString("PublisherPhoto"));
+			replyEntity.setPublisherPhotoString(jsonObject.getString("PublisherPhoto"));
 			replyEntity.setReplypid(jsonObject.getInt("PID"));
 		}
 		return replyEntity;
@@ -151,26 +135,18 @@ public class JsonUtils {
 	public static AppointScoreEntity getAppointScoreEntity(JSONObject jsonObject) {
 		AppointScoreEntity appointScoreEntity = new AppointScoreEntity();
 		try {
-			appointScoreEntity.setAppointTitle(jsonObject
-					.getString("AppointTitle"));
+			appointScoreEntity.setAppointTitle(jsonObject.getString("AppointTitle"));
 			appointScoreEntity.setComment(jsonObject.getString("Comment"));
-			appointScoreEntity.setCommentDateStr(jsonObject
-					.getString("CommentDateStr"));
-			appointScoreEntity.setFromUserIDString(jsonObject
-					.getString("FromUserID"));
-			appointScoreEntity.setFromUserName(jsonObject
-					.getString("FromUserName"));
-			appointScoreEntity.setFromUserPhoto(jsonObject
-					.getString("FromUserPhoto"));
+			appointScoreEntity.setCommentDateStr(jsonObject.getString("CommentDateStr"));
+			appointScoreEntity.setFromUserIDString(jsonObject.getString("FromUserID"));
+			appointScoreEntity.setFromUserName(jsonObject.getString("FromUserName"));
+			appointScoreEntity.setFromUserPhoto(jsonObject.getString("FromUserPhoto"));
 			appointScoreEntity.setPid(jsonObject.getString("PID"));
-			appointScoreEntity.setReserveDateStr(jsonObject
-					.getString("ReserveDateStr"));
+			appointScoreEntity.setReserveDateStr(jsonObject.getString("ReserveDateStr"));
 			appointScoreEntity.setScoreID(jsonObject.getString("ScoreID"));
 			appointScoreEntity.setToUserID(jsonObject.getString("ToUserID"));
-			appointScoreEntity
-					.setToUserName(jsonObject.getString("ToUserName"));
-			appointScoreEntity.setToUserPhoto(jsonObject
-					.getString("ToUserPhoto"));
+			appointScoreEntity.setToUserName(jsonObject.getString("ToUserName"));
+			appointScoreEntity.setToUserPhoto(jsonObject.getString("ToUserPhoto"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

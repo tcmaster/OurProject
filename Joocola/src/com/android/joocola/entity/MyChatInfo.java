@@ -31,7 +31,7 @@ public class MyChatInfo {
 	/**
 	 * 该条消息的类型,取值见Constance类
 	 */
-	public String chatType;
+	public int chatType;
 	/**
 	 * 标记当前聊天是否有未读消息,false说明有未读消息存在
 	 */
@@ -69,11 +69,11 @@ public class MyChatInfo {
 		PID = pID;
 	}
 
-	public String getChatType() {
+	public int getChatType() {
 		return chatType;
 	}
 
-	public void setChatType(String chatType) {
+	public void setChatType(int chatType) {
 		this.chatType = chatType;
 	}
 

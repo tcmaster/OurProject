@@ -149,7 +149,11 @@ public class EaseSingleChat {
 		message.addBody(body);
 		message.setReceipt(userName);
 		conversation.addMessage(message);
-		EMChatManager.getInstance().sendMessage(message, callBack);
+		if (chatType == chatType.Chat) {
+			EMChatManager.getInstance().sendMessage(message, callBack);
+		} else {
+			EMChatManager.getInstance().sendGroupMessage(message, callBack);
+		}
 	}
 
 	/**

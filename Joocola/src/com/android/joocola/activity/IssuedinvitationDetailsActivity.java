@@ -86,6 +86,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 	private ImageView collect_img;// 收藏的图片显示
 
 	private boolean isCollect = false;
+	private String RoomId = "";// 群聊房间ID
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 
@@ -99,6 +100,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 				GetIssueInfoEntity getIssueInfoEntity = resloveJson(json);
 				isPublish(getIssueInfoEntity);
 				publishid = getIssueInfoEntity.getPublisherID();
+				RoomId = getIssueInfoEntity.getRoomID();
 				initView(getIssueInfoEntity);
 				break;
 
@@ -200,6 +202,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 			GetIssueInfoEntity getIssueInfoEntity = (GetIssueInfoEntity) intent.getSerializableExtra("issueInfo");
 			issue_pid = getIssueInfoEntity.getPID();
 			publishid = getIssueInfoEntity.getPublisherID();
+			RoomId = getIssueInfoEntity.getRoomID();
 			initView(getIssueInfoEntity);
 			isPublish(getIssueInfoEntity);
 		} else {
@@ -269,6 +272,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 
 			@Override
 			public void httpPostResolveData(String result) {
+				Log.e("lixiaosong", "邀约详情是" + result);
 				Message message = Message.obtain();
 				message.what = 0;
 				message.obj = result;
@@ -284,16 +288,15 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		useCustomerActionBar();
 		getActionBarleft().setText("邀约详情");
 		getActionBarTitle().setVisibility(View.INVISIBLE);
-		getActionBarRight().setVisibility(View.INVISIBLE);
-		// 群聊被砍
-		// getActionBarRight().setText("群聊");
-		// getActionBarRight().setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// doEnterMultiChat();
-		// }
-		// });
+		getActionBarRight().setVisibility(View.VISIBLE);
+		getActionBarRight().setText("群聊");
+		getActionBarRight().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				doEnterMultiChat();
+			}
+		});
 	}
 
 	/**
@@ -331,8 +334,9 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 									public void run() {
 										Intent intent = new Intent(IssuedinvitationDetailsActivity.this, ChatActivity.class);
 										intent.putExtra("isSingle", false);
-										intent.putExtra("issueName", title.getText().toString());
-										intent.putExtra("issuePID", issue_pid);
+										intent.putExtra("userNickName", title.getText().toString());// 房间名
+										intent.putExtra("userId", RoomId);// 房间id
+										intent.putExtra("issueID", issue_pid + "");// 邀约id
 										ArrayList<String> userPIDs = new ArrayList<String>();
 										for (int j = 0; j < array.length(); j++) {
 											try {
@@ -354,7 +358,6 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 							@Override
 							public void run() {
 								Utils.toast(IssuedinvitationDetailsActivity.this, "对不起，您没有参加该邀约，无法参与聊天");
-
 							}
 						});
 					} catch (JSONException e) {

@@ -2,8 +2,6 @@ package com.android.joocola.entity;
 
 import java.io.Serializable;
 
-
-
 /**
  * 获取的邀约信息的实体类
  * 
@@ -11,6 +9,7 @@ import java.io.Serializable;
  * 
  */
 public class GetIssueInfoEntity implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -39,6 +38,7 @@ public class GetIssueInfoEntity implements Serializable {
 	private String PublishDate;// 发布时间
 	private int PublisherID;// 发布者ID
 	private int PublisherSexID;// 发布者性别id
+	private String RoomID;// 该邀约的房间号
 
 	public int getPID() {
 		return PID;
@@ -71,7 +71,6 @@ public class GetIssueInfoEntity implements Serializable {
 	public void setTitle(String title) {
 		Title = title;
 	}
-
 
 	public int getSexID() {
 		return SexID;
@@ -219,19 +218,7 @@ public class GetIssueInfoEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "GetIssueInfoEntity [PID=" + PID + ", TypeID=" + TypeID
-				+ ", TypeName=" + TypeName + ", Title=" + Title + ", SexID="
-				+ SexID + ", SexName=" + SexName + ", CostID=" + CostID
-				+ ", CostName="
-				+ CostName + ", ReserveDate=" + ReserveDate + ", LocationName="
-				+ LocationName + ", LocationX=" + LocationX + ", LocationY="
-				+ LocationY + ", Description=" + Description
-				+ ", ApplyUserCount=" + ApplyUserCount + ", ReplyCount="
-				+ ReplyCount + ", State=" + State + ", PublisherName="
-				+ PublisherName + ", PublisherPhoto=" + PublisherPhoto
-				+ ", PublisherBirthday=" + PublisherBirthday
-				+ ", PublisherAge=" + PublisherAge + ", PublisherAstro="
-				+ PublisherAstro + ", PublishDate=" + PublishDate + "]";
+		return "GetIssueInfoEntity [PID=" + PID + ", TypeID=" + TypeID + ", TypeName=" + TypeName + ", Title=" + Title + ", SexID=" + SexID + ", SexName=" + SexName + ", CostID=" + CostID + ", CostName=" + CostName + ", ReserveDate=" + ReserveDate + ", LocationName=" + LocationName + ", LocationX=" + LocationX + ", LocationY=" + LocationY + ", Description=" + Description + ", ApplyUserCount=" + ApplyUserCount + ", ReplyCount=" + ReplyCount + ", State=" + State + ", PublisherName=" + PublisherName + ", PublisherPhoto=" + PublisherPhoto + ", PublisherBirthday=" + PublisherBirthday + ", PublisherAge=" + PublisherAge + ", PublisherAstro=" + PublisherAstro + ", PublishDate=" + PublishDate + ", PublisherID=" + PublisherID + ", PublisherSexID=" + PublisherSexID + ", RoomID=" + RoomID + "]";
 	}
 
 	public int getPublisherID() {
@@ -248,6 +235,14 @@ public class GetIssueInfoEntity implements Serializable {
 
 	public void setPublisherSexID(int publisherSexID) {
 		PublisherSexID = publisherSexID;
+	}
+
+	public String getRoomID() {
+		return RoomID;
+	}
+
+	public void setRoomID(String roomID) {
+		RoomID = roomID;
 	}
 
 }

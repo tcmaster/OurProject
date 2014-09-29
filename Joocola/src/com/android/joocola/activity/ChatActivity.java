@@ -1,6 +1,7 @@
 package com.android.joocola.activity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -27,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.adapter.MultiChatAdapter;
 import com.android.joocola.adapter.SingleChatAdapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
@@ -69,6 +71,8 @@ public class ChatActivity extends BaseActivity {
 	 */
 	private static final int TAKEPHOTO = 2;
 
+	private String TAG = "ChatActivity";
+	private boolean DEBUG = true;
 	/**
 	 * 聊天窗口
 	 */
@@ -97,6 +101,11 @@ public class ChatActivity extends BaseActivity {
 	 */
 	private ChatType chatType = ChatType.Chat;
 	/**
+	 * 这次聊天是单聊/群聊
+	 */
+	private boolean isSingle = true;
+	private ArrayList<String> users;
+	/**
 	 * 聊天用户昵称/房间名
 	 */
 	private String userName = "test1";
@@ -104,16 +113,19 @@ public class ChatActivity extends BaseActivity {
 	 * 与该界面聊天的用户ID/房间ID(注意，是uX或aX,不是X)
 	 */
 	private String userId = "u0";
-	private String TAG = "ChatActivity";
-	private boolean DEBUG = true;
+
 	/**
 	 * 接收消息的广播，如果有新消息，将进行消息接收
 	 */
 	private MyReceive receive;
 	/**
-	 * 该界面的适配器
+	 * 该界面单聊的适配器
 	 */
 	private SingleChatAdapter adapter;
+	/**
+	 * 该界面群聊的适配器
+	 */
+	private MultiChatAdapter adapter_m;
 	/**
 	 * 数据库
 	 */
@@ -148,7 +160,16 @@ public class ChatActivity extends BaseActivity {
 	 * @date:2014-9-25
 	 */
 	private void initData() {
-		userId = "u" + getIntent().getStringExtra("userId");
+		isSingle = getIntent().getBooleanExtra("isSingle", true);
+		if (isSingle) {
+			userId = "u" + getIntent().getStringExtra("userId");
+			chatType = ChatType.Chat;
+		} else {
+			userId = getIntent().getStringExtra("userId");
+			users = getIntent().getStringArrayListExtra("userPIDs");
+			chatType = ChatType.GroupChat;
+		}
+
 		userName = getIntent().getStringExtra("userNickName");
 		db = JoocolaApplication.getInstance().getDB();
 		adapter = new SingleChatAdapter(this, userId);
@@ -174,9 +195,11 @@ public class ChatActivity extends BaseActivity {
 	 */
 	private void initViews() {
 		initActionBar();
-		// 下面这句话可以屏蔽聊天功能
-		// iv_add_pic.setVisibility(View.GONE);
-		getUserImgUrl(new String[] { JoocolaApplication.getInstance().getPID(), getIntent().getStringExtra("userId") });
+		if (isSingle)
+			getUserImgUrl(new String[] { JoocolaApplication.getInstance().getPID(), getIntent().getStringExtra("userId") });
+		else {
+			getUserImgUrl(users.toArray(new String[] {}));
+		}
 		lv_container.setAdapter(adapter);
 		scrollBottom();
 	}

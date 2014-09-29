@@ -145,6 +145,7 @@ public class EaseMobChat {
 			String content = "";
 			String from = "";
 			String localUrl = "";
+			String chatType = "";
 			long time = 0l;
 			switch (message.getType()) {
 			case TXT:
@@ -161,11 +162,16 @@ public class EaseMobChat {
 			}
 			from = message.getFrom();
 			time = message.getMsgTime();
+
 			List<MyChatInfo> temp = null;
 			MyChatInfo info = new MyChatInfo();
 			info.messageId = msgId;
 			info.user = from;
 			info.PID = JoocolaApplication.getInstance().getPID();
+			if (message.getChatType() == ChatType.Chat)
+				info.chatType = Constans.CHAT_TYPE_SINGLE;
+			else if (message.getChatType() == ChatType.GroupChat)
+				info.chatType = Constans.CHAT_TYPE_MULTI;
 			// 接收到消息，说明有未读消息
 			info.isRead = false;
 			try {
