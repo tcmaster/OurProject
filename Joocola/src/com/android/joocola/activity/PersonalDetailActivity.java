@@ -695,15 +695,44 @@ public class PersonalDetailActivity extends BaseActivity {
 	}
 
 	private void processTalk() {
+		// 判断用户是否点击和自己聊天
 		if (userId.equals(JoocolaApplication.getInstance().getPID())) {
 			Utils.toast(this, "想要和自己聊天？直接说吧，别打字了");
 			return;
 		}
-		Intent intent = new Intent(this, ChatActivity.class);
-		intent.putExtra("userId", userId);
-		intent.putExtra("isSingle", true);
-		intent.putExtra("userNickName", nickName_tv.getText().toString());
-		intent.putExtra("type", Constans.CHAT_TYPE_SINGLE);
-		startActivity(intent);
+		// 判断用户是否有和该用户聊天的权限
+		HttpPostInterface interface1 = new HttpPostInterface();
+		interface1.addParams("userID1", "u" + JoocolaApplication.getInstance().getPID());
+		interface1.addParams("userID2", "u" + userId);
+		interface1.getData(Constans.IS_TALK_URL, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+				if (result.equals("true")) {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Intent intent = new Intent(PersonalDetailActivity.this, ChatActivity.class);
+							intent.putExtra("userId", userId);
+							intent.putExtra("isSingle", true);
+							intent.putExtra("userNickName", nickName_tv.getText().toString());
+							intent.putExtra("type", Constans.CHAT_TYPE_SINGLE);
+							startActivity(intent);
+						}
+					});
+				} else {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Utils.toast(PersonalDetailActivity.this, "对不起，您没有与该用户聊天的权限");
+						}
+					});
+				}
+
+			}
+		});
+
 	}
 }

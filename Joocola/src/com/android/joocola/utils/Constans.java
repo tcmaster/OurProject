@@ -178,6 +178,14 @@ public class Constans {
 	 */
 	public static final String ISSUE_TYPE_URL = "Bus.AppointController.GetTypes.ashx";
 	/**
+	 * 记录私聊信息
+	 */
+	public static final String CHAT_MARK_URL = "Bus.TalkController.LogPrivateTalk.ashx";
+	/**
+	 * 检查是否可以私聊
+	 */
+	public static final String IS_TALK_URL = "Bus.TalkController.CanPrivateTalk.ashx";
+	/**
 	 * 时间界面的几个传值
 	 */
 	public static final int INTENT_TIME = 1;
