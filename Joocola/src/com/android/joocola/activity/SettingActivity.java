@@ -49,11 +49,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 	private final static int PSWD_NUM = 1;// 修改密码后的值
 	private final static int MAIL_NUM = 2;// 修改邮箱后的值
 	private final static int PHONE_NUM = 3;// 修改手机号的值
-
-	private final static String FEEDBACK_URL = "Sys.UserController.Feedback.ashx";
-	private final static String PSWD_URL = "Sys.UserController.SetNewPWD.ashx";
-	private final static String MAIL_URL = "Sys.UserController.SetEmail.ashx";
-	private final static String PHONE_URL = "Sys.UserController.SetPhone.ashx";
 	private CustomerDialog feedbackdlg, pswddlg, maildlg, phonedlg, exitdlg;
 	private SharedPreferences sharedPreferences;
 	private String user_pid;// 当前操作用户的id;
@@ -253,7 +248,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 						httpPostInterface.addParams("content", comment);
 						Log.e("bb", user_pid);
 						Log.e("bb", comment);
-						httpPostInterface.getData(FEEDBACK_URL, new HttpPostCallBack() {
+						httpPostInterface.getData(Constants.FEED_BACK_URL, new HttpPostCallBack() {
 
 							@Override
 							public void httpPostResolveData(String result) {
@@ -329,7 +324,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("oldPWD", old);
 						httpPostInterface.addParams("newPWD", newtext);
-						httpPostInterface.getData(PSWD_URL, new HttpPostCallBack() {
+						httpPostInterface.getData(Constants.SET_NEWPSWD_STRING, new HttpPostCallBack() {
 
 							@Override
 							public void httpPostResolveData(String result) {
@@ -382,7 +377,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 						HttpPostInterface httpPostInterface = new HttpPostInterface();
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("phone", newNum);
-						httpPostInterface.getData(PHONE_URL, new HttpPostCallBack() {
+						httpPostInterface.getData(Constants.SET_PHONE_URL, new HttpPostCallBack() {
 
 							@Override
 							public void httpPostResolveData(String result) {
@@ -434,7 +429,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 						HttpPostInterface httpPostInterface = new HttpPostInterface();
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("email", newEmail);
-						httpPostInterface.getData(MAIL_URL, new HttpPostCallBack() {
+						httpPostInterface.getData(Constants.SET_EMAIL_URL, new HttpPostCallBack() {
 
 							@Override
 							public void httpPostResolveData(String result) {

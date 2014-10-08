@@ -31,7 +31,6 @@ import com.android.joocola.view.AutoListView.OnRefreshListener;
 public class NearbyPersonFragment extends Fragment implements OnRefreshListener {
 
 	private AutoListView mAutoListView;
-	private final String url = "Sys.UserController.GetUserInfos.ashx";
 	private NearByPersonAdapter mNearByPersonAdapter;
 	private BitmapCache bitmapCache;
 	private int distance = 10000;
@@ -87,7 +86,7 @@ public class NearbyPersonFragment extends Fragment implements OnRefreshListener 
 			HttpPostInterface httpPostInterface = new HttpPostInterface();
 			httpPostInterface.addParams("DistanceFromCurUser", distance + "");
 			httpPostInterface.addParams("CurUserID", userId);
-			httpPostInterface.getData(url, new HttpPostCallBack() {
+			httpPostInterface.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {

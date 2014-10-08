@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.entity.RegisterInfo;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -29,7 +30,6 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 	private EditText et_userName, et_code, et_password;
 	// 返回登陆界面
 	private TextView tv_backLogin;
-	private static final String URLAUTOCODEURL = "Sys.UserController.ApplyRegVerifyCode.ashx";
 	// 获取到的验证码
 	private String resultCode;
 	private MyHandler handler;
@@ -139,7 +139,7 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 		if (Utils.judgeAccount(et_userName.getText().toString())) {
 			waitCodeReceive();
 			task.addParams("applyKey", et_userName.getText().toString());
-			task.getData(URLAUTOCODEURL, new HttpPostCallBack() {
+			task.getData(Constants.APPLY_REGVERIFY_CODE_URL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {

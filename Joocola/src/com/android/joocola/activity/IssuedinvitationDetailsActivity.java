@@ -59,15 +59,6 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 	private ImageView sexImageView;
 	private ImageLoader mImageLoader;
 	private MyListView mAutoListView;
-	private String url = "Bus.AppointController.QueryAppoint.ashx";// 根据pid获得邀约详情的地址;
-	private String replyUrl = "Bus.AppointController.QueryAppointReply.ashx";// 邀约评论的地址。
-	private String replyItUrl = "Bus.AppointController.PubAppointReply.ashx";// 回复地址。
-	private String collectUrl = "Sys.UserController.FavoriteAppoint.ashx";// 收藏该邀约
-	private String joinUrl = "Bus.AppointController.ApplyAppoint.ashx";// 加入某邀约
-	private String quaryUrl = "Bus.AppointController.QueryAppointUserState.ashx";// 查询用户在某邀约的状态
-	private String isFavoriteUrl = "Sys.UserController.IsFavoriteAppoint.ashx";// 查询用户是否收藏该邀约
-	private String cancleFavoriteUrl = "Sys.UserController.FavoriteAppointCancel.ashx";// 取消收藏某邀约
-	private String cancleIssueUrl = "Bus.AppointController.CancelAppoint.ashx";// 取消报名某邀约
 	private LinearLayout apply_ll, reply_ll, collect_ll;
 	private TextView applly_lltxt;
 	private IssueReplyAdapter issueReplyAdapter;
@@ -231,7 +222,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("opUserID", user_pid);
 		httpPostInterface.addParams("appointID", issue_pid + "");
-		httpPostInterface.getData(isFavoriteUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.IS_FAVORITE_APPOINT_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -268,7 +259,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 	private void getIssueInfoEntity(int issue_pid) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("IDs", issue_pid + "");
-		httpPostInterface.getData(url, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -459,7 +450,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		list.clear();
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("AppointID", issue_pid + "");
-		httpPostInterface.getData(replyUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.QUERY_APPOINT_REPLY_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -554,7 +545,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("opUserID", user_pid);
 		httpPostInterface.addParams("appointID", issue_pid + "");
-		httpPostInterface.getData(collectUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.FAVORITE_APPOINT_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -573,7 +564,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("opUserID", user_pid);
 		httpPostInterface.addParams("appointID", issue_pid + "");
-		httpPostInterface.getData(cancleFavoriteUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.CANCEL_FAVORITE_APPOINT_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -603,7 +594,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		httpPostInterface.addParams("AppointID", issue_pid + "");
 		httpPostInterface.addParams("PublisherID", user_pid);
 		httpPostInterface.addParams("Content", replyString);
-		httpPostInterface.getData(replyItUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.PUB_APPOINT_REPLY_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -680,7 +671,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("appointID", issue_pid + "");
 		httpPostInterface.addParams("userID", user_pid);
-		httpPostInterface.getData(joinUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.APPLY_APPOINT_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -701,7 +692,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("appointID", issue_pid + "");
 		httpPostInterface.addParams("userID", user_pid);
-		httpPostInterface.getData(quaryUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.QUERY_APPOINT_USERSTATE_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(final String result) {
@@ -822,7 +813,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("appointID", issue_pid + "");
 		httpPostInterface.addParams("userID", user_pid);
-		httpPostInterface.getData(cancleIssueUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.CANCEL_APPOINT_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(final String result) {

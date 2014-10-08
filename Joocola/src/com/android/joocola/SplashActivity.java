@@ -36,7 +36,6 @@ public class SplashActivity extends Activity {
 	private boolean isAutoMatic;
 	private String user_pid;
 	private String userName;
-	private static final String AutoUrl = "Sys.UserController.AppAutoLogon.ashx";
 	private Editor editor;
 	private int versioncodeByPackage;
 
@@ -91,7 +90,7 @@ public class SplashActivity extends Activity {
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("userName", userName);
 						httpPostInterface.addParams("version", Constants.version);
-						httpPostInterface.getData(AutoUrl, new HttpPostCallBack() {
+						httpPostInterface.getData(Constants.AUTO_LOGIN_URL, new HttpPostCallBack() {
 
 							@Override
 							public void httpPostResolveData(final String result) {

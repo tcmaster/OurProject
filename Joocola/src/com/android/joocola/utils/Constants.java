@@ -185,6 +185,99 @@ public class Constants {
 	 * 检查是否可以私聊
 	 */
 	public static final String IS_TALK_URL = "Bus.TalkController.CanPrivateTalk.ashx";
+
+	/**
+	 * 登录网址
+	 */
+	public static final String LOGIN_URL = "Sys.UserController.AppLogon.ashx";
+	/**
+	 * 上传定位的网址
+	 */
+	public static final String LOCATION_URL = "Sys.UserController.UploadLocation.ashx";
+	/**
+	 * 自动登录的网址
+	 */
+	public static final String AUTO_LOGIN_URL = "Sys.UserController.AppAutoLogon.ashx";
+	/**
+	 * 回复
+	 */
+	public static final String APPLY_URL = "Sys.UserController.GetUserSimpleInfos.ashx";
+	/**
+	 * 找回密码
+	 */
+	public static final String FIND_PASSWORD_URL = "Sys.UserController.ApplyForgetPWDVerifyCode.ashx";
+	/**
+	 * 修改新密码的网址
+	 */
+	public static final String AMEND_URL = "Sys.UserController.ResetPWD.ashx";
+	/**
+	 * 发布邀约的网站
+	 */
+	public static final String ISSUE_URL = "Bus.AppointController.PubAppoint.ashx";
+	/**
+	 * 获取邀约评论的地址
+	 */
+	public static final String QUERY_APPOINT_REPLY_URL = "Bus.AppointController.QueryAppointReply.ashx";
+	/**
+	 * 发布邀约评论
+	 */
+	public static final String PUB_APPOINT_REPLY_URL = "Bus.AppointController.PubAppointReply.ashx";
+	/**
+	 * 收藏某邀约
+	 */
+	public static final String FAVORITE_APPOINT_URL = "Sys.UserController.FavoriteAppoint.ashx";
+	/**
+	 * 加入某邀约
+	 */
+	public static final String APPLY_APPOINT_URL = "Bus.AppointController.ApplyAppoint.ashx";
+	/**
+	 * 查询用户在某邀约的状态
+	 */
+	public static final String QUERY_APPOINT_USERSTATE_URL = "Bus.AppointController.QueryAppointUserState.ashx";
+	/**
+	 * 查询用户是否收藏该邀约
+	 */
+	public static final String IS_FAVORITE_APPOINT_URL = "Sys.UserController.IsFavoriteAppoint.ashx";
+	/**
+	 * 取消收藏某邀约
+	 */
+	public static final String CANCEL_FAVORITE_APPOINT_URL = "Sys.UserController.FavoriteAppointCancel.ashx";
+	/**
+	 * 取消报名某邀约
+	 */
+	public static final String CANCEL_APPOINT_URL = "Bus.AppointController.CancelAppoint.ashx";
+	/**
+	 * 注册时申请验证码
+	 */
+	public static final String APPLY_REGVERIFY_CODE_URL = "Sys.UserController.ApplyRegVerifyCode.ashx";
+	/**
+	 * 注册
+	 */
+	public static final String APP_REGIST = "Sys.UserController.AppRegist.ashx";
+	/**
+	 * 反馈信息
+	 */
+	public static final String FEED_BACK_URL = "Sys.UserController.Feedback.ashx";
+	/**
+	 * 修改用户密码
+	 */
+	public static final String SET_NEWPSWD_STRING = "Sys.UserController.SetNewPWD.ashx";
+	/**
+	 * 设置邮箱
+	 */
+	public final static String SET_EMAIL_URL = "Sys.UserController.SetEmail.ashx";
+	/**
+	 * 设置手机
+	 */
+	public static final String SET_PHONE_URL = "Sys.UserController.SetPhone.ashx";
+	/**
+	 * 获取用户评价的地址
+	 */
+	public static final String QUERY_APPOINT_SCORE = "Bus.AppointController.QueryAppointScore.ashx";
+	/**
+	 * 用户评价其他用户
+	 */
+	public static final String SCORE_APPOINT_URL = "Bus.AppointController.ScoreAppoint.ashx";
 	/**
 	 * 时间界面的几个传值
 	 */

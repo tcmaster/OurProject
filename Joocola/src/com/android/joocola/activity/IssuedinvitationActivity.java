@@ -54,7 +54,6 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private double LocationX;
 	private double LocationY;
 	private String LocationCityName;
-	private String issueUrl = "Bus.AppointController.PubAppoint.ashx";// 发布地址
 	private ProgressDialog progDialog = null;
 	private RelativeLayout time_layout;
 	private LinearLayout location_layout;
@@ -204,7 +203,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 			httpPostInterface.addParams(Constants.ISSUE_TITLE, issuedinvitationInfo.getTitle());
 			httpPostInterface.addParams(Constants.ISSUE_TYPEID, issuedinvitationInfo.getIssueId() + "");
 			httpPostInterface.addParams(Constants.ISSUE_LOCATIONCITYNAME, LocationCityName);
-			httpPostInterface.getData(issueUrl, new HttpPostCallBack() {
+			httpPostInterface.getData(Constants.ISSUE_URL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {

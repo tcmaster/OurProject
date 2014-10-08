@@ -25,6 +25,7 @@ import com.android.joocola.activity.IssuedinvitationDetailsActivity;
 import com.android.joocola.adapter.GetIssueItemAdapter;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -34,9 +35,8 @@ import com.android.joocola.view.AutoListView.OnRefreshListener;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-public class NearbyIssueFragment extends Fragment implements OnRefreshListener,
-		OnLoadListener {
-	private String issue_url = "Bus.AppointController.QueryAppoint.ashx";
+public class NearbyIssueFragment extends Fragment implements OnRefreshListener, OnLoadListener {
+
 	private AutoListView mAutoListView;
 	private List<GetIssueInfoEntity> mEntities = new ArrayList<GetIssueInfoEntity>();
 	private GetIssueItemAdapter getIssueItemAdapter;
@@ -46,6 +46,7 @@ public class NearbyIssueFragment extends Fragment implements OnRefreshListener,
 	private int DistanceFromCurUser = 10000;// 查询的距离
 	@SuppressLint("HandlerLeak")
 	private Handler releaseHandler = new Handler() {
+
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 
@@ -77,18 +78,14 @@ public class NearbyIssueFragment extends Fragment implements OnRefreshListener,
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.nearby_issue, container, false);
-		mAutoListView = (AutoListView) view
-				.findViewById(R.id.nearbyissue_listview);
+		mAutoListView = (AutoListView) view.findViewById(R.id.nearbyissue_listview);
 		mAutoListView.setOnRefreshListener(this);
 		mAutoListView.setOnLoadListener(this);
 		mAutoListView.setOnItemClickListener(new MylistviewItemClick());
-		ImageLoader mImageLoader = new ImageLoader(
-				Volley.newRequestQueue(getActivity()), bitmapCache);
-		getIssueItemAdapter = new GetIssueItemAdapter(mEntities, getActivity(),
-				bitmapCache, mImageLoader);
+		ImageLoader mImageLoader = new ImageLoader(Volley.newRequestQueue(getActivity()), bitmapCache);
+		getIssueItemAdapter = new GetIssueItemAdapter(mEntities, getActivity(), bitmapCache, mImageLoader);
 		mAutoListView.setAdapter(getIssueItemAdapter);
 		getData(0);
 
@@ -125,9 +122,8 @@ public class NearbyIssueFragment extends Fragment implements OnRefreshListener,
 		httpPostInterface.addParams("ItemsPerPage", 10 + "");
 		httpPostInterface.addParams("CurrentPage", mCurPageIndex + "");
 		httpPostInterface.addParams("State", "1");
-		httpPostInterface.addParams("DistanceFromCurUser", DistanceFromCurUser
-				+ "");
-		httpPostInterface.getData(issue_url, new HttpPostCallBack() {
+		httpPostInterface.addParams("DistanceFromCurUser", DistanceFromCurUser + "");
+		httpPostInterface.getData(Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -142,13 +138,10 @@ public class NearbyIssueFragment extends Fragment implements OnRefreshListener,
 	class MylistviewItemClick implements OnItemClickListener {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if ((position - 1) != mEntities.size()) {
-				GetIssueInfoEntity getIssueInfoEntity = mEntities
-						.get(position - 1);
-				Intent intent = new Intent(getActivity(),
-						IssuedinvitationDetailsActivity.class);
+				GetIssueInfoEntity getIssueInfoEntity = mEntities.get(position - 1);
+				Intent intent = new Intent(getActivity(), IssuedinvitationDetailsActivity.class);
 				intent.putExtra("issueInfo", getIssueInfoEntity);
 				startActivity(intent);
 			}
@@ -171,8 +164,7 @@ public class NearbyIssueFragment extends Fragment implements OnRefreshListener,
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject object = jsonArray.getJSONObject(i);
 				GetIssueInfoEntity getIssueInfoEntity = new GetIssueInfoEntity();
-				getIssueInfoEntity = JsonUtils.getIssueInfoEntity(object,
-						getIssueInfoEntity);
+				getIssueInfoEntity = JsonUtils.getIssueInfoEntity(object, getIssueInfoEntity);
 				data.add(getIssueInfoEntity);
 			}
 
