@@ -77,7 +77,7 @@ public class PC_Edit_GridView_Adapter extends BaseAdapter {
 	}
 
 	public void addImgUrls(String url) {
-		imgUrls.add(Utils.processResultStr(url, "_50_"));
+		imgUrls.add(Utils.processResultStr(url, "_150_"));
 		bigimgUrls.add(url);
 		notifyDataSetChanged();
 	}

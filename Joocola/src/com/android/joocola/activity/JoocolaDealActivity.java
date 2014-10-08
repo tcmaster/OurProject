@@ -22,8 +22,8 @@ public class JoocolaDealActivity extends BaseActivity {
 		setContentView(R.layout.activity_joocola_deal);
 		useCustomerActionBar();
 		getActionBarTitle().setVisibility(View.INVISIBLE);
-		getActionBarRight().setVisibility(View.VISIBLE);
-		getActionBarleft().setText("");
+		getActionBarRight().setVisibility(View.INVISIBLE);
+		getActionBarleft().setText("聚可乐用户协议");
 	}
 
 }

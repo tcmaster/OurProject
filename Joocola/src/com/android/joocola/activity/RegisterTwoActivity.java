@@ -176,13 +176,18 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 		pdlg.setTitle("注册中");
 		nickName = et_nickName.getText().toString();
 		birthday = tv_birthday.getText().toString();
-		if (birthday.equals("请选择生日")) {
-			Utils.toast(this, "请填写生日字段");
+		if (birthday.equals("")) {
+			Utils.toast(this, "请选择生日");
 			pdlg.dismiss();
 			return;
 		}
 		if (Utils.isNickName(nickName)) {
 			Utils.toast(this, "昵称请以非数字开头");
+			pdlg.dismiss();
+			return;
+		}
+		if (imgUrl == null || imgUrl.equals("")) {
+			Utils.toast(this, "请设置用户的头像");
 			pdlg.dismiss();
 			return;
 		}
