@@ -1,6 +1,8 @@
 package com.android.joocola.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +40,9 @@ public class PersonalCenterActivity extends BaseActivity implements OnClickListe
 	// 几个点击跳转的布局,依次是发起，报名，回复，收藏，评价，设置
 	private LinearLayout ll_add, ll_apply, ll_answer, ll_save, ll_commit, ll_settings;
 
+	private SharedPreferences mSharedPreferences;
+	private String user_pid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,6 +72,9 @@ public class PersonalCenterActivity extends BaseActivity implements OnClickListe
 		ll_save = (LinearLayout) findViewById(R.id.saveLayout);
 		ll_commit = (LinearLayout) findViewById(R.id.waitapplyLayout);
 		ll_settings = (LinearLayout) findViewById(R.id.settingLayout);
+		// 获得当前登录的user_pid
+		mSharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		user_pid = mSharedPreferences.getString(Constants.LOGIN_PID, 0 + "");
 
 	}
 
@@ -78,6 +86,7 @@ public class PersonalCenterActivity extends BaseActivity implements OnClickListe
 		ll_save.setOnClickListener(this);// 收藏
 		ll_commit.setOnClickListener(this);// 评价
 		ll_settings.setOnClickListener(this);// 设置
+		iv_photo.setOnClickListener(this);
 
 	}
 
@@ -123,6 +132,11 @@ public class PersonalCenterActivity extends BaseActivity implements OnClickListe
 		case R.id.settingLayout:
 			Intent settingIntent = new Intent(this, SettingActivity.class);
 			startActivity(settingIntent);
+			break;
+		case R.id.photoImg:
+			Intent userIntent = new Intent(PersonalCenterActivity.this, PersonalDetailActivity.class);
+			userIntent.putExtra("userId", user_pid + "");
+			startActivity(userIntent);
 			break;
 		default:
 			break;
