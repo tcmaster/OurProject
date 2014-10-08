@@ -61,7 +61,15 @@
                 android:text="@string/alter_phonenum"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
-        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:id="@+id/phone_num_text"
+                android:text="18888888888"></TextView>
+         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -84,7 +92,14 @@
                 android:text="@string/alter_mail"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
-
+                  <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:id="@+id/mail_text"
+                android:text="未设置"></TextView>
               </LinearLayout>
 
         <View
@@ -108,6 +123,14 @@
                 android:text="@string/update"
                 android:textColor="@color/deepgray"
                 android:textSize="16sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:id="@+id/version_text"
+                android:text=""></TextView>
            
         </LinearLayout>
 
