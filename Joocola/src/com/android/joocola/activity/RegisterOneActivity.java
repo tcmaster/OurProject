@@ -178,7 +178,7 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 					info.setIntroducer("xiaosong");
 					intent.putExtra("info", info);
 					startActivity(intent);
-					finish();
+					// finish();
 				}
 			} else
 				Utils.toast(this, "密码格式有误，请重新输入密码(6-20位数字或字母");
