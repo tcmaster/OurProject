@@ -103,6 +103,7 @@ public class SingleChatAdapter extends BaseAdapter {
 		photos = new HashMap<String, String>();
 		names = new HashMap<String, String>();
 		bmUtils = new BitmapUtils(context);
+		bmUtils.configDefaultLoadingImage(R.drawable.logo);
 		bmUtils.configDefaultLoadFailedImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo));
 		initData();
 	}

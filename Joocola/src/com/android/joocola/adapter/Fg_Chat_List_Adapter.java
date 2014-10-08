@@ -39,15 +39,25 @@ import com.lidroid.xutils.util.LogUtils;
 public class Fg_Chat_List_Adapter extends BaseAdapter {
 
 	private LayoutInflater mInflater = null;
-	// 消息列表的数据源
+	/**
+	 * 消息列表的数据源
+	 */
 	private List<MyChatInfo> data;
-	// 数据库
+	/**
+	 * 数据库
+	 */
 	private DbUtils db;
-	// 列表界面显示的图片
+	/**
+	 * 列表界面显示的图片(单聊为uXX,群聊为aXX)
+	 */
 	private Map<String, String> photos;
-	// 列表界面显示的用户昵称
+	/**
+	 * 列表界面显示的用户昵称(单聊为uXX，群聊为aXX)
+	 */
 	private Map<String, String> names;
-	// 下载图片的工具类
+	/**
+	 * 下载图片的工具类
+	 */
 	private BitmapUtils utils;
 
 	public Fg_Chat_List_Adapter(Context context, List<MyChatInfo> data) {
