@@ -80,10 +80,10 @@
     <string name="startDate_pd">发起中的邀约</string>
     <string name="commit">评价</string>
     <string name="add">邀请</string>
-    <string name="like">喜欢</string>
+    <string name="like">关注</string>
     <string name="talk">聊天</string>
-    <string name="likeprompt">对方也喜欢你时，才会看到你喜欢TA。</string>
-    <string name="unlikeprompt">你将取消对对方的喜欢，确定么</string>
+    <string name="likeprompt">确认要关注对方吗</string>
+    <string name="unlikeprompt">取消关注后，将不能实时获得对方新动态。</string>
     <!-- 聊天界面 -->
     <string name="send">发送</string>
     <string name="input">请在此输入消息</string>

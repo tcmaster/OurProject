@@ -1,7 +1,9 @@
 package com.android.joocola.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,12 +24,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.activity.BaseActivity;
 import com.android.joocola.activity.ChatActivity;
 import com.android.joocola.adapter.Fg_Chat_List_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.utils.Constants;
-import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.DbUtils;
@@ -110,54 +112,74 @@ public class Messagefragment extends Fragment {
 			// 绑定最新数据
 			if (tResult != null) {
 				adapter.bindData(tResult);
-				// 下面这段是为了获得当前的用户昵称,用户头像
-				HttpPostInterface interface1 = new HttpPostInterface();
-				StringBuilder builder = new StringBuilder();
+				// 单聊的ids
+				StringBuilder sBuilder = new StringBuilder();
+				// 群聊的ids
+				StringBuilder mBuilder = new StringBuilder();
 				for (int i = 0; i < tResult.size(); i++) {
-					if (i == tResult.size() - 1)
-						builder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()));
-					else
-						builder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
+					// 若为群聊，则不进行处理
+					if (tResult.get(i).chatType == Constants.CHAT_TYPE_MULTI) {
+						mBuilder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
+						continue;
+					}
+					// 若为单聊，将用户头像加入
+					sBuilder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
 				}
-				interface1.addParams("UserIDs", builder.toString());
-				interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
+				// 下面这段是为了获得当前的用户昵称,用户头像(仅限单聊)
+				Map<String, String> sMap = new HashMap<String, String>();
+				if (sBuilder.length() > 0) {
+					sMap.put("UserIDs", sBuilder.substring(0, sBuilder.length() - 1));
+					((BaseActivity) getActivity()).getHttpResult(sMap, Constants.USERINFOURL, new HttpPostCallBack() {
 
-					@Override
-					public void httpPostResolveData(String result) {
-						if (result == null || result.equals("")) {
-							handler.post(new Runnable() {
+						@Override
+						public void httpPostResolveData(String result) {
+							if (result == null || result.equals("")) {
+								handler.post(new Runnable() {
 
-								@Override
-								public void run() {
-									Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
-								}
-							});
-						} else {
-							JSONObject object;
-							try {
-								object = new JSONObject(result);
-								JSONArray array = object.getJSONArray("Entities");
-								for (int i = 0; i < array.length(); i++) {
-									final JSONObject tempData = array.getJSONObject(i);
-									handler.post(new Runnable() {
+									@Override
+									public void run() {
+										Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
+									}
+								});
+							} else {
+								JSONObject object;
+								try {
+									object = new JSONObject(result);
+									JSONArray array = object.getJSONArray("Entities");
+									for (int i = 0; i < array.length(); i++) {
+										final JSONObject tempData = array.getJSONObject(i);
+										handler.post(new Runnable() {
 
-										@Override
-										public void run() {
-											try {
-												adapter.addName("u" + tempData.getString("PID"), tempData.getString("NickName"));
-												adapter.addPhotos("u" + tempData.getString("PID"), tempData.getString("PhotoUrl"));
-											} catch (JSONException e) {
-												e.printStackTrace();
+											@Override
+											public void run() {
+												try {
+													adapter.addName("u" + tempData.getString("PID"), tempData.getString("NickName"));
+													adapter.addPhotos("u" + tempData.getString("PID"), tempData.getString("PhotoUrl"));
+												} catch (JSONException e) {
+													e.printStackTrace();
+												}
 											}
-										}
-									});
+										});
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
 								}
-							} catch (JSONException e) {
-								e.printStackTrace();
 							}
 						}
-					}
-				});
+					});
+				}
+				// 下面这段是为了得到群聊的照片和昵称
+				if (mBuilder.length() > 0) {
+					Map<String, String> mMap = new HashMap<String, String>();
+					mMap.put("IDs", mBuilder.substring(0, mBuilder.length() - 1));
+					((BaseActivity) getActivity()).getHttpResult(mMap, Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
+
+						@Override
+						public void httpPostResolveData(String result) {
+
+						}
+					});
+				}
 			}
 		} catch (DbException e1) {
 			e1.printStackTrace();

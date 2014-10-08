@@ -1,15 +1,16 @@
 package com.android.joocola.activity;
 
 import java.io.File;
+import java.util.Map;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.Utils;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
 	public ActionBar mActionBar;
 	// 自定义ActionBar相关
@@ -176,7 +178,7 @@ public class BaseActivity extends Activity {
 	 * @author: LiXiaosong
 	 * @date:2014-10-8
 	 */
-	protected void cropPicture(Uri uri) {
+	public void cropPicture(Uri uri) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");
 		intent.putExtra("crop", "true");// 可裁剪
@@ -197,7 +199,7 @@ public class BaseActivity extends Activity {
 	 * @author: LiXiaosong
 	 * @date:2014-10-8
 	 */
-	protected void getPhotoFromGallery() {
+	public void getPhotoFromGallery() {
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_PICK);
 		intent.setType("image/*");
@@ -210,7 +212,7 @@ public class BaseActivity extends Activity {
 	 * @author: LiXiaosong
 	 * @date:2014-10-8
 	 */
-	protected void getPhotoByTakePicture() {
+	public void getPhotoByTakePicture() {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED)) {
 			tempName = System.currentTimeMillis() + ".jpg";
@@ -224,6 +226,26 @@ public class BaseActivity extends Activity {
 		} else {
 			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
 		}
+	}
+
+	/**
+	 * 获取网络数据专用方法
+	 * 
+	 * @param params
+	 *            要传递的接口参数
+	 * @param url
+	 *            网络请求地址
+	 * @param callBack
+	 *            回调方法
+	 * @author: LiXiaosong
+	 * @date:2014-10-8
+	 */
+	public void getHttpResult(Map<String, String> params, String url, HttpPostInterface.HttpPostCallBack callBack) {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		for (Map.Entry<String, String> elemnt : params.entrySet()) {
+			httpPostInterface.addParams(elemnt.getKey(), elemnt.getValue());
+		}
+		httpPostInterface.getData(url, callBack);
 	}
 
 }

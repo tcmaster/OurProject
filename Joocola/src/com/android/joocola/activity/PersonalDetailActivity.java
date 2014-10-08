@@ -156,7 +156,7 @@ public class PersonalDetailActivity extends BaseActivity {
 	@ViewInject(R.id.pd_add_ll)
 	private LinearLayout add_ll;
 	/**
-	 * 喜欢按钮
+	 * 关注按钮
 	 */
 	@ViewInject(R.id.pd_like_ll)
 	private LinearLayout like_ll;
@@ -166,7 +166,7 @@ public class PersonalDetailActivity extends BaseActivity {
 	@ViewInject(R.id.pd_talk_ll)
 	private LinearLayout talk_ll;
 	/**
-	 * 喜欢的文字
+	 * 关注的文字
 	 */
 	@ViewInject(R.id.like_tv)
 	private TextView like_tv;
@@ -302,7 +302,7 @@ public class PersonalDetailActivity extends BaseActivity {
 	}
 
 	/**
-	 * 确定喜欢按钮的初始状态
+	 * 确定关注按钮的初始状态
 	 */
 	private void initLike() {
 		HttpPostInterface interface1 = new HttpPostInterface();
@@ -344,7 +344,7 @@ public class PersonalDetailActivity extends BaseActivity {
 	}
 
 	/**
-	 * 用来判断是否喜欢该用户
+	 * 用来判断是否关注该用户
 	 */
 	private void ifLikeUser() {
 		HttpPostInterface interface1 = new HttpPostInterface();
@@ -401,7 +401,7 @@ public class PersonalDetailActivity extends BaseActivity {
 
 								@Override
 								public void run() {
-									Utils.toast(PersonalDetailActivity.this, "喜欢成功");
+									Utils.toast(PersonalDetailActivity.this, "关注成功");
 									like_tv.setText("已关注");
 								}
 							});
@@ -450,7 +450,7 @@ public class PersonalDetailActivity extends BaseActivity {
 
 							@Override
 							public void run() {
-								Utils.toast(PersonalDetailActivity.this, "已取消喜欢");
+								Utils.toast(PersonalDetailActivity.this, "已取消关注");
 								like_tv.setText("关注");
 							}
 						});
@@ -460,7 +460,7 @@ public class PersonalDetailActivity extends BaseActivity {
 
 							@Override
 							public void run() {
-								Utils.toast(PersonalDetailActivity.this, "未能成功取消");
+								Utils.toast(PersonalDetailActivity.this, "未能成功取消关注");
 
 							}
 						});
@@ -730,7 +730,6 @@ public class PersonalDetailActivity extends BaseActivity {
 						}
 					});
 				}
-
 			}
 		});
 

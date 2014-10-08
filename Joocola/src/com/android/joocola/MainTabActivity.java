@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
@@ -38,6 +37,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.android.joocola.activity.BaseActivity;
 import com.android.joocola.activity.FilterActivity;
 import com.android.joocola.activity.IssuedinvitationActivity;
 import com.android.joocola.activity.PersonalCenterActivity;
@@ -63,7 +63,7 @@ import com.android.joocola.utils.Utils;
  * @author bb
  * 
  */
-public class MainTabActivity extends FragmentActivity implements AMapLocationListener {
+public class MainTabActivity extends BaseActivity implements AMapLocationListener {
 
 	private RelativeLayout tab_realease, tab_nearby, tab_message;
 	private ViewPager mPager;
