@@ -533,7 +533,7 @@ public class PersonalDetailActivity extends BaseActivity {
 
 			@Override
 			public void getCustomerView(Window window, AlertDialog dlg) {
-				TextView title_tv = (TextView) window.findViewById(R.id.dlg_pe_title);
+				final TextView title_tv = (TextView) window.findViewById(R.id.dlg_pe_title);
 				final TextView ok_btn = (TextView) window.findViewById(R.id.dlg_pe_ok);
 				final TextView cancel_btn = (TextView) window.findViewById(R.id.dlg_pe_cancel);
 				final ListView add_lv = (ListView) window.findViewById(R.id.dlg_pe_listview);
@@ -596,26 +596,45 @@ public class PersonalDetailActivity extends BaseActivity {
 								public void run() {
 									add_lv.setAdapter(new Dlg_ListView_Adapter<GetIssueInfoEntity>(entitys, PersonalDetailActivity.this));
 									if (add_lv.getAdapter().getCount() == 0) {
-										Utils.toast(PersonalDetailActivity.this, "暂无邀约");
-										cdlg.dismissDlg();
-										return;
-									}
-									if (add_lv.getAdapter().getCount() > 5)
+										// Utils.toast(PersonalDetailActivity.this, "暂无邀约");
+										// cdlg.dismissDlg();
+										title_tv.setText("您现在没有发起中的邀约");
+										ok_btn.setText("马上发布");
+										cancel_btn.setText("取消");
+										ok_btn.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												Intent intent = new Intent();
+												// intent.setClass(PersonalDetailActivity.this, cls)
+												cdlg.dismissDlg();
+											}
+										});
+										cancel_btn.setOnClickListener(new OnClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												cdlg.dismissDlg();
+											}
+										});
+									} else if (add_lv.getAdapter().getCount() > 5) {
 										add_lv.getLayoutParams().height = Utils.dip2px(PersonalDetailActivity.this, 200);
-									ok_btn.setOnClickListener(new OnClickListener() {
+										ok_btn.setOnClickListener(new OnClickListener() {
 
-										@Override
-										public void onClick(View v) {
-											cdlg.dismissDlg();
-										}
-									});
-									cancel_btn.setOnClickListener(new OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												cdlg.dismissDlg();
+											}
+										});
+										cancel_btn.setOnClickListener(new OnClickListener() {
 
-										@Override
-										public void onClick(View v) {
-											cdlg.dismissDlg();
-										}
-									});
+											@Override
+											public void onClick(View v) {
+												cdlg.dismissDlg();
+											}
+										});
+									}
+
 								}
 							});
 
