@@ -28,7 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
-import com.android.joocola.adapter.MultiChatAdapter;
 import com.android.joocola.adapter.SingleChatAdapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
@@ -122,10 +121,10 @@ public class ChatActivity extends BaseActivity {
 	 * 该界面单聊的适配器
 	 */
 	private SingleChatAdapter adapter;
-	/**
-	 * 该界面群聊的适配器
-	 */
-	private MultiChatAdapter adapter_m;
+	// /**
+	// * 该界面群聊的适配器,暂时单聊就可以使用
+	// */
+	// private MultiChatAdapter adapter_m;
 	/**
 	 * 数据库
 	 */
