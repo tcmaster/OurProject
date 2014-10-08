@@ -31,7 +31,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.entity.SimpleUserInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -111,8 +111,8 @@ public class ApplyMangersActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_applymangers);
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
-		user_pid = sharedPreferences.getString(Constans.LOGIN_PID, "0");
+		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		user_pid = sharedPreferences.getString(Constants.LOGIN_PID, "0");
 		inflater = LayoutInflater.from(this);
 		res = getResources();
 		bitmapCache = new BitmapCache();
@@ -258,7 +258,7 @@ public class ApplyMangersActivity extends BaseActivity {
 			img.setTag(i);
 			img.setErrorImageResId(R.drawable.photobg);
 			img.setDefaultImageResId(R.drawable.photobg);
-			img.setImageUrl(Utils.processResultStr(Constans.URL + url, "_150_"), mImageLoader);
+			img.setImageUrl(Utils.processResultStr(Constants.URL + url, "_150_"), mImageLoader);
 			img.setOnClickListener(imgOnclickListener);
 			layout.addView(view);
 			View line = new View(this);

@@ -13,14 +13,11 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,7 +32,7 @@ import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.RegisterInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -52,9 +49,6 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 	private TextView tv_birthday;
 	// 性别选择
 	private RadioGroup rg_group;
-	// 标识位
-	private static final int PICKPICTURE = 1;
-	private static final int TAKEPHOTO = 2;
 	private static final String REGISTERURL = "Sys.UserController.AppRegist.ashx";
 	// 本页需要上传的数据
 	// 图片地址
@@ -68,10 +62,6 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 	private Handler handler;
 	// 点击进入聚可乐页面
 	private TextView agreeDeal;
-	/**
-	 * 照相时的临时文件名
-	 */
-	private String tempName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -144,30 +134,6 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 		default:
 			break;
 		}
-	}
-
-	private void getPhotoFromGallery() {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_PICK);
-		intent.setType("image/*");
-		startActivityForResult(intent, PICKPICTURE);
-	}
-
-	private void getPhotoByTakePicture() {
-		String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED)) {
-			tempName = System.currentTimeMillis() + ".jpg";
-			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
-			Uri u = Uri.fromFile(file);
-			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
-			Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
-			startActivityForResult(getImageByCamera, TAKEPHOTO);
-		} else {
-			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
-		}
-
 	}
 
 	private void register() {
@@ -260,28 +226,37 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 		// 图片路径
 		if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
 			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
-			/**
-			 * 这里需要对原图进行缩放
-			 */
-			Bitmap bm = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(file.getAbsolutePath()), iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
-			bm = Utils.rotaingImageView(Utils.rotateImg(file.getAbsolutePath()), bm);
-			File resultFile = Utils.createBitmapFile(bm);
-			iv_userPhoto.setImageBitmap(bm);
-			uploadImage(resultFile);
+			Uri uri = Uri.fromFile(file);
+			cropPicture(uri);
+
 		} else if (requestCode == PICKPICTURE && resultCode == RESULT_OK) {
 			if (data != null) {
 				Uri uri = data.getData();
+				cropPicture(uri);
+			}
+		} else if (requestCode == CROP && resultCode == RESULT_OK) {
+			// 得到裁剪后的结果，将图片进行上传
+			if (data.getData() != null) {
+				Uri resultUri = data.getData();
 				Bitmap bm = null;
+				// try {
+				// bm =
+				// ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(this.getContentResolver(),
+				// resultUri), iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
+				// } catch (FileNotFoundException e) {
+				// e.printStackTrace();
+				// } catch (IOException e) {
+				// e.printStackTrace();
+				// }
 				try {
-					bm = ThumbnailUtils.extractThumbnail(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri), iv_userPhoto.getWidth(), iv_userPhoto.getHeight());
+					bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 				iv_userPhoto.setImageBitmap(bm);
-				String path = Utils.getRealPathFromURI(uri, RegisterTwoActivity.this);
+				String path = Utils.getRealPathFromURI(resultUri, RegisterTwoActivity.this);
 				File file = new File(path);
 				uploadImage(file);
 			}
@@ -317,7 +292,7 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 	}
 
 	private void initRadioGroup() {
-		List<BaseDataInfo> infos = JoocolaApplication.getInstance().getBaseInfo(Constans.basedata_Sex);
+		List<BaseDataInfo> infos = JoocolaApplication.getInstance().getBaseInfo(Constants.basedata_Sex);
 		ViewHelper.radioGroupFillItems(RegisterTwoActivity.this, rg_group, infos);
 	}
 

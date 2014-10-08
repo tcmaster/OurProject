@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 import com.lidroid.xutils.BitmapUtils;
 
@@ -141,7 +141,7 @@ public class PersonalCenterActivity extends BaseActivity implements OnClickListe
 		utils.configDefaultLoadFailedImage(R.drawable.logo);
 		String photoUrl = JoocolaApplication.getInstance().getUserInfo().getPhotoUrl();
 		if (photoUrl != null)
-			utils.display(iv_photo, Utils.processResultStr(Constans.URL + JoocolaApplication.getInstance().getUserInfo().getPhotoUrl(), "_150_"));
+			utils.display(iv_photo, Utils.processResultStr(Constants.URL + JoocolaApplication.getInstance().getUserInfo().getPhotoUrl(), "_150_"));
 		else {
 			utils.display(iv_photo, "errorurl");
 		}

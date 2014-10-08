@@ -18,8 +18,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
@@ -47,7 +45,7 @@ import com.android.joocola.entity.BaseCityInfo;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.CityInfo;
 import com.android.joocola.entity.UserInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -149,17 +147,11 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 * 往主线程发送消息的handler
 	 */
 	private Handler handler;
-	// 标识位
-	private static final int PICKPICTURE = 1;
-	private static final int TAKEPHOTO = 2;
+
 	/**
 	 * 用户信息
 	 */
 	private UserInfo userInfo;
-	/**
-	 * 照相时的临时文件名
-	 */
-	private String tempName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -255,8 +247,8 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	 */
 	@Override
 	protected void onStop() {
-		saveEditText("newSign", Constans.SIGNINURL, signin_et.getText().toString());
-		saveEditText("phone", Constans.PHONEURL, phone_et.getText().toString());
+		saveEditText("newSign", Constants.SIGNINURL, signin_et.getText().toString());
+		saveEditText("phone", Constants.PHONEURL, phone_et.getText().toString());
 		super.onStop();
 	}
 
@@ -269,7 +261,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		if (item.getItemId() == 0) {
 			interface1.addParams("newUrls", "");
 			interface1.addParams("delUrls", url);
-			interface1.getData(Constans.ALBUMURL, new HttpPostCallBack() {
+			interface1.getData(Constants.ALBUMURL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {
@@ -300,7 +292,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			});
 		} else if (item.getItemId() == 1) {
 			interface1.addParams("newPhotoUrl", url);
-			interface1.getData(Constans.PHOTOURL, new HttpPostCallBack() {
+			interface1.getData(Constants.PHOTOURL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {
@@ -386,7 +378,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 			display = profession_tv;
 			title = "职业";
-			url = Constans.PROFESSIONURL;
+			url = Constants.PROFESSIONURL;
 			break;
 		case R.id.annualSalary:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -396,7 +388,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 			display = annualSalary_tv;
 			title = "年收入";
-			url = Constans.USERREVENUEURL;
+			url = Constants.USERREVENUEURL;
 			break;
 		case R.id.height:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -406,7 +398,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 			display = height_tv;
 			title = "身高";
-			url = Constans.HEIGHTURL;
+			url = Constants.HEIGHTURL;
 			break;
 		case R.id.emotion:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -416,7 +408,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 			display = emotion_tv;
 			title = "情感状态";
-			url = Constans.MARRYURL;
+			url = Constants.MARRYURL;
 			break;
 		case R.id.smoke:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -426,7 +418,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 			display = smoke_tv;
 			title = "抽烟";
-			url = Constans.SMOKEURL;
+			url = Constants.SMOKEURL;
 			break;
 		case R.id.drink:
 			for (int i = 0; i < baseDataInfos.size(); i++) {
@@ -436,7 +428,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			}
 			display = drink_tv;
 			title = "喝酒";
-			url = Constans.DRINKURL;
+			url = Constants.DRINKURL;
 			break;
 		default:
 			break;
@@ -453,7 +445,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 			@Override
 			public void httpPostResolveData(String result) {
 				String data = "";
-				if (url == Constans.NICKNAMEURL) {
+				if (url == Constants.NICKNAMEURL) {
 					JSONObject object;
 					try {
 						object = new JSONObject(result);
@@ -618,7 +610,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							HttpPostInterface interface1 = new HttpPostInterface();
 							interface1.addParams("userID", JoocolaApplication.getInstance().getUserInfo().getPID());
 							interface1.addParams("newCityID", newCityPID);
-							interface1.getData(Constans.NEWCITYURL, new HttpPostCallBack() {
+							interface1.getData(Constants.NEWCITYURL, new HttpPostCallBack() {
 
 								@Override
 								public void httpPostResolveData(String result) {
@@ -654,7 +646,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("provinceID", baseCityPID);
 		((Dlg_BaseCity_Adapter) base_adp).setPos(pos);
-		interface1.getData(Constans.CITY_INFO_URL, new HttpPostCallBack() {
+		interface1.getData(Constants.CITY_INFO_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -702,7 +694,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 	private void getCityName(String cityPID) {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("cityID", cityPID);
-		interface1.getData(Constans.GETCITYNAME, new HttpPostCallBack() {
+		interface1.getData(Constants.GETCITYNAME, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -776,7 +768,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							HttpPostInterface interface1 = new HttpPostInterface();
 							interface1.addParams("userID", JoocolaApplication.getInstance().getUserInfo().getPID());
 							interface1.addParams("hobbyIDs", choicePIDS);
-							interface1.getData(Constans.HOBBYURL, new HttpPostCallBack() {
+							interface1.getData(Constants.HOBBYURL, new HttpPostCallBack() {
 
 								@Override
 								public void httpPostResolveData(String result) {
@@ -808,47 +800,31 @@ public class PersonalInfoEditActivity extends BaseActivity {
 		cdlg.showDlg();
 	}
 
-	private void getPhotoFromGallery() {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_PICK);
-		intent.setType("image/*");
-		startActivityForResult(intent, PICKPICTURE);
-	}
-
-	private void getPhotoByTakePicture() {
-		String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED)) {
-			tempName = System.currentTimeMillis() + ".jpg";
-			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
-			Uri u = Uri.fromFile(file);
-			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
-			Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
-			startActivityForResult(getImageByCamera, TAKEPHOTO);
-		} else {
-			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
-		}
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == PICKPICTURE && resultCode == RESULT_OK) {
 			if (data != null) {
 				Uri uri = data.getData();
-				String path = Utils.getRealPathFromURI(uri, PersonalInfoEditActivity.this);
-				File file = new File(path);
-				uploadImage(file);
+				// 裁剪处理
+				cropPicture(uri);
 			}
 		} else if (requestCode == TAKEPHOTO && resultCode == RESULT_OK) {
 			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
-			/**
-			 * 这里需要对照片的角度进行校正
-			 */
+			// 这里需要对照片的角度进行校正
 			Bitmap bm = BitmapFactory.decodeFile(file.getAbsolutePath());
 			bm = Utils.rotaingImageView(Utils.rotateImg(file.getAbsolutePath()), bm);
 			File resultFile = Utils.createBitmapFile(bm);
+			Uri uri = Uri.fromFile(resultFile);
+			cropPicture(uri);
 			uploadImage(resultFile);
+		} else if (requestCode == CROP && resultCode == RESULT_OK) {
+			// 得到裁剪后的结果，将图片进行上传
+			if (data.getData() != null) {
+				Uri resultUri = data.getData();
+				String path = Utils.getRealPathFromURI(resultUri, PersonalInfoEditActivity.this);
+				File file = new File(path);
+				uploadImage(file);
+			}
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
@@ -875,7 +851,7 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							interface2.addParams("newUrls", res);
 							interface2.addParams("userID", JoocolaApplication.getInstance().getUserInfo().getPID());
 							interface2.addParams("delUrls", "");
-							interface2.getData(Constans.ALBUMURL, new HttpPostCallBack() {
+							interface2.getData(Constants.ALBUMURL, new HttpPostCallBack() {
 
 								@Override
 								public void httpPostResolveData(String result) {

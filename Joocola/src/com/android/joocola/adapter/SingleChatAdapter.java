@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
@@ -285,7 +285,7 @@ public class SingleChatAdapter extends BaseAdapter {
 			}
 		}
 		if (photos.get(message.getFrom()) != null) {
-			String url = Constans.URL + Utils.processResultStr(photos.get(message.getFrom()), "_150_");
+			String url = Constants.URL + Utils.processResultStr(photos.get(message.getFrom()), "_150_");
 			LogUtils.e(url);
 			bmUtils.display(holder.iv_photo, url);
 		}

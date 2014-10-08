@@ -22,7 +22,7 @@ import com.android.joocola.R;
 import com.android.joocola.adapter.GetIssueItemAdapter;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -107,8 +107,8 @@ public class IssueListActivity extends BaseActivity implements OnRefreshListener
 				}
 			}
 		});
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
-		user_id = sharedPreferences.getString(Constans.LOGIN_PID, "");
+		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		user_id = sharedPreferences.getString(Constants.LOGIN_PID, "");
 	}
 
 	/**

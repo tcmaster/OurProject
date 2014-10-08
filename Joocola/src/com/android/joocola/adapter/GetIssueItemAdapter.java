@@ -18,7 +18,7 @@ import com.android.joocola.R;
 import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -113,8 +113,8 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		}
 		holder.touxiang.setErrorImageResId(R.drawable.photobg);
 		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
-		Log.e("bb", Utils.processResultStr(Constans.URL + touxiangUrl, "_150_"));
-		holder.touxiang.setImageUrl(Utils.processResultStr(Constans.URL + touxiangUrl, "_150_"), mImageLoader);
+		Log.e("bb", Utils.processResultStr(Constants.URL + touxiangUrl, "_150_"));
+		holder.touxiang.setImageUrl(Utils.processResultStr(Constants.URL + touxiangUrl, "_150_"), mImageLoader);
 		holder.touxiang.setOnClickListener(new OnClickListener() {
 
 			@Override

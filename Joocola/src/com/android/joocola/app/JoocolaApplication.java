@@ -18,7 +18,7 @@ import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -191,7 +191,7 @@ public class JoocolaApplication extends Application {
 	public void initUserInfoAfterLogin(String userId) {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("UserIDs", userId);
-		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+		interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -229,7 +229,7 @@ public class JoocolaApplication extends Application {
 	public void initUserInfo(String userId) {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("UserIDs", userId);
-		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+		interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -271,7 +271,7 @@ public class JoocolaApplication extends Application {
 		baseCityInfos = new ArrayList<BaseCityInfo>();
 		HttpPostInterface interface1 = new HttpPostInterface();
 		if (Utils.isNetConn(this)) {
-			interface1.getData(Constans.BASE_CITY_INFO_URL, new HttpPostCallBack() {
+			interface1.getData(Constants.BASE_CITY_INFO_URL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {
@@ -320,7 +320,7 @@ public class JoocolaApplication extends Application {
 	 */
 	public ArrayList<IssueInfo> initAddData(final ArrayList<IssueInfo> mInfos, JoocolaApplication mApplication) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		httpPostInterface.getData(Constans.ISSUE_TYPE_URL, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.ISSUE_TYPE_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

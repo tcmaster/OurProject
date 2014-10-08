@@ -53,7 +53,7 @@ public class HttpPostInterface {
 				}
 				md5String = MD5Utils.md5s(md5String);
 				HttpPost httpPost = null;
-				httpPost = new HttpPost(Constans.MAIN_URL + url);
+				httpPost = new HttpPost(Constants.MAIN_URL + url);
 				// 设置HTTP POST请求参数必须用NameValuePair对象
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				Iterator iter = map.entrySet().iterator();
@@ -117,7 +117,7 @@ public class HttpPostInterface {
 			@Override
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
-				HttpPost post = new HttpPost(Constans.UPLOADIMGURL);
+				HttpPost post = new HttpPost(Constants.UPLOADIMGURL);
 				MultipartEntity entity = new MultipartEntity();
 				try {
 					FileBody fileBody = new FileBody(file);

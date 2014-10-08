@@ -15,7 +15,7 @@ import android.view.WindowManager;
 
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -47,12 +47,12 @@ public class SplashActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_splash);
 		isFirstPreferences = getSharedPreferences("IsFirstLogin", Context.MODE_PRIVATE);
-		loginPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		loginPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		editor = loginPreferences.edit();
-		isAutoMatic = loginPreferences.getBoolean(Constans.LOGIN_AUTOMATIC, false);
+		isAutoMatic = loginPreferences.getBoolean(Constants.LOGIN_AUTOMATIC, false);
 		if (isAutoMatic) {
-			user_pid = loginPreferences.getString(Constans.LOGIN_PID, "");
-			userName = loginPreferences.getString(Constans.LOGIN_ACCOUNT, "");
+			user_pid = loginPreferences.getString(Constants.LOGIN_PID, "");
+			userName = loginPreferences.getString(Constants.LOGIN_ACCOUNT, "");
 		}
 		mEditor = isFirstPreferences.edit();
 		Log.e("bb", isFirst() + "");
@@ -90,7 +90,7 @@ public class SplashActivity extends Activity {
 						HttpPostInterface httpPostInterface = new HttpPostInterface();
 						httpPostInterface.addParams("userID", user_pid);
 						httpPostInterface.addParams("userName", userName);
-						httpPostInterface.addParams("version", Constans.version);
+						httpPostInterface.addParams("version", Constants.version);
 						httpPostInterface.getData(AutoUrl, new HttpPostCallBack() {
 
 							@Override
@@ -100,9 +100,9 @@ public class SplashActivity extends Activity {
 									@Override
 									public void run() {
 										if (!result.equals("0")) {
-											editor.putString(Constans.LOGIN_PID, result);
-											editor.putString(Constans.LOGIN_ACCOUNT, userName);
-											editor.putBoolean(Constans.LOGIN_AUTOMATIC, true);
+											editor.putString(Constants.LOGIN_PID, result);
+											editor.putString(Constants.LOGIN_ACCOUNT, userName);
+											editor.putBoolean(Constants.LOGIN_AUTOMATIC, true);
 											editor.commit();
 											// TODO Auto-generated
 											// method stub
@@ -111,7 +111,7 @@ public class SplashActivity extends Activity {
 
 										} else {
 											Utils.toast(SplashActivity.this, "自动登录失败");
-											editor.putBoolean(Constans.LOGIN_AUTOMATIC, false);
+											editor.putBoolean(Constants.LOGIN_AUTOMATIC, false);
 											editor.commit();
 											gotoMainActivity();
 										}

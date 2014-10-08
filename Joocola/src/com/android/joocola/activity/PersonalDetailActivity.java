@@ -26,7 +26,7 @@ import com.android.joocola.adapter.PC_Edit_GridView_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.entity.UserInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -234,7 +234,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("UserIDs", userId);
 		interface1.addParams("CurUserID", JoocolaApplication.getInstance().getPID());
-		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+		interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -308,7 +308,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("opUserID", JoocolaApplication.getInstance().getPID());
 		interface1.addParams("likeUserID", userId);
-		interface1.getData(Constans.IS_LIKE_USER_URL, new HttpPostCallBack() {
+		interface1.getData(Constants.IS_LIKE_USER_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -350,7 +350,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("opUserID", JoocolaApplication.getInstance().getPID());
 		interface1.addParams("likeUserID", userId);
-		interface1.getData(Constans.IS_LIKE_USER_URL, new HttpPostCallBack() {
+		interface1.getData(Constants.IS_LIKE_USER_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -389,7 +389,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("opUserID", JoocolaApplication.getInstance().getUserInfo().getPID());
 		interface1.addParams("likeUserID", userId);
-		interface1.getData(Constans.LIKE_USER_URL, new HttpPostCallBack() {
+		interface1.getData(Constants.LIKE_USER_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -440,7 +440,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("opUserID", JoocolaApplication.getInstance().getUserInfo().getPID());
 		interface1.addParams("likeUserID", userId);
-		interface1.getData(Constans.UNLIKE_USER_URL, new HttpPostCallBack() {
+		interface1.getData(Constants.UNLIKE_USER_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -543,7 +543,7 @@ public class PersonalDetailActivity extends BaseActivity {
 				interface1.addParams("ItemsPerPage", 9999 + "");
 				interface1.addParams("State", 1 + "");
 				interface1.addParams("PublisherID", JoocolaApplication.getInstance().getUserInfo().getPID());
-				interface1.getData(Constans.GET_QUERY_APPOINT, new HttpPostCallBack() {
+				interface1.getData(Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(String result) {
@@ -704,7 +704,7 @@ public class PersonalDetailActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("userID1", "u" + JoocolaApplication.getInstance().getPID());
 		interface1.addParams("userID2", "u" + userId);
-		interface1.getData(Constans.IS_TALK_URL, new HttpPostCallBack() {
+		interface1.getData(Constants.IS_TALK_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -717,7 +717,7 @@ public class PersonalDetailActivity extends BaseActivity {
 							intent.putExtra("userId", userId);
 							intent.putExtra("isSingle", true);
 							intent.putExtra("userNickName", nickName_tv.getText().toString());
-							intent.putExtra("type", Constans.CHAT_TYPE_SINGLE);
+							intent.putExtra("type", Constants.CHAT_TYPE_SINGLE);
 							startActivity(intent);
 						}
 					});

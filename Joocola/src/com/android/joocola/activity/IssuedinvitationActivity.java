@@ -28,7 +28,7 @@ import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.BaseDataInfo;
 import com.android.joocola.entity.IssuedinvitationInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -99,8 +99,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 		Bundle bundle = intent.getExtras();
 		String title = bundle.getString("title");
 		issueID = bundle.getInt("PID");
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
-		String userpidString = sharedPreferences.getString(Constans.LOGIN_PID, "0");
+		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		String userpidString = sharedPreferences.getString(Constants.LOGIN_PID, "0");
 		userPid = Integer.parseInt(userpidString);
 		issuedinvitationInfo.setIssueUserID(userPid);
 		issuedinvitationInfo.setIssueId(issueID);
@@ -137,14 +137,14 @@ public class IssuedinvitationActivity extends BaseActivity {
 			}
 		});
 		// initRadioGroup(Constans.basedata_Sex, sexGroup);
-		List<BaseDataInfo> infos = JoocolaApplication.getInstance().getBaseInfo(Constans.basedata_Sex);
+		List<BaseDataInfo> infos = JoocolaApplication.getInstance().getBaseInfo(Constants.basedata_Sex);
 		BaseDataInfo baseDataInfo = new BaseDataInfo();
 		baseDataInfo.setPID(0);
 		baseDataInfo.setItemName("不限");
 		baseDataInfo.setSortNo(Integer.MAX_VALUE);
 		infos.add(baseDataInfo);
 		ViewHelper.radioGroupFillItems(IssuedinvitationActivity.this, sexGroup, infos);
-		initRadioGroup(Constans.basedata_AppointCost, cost_group);
+		initRadioGroup(Constants.basedata_AppointCost, cost_group);
 	}
 
 	private void initRadioGroup(String string, RadioGroup radioGroup) {
@@ -193,17 +193,17 @@ public class IssuedinvitationActivity extends BaseActivity {
 			issuedinvitationInfo.setLocationY(LocationY);
 			showProgressDialog("发布中");
 			HttpPostInterface httpPostInterface = new HttpPostInterface();
-			httpPostInterface.addParams(Constans.ISSUE_COSTID, issuedinvitationInfo.getCostId() + "");
-			httpPostInterface.addParams(Constans.ISSUE_DESCRIPTION, issuedinvitationInfo.getLocationDescription());
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONAME, issuedinvitationInfo.getLocationName());
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONX, issuedinvitationInfo.getLocationX() + "");
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONY, issuedinvitationInfo.getLocationY() + "");
-			httpPostInterface.addParams(Constans.ISSUE_PUBLISHERID, userPid + "");
-			httpPostInterface.addParams(Constans.ISSUE_RESERVEDATE, issuedinvitationInfo.getReserveDate());
-			httpPostInterface.addParams(Constans.ISSUE_SEXID, issuedinvitationInfo.getSexId() + "");
-			httpPostInterface.addParams(Constans.ISSUE_TITLE, issuedinvitationInfo.getTitle());
-			httpPostInterface.addParams(Constans.ISSUE_TYPEID, issuedinvitationInfo.getIssueId() + "");
-			httpPostInterface.addParams(Constans.ISSUE_LOCATIONCITYNAME, LocationCityName);
+			httpPostInterface.addParams(Constants.ISSUE_COSTID, issuedinvitationInfo.getCostId() + "");
+			httpPostInterface.addParams(Constants.ISSUE_DESCRIPTION, issuedinvitationInfo.getLocationDescription());
+			httpPostInterface.addParams(Constants.ISSUE_LOCATIONAME, issuedinvitationInfo.getLocationName());
+			httpPostInterface.addParams(Constants.ISSUE_LOCATIONX, issuedinvitationInfo.getLocationX() + "");
+			httpPostInterface.addParams(Constants.ISSUE_LOCATIONY, issuedinvitationInfo.getLocationY() + "");
+			httpPostInterface.addParams(Constants.ISSUE_PUBLISHERID, userPid + "");
+			httpPostInterface.addParams(Constants.ISSUE_RESERVEDATE, issuedinvitationInfo.getReserveDate());
+			httpPostInterface.addParams(Constants.ISSUE_SEXID, issuedinvitationInfo.getSexId() + "");
+			httpPostInterface.addParams(Constants.ISSUE_TITLE, issuedinvitationInfo.getTitle());
+			httpPostInterface.addParams(Constants.ISSUE_TYPEID, issuedinvitationInfo.getIssueId() + "");
+			httpPostInterface.addParams(Constants.ISSUE_LOCATIONCITYNAME, LocationCityName);
 			httpPostInterface.getData(issueUrl, new HttpPostCallBack() {
 
 				@Override
@@ -231,7 +231,7 @@ public class IssuedinvitationActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(IssuedinvitationActivity.this, TimeActivity.class);
-			startActivityForResult(intent, Constans.INTENT_TIME);
+			startActivityForResult(intent, Constants.INTENT_TIME);
 		}
 
 	}
@@ -239,14 +239,14 @@ public class IssuedinvitationActivity extends BaseActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case Constans.INTENT_TIME:
-			if (resultCode == Constans.BACKTOISSUE_OK) {
+		case Constants.INTENT_TIME:
+			if (resultCode == Constants.BACKTOISSUE_OK) {
 				Log.i("time返回", "ok");
 				String dateTime = data.getStringExtra("time");
 				if (tv_issuetime != null) {
 					tv_issuetime.setText(dateTime);
 				}
-			} else if (resultCode == Constans.BACKTOISSUE_CANCEL) {
+			} else if (resultCode == Constants.BACKTOISSUE_CANCEL) {
 				Log.i("time返回", "CANCEL");
 			}
 			break;

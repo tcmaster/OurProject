@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
@@ -114,7 +114,7 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		holder.tv_nickName.setText(names.get(user));
 		holder.tv_date.setText(Utils.formatDate(new Date(lastMessage.getMsgTime())));
 		if (photos.get(user) != null) {
-			String url = Constans.URL + Utils.processResultStr(photos.get(user), "_150_");
+			String url = Constants.URL + Utils.processResultStr(photos.get(user), "_150_");
 			LogUtils.e(url);
 			utils.display(holder.iv_photo, url);
 		}

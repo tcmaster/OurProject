@@ -74,8 +74,8 @@ public class MyDownLoadManger {
 					 try {
 						JSONObject jsonObject = new JSONObject(result);
 						String version = jsonObject.getString("Item1");
-						final String downloadUrl = Constans.URL+jsonObject.getString("Item2"); 
-						if(version.equals(Constans.version))
+						final String downloadUrl = Constants.URL+jsonObject.getString("Item2"); 
+						if(version.equals(Constants.version))
 						{
 							 handler.sendEmptyMessage(4);
 						}

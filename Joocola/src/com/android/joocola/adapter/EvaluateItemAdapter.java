@@ -31,7 +31,7 @@ import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.activity.ShwoEvaluateActivity;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -121,7 +121,7 @@ public class EvaluateItemAdapter extends BaseAdapter {
 		}
 		holder.networkImageView.setErrorImageResId(R.drawable.photobg);
 		holder.networkImageView.setDefaultImageResId(R.drawable.photobg);
-		holder.networkImageView.setImageUrl(Utils.processResultStr(Constans.URL + imgUrl, "_150_"), mImageLoader);
+		holder.networkImageView.setImageUrl(Utils.processResultStr(Constants.URL + imgUrl, "_150_"), mImageLoader);
 		holder.networkImageView.setOnClickListener(new OnClickListener() {
 
 			@Override

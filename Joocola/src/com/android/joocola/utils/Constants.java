@@ -4,7 +4,7 @@ package com.android.joocola.utils;
  * 常用的字符串
  * 
  */
-public class Constans {
+public class Constants {
 
 	/**
 	 * 版本号

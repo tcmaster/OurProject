@@ -16,7 +16,7 @@ import com.android.joocola.R;
 import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -77,7 +77,7 @@ public class IssueReplyAdapter extends BaseAdapter {
 		holder.touxiang.setErrorImageResId(R.drawable.photobg);
 		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
 		holder.touxiang.setImageUrl(
-				Utils.processResultStr(Constans.URL + touxiangUrl, "_150_"),
+				Utils.processResultStr(Constants.URL + touxiangUrl, "_150_"),
 				mImageLoader);
 		holder.touxiang.setOnClickListener(new OnClickListener() {
 

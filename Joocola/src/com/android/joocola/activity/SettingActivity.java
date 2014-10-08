@@ -34,7 +34,7 @@ import android.widget.TextView;
 import com.android.joocola.MainActivity;
 import com.android.joocola.R;
 import com.android.joocola.chat.EaseMobChat;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -147,9 +147,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
-		user_pid = sharedPreferences.getString(Constans.LOGIN_PID, "");
+		user_pid = sharedPreferences.getString(Constants.LOGIN_PID, "");
 		initView();
 		initActionbar();
 		IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
@@ -514,7 +514,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 					@Override
 					public void onClick(View v) {
 						EaseMobChat.getInstance().endWork();
-						editor.putBoolean(Constans.LOGIN_AUTOMATIC, false);
+						editor.putBoolean(Constants.LOGIN_AUTOMATIC, false);
 						editor.commit();
 						Intent intent = new Intent(SettingActivity.this, MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

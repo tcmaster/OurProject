@@ -28,7 +28,7 @@ public class PostDataUtils {
 	public void postNewRequest(String url, RequestQueue queue,
 			final VolleyPostCallBack volleyPostCallBack) {
 		StringRequest sr = new StringRequest(Request.Method.POST,
-				Constans.MAIN_URL + url, new Response.Listener<String>() {
+				Constants.MAIN_URL + url, new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
 						JSONObject jsonObject;

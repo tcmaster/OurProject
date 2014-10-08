@@ -19,7 +19,7 @@ import com.android.joocola.adapter.NearByPersonAdapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -59,7 +59,7 @@ public class MemberListActivity extends BaseActivity {
 		interface1.addParams("AppointUserOnlyJoined", "true");
 		interface1.addParams("CurUserID", JoocolaApplication.getInstance()
 				.getPID());
-		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+		interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

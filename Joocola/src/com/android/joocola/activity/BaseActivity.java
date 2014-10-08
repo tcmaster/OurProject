@@ -1,8 +1,16 @@
 package com.android.joocola.activity;
 
+import java.io.File;
+
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,21 +20,42 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.Utils;
 
 public class BaseActivity extends Activity {
+
 	public ActionBar mActionBar;
 	// 自定义ActionBar相关
 	private TextView left, right, title;
 	private ImageView arrow, logo;
 	private LinearLayout backButton;
+	// 标识位
+	/**
+	 * 图库
+	 */
+	protected static final int PICKPICTURE = 1;
+	/**
+	 * 相机
+	 */
+	protected static final int TAKEPHOTO = 2;
+	/**
+	 * 裁剪
+	 */
+	protected static final int CROP = 3;
+	// 默认裁剪的宽高
+	private static final int OUTPUT_X = 256;
+	private static final int OUTPUT_Y = 256;
+	/**
+	 * 
+	 * 照相时的临时文件名
+	 */
+	protected String tempName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mActionBar = getActionBar();
-		mActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
-				| ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME
-				| ActionBar.DISPLAY_USE_LOGO);
+		mActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
 
 	}
 
@@ -139,6 +168,62 @@ public class BaseActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+	}
+
+	/**
+	 * 裁剪照片
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-10-8
+	 */
+	protected void cropPicture(Uri uri) {
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		intent.putExtra("crop", "true");// 可裁剪
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", OUTPUT_X);
+		intent.putExtra("outputY", OUTPUT_Y);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", false);// 若为false则表示不返回数据
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", true);
+		startActivityForResult(intent, CROP);
+	}
+
+	/**
+	 * 从图库获取图片
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-10-8
+	 */
+	protected void getPhotoFromGallery() {
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_PICK);
+		intent.setType("image/*");
+		startActivityForResult(intent, PICKPICTURE);
+	}
+
+	/**
+	 * 拍照获取图片
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-10-8
+	 */
+	protected void getPhotoByTakePicture() {
+		String state = Environment.getExternalStorageState();
+		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			tempName = System.currentTimeMillis() + ".jpg";
+			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
+			Uri u = Uri.fromFile(file);
+			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
+			Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
+			startActivityForResult(getImageByCamera, TAKEPHOTO);
+		} else {
+			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
+		}
 	}
 
 }

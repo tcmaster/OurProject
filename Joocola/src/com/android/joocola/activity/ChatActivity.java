@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +32,7 @@ import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.entity.UserInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -60,16 +59,6 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
  */
 public class ChatActivity extends BaseActivity {
 
-	// 标识位
-	/**
-	 * 相册
-	 */
-	private static final int PICKPICTURE = 1;
-	/**
-	 * 拍照
-	 */
-	private static final int TAKEPHOTO = 2;
-
 	private String TAG = "ChatActivity";
 	private boolean DEBUG = true;
 	/**
@@ -94,7 +83,6 @@ public class ChatActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.chat_showHistory_tv)
 	private TextView tv_showHistoty;
-	private String tempName = "";
 	/**
 	 * 聊天类型,由上一个页面传入
 	 */
@@ -174,7 +162,7 @@ public class ChatActivity extends BaseActivity {
 		adapter = new SingleChatAdapter(this, userId);
 		handler = new Handler();
 		receive = new MyReceive();
-		IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
+		IntentFilter filter = new IntentFilter(Constants.CHAT_ACTION);
 		registerReceiver(receive, filter);
 		// 将数据库中的本次对话设置为已读
 		MyChatInfo info = new MyChatInfo();
@@ -259,41 +247,6 @@ public class ChatActivity extends BaseActivity {
 
 	}
 
-	/**
-	 * 从图库获取图片
-	 * 
-	 * @author: LiXiaosong
-	 * @date:2014-9-25
-	 */
-	private void getPhotoFromGallery() {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_PICK);
-		intent.setType("image/*");
-		startActivityForResult(intent, PICKPICTURE);
-	}
-
-	/**
-	 * 拍照获取图片
-	 * 
-	 * @author: LiXiaosong
-	 * @date:2014-9-25
-	 */
-	private void getPhotoByTakePicture() {
-		String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED)) {
-			tempName = System.currentTimeMillis() + ".jpg";
-			File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + tempName);
-			Uri u = Uri.fromFile(file);
-			Log.v("lixiaosong", "我要往这里放照片" + file.getAbsolutePath());
-			Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-			getImageByCamera.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-			getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, u);
-			startActivityForResult(getImageByCamera, TAKEPHOTO);
-		} else {
-			Utils.toast(this, "未检测到SD卡，无法拍照获取图片");
-		}
-	}
-
 	@Override
 	protected void onDestroy() {
 		if (receive != null)
@@ -302,7 +255,7 @@ public class ChatActivity extends BaseActivity {
 			HttpPostInterface interface1 = new HttpPostInterface();
 			interface1.addParams("userID1", "u" + JoocolaApplication.getInstance().getPID());
 			interface1.addParams("userID2", userId);
-			interface1.getData(Constans.CHAT_MARK_URL, new HttpPostCallBack() {
+			interface1.getData(Constants.CHAT_MARK_URL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {
@@ -341,7 +294,7 @@ public class ChatActivity extends BaseActivity {
 				builder.append(userPIDs[i] + ",");
 		}
 		interface1.addParams("UserIDs", builder.toString());
-		interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+		interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

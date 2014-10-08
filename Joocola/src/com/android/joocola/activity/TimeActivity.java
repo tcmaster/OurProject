@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.android.joocola.R;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 
 public class TimeActivity extends Activity implements OnClickListener {
 
@@ -283,13 +283,13 @@ public class TimeActivity extends Activity implements OnClickListener {
 			String time = showTime.getText().toString();
 			String dateTime = date + " " + time + ":00";
 			intent.putExtra("time", dateTime);
-			setResult(Constans.BACKTOISSUE_OK, intent);
+			setResult(Constants.BACKTOISSUE_OK, intent);
 			TimeActivity.this.finish();
 			break;
 		case R.id.time_cancel:
 			Intent intent2 = new Intent(TimeActivity.this,
 					IssuedinvitationActivity.class);
-			setResult(Constans.BACKTOISSUE_CANCEL, intent2);
+			setResult(Constants.BACKTOISSUE_CANCEL, intent2);
 			TimeActivity.this.finish();
 			break;
 		default:

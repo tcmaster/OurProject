@@ -22,7 +22,7 @@ import com.android.joocola.R;
 import com.android.joocola.adapter.NearByPersonAdapter;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.view.AutoListView;
@@ -61,8 +61,8 @@ public class NearbyPersonFragment extends Fragment implements OnRefreshListener 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		sharedPreferences = getActivity().getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
-		userId = sharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
+		sharedPreferences = getActivity().getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		userId = sharedPreferences.getString(Constants.LOGIN_PID, 0 + "");
 
 	}
 

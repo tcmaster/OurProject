@@ -18,7 +18,7 @@ import com.android.joocola.R;
 import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -96,7 +96,7 @@ public class NearByPersonAdapter extends BaseAdapter {
 		}
 		holder.img.setErrorImageResId(R.drawable.photobg);
 		holder.img.setDefaultImageResId(R.drawable.photobg);
-		holder.img.setImageUrl(Utils.processResultStr(Constans.URL + imgUrl, "_150_"), mImageLoader);
+		holder.img.setImageUrl(Utils.processResultStr(Constants.URL + imgUrl, "_150_"), mImageLoader);
 		holder.img.setOnClickListener(new OnClickListener() {
 
 			@Override

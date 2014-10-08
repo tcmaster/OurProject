@@ -27,7 +27,7 @@ import com.android.joocola.activity.FindPasswordActivity;
 import com.android.joocola.activity.RegisterOneActivity;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -62,9 +62,9 @@ public class MainActivity extends Activity implements OnClickListener {
 					progDialog.dismiss();
 				}
 				String pid = (String) msg.obj;
-				editor.putString(Constans.LOGIN_PID, pid);
-				editor.putString(Constans.LOGIN_ACCOUNT, nameEdit.getText().toString());
-				editor.putBoolean(Constans.LOGIN_AUTOMATIC, true);
+				editor.putString(Constants.LOGIN_PID, pid);
+				editor.putString(Constants.LOGIN_ACCOUNT, nameEdit.getText().toString());
+				editor.putBoolean(Constants.LOGIN_AUTOMATIC, true);
 				editor.commit();
 				Intent intent = new Intent(MainActivity.this, MainTabActivity.class);
 				startActivity(intent);
@@ -84,7 +84,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		initView();
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		editor = sharedPreferences.edit();
 		mConnectionDialog = Utils.getNetAlertDialog(MainActivity.this);
 	}
@@ -144,7 +144,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				showProgressDialog("登录中");
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
-				mHttpPostInterface.addParams("version", Constans.version);
+				mHttpPostInterface.addParams("version", Constants.version);
 				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
 					@Override
@@ -309,7 +309,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				showProgressDialog("登录中");
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
-				mHttpPostInterface.addParams("version", Constans.version);
+				mHttpPostInterface.addParams("version", Constants.version);
 				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
 
 					@Override

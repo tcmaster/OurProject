@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
@@ -169,9 +169,9 @@ public class EaseMobChat {
 			info.user = from;
 			info.PID = JoocolaApplication.getInstance().getPID();
 			if (message.getChatType() == ChatType.Chat)
-				info.chatType = Constans.CHAT_TYPE_SINGLE;
+				info.chatType = Constants.CHAT_TYPE_SINGLE;
 			else if (message.getChatType() == ChatType.GroupChat)
-				info.chatType = Constans.CHAT_TYPE_MULTI;
+				info.chatType = Constants.CHAT_TYPE_MULTI;
 			// 接收到消息，说明有未读消息
 			info.isRead = false;
 			try {
@@ -187,7 +187,7 @@ public class EaseMobChat {
 				e.printStackTrace();
 			}
 			Log.v("test", localUrl + " " + from + " " + new Date(time).toLocaleString());
-			Intent chat = new Intent(Constans.CHAT_ACTION);
+			Intent chat = new Intent(Constants.CHAT_ACTION);
 			JoocolaApplication.getInstance().sendBroadcast(chat);
 		}
 

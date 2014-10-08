@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
@@ -71,7 +71,7 @@ public class IssueAdapter extends BaseAdapter {
 			viewHodler = (ViewHodler) convertView.getTag();
 		}
 		IssueInfo issueInfo = issueInfos.get(position);
-		String imageUrl = Constans.URL + issueInfo.getPhotoUrl();
+		String imageUrl = Constants.URL + issueInfo.getPhotoUrl();
 		String name = issueInfo.getTypeName();
 		if (pos[position])
 			viewHodler.rl.setBackgroundResource(R.drawable.btnclickfalse);

@@ -32,7 +32,7 @@ import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.utils.BitmapCache;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
 import com.android.joocola.utils.HttpPostInterface;
@@ -185,8 +185,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		initActionbar();
 		initBottomView();
 		// 获得当前登录的user_pid
-		mSharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
-		user_pid = mSharedPreferences.getString(Constans.LOGIN_PID, 0 + "");
+		mSharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		user_pid = mSharedPreferences.getString(Constants.LOGIN_PID, 0 + "");
 		// 初始化回复列表的listview。
 		mAutoListView = (MyListView) this.findViewById(R.id.issue_listview);
 		// mAutoListView.setOnLoadListener(this);
@@ -308,7 +308,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		interface1.addParams("AppointID", issue_pid + "");
 		interface1.addParams("ItemsPerPage", "999");
 		interface1.addParams("AppointUserOnlyJoined", "true");
-		interface1.getData(Constans.USERSIMPLE, new HttpPostCallBack() {
+		interface1.getData(Constants.USERSIMPLE, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -435,7 +435,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 			age.setTextColor(getResources().getColor(R.color.fense));
 			astro.setTextColor(getResources().getColor(R.color.fense));
 		}
-		touxiang.setImageUrl(Utils.processResultStr(Constans.URL + touxiangUrl, "_150_"), mImageLoader);
+		touxiang.setImageUrl(Utils.processResultStr(Constants.URL + touxiangUrl, "_150_"), mImageLoader);
 
 		final int publishID = entity.getPublisherID(); // 用于传值到嵩哥界面
 		touxiang.setOnClickListener(new OnClickListener() {

@@ -26,7 +26,7 @@ import com.android.joocola.activity.ChatActivity;
 import com.android.joocola.adapter.Fg_Chat_List_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -84,7 +84,7 @@ public class Messagefragment extends Fragment {
 		handler = new Handler(getActivity().getMainLooper());
 		// 注册接收消息的广播
 		receiver = new MyReceiver();
-		IntentFilter filter = new IntentFilter(Constans.CHAT_ACTION);
+		IntentFilter filter = new IntentFilter(Constants.CHAT_ACTION);
 		getActivity().registerReceiver(receiver, filter);
 	}
 
@@ -120,7 +120,7 @@ public class Messagefragment extends Fragment {
 						builder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
 				}
 				interface1.addParams("UserIDs", builder.toString());
-				interface1.getData(Constans.USERINFOURL, new HttpPostCallBack() {
+				interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(String result) {

@@ -46,7 +46,7 @@ import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.android.joocola.R;
 import com.android.joocola.utils.AMapUtil;
-import com.android.joocola.utils.Constans;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 
 public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchListener, OnClickListener,
@@ -82,7 +82,7 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		Intent intent = getIntent();
 		mapView = (MapView) findViewById(R.id.map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
-		sharedPreferences = getSharedPreferences(Constans.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
 		locationCity = sharedPreferences.getString("LocationCity", "北京");
 		getActionBar().setTitle(locationCity);
 		getActionBar().setHomeButtonEnabled(true);
