@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -32,10 +31,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.joocola.MainActivity;
 import com.android.joocola.R;
 import com.android.joocola.app.JoocolaApplication;
-import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
@@ -47,18 +44,16 @@ import com.android.joocola.utils.Utils;
 
 public class SettingActivity extends BaseActivity implements OnClickListener {
 
-	private LinearLayout pswdLayout, mailLayout, phonenumLayout, exitLayout, feedbackLayout, updateLayout;
-	private final static int FEEDBACK_NUM = 0; // 提交反抗后的值
+	private LinearLayout pswdLayout, mailLayout, phonenumLayout, updateLayout;
 	private final static int PSWD_NUM = 1;// 修改密码后的值
 	private final static int MAIL_NUM = 2;// 修改邮箱后的值
 	private final static int PHONE_NUM = 3;// 修改手机号的值
-	private CustomerDialog feedbackdlg, pswddlg, maildlg, phonedlg, exitdlg;
+	private CustomerDialog pswddlg, maildlg, phonedlg;
 	private SharedPreferences sharedPreferences;
 	private String user_pid;// 当前操作用户的id;
 
 	private DownLoadReciver downLoadReciver;
 	private DownloadManager downloadManager;
-	private Editor editor;
 	private TextView versionTextView;
 	private TextView phoneTextView;
 	private TextView mailTextView;
@@ -67,23 +62,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case FEEDBACK_NUM:
-				String feedback = (String) msg.obj;
-				try {
-					JSONObject jsonObject = new JSONObject(feedback);
-					boolean isTrue = jsonObject.getBoolean("Item1");
-					String result = jsonObject.getString("Item2");
-					if (isTrue) {
-						Utils.toast(SettingActivity.this, "反馈成功");
-					} else {
-						Utils.toast(SettingActivity.this, result);
-					}
-					if (feedbackdlg != null)
-						feedbackdlg.dismissDlg();
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				break;
+
 			case PSWD_NUM:
 				String pswdResult = (String) msg.obj;
 				try {
@@ -149,7 +128,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 		sharedPreferences = getSharedPreferences(Constants.LOGIN_PREFERENCE, Context.MODE_PRIVATE);
-		editor = sharedPreferences.edit();
 		user_pid = sharedPreferences.getString(Constants.LOGIN_PID, "");
 		initView();
 		initActionbar();
@@ -164,14 +142,10 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		pswdLayout = (LinearLayout) this.findViewById(R.id.pswdlayout);
 		mailLayout = (LinearLayout) this.findViewById(R.id.mailLayout);
 		phonenumLayout = (LinearLayout) this.findViewById(R.id.phonenumlayout);
-		exitLayout = (LinearLayout) this.findViewById(R.id.exitLayout);
-		feedbackLayout = (LinearLayout) this.findViewById(R.id.feedbackLayout);
 		updateLayout = (LinearLayout) this.findViewById(R.id.updatelayout);
 		pswdLayout.setOnClickListener(this);
 		mailLayout.setOnClickListener(this);
 		phonenumLayout.setOnClickListener(this);
-		exitLayout.setOnClickListener(this);
-		feedbackLayout.setOnClickListener(this);
 		updateLayout.setOnClickListener(this);
 		versionTextView = (TextView) this.findViewById(R.id.version_text);
 		versionTextView.setText(Constants.version);
@@ -215,14 +189,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		case R.id.mailLayout:
 			showAlterMailDlg();
 			break;
-		case R.id.feedbackLayout:
-			showFeedbackDlg();
-			break;
+
 		case R.id.phonenumlayout:
 			showAlterPhoneNumDlg();
-			break;
-		case R.id.exitLayout:
-			showExitDialog();
 			break;
 		case R.id.updatelayout:
 			MyDownLoadManger downLoadManger = new MyDownLoadManger(SettingActivity.this, handler, downloadManager);
@@ -232,63 +201,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		default:
 			break;
 		}
-	}
-
-	/**
-	 * 弹出反馈的对话框
-	 */
-	private void showFeedbackDlg() {
-		feedbackdlg = new CustomerDialog(this, R.layout.dlg_feedback);
-		feedbackdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
-
-			@Override
-			public void getCustomerView(Window window, AlertDialog dlg) {
-				window.setGravity(Gravity.CENTER);
-				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-				final EditText editText = (EditText) dlg.findViewById(R.id.feedback_edit);
-				TextView ok = (TextView) dlg.findViewById(R.id.dlg_pe_ok);
-				TextView cancle = (TextView) dlg.findViewById(R.id.dlg_pe_cancel);
-				ok.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						String comment = editText.getText().toString();
-						if (TextUtils.isEmpty(comment)) {
-							Utils.toast(SettingActivity.this, "内容不能为空");
-							return;
-						}
-						if (user_pid.equals("")) {
-							Utils.toast(SettingActivity.this, "获取不到正确的用户id");
-							return;
-						}
-						HttpPostInterface httpPostInterface = new HttpPostInterface();
-						httpPostInterface.addParams("userID", user_pid);
-						httpPostInterface.addParams("content", comment);
-						Log.e("bb", user_pid);
-						Log.e("bb", comment);
-						httpPostInterface.getData(Constants.FEED_BACK_URL, new HttpPostCallBack() {
-
-							@Override
-							public void httpPostResolveData(String result) {
-								Message message = Message.obtain();
-								message.obj = result;
-								message.what = FEEDBACK_NUM;
-								handler.sendMessage(message);
-
-							}
-						});
-					}
-				});
-				cancle.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						feedbackdlg.dismissDlg();
-					}
-				});
-			}
-		});
-		feedbackdlg.showDlg();
 	}
 
 	/**
@@ -505,47 +417,4 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		startActivity(i);
 	}
 
-	/**
-	 * 弹出注销登陆对话框
-	 */
-	private void showExitDialog() {
-		exitdlg = new CustomerDialog(SettingActivity.this, R.layout.dlg_message);
-		exitdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
-
-			@Override
-			public void getCustomerView(Window window, AlertDialog dlg) {
-				window.setGravity(Gravity.CENTER);
-				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-				TextView ok = (TextView) dlg.findViewById(R.id.dlg_pe_ok);
-				TextView cancle = (TextView) dlg.findViewById(R.id.dlg_pe_cancel);
-				TextView title = (TextView) dlg.findViewById(R.id.dlg_pe_title);
-				TextView message = (TextView) dlg.findViewById(R.id.dlg_message);
-				title.setText("注销登录");
-				message.setText("注销登录后，无法收到新消息");
-				ok.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						EaseMobChat.getInstance().endWork();
-						editor.putBoolean(Constants.LOGIN_AUTOMATIC, false);
-						editor.commit();
-						Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-						SettingActivity.this.finish();
-					}
-				});
-				cancle.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						exitdlg.dismissDlg();
-					}
-				});
-
-			}
-
-		});
-		exitdlg.showDlg();
-	}
 }
