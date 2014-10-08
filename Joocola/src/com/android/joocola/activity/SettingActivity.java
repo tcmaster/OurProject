@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +34,9 @@ import android.widget.TextView;
 
 import com.android.joocola.MainActivity;
 import com.android.joocola.R;
+import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.chat.EaseMobChat;
+import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
@@ -56,6 +59,9 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 	private DownLoadReciver downLoadReciver;
 	private DownloadManager downloadManager;
 	private Editor editor;
+	private TextView versionTextView;
+	private TextView phoneTextView;
+	private TextView mailTextView;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 
@@ -167,6 +173,16 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		exitLayout.setOnClickListener(this);
 		feedbackLayout.setOnClickListener(this);
 		updateLayout.setOnClickListener(this);
+		versionTextView = (TextView) this.findViewById(R.id.version_text);
+		versionTextView.setText(Constants.version);
+		phoneTextView = (TextView) this.findViewById(R.id.phone_num_text);
+		mailTextView = (TextView) this.findViewById(R.id.mail_text);
+		JoocolaApplication joocolaApplication = JoocolaApplication.getInstance();
+		UserInfo userInfo = joocolaApplication.getUserInfo();
+		if (userInfo.getPhone() != null && !TextUtils.isEmpty(userInfo.getPhone()))
+			phoneTextView.setText(userInfo.getPhone());
+		if (userInfo.getEmail() != null && !TextUtils.isEmpty(userInfo.getEmail()))
+			mailTextView.setText(userInfo.getEmail());
 
 	}
 
@@ -178,6 +194,8 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		getActionBarleft().setText("设置");
 		getActionBarTitle().setVisibility(View.INVISIBLE);
 		getActionBarRight().setVisibility(View.INVISIBLE);
+		mActionBar.setBackgroundDrawable(new ColorDrawable(R.color.transparent));
+
 	}
 
 	@Override

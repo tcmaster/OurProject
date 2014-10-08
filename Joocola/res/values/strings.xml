@@ -235,9 +235,9 @@
     <string name="feedback">意见反馈</string>
     <string name="exit">退出</string>
     <string name="logout_exit">注销登录</string>
-    <string name="alter_pswd">修改密码</string>
-    <string name="alter_mail">修改邮箱</string>
-    <string name="alter_phonenum">修改手机号</string>
+    <string name="alter_pswd">密码</string>
+    <string name="alter_mail">邮箱</string>
+    <string name="alter_phonenum">手机号</string>
     <string name="update">版本更新</string>
     <string name="input_oldpswd">请输入旧密码</string>
     <string name="input_newpswd_again">请再次输入新密码</string>
