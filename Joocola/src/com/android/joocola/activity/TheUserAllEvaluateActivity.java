@@ -19,6 +19,7 @@ import com.android.joocola.adapter.ShowEvaluateAdapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.AppointScoreEntity;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -28,7 +29,6 @@ public class TheUserAllEvaluateActivity extends BaseActivity {
 
 	private String mUserId;
 	private String mName;
-	private final String mQueryUrl = "Bus.AppointController.QueryAppointScore.ashx";
 	private ListView mListView;
 	private ArrayList<AppointScoreEntity> mList;
 	private ShowEvaluateAdapter mAdapter;
@@ -80,7 +80,7 @@ public class TheUserAllEvaluateActivity extends BaseActivity {
 		}
 		httpPostInterface.addParams("RelateUserID", mUserId);
 		httpPostInterface.addParams("NeedAppointInfo", true + "");
-		httpPostInterface.getData(mQueryUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.QUERY_APPOINT_SCORE, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(final String result) {

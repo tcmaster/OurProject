@@ -49,7 +49,7 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 	private TextView tv_birthday;
 	// 性别选择
 	private RadioGroup rg_group;
-	private static final String REGISTERURL = "Sys.UserController.AppRegist.ashx";
+
 	// 本页需要上传的数据
 	// 图片地址
 	private String imgUrl = "";
@@ -174,7 +174,7 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 		interface1.addParams("verifyCode", info.getAutoCode());
 		interface1.addParams("locationX", "0.0");
 		interface1.addParams("locationY", "0.0");
-		interface1.getData(REGISTERURL, new HttpPostCallBack() {
+		interface1.getData(Constants.APP_REGIST, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

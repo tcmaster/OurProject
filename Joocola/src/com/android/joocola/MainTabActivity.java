@@ -78,7 +78,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	private AMapLocation aMapLocation; // 用于判断定位超时
 	private Editor editor;
 	private String user_pid;
-	private final String locationUrl = "Sys.UserController.UploadLocation.ashx";
+
 	private ImageView mRedPoint;
 	private final int REQUEST_CODE = 221;
 	private CustomerDialog customerDialog;
@@ -414,7 +414,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		httpPostInterface.addParams("x", LocationX);
 		httpPostInterface.addParams("y", LocatitonY);
 		httpPostInterface.addParams("userID", user_pid);
-		httpPostInterface.getData(locationUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.LOCATION_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

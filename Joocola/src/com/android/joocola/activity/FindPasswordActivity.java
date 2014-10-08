@@ -16,16 +16,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.joocola.R;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class FindPasswordActivity extends BaseActivity implements
-		OnClickListener {
-	private String url = "Sys.UserController.ApplyForgetPWDVerifyCode.ashx"; // 找回密码需要的网址
-	private String amend_url = "Sys.UserController.ResetPWD.ashx";// 修改新密码的网址
+public class FindPasswordActivity extends BaseActivity implements OnClickListener {
+
 	private EditText edit_pm, edit_security, edit_new_pwsd;
 	private Button get_security_code, find_done;
 	private String security_code = "";
@@ -38,6 +37,7 @@ public class FindPasswordActivity extends BaseActivity implements
 	private RequestQueue queue;
 	@SuppressLint("HandlerLeak")
 	private Handler findHandler = new Handler() {
+
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case GETCODE_SUCCESS:
@@ -92,6 +92,7 @@ public class FindPasswordActivity extends BaseActivity implements
 		get_security_code.setText("120秒后重新获取");
 		codeButtonOK = false;
 		final Handler waitHandler = new Handler() {
+
 			int count = 120;
 
 			@Override
@@ -130,14 +131,13 @@ public class FindPasswordActivity extends BaseActivity implements
 		switch (v.getId()) {
 		case R.id.get_security_code:
 			String input = edit_pm.getText().toString();
-			if (edit_pm != null && Utils.judgeAccount(input)
-					&& !Utils.stringIsNullOrEmpty(input)) {
+			if (edit_pm != null && Utils.judgeAccount(input) && !Utils.stringIsNullOrEmpty(input)) {
 				// do请求
 				Log.e("test", input);
 				waitCodeReceive();
 				HttpPostInterface httpPostInterface = new HttpPostInterface();
 				httpPostInterface.addParams("userName", input);
-				httpPostInterface.getData(url, new HttpPostCallBack() {
+				httpPostInterface.getData(Constants.FIND_PASSWORD_URL, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(String result) {
@@ -156,9 +156,7 @@ public class FindPasswordActivity extends BaseActivity implements
 					}
 				});
 			} else {
-				Toast.makeText(FindPasswordActivity.this,
-						getString(R.string.input_right), Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(FindPasswordActivity.this, getString(R.string.input_right), Toast.LENGTH_SHORT).show();
 			}
 			break;
 		case R.id.find_done:
@@ -183,7 +181,7 @@ public class FindPasswordActivity extends BaseActivity implements
 				httpPostInterface.addParams("userName", input_name);
 				httpPostInterface.addParams("newPWD", newPswd);
 				httpPostInterface.addParams("verifyCode", input_security_code);
-				httpPostInterface.getData(amend_url, new HttpPostCallBack() {
+				httpPostInterface.getData(Constants.AMEND_URL, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(String result) {

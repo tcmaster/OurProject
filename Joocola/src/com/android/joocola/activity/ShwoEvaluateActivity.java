@@ -18,6 +18,7 @@ import com.android.joocola.R;
 import com.android.joocola.adapter.ShowEvaluateAdapter;
 import com.android.joocola.entity.AppointScoreEntity;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -29,14 +30,15 @@ import com.android.joocola.utils.JsonUtils;
  * 
  */
 public class ShwoEvaluateActivity extends BaseActivity {
+
 	private String mAppointID;// 邀约id
 	private String mRelateUserID;// 查用邀约的所用的pid;
-	private String url = "Bus.AppointController.QueryAppointScore.ashx";// 获取用户评价的地址
 	private ListView mListView;
 	private ArrayList<AppointScoreEntity> mList;
 	private ShowEvaluateAdapter mAdapter;
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
+
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
@@ -83,7 +85,7 @@ public class ShwoEvaluateActivity extends BaseActivity {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("AppointID", mAppointID);
 		httpPostInterface.addParams("RelateUserID", mRelateUserID);
-		httpPostInterface.getData(url, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.QUERY_APPOINT_SCORE, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -101,8 +103,7 @@ public class ShwoEvaluateActivity extends BaseActivity {
 			JSONArray jsonArray = jsonObject.getJSONArray("Entities");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject object = jsonArray.getJSONObject(i);
-				AppointScoreEntity appointScoreEntity = JsonUtils
-						.getAppointScoreEntity(object);
+				AppointScoreEntity appointScoreEntity = JsonUtils.getAppointScoreEntity(object);
 				mList.add(appointScoreEntity);
 
 			}

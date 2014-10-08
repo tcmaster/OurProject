@@ -19,35 +19,35 @@ import com.android.joocola.R;
 import com.android.joocola.adapter.EvaluateItemAdapter;
 import com.android.joocola.entity.UserInfo;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.utils.Utils;
 
 /**
- * 该界面是评价管理界面。 是在一个邀约报名结束后 可以进入的界面， 1评价管理。 进入页面后 加载该邀约下所有成功加入的用户列表 AppointID
- * 邀约的ID CurUserID 当前登录用户的ID AppointUserOnlyJoined true 已加入的 ItemsPerPage 100
- * 可以拿到所有加入的用户名单 2 判断当前用户是不是发布者 如果是 加载所有的 如果不是 只加载发布者和自己 始终不显示自己。
+ * 该界面是评价管理界面。 是在一个邀约报名结束后 可以进入的界面， 1评价管理。 进入页面后 加载该邀约下所有成功加入的用户列表 AppointID 邀约的ID CurUserID 当前登录用户的ID
+ * AppointUserOnlyJoined true 已加入的 ItemsPerPage 100 可以拿到所有加入的用户名单 2 判断当前用户是不是发布者 如果是 加载所有的 如果不是 只加载发布者和自己
+ * 始终不显示自己。
  * 
- * 3 第一行始终显示状态 第二行始终显示按钮 当AppointScoreStateID=0（尚未评价）或者20（对方已评）此处显示 按钮文本为评价。 否则
- * 显示为查看评价
+ * 3 第一行始终显示状态 第二行始终显示按钮 当AppointScoreStateID=0（尚未评价）或者20（对方已评）此处显示 按钮文本为评价。 否则 显示为查看评价
  * 
- * 4 查看评价时 首先读取 已有评价 判断当前用户是不是发布者 如果是 RelateUserID=当前被查看的用户的ID。 否则RelateUserID =
- * 当前登录用户的ID.
+ * 4 查看评价时 首先读取 已有评价 判断当前用户是不是发布者 如果是 RelateUserID=当前被查看的用户的ID。 否则RelateUserID = 当前登录用户的ID.
  * 
  * @author bb
  * 
  */
 public class EvaluateMangerActivity extends BaseActivity {
+
 	private ListView mListView;
 	private String user_id; // 当前用户的ID
 	private boolean isPublish; // 是否是该邀约的发布者
-	private String allUserString = "Sys.UserController.GetUserInfos.ashx";
 	private EvaluateItemAdapter mEvaluateItemAdapter;
 	private BitmapCache bitmapCache;
 	private String issue_pid;
 	private List<UserInfo> mInfos = new ArrayList<UserInfo>();
 	private Handler mHandler = new Handler() {
+
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			/**
@@ -95,8 +95,7 @@ public class EvaluateMangerActivity extends BaseActivity {
 	 */
 	private void initListview() {
 		mListView = (ListView) this.findViewById(R.id.evaluate_listview);
-		mEvaluateItemAdapter = new EvaluateItemAdapter(mInfos, this,
-				bitmapCache);
+		mEvaluateItemAdapter = new EvaluateItemAdapter(mInfos, this, bitmapCache);
 		mEvaluateItemAdapter.setmAppointID(issue_pid);
 		mEvaluateItemAdapter.setmUserPid(user_id);
 		mEvaluateItemAdapter.setHandler(mHandler);
@@ -124,7 +123,7 @@ public class EvaluateMangerActivity extends BaseActivity {
 		httpPostInterface.addParams("CurUserID", user_id);
 		httpPostInterface.addParams("AppointUserOnlyJoined", "true");
 		httpPostInterface.addParams("ItemsPerPage", "200");
-		httpPostInterface.getData(allUserString, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

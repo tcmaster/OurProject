@@ -48,8 +48,6 @@ public class EvaluateItemAdapter extends BaseAdapter {
 	private ViewHolder holder;
 	private ImageLoader mImageLoader;
 	private Context mContext;
-
-	private String pjUrlString = "Bus.AppointController.ScoreAppoint.ashx";
 	private String mUserPid;
 	private String mAppointID;
 	private Handler handler;
@@ -287,7 +285,7 @@ public class EvaluateItemAdapter extends BaseAdapter {
 							httpPostInterface.addParams("ToUserID", userID);
 							httpPostInterface.addParams("ScoreID", ScoreID + "");
 							httpPostInterface.addParams("Comment", Comment);
-							httpPostInterface.getData(pjUrlString, new HttpPostCallBack() {
+							httpPostInterface.getData(Constants.SCORE_APPOINT_URL, new HttpPostCallBack() {
 
 								@Override
 								public void httpPostResolveData(String result) {

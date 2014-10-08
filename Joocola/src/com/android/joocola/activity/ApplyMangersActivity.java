@@ -52,7 +52,6 @@ import com.android.volley.toolbox.Volley;
  */
 public class ApplyMangersActivity extends BaseActivity {
 
-	private final String applyUrl = "Sys.UserController.GetUserSimpleInfos.ashx";
 	private String issue_pid;// 该邀约id.
 	private String user_pid;// 操纵者id
 	private String ReserveDate;// 到期时间
@@ -153,7 +152,7 @@ public class ApplyMangersActivity extends BaseActivity {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("AppointUserState", 30 + "");
 		httpPostInterface.addParams("AppointID", issue_pid);
-		httpPostInterface.getData(applyUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.APPLY_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
@@ -169,7 +168,7 @@ public class ApplyMangersActivity extends BaseActivity {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("AppointUserState", 10 + "");
 		httpPostInterface.addParams("AppointID", issue_pid);
-		httpPostInterface.getData(applyUrl, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.APPLY_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

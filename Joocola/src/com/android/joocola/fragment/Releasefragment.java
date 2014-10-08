@@ -25,6 +25,7 @@ import com.android.joocola.activity.IssuedinvitationDetailsActivity;
 import com.android.joocola.adapter.GetIssueItemAdapter;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.utils.BitmapCache;
+import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
@@ -42,7 +43,6 @@ import com.android.volley.toolbox.Volley;
  */
 public class Releasefragment extends Fragment implements OnRefreshListener, OnLoadListener {
 
-	private String issue_url = "Bus.AppointController.QueryAppoint.ashx";
 	private AutoListView mAutoListView;
 	private List<GetIssueInfoEntity> mEntities = new ArrayList<GetIssueInfoEntity>();
 	private GetIssueItemAdapter getIssueItemAdapter;
@@ -121,7 +121,7 @@ public class Releasefragment extends Fragment implements OnRefreshListener, OnLo
 			httpPostInterface.addParams("PublisherAgeType", PublisherAge);
 			// flag = false;
 		}
-		httpPostInterface.getData(issue_url, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {

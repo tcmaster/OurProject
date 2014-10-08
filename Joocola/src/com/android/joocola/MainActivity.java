@@ -34,7 +34,6 @@ import com.android.joocola.utils.Utils;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	protected String url_b = "Sys.UserController.AppLogon.ashx";
 	private EditText nameEdit, pswdEdit;
 	private Button loginButton, registerButton;
 	private TextView forget_pswd;
@@ -145,7 +144,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
 				mHttpPostInterface.addParams("version", Constants.version);
-				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
+				mHttpPostInterface.getData(Constants.LOGIN_URL, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(final String result) {
@@ -310,7 +309,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				mHttpPostInterface.addParams("userName", name);
 				mHttpPostInterface.addParams("pwd", pswd);
 				mHttpPostInterface.addParams("version", Constants.version);
-				mHttpPostInterface.getData(url_b, new HttpPostCallBack() {
+				mHttpPostInterface.getData(Constants.LOGIN_URL, new HttpPostCallBack() {
 
 					@Override
 					public void httpPostResolveData(final String result) {

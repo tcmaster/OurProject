@@ -43,7 +43,6 @@ public class IssueListActivity extends BaseActivity implements OnRefreshListener
 	private String type;
 	private AutoListView myAutoListView;
 	private GetIssueItemAdapter myIssueItemAdapter;
-	private String url = "Bus.AppointController.QueryAppoint.ashx";
 	private int mTotalPagesCount;// 总共有多少页
 	private int mCurPageIndex = 1;// 当前显示多少页
 	private BitmapCache bitmapCache;
@@ -141,7 +140,7 @@ public class IssueListActivity extends BaseActivity implements OnRefreshListener
 		} else if (type.equals("该用户发起的邀约")) {
 			httpPostInterface.addParams("PublisherID", intent_userid);
 		}
-		httpPostInterface.getData(url, new HttpPostCallBack() {
+		httpPostInterface.getData(Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
