@@ -177,15 +177,19 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 			intent.setClass(this, PersonalCenterActivity.class);
 			startActivity(intent);
 			break;
+		case android.R.id.home:
+			break;
 		default:
 			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
 	private void initActionbar() {
 		mActionBar = getActionBar();
 		mActionBar.setTitle("北京");
+		mActionBar.setHomeButtonEnabled(false);
+		mActionBar.setDisplayHomeAsUpEnabled(false);
 		mActionBar.setDisplayShowHomeEnabled(false);
 	}
 
