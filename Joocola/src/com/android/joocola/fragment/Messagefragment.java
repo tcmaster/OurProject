@@ -32,10 +32,14 @@ import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
+import com.easemob.chat.EMGroup;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.exceptions.EaseMobException;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.exception.DbException;
+import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
 
@@ -117,12 +121,12 @@ public class Messagefragment extends Fragment {
 				// 群聊的ids
 				StringBuilder mBuilder = new StringBuilder();
 				for (int i = 0; i < tResult.size(); i++) {
-					// 若为群聊，则不进行处理
+					// 若为群聊，则将ids存入邀约id列表
 					if (tResult.get(i).chatType == Constants.CHAT_TYPE_MULTI) {
-						mBuilder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
+						mBuilder.append(tResult.get(i).user + ",");
 						continue;
 					}
-					// 若为单聊，将用户头像加入
+					// 若为单聊，将ids存入用户id列表
 					sBuilder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
 				}
 				// 下面这段是为了获得当前的用户昵称,用户头像(仅限单聊)
@@ -171,12 +175,43 @@ public class Messagefragment extends Fragment {
 				// 下面这段是为了得到群聊的照片和昵称
 				if (mBuilder.length() > 0) {
 					Map<String, String> mMap = new HashMap<String, String>();
-					mMap.put("IDs", mBuilder.substring(0, mBuilder.length() - 1));
+					mMap.put("RoomIDs", mBuilder.substring(0, mBuilder.length() - 1));
 					((BaseActivity) getActivity()).getHttpResult(mMap, Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 						@Override
 						public void httpPostResolveData(String result) {
+							if (result == null || result.equals("")) {
+								handler.post(new Runnable() {
 
+									@Override
+									public void run() {
+										Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
+									}
+								});
+							} else {
+								JSONObject object;
+								try {
+									object = new JSONObject(result);
+									JSONArray array = object.getJSONArray("Entities");
+									for (int i = 0; i < array.length(); i++) {
+										final JSONObject tempData = array.getJSONObject(i);
+										handler.post(new Runnable() {
+
+											@Override
+											public void run() {
+												try {
+													adapter.addName(tempData.getString("RoomID"), tempData.getString("Title"));
+													adapter.addPhotos(tempData.getString("RoomID"), tempData.getString("RoomPhotoUrl"));
+												} catch (JSONException e) {
+													e.printStackTrace();
+												}
+											}
+										});
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
 						}
 					});
 				}
@@ -190,9 +225,33 @@ public class Messagefragment extends Fragment {
 	public void onlistItemClick(AdapterView<?> parent, View view, int position, long id) {
 		TextView nickName_tv = (TextView) view.findViewById(R.id.ml_nickName_tv);
 		Intent intent = new Intent(getActivity(), ChatActivity.class);
-		intent.putExtra("userId", tResult.get(position).user.substring(1));
+		int chatType = tResult.get(position).chatType;
+		LogUtils.v(tResult.get(position).user);
+		LogUtils.v(tResult.get(position).chatType + "");
+		if (chatType == Constants.CHAT_TYPE_MULTI) {
+			intent.putExtra("userId", tResult.get(position).user);
+			EMGroup group;
+			try {
+				group = EMGroupManager.getInstance().getGroupFromServer(tResult.get(position).user);
+				ArrayList<String> list = new ArrayList<String>();
+				List<String> members = group.getMembers();
+				for (int i = 0; i < members.size(); i++) {
+					if (members.get(i).length() <= 1)
+						continue;
+					list.add(members.get(i).substring(1));
+
+				}
+				intent.putStringArrayListExtra("users", list);
+			} catch (EaseMobException e) {
+				e.printStackTrace();
+			}
+
+		} else if (chatType == Constants.CHAT_TYPE_SINGLE) {
+			intent.putExtra("userId", tResult.get(position).user.substring(1));
+		}
 		intent.putExtra("userNickName", nickName_tv.getText().toString());
-		intent.putExtra("isSingle", true);
+		// 返回该聊天是否为多人聊天
+		intent.putExtra("isSingle", chatType == Constants.CHAT_TYPE_MULTI ? false : true);
 		startActivity(intent);
 	}
 

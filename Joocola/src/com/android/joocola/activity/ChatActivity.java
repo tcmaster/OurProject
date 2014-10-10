@@ -153,10 +153,9 @@ public class ChatActivity extends BaseActivity {
 			chatType = ChatType.Chat;
 		} else {
 			userId = getIntent().getStringExtra("userId");
-			users = getIntent().getStringArrayListExtra("userPIDs");
+			users = getIntent().getStringArrayListExtra("users");
 			chatType = ChatType.GroupChat;
 		}
-
 		userName = getIntent().getStringExtra("userNickName");
 		db = JoocolaApplication.getInstance().getDB();
 		adapter = new SingleChatAdapter(this, userId);
@@ -185,7 +184,8 @@ public class ChatActivity extends BaseActivity {
 		if (isSingle)
 			getUserImgUrl(new String[] { JoocolaApplication.getInstance().getPID(), getIntent().getStringExtra("userId") });
 		else {
-			getUserImgUrl(users.toArray(new String[] {}));
+			if (users != null)
+				getUserImgUrl(users.toArray(new String[] {}));
 		}
 		lv_container.setAdapter(adapter);
 		scrollBottom();
@@ -316,7 +316,6 @@ public class ChatActivity extends BaseActivity {
 									adapter.addPhotos("u" + info.getPID(), info.getPhotoUrl());
 								}
 							});
-
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -394,15 +393,16 @@ public class ChatActivity extends BaseActivity {
 		info.user = userId;
 		info.isRead = true;
 		info.PID = JoocolaApplication.getInstance().getPID();
+		info.chatType = message.getChatType() == ChatType.GroupChat ? Constants.CHAT_TYPE_MULTI : Constants.CHAT_TYPE_SINGLE;
 		List<MyChatInfo> temp = null;
 		try {
-			temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", userId));
+			temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", userId).and("PID", "=", info.PID));
 			if (temp == null || temp.size() == 0) {
 				db.save(info);
 			} else {
 				info = temp.get(0);
 				info.messageId = message.getMsgId();
-				db.update(info, WhereBuilder.b("user", "=", userId), "messageId", "PID", "isRead");
+				db.update(info, WhereBuilder.b("user", "=", userId).and("PID", "=", info.PID), "messageId", "isRead");
 			}
 		} catch (DbException e) {
 			e.printStackTrace();

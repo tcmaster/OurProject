@@ -180,11 +180,11 @@ public class Constants {
 	/**
 	 * 记录私聊信息
 	 */
-	public static final String CHAT_MARK_URL = "Bus.TalkController.LogPrivateTalk.ashx";
+	public static final String CHAT_MARK_URL = "Talk.TalkController.LogPrivateTalk.ashx";
 	/**
 	 * 检查是否可以私聊
 	 */
-	public static final String IS_TALK_URL = "Bus.TalkController.CanPrivateTalk.ashx";
+	public static final String IS_TALK_URL = "Talk.TalkController.CanPrivateTalk.ashx";
 
 	/**
 	 * 登录网址

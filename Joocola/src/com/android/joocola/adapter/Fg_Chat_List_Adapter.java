@@ -66,7 +66,8 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		photos = new HashMap<String, String>();
 		names = new HashMap<String, String>();
 		utils = new BitmapUtils(context);
-		utils.configDefaultLoadFailedImage(context.getResources().getDrawable(R.drawable.logo));
+		utils.configDefaultLoadFailedImage(R.drawable.logo);
+		utils.configDefaultLoadingImage(R.drawable.logo);
 		this.data = data;
 	}
 
@@ -109,6 +110,8 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		EMConversation conversation = EMChatManager.getInstance().getConversation(user);
 		// 得到当前用户会话的最后一条消息
 		EMMessage lastMessage = conversation.getLastMessage();
+		if (lastMessage == null)
+			lastMessage = conversation.getMessage(data.get(position).messageId);
 		ViewHolder holder = null;
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_list_message_fg, null, false);
@@ -125,7 +128,7 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		holder.tv_date.setText(Utils.formatDate(new Date(lastMessage.getMsgTime())));
 		if (photos.get(user) != null) {
 			String url = Constants.URL + Utils.processResultStr(photos.get(user), "_150_");
-			LogUtils.e(url);
+			LogUtils.e("我们在聊天列表中得到的图片地址" + url);
 			utils.display(holder.iv_photo, url);
 		}
 		// 看类型
