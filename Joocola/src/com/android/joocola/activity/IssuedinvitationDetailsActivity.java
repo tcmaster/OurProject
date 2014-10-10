@@ -294,7 +294,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 	 * 进入群聊界面
 	 */
 	private void doEnterMultiChat() {
-		// 判断当前用户是否处于群聊界面
+		// 判断当前用户是否有权限进入群聊
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("AppointID", issue_pid + "");
 		interface1.addParams("ItemsPerPage", "999");
@@ -336,7 +336,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 												e.printStackTrace();
 											}
 										}
-										intent.putStringArrayListExtra("userPIDs", userPIDs);
+										intent.putStringArrayListExtra("users", userPIDs);
 										startActivity(intent);
 
 									}

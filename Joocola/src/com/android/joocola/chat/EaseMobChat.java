@@ -15,6 +15,7 @@ import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.utils.Constants;
 import com.easemob.EMCallBack;
+import com.easemob.chat.ConnectionListener;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
@@ -26,6 +27,7 @@ import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
+import com.lidroid.xutils.util.LogUtils;
 
 public class EaseMobChat {
 
@@ -91,6 +93,7 @@ public class EaseMobChat {
 				// 登录成功
 				flag = -1;
 				Log.e("lixiaosong", "登录成功");
+				EMChatManager.getInstance().addConnectionListener(new MyConnectionListener());
 			}
 
 			@Override
@@ -136,6 +139,13 @@ public class EaseMobChat {
 		}
 	}
 
+	/**
+	 * 消息接收广播
+	 * 
+	 * @author:LiXiaoSong
+	 * @copyright © joocola.com
+	 * @Date:2014-10-10
+	 */
 	private class MyChatBroadCastReceiver extends BroadcastReceiver {
 
 		@Override
@@ -143,7 +153,8 @@ public class EaseMobChat {
 			String msgId = intent.getStringExtra("msgid");
 			EMMessage message = EMChatManager.getInstance().getMessage(msgId);
 			String content = "";
-			String from = "";
+			// 发送消息的对象，单聊时为消息发送者，群聊时为接收的group
+			String user = "";
 			String localUrl = "";
 			String chatType = "";
 			long time = 0l;
@@ -160,35 +171,73 @@ public class EaseMobChat {
 			default:
 				break;
 			}
-			from = message.getFrom();
 			time = message.getMsgTime();
-
 			List<MyChatInfo> temp = null;
 			MyChatInfo info = new MyChatInfo();
 			info.messageId = msgId;
-			info.user = from;
+
 			info.PID = JoocolaApplication.getInstance().getPID();
-			if (message.getChatType() == ChatType.Chat)
+			if (message.getChatType() == ChatType.Chat) {
 				info.chatType = Constants.CHAT_TYPE_SINGLE;
-			else if (message.getChatType() == ChatType.GroupChat)
+				// 个人ID
+				user = message.getFrom();
+			} else if (message.getChatType() == ChatType.GroupChat) {
 				info.chatType = Constants.CHAT_TYPE_MULTI;
+				// 群ID
+				user = message.getTo();
+			}
 			// 接收到消息，说明有未读消息
 			info.isRead = false;
+			info.user = user;
 			try {
-				temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", from));
+				temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", user).and("PID", "=", info.PID));
 				if (temp == null || temp.size() == 0) {
 					db.save(info);
 				} else {
 					info = temp.get(0);
 					info.messageId = message.getMsgId();
-					db.update(info, WhereBuilder.b("user", "=", from), "messageId", "PID", "isRead");
+					db.update(info, WhereBuilder.b("user", "=", user).and("PID", "=", info.PID), "messageId", "isRead");
 				}
 			} catch (DbException e) {
 				e.printStackTrace();
 			}
-			Log.v("test", localUrl + " " + from + " " + new Date(time).toLocaleString());
+			LogUtils.v("收到的消息是" + localUrl + " " + user + " " + new Date(time).toLocaleString());
 			Intent chat = new Intent(Constants.CHAT_ACTION);
 			JoocolaApplication.getInstance().sendBroadcast(chat);
+		}
+	}
+
+	/**
+	 * 连接状态监听,目前没有效果，仅作为备用
+	 * 
+	 * @author:LiXiaoSong
+	 * @copyright © joocola.com
+	 * @Date:2014-10-10
+	 */
+	private class MyConnectionListener implements ConnectionListener {
+
+		@Override
+		public void onConnected() {
+
+		}
+
+		@Override
+		public void onConnecting(String arg0) {
+		}
+
+		@Override
+		public void onDisConnected(String arg0) {
+
+		}
+
+		@Override
+		public void onReConnected() {
+
+		}
+
+		@Override
+		public void onReConnecting() {
+
 		}
 
 	}
