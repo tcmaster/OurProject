@@ -11,10 +11,14 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,10 +26,14 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.adapter.Dlg_ListView_Adapter;
+import com.android.joocola.adapter.IssueAdapter;
 import com.android.joocola.adapter.PC_Edit_GridView_Adapter;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.app.JoocolaApplication.InitAddInfo;
 import com.android.joocola.entity.GetIssueInfoEntity;
+import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.entity.UserInfo;
+import com.android.joocola.utils.BitmapCache;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
@@ -190,12 +198,19 @@ public class PersonalDetailActivity extends BaseActivity {
 	 * 用于向主线程发送数据的handler
 	 */
 	private static Handler handler;
+	private ArrayList<IssueInfo> mIssueInfos;
+	private JoocolaApplication mJoocolaApplication;
+	private BitmapCache bitmapCache;
+	private CustomerDialog customerDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_detail);
 		ViewUtils.inject(this);
+		mJoocolaApplication = JoocolaApplication.getInstance();
+		mIssueInfos = new ArrayList<IssueInfo>();
+		bitmapCache = JoocolaApplication.getInstance().getBitmapCache();
 		userId = getIntent().getStringExtra("userId");
 		initLike();
 		handler = new Handler();
@@ -605,9 +620,20 @@ public class PersonalDetailActivity extends BaseActivity {
 
 											@Override
 											public void onClick(View v) {
-												Intent intent = new Intent();
-												// intent.setClass(PersonalDetailActivity.this, cls)
 												cdlg.dismissDlg();
+												mIssueInfos = mJoocolaApplication.getIssueInfos();
+												if (mIssueInfos == null || mIssueInfos.size() == 0) {
+													JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication, new InitAddInfo() {
+
+														@Override
+														public void initAddInfook() {
+															showIssueDialog(mIssueInfos, bitmapCache);
+														}
+													});
+												} else {
+													showIssueDialog(mIssueInfos, bitmapCache);
+												}
+
 											}
 										});
 										cancel_btn.setOnClickListener(new OnClickListener() {
@@ -752,5 +778,35 @@ public class PersonalDetailActivity extends BaseActivity {
 			}
 		});
 
+	}
+
+	private void showIssueDialog(final ArrayList<IssueInfo> issueInfos, final BitmapCache bitmapCache) {
+		customerDialog = new CustomerDialog(PersonalDetailActivity.this, R.layout.dialog_issuedinvitation);
+		customerDialog.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+			@Override
+			public void getCustomerView(Window window, AlertDialog dlg) {
+				window.setGravity(Gravity.TOP);
+				window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+				GridView gridView = (GridView) dlg.findViewById(R.id.issue_gridview);
+				IssueAdapter issueAdapter = new IssueAdapter(PersonalDetailActivity.this, issueInfos, bitmapCache);
+				gridView.setAdapter(issueAdapter);
+				gridView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						Intent intent = new Intent(PersonalDetailActivity.this, IssuedinvitationActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putInt("PID", issueInfos.get(arg2).getPID());
+						bundle.putString("title", issueInfos.get(arg2).getTypeName());
+						intent.putExtras(bundle);
+						startActivity(intent);
+						customerDialog.dismissDlg();
+					}
+				});
+
+			}
+		});
+		customerDialog.showDlg();
 	}
 }

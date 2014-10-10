@@ -318,7 +318,7 @@ public class JoocolaApplication extends Application {
 	/**
 	 * 加载add 和 筛选所需的数据 加载完保存在Application中。
 	 */
-	public ArrayList<IssueInfo> initAddData(final ArrayList<IssueInfo> mInfos, JoocolaApplication mApplication) {
+	public ArrayList<IssueInfo> initAddData(final ArrayList<IssueInfo> mInfos, final JoocolaApplication mApplication, final InitAddInfo initAddInfo) {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.getData(Constants.ISSUE_TYPE_URL, new HttpPostCallBack() {
 
@@ -335,14 +335,19 @@ public class JoocolaApplication extends Application {
 						issueInfo.setTypeName(jsonObject.getString("TypeName"));
 						mInfos.add(issueInfo);
 					}
-
+					mApplication.setIssueInfos(mInfos);
+					initAddInfo.initAddInfook();
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		mApplication.setIssueInfos(mInfos);
 		return mInfos;
+	}
+
+	public interface InitAddInfo {
+
+		public void initAddInfook();
 	}
 
 	public ArrayList<String> getmCitys() {

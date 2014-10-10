@@ -26,6 +26,7 @@ import com.android.joocola.R;
 import com.android.joocola.adapter.Dlg_ListView_Adapter;
 import com.android.joocola.adapter.IssueAdapter;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.app.JoocolaApplication.InitAddInfo;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.utils.CustomerDialog;
 import com.android.joocola.utils.CustomerDialog.CustomerViewInterface;
@@ -279,7 +280,13 @@ public class FilterActivity extends BaseActivity {
 	}
 
 	private void initViews() {
-		final IssueAdapter adapter = new IssueAdapter(this, JoocolaApplication.getInstance().getIssueInfos() == null ? JoocolaApplication.getInstance().initAddData(new ArrayList<IssueInfo>(), JoocolaApplication.getInstance()) : JoocolaApplication.getInstance().getIssueInfos(), JoocolaApplication.getInstance().getBitmapCache());
+		final IssueAdapter adapter = new IssueAdapter(this, JoocolaApplication.getInstance().getIssueInfos() == null ? JoocolaApplication.getInstance().initAddData(new ArrayList<IssueInfo>(), JoocolaApplication.getInstance(), new InitAddInfo() {
+
+			@Override
+			public void initAddInfook() {
+
+			}
+		}) : JoocolaApplication.getInstance().getIssueInfos(), JoocolaApplication.getInstance().getBitmapCache());
 		type_gv.setAdapter(adapter);
 		type_gv.setOnItemClickListener(new OnItemClickListener() {
 

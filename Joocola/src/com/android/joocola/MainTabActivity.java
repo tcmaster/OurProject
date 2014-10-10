@@ -43,6 +43,7 @@ import com.android.joocola.activity.IssuedinvitationActivity;
 import com.android.joocola.activity.PersonalCenterActivity;
 import com.android.joocola.adapter.IssueAdapter;
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.app.JoocolaApplication.InitAddInfo;
 import com.android.joocola.chat.EaseMobChat;
 import com.android.joocola.entity.IssueInfo;
 import com.android.joocola.fragment.Messagefragment;
@@ -119,7 +120,13 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 		initViewPager();
 		initLocation();
 		bitmapCache = JoocolaApplication.getInstance().getBitmapCache();
-		JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication);
+		JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication, new InitAddInfo() {
+
+			@Override
+			public void initAddInfook() {
+
+			}
+		});
 
 	}
 
@@ -162,8 +169,13 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 		case R.id.action_add:
 			mIssueInfos = mJoocolaApplication.getIssueInfos();
 			if (mIssueInfos == null || mIssueInfos.size() == 0) {
-				JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication);
-				mHandler.sendEmptyMessage(1);
+				JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication, new InitAddInfo() {
+
+					@Override
+					public void initAddInfook() {
+						mHandler.sendEmptyMessage(1);
+					}
+				});
 			} else {
 				mHandler.sendEmptyMessage(1);
 			}
