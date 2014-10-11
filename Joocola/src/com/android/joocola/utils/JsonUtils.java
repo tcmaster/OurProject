@@ -168,9 +168,9 @@ public class JsonUtils {
 	public static AdminMessage getAdminMessageEntity(JSONObject object) {
 		AdminMessage messageEntity = new AdminMessage();
 		try {
-			messageEntity.setRelateUserID(object.getInt("FromUserID") + "");
-			messageEntity.setRelateUserName(object.getString("FromUserName"));
-			messageEntity.setRelateUserPhoto(object.getString("FromUserPhoto"));
+			messageEntity.setRelateUserID(object.getInt("RelateUserID") + "");
+			messageEntity.setRelateUserName(object.getString("RelateUserName"));
+			messageEntity.setRelateUserPhoto(object.getString("RelateUserPhoto"));
 			messageEntity.setMsgContent(object.getString("MsgContent"));
 			messageEntity.setMsgType(object.getString("MsgType"));
 			messageEntity.setRecUserID(object.getInt("RecUserID") + "");

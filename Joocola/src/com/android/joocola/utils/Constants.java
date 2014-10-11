@@ -283,6 +283,10 @@ public class Constants {
 	 */
 	public static final String LOG_VIEW_APPOINT = "Bus.AppointController.LogViewAppoint.ashx";
 	/**
+	 * 发送聊天申请
+	 */
+	public static final String CHAT_SEND_REQUEST_URL = "Talk.SendMsgController.SendSysVerifyTalk.ashx";
+	/**
 	 * 时间界面的几个传值
 	 */
 	public static final int INTENT_TIME = 1;

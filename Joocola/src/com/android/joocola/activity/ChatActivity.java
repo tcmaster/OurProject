@@ -253,15 +253,15 @@ public class ChatActivity extends BaseActivity {
 			unregisterReceiver(receive);
 		if (isSingle) {// 如果进行了私聊，在聊天结束时，需要告知服务器他们之间进行过通讯
 			HttpPostInterface interface1 = new HttpPostInterface();
-			interface1.addParams("userID1", "u" + JoocolaApplication.getInstance().getPID());
-			interface1.addParams("userID2", userId);
+			LogUtils.v("这次的聊天用户id为" + JoocolaApplication.getInstance().getPID() + " " + userId.substring(1));
+			interface1.addParams("userID1", JoocolaApplication.getInstance().getPID());
+			interface1.addParams("userID2", userId.substring(1));
 			interface1.getData(Constants.CHAT_MARK_URL, new HttpPostCallBack() {
 
 				@Override
 				public void httpPostResolveData(String result) {
 					if (result.equals("true"))
 						LogUtils.v("聊天信息成功记录");
-
 				}
 			});
 		}
@@ -314,6 +314,7 @@ public class ChatActivity extends BaseActivity {
 								@Override
 								public void run() {
 									adapter.addPhotos("u" + info.getPID(), info.getPhotoUrl());
+									adapter.addNames("u" + info.getPID(), info.getNickName());
 								}
 							});
 						}

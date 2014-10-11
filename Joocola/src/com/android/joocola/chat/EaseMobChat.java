@@ -3,6 +3,9 @@ package com.android.joocola.chat;
 import java.sql.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +15,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.joocola.app.JoocolaApplication;
+import com.android.joocola.entity.AdminMessage;
 import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.utils.Constants;
+import com.android.joocola.utils.JsonUtils;
 import com.easemob.EMCallBack;
 import com.easemob.chat.ConnectionListener;
 import com.easemob.chat.EMChat;
@@ -29,14 +34,33 @@ import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.util.LogUtils;
 
+/**
+ * 聊天类，用于初始化聊天，注册登录，接收发送聊天信息
+ * 
+ * @author:LiXiaoSong
+ * @copyright © joocola.com
+ * @Date:2014-10-10
+ */
 public class EaseMobChat {
 
-	private static EaseMobChat chatServic;
 	private int flag = 0;
-
+	/**
+	 * 本类的单例
+	 */
+	private static EaseMobChat chatServic;
+	/**
+	 * 接收消息类
+	 */
 	private MyChatBroadCastReceiver receiver;
+	/**
+	 * 发送消息的工具类
+	 */
 	private EaseSingleChat chat;
 	private DbUtils db;
+	/**
+	 * 管理员用户,该用户发送的消息要特殊处理
+	 */
+	private final String ADMIN_USER = "u1";
 
 	public synchronized static EaseMobChat getInstance() {
 		if (chatServic == null) {
@@ -140,6 +164,30 @@ public class EaseMobChat {
 	}
 
 	/**
+	 * 用于处理系统发送过来的消息
+	 * 
+	 * @param message
+	 * @author: LiXiaosong
+	 * @date:2014-10-10
+	 */
+	private void processAdminMessage(EMMessage message) {
+		String text = ((TextMessageBody) message.getBody()).getMessage();
+		JSONObject object = null;
+		try {
+			object = new JSONObject(text);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		// 将消息转化为可以进行处理的实体
+		AdminMessage entity = JsonUtils.getAdminMessageEntity(object);
+		// 下面的步骤
+		// 1.对这条消息根据不同的情况进行不同的特殊处理
+		// 2.将这条消息存入数据库，以便在系统消息列表中进行显示
+		// 3.发送广播告知有新的消息
+		LogUtils.v(entity.toString());
+	}
+
+	/**
 	 * 消息接收广播
 	 * 
 	 * @author:LiXiaoSong
@@ -152,6 +200,10 @@ public class EaseMobChat {
 		public void onReceive(Context context, Intent intent) {
 			String msgId = intent.getStringExtra("msgid");
 			EMMessage message = EMChatManager.getInstance().getMessage(msgId);
+			if (message.getFrom().equals(ADMIN_USER)) {
+				processAdminMessage(message);
+				return;
+			}
 			String content = "";
 			// 发送消息的对象，单聊时为消息发送者，群聊时为接收的group
 			String user = "";

@@ -28,6 +28,7 @@ import com.android.joocola.utils.Utils;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.ImageMessageBody;
 import com.easemob.chat.TextMessageBody;
@@ -265,9 +266,6 @@ public class SingleChatAdapter extends BaseAdapter {
 			convertView.setTag(R.id.viewholder, holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag(R.id.viewholder);
-			// 这里要做一个处理，将一条消息的View恢复到默认的状态
-			holder.tv_content.setVisibility(View.VISIBLE);
-			holder.fl.setVisibility(View.GONE);
 			if (holder.flag == flag) {
 			} else {
 				holder = new ViewHolder();
@@ -285,14 +283,36 @@ public class SingleChatAdapter extends BaseAdapter {
 				convertView.setTag(R.id.viewholder, holder);
 			}
 		}
+		// 这里要做一个处理，将一条消息的View恢复到默认的状态
+		holder.tv_content.setVisibility(View.VISIBLE);
+		holder.fl.setVisibility(View.GONE);
+		holder.tv_name.setVisibility(View.GONE);
+		holder.tv_time.setVisibility(View.INVISIBLE);
 		if (photos.get(message.getFrom()) != null) {
 			String url = Constants.URL + Utils.processResultStr(photos.get(message.getFrom()), "_150_");
 			LogUtils.e(url);
 			bmUtils.display(holder.iv_photo, url);
 		}
-		holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
+		// 显示时间的逻辑：
+		// 1.当前显示的第一条，必定显示时间
+		// 2.两条消息间隔5分钟以内，第二条不必显示时间
+		// 3.两条消息间隔5分钟以上，第二条需要显示时间
+		if (position == 0) {// 如果是首条的情况
+			holder.tv_time.setVisibility(View.VISIBLE);
+			holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
+		} else {// 非首条的情况，需要判断时间间隔，确定本条时间是否显示
+			long beforeTime = data.get(position - 1 + currentCount).getMsgTime();
+			long afterTime = message.getMsgTime();
+			if ((afterTime - beforeTime) / 1000 > 300) {// 进入这里说明两条消息间隔超过5分钟,需要显示时间
+				holder.tv_time.setVisibility(View.VISIBLE);
+				holder.tv_time.setText(new Date(message.getMsgTime()).toLocaleString());
+			}
+		}
+		if (message.getChatType() == ChatType.GroupChat) {// 群组聊天的话，需要将用户的名字显示出来
+			holder.tv_name.setVisibility(View.VISIBLE);
+			holder.tv_name.setText(names.get(message.getFrom()));
+		}
 		if (message.getType() == Type.TXT) {
-			holder.tv_name.setText(message.getTo());
 			holder.tv_content.setText(((TextMessageBody) message.getBody()).getMessage());
 
 		} else if (message.getType() == Type.IMAGE) {

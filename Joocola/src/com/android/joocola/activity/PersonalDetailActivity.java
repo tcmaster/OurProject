@@ -1,7 +1,9 @@
 package com.android.joocola.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -747,8 +749,8 @@ public class PersonalDetailActivity extends BaseActivity {
 		}
 		// 判断用户是否有和该用户聊天的权限
 		HttpPostInterface interface1 = new HttpPostInterface();
-		interface1.addParams("userID1", "u" + JoocolaApplication.getInstance().getPID());
-		interface1.addParams("userID2", "u" + userId);
+		interface1.addParams("userID1", JoocolaApplication.getInstance().getPID());
+		interface1.addParams("userID2", userId);
 		interface1.getData(Constants.IS_TALK_URL, new HttpPostCallBack() {
 
 			@Override
@@ -771,7 +773,50 @@ public class PersonalDetailActivity extends BaseActivity {
 
 						@Override
 						public void run() {
-							Utils.toast(PersonalDetailActivity.this, "对不起，您没有与该用户聊天的权限");
+							// 这里说明没有相关聊天权限，将弹出聊天请求对话框
+							final CustomerDialog cdlg = new CustomerDialog(PersonalDetailActivity.this, R.layout.dlg_message);
+							cdlg.setOnCustomerViewCreated(new CustomerViewInterface() {
+
+								@Override
+								public void getCustomerView(Window window, AlertDialog dlg) {
+									TextView tv_title = (TextView) window.findViewById(R.id.dlg_pe_title);
+									TextView tv_message = (TextView) window.findViewById(R.id.dlg_message);
+									TextView tv_ok = (TextView) window.findViewById(R.id.dlg_pe_ok);
+									TextView tv_cancel = (TextView) window.findViewById(R.id.dlg_pe_cancel);
+									tv_title.setText("权限不足");
+									tv_message.setText("女性用户受特殊保护。她和你未说过话或报名过同一个活动，因此你的聊天不能发送给她。如果还想联系，可向她 发送聊天请求。 ");
+									tv_ok.setText("发送邀请");
+									tv_ok.setOnClickListener(new OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											// 这里等待客户端调用接口，获取请求信息
+											Map<String, String> params = new HashMap<String, String>();
+											params.put("fromUserID", JoocolaApplication.getInstance().getPID());
+											params.put("toUserID", userId);
+											getHttpResult(params, Constants.CHAT_SEND_REQUEST_URL, new HttpPostCallBack() {
+
+												@Override
+												public void httpPostResolveData(String result) {
+													if (result.equals("true"))
+														Utils.toast(PersonalDetailActivity.this, "申请已发送，等待对方验证");
+													else
+														Utils.toast(PersonalDetailActivity.this, "申请发送失败");
+													cdlg.dismissDlg();
+												}
+											});
+										}
+									});
+									tv_cancel.setOnClickListener(new OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											cdlg.dismissDlg();
+										}
+									});
+								}
+							});
+							cdlg.showDlg();
 						}
 					});
 				}

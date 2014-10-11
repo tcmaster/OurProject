@@ -15,6 +15,13 @@ import com.easemob.chat.MessageBody;
 import com.easemob.chat.NormalFileMessageBody;
 import com.easemob.chat.TextMessageBody;
 
+/**
+ * 聊天消息发送类，主要用于发送由本地产生的消息信息
+ * 
+ * @author:LiXiaoSong
+ * @copyright © joocola.com
+ * @Date:2014-10-10
+ */
 public class EaseSingleChat {
 
 	/**

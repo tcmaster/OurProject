@@ -25,17 +25,19 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Handler;
 import android.util.Log;
 
 public class HttpPostInterface {
+
 	private HashMap<String, String> map = new HashMap<String, String>();
+	private static Handler handler = new Handler();
 
 	public void addParams(String key, String value) {
 		map.put(key, value);
 	}
 
-	public void getData(final String url,
-			final HttpPostCallBack mHttpPostCallBack) {
+	public void getData(final String url, final HttpPostCallBack mHttpPostCallBack) {
 
 		new Thread(new Runnable() {
 
@@ -45,8 +47,7 @@ public class HttpPostInterface {
 				Object[] key = map.keySet().toArray();
 				Arrays.sort(key);
 				for (int i = 0; i < key.length; i++) {
-					md5String = md5String + key[i].toString() + "="
-							+ map.get(key[i].toString());
+					md5String = md5String + key[i].toString() + "=" + map.get(key[i].toString());
 					if (i != key.length - 1) {
 						md5String += "&";
 					}
@@ -59,36 +60,44 @@ public class HttpPostInterface {
 				Iterator iter = map.entrySet().iterator();
 				while (iter.hasNext()) {
 					Map.Entry entry = (Map.Entry) iter.next();
-					params.add(new BasicNameValuePair(
-							entry.getKey().toString(), entry.getValue()
-									.toString()));
+					params.add(new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()));
 				}
 				params.add(new BasicNameValuePair("sign", md5String));
 				HttpResponse httpResponse = null;
 				try {
 					// 设置httpPost请求参数
-					httpPost.setEntity(new UrlEncodedFormEntity(params,
-							HTTP.UTF_8));
+					httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 					httpResponse = new DefaultHttpClient().execute(httpPost);
-					Log.e("post的code", httpResponse.getStatusLine()
-							.getStatusCode() + "");
+					Log.e("post的code", httpResponse.getStatusLine().getStatusCode() + "");
 					if (httpResponse.getStatusLine().getStatusCode() == 200) {
 						// 第三步，使用getEntity方法活得返回结果
-						String result = EntityUtils.toString(httpResponse
-								.getEntity());
+						String result = EntityUtils.toString(httpResponse.getEntity());
 						Log.e("post的data", result);
-						JSONObject jsonObject;
+						final JSONObject jsonObject;
 						try {
 							jsonObject = new JSONObject(result);
 							boolean flag = jsonObject.getBoolean("result");
 							if (flag) {
 								if (jsonObject.getString("data") != null) {
+									handler.post(new Runnable() {
 
-									mHttpPostCallBack
-											.httpPostResolveData(jsonObject
-													.getString("data"));
+										@Override
+										public void run() {
+											try {
+												mHttpPostCallBack.httpPostResolveData(jsonObject.getString("data"));
+											} catch (JSONException e) {
+												e.printStackTrace();
+											}
+										}
+									});
 								} else {
-									mHttpPostCallBack.httpPostResolveData("");
+									handler.post(new Runnable() {
+
+										@Override
+										public void run() {
+											mHttpPostCallBack.httpPostResolveData("");
+										}
+									});
 								}
 							} else {
 								Log.e("httpPost", "出错了");
@@ -110,8 +119,7 @@ public class HttpPostInterface {
 		}).start();
 	}
 
-	public void uploadImageData(final File file,
-			final HttpPostCallBack mHttpPostCallBack) {
+	public void uploadImageData(final File file, final HttpPostCallBack mHttpPostCallBack) {
 		new Thread(new Runnable() {
 
 			@Override
@@ -126,8 +134,7 @@ public class HttpPostInterface {
 					HttpResponse response = null;
 					response = client.execute(post);
 					if (response.getStatusLine().getStatusCode() == 200) {
-						String result = EntityUtils.toString(response
-								.getEntity());
+						String result = EntityUtils.toString(response.getEntity());
 						Log.e("post的data", result);
 						mHttpPostCallBack.httpPostResolveData(result);
 					} else {
@@ -143,6 +150,7 @@ public class HttpPostInterface {
 	}
 
 	public interface HttpPostCallBack {
+
 		public void httpPostResolveData(String result);
 	}
 }

@@ -9,8 +9,6 @@ import android.os.IBinder;
  * 这个服务主要用于防止APP在后台运行时被意外关闭
  * 
  * @author:LiXiaoSong
- * @see:
- * @since:
  * @copyright © joocola.com
  * @Date:2014-9-12
  */
