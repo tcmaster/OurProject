@@ -279,6 +279,10 @@ public class Constants {
 	 */
 	public static final String SCORE_APPOINT_URL = "Bus.AppointController.ScoreAppoint.ashx";
 	/**
+	 * 记录查看邀约日志
+	 */
+	public static final String LOG_VIEW_APPOINT = "Bus.AppointController.LogViewAppoint.ashx";
+	/**
 	 * 时间界面的几个传值
 	 */
 	public static final int INTENT_TIME = 1;
