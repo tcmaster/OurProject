@@ -3,11 +3,19 @@ package com.android.joocola.utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.joocola.entity.AdminMessage;
 import com.android.joocola.entity.AppointScoreEntity;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.entity.UserInfo;
 
+/**
+ * 用于处理应用中用到json的地方
+ * 
+ * @author:LiXiaoSong
+ * @copyright © joocola.com
+ * @Date:2014-10-11
+ */
 public class JsonUtils {
 
 	/**
@@ -151,6 +159,24 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 		return appointScoreEntity;
+	}
 
+	/**
+	 * 解析系统消息发送过来的json
+	 */
+	public static AdminMessage getAdminMessageEntity(JSONObject object) {
+		AdminMessage messageEntity = new AdminMessage();
+		try {
+			messageEntity.setRelateUserID(object.getInt("FromUserID") + "");
+			messageEntity.setRelateUserName(object.getString("FromUserName"));
+			messageEntity.setRelateUserPhoto(object.getString("FromUserPhoto"));
+			messageEntity.setMsgContent(object.getString("MsgContent"));
+			messageEntity.setMsgType(object.getString("MsgType"));
+			messageEntity.setRecUserID(object.getInt("RecUserID") + "");
+			messageEntity.setSendDate(object.getString("SendDate"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return messageEntity;
 	}
 }
