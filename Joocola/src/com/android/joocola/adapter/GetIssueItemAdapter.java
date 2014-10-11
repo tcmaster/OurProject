@@ -98,7 +98,7 @@ public class GetIssueItemAdapter extends BaseAdapter {
 		holder.issuecost.setText(entity.getCostName());
 		holder.location.setText(entity.getLocationName());
 		holder.description.setText(entity.getDescription());
-		holder.state.setText(entity.getState());
+		holder.state.setText("浏览" + entity.getBrowseCount() + "次");
 		holder.usercount.setText("报名(" + entity.getApplyUserCount() + ")");
 		holder.replycount.setText("回复(" + entity.getReplyCount() + ")");
 		String touxiangUrl = entity.getPublisherPhoto();

@@ -385,6 +385,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 	private void initView(GetIssueInfoEntity entity) {
 		initReplyList();// 加载评论JSON
 		isFavorite();// 查询是否收藏该邀约
+		logViewAppoint(entity);
 		title = (TextView) this.findViewById(R.id.issueitem_title);
 		name = (TextView) this.findViewById(R.id.issueitem_name);
 		age = (TextView) this.findViewById(R.id.issueitem_age);
@@ -410,7 +411,8 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		location.setText(entity.getLocationName());
 		description.setText(entity.getDescription());
 		// description.setMovementMethod(ScrollingMovementMethod.getInstance());
-		state.setText(entity.getState());
+		// state.setText(entity.getState());
+		state.setText("浏览" + entity.getBrowseCount() + "次");
 		stateString = entity.getState();
 		usercount.setText("报名(" + entity.getApplyUserCount() + ")");
 		replycount.setText("回复(" + entity.getReplyCount() + ")");
@@ -863,5 +865,18 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 		Log.e("bb", "publisherID" + publisherID);
 		Log.e("bb", "state" + state);
 
+	}
+
+	private void logViewAppoint(GetIssueInfoEntity entity) {
+		HttpPostInterface httpPostInterface = new HttpPostInterface();
+		httpPostInterface.addParams("userID", user_pid);
+		httpPostInterface.addParams("appID", entity.getPID() + "");
+		httpPostInterface.getData(Constants.LOG_VIEW_APPOINT, new HttpPostCallBack() {
+
+			@Override
+			public void httpPostResolveData(String result) {
+
+			}
+		});
 	}
 }

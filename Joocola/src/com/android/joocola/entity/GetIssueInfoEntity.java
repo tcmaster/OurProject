@@ -39,6 +39,7 @@ public class GetIssueInfoEntity implements Serializable {
 	private int PublisherID;// 发布者ID
 	private int PublisherSexID;// 发布者性别id
 	private String RoomID;// 该邀约的房间号
+	private int BrowseCount; // 查看次数
 
 	public int getPID() {
 		return PID;
@@ -243,6 +244,14 @@ public class GetIssueInfoEntity implements Serializable {
 
 	public void setRoomID(String roomID) {
 		RoomID = roomID;
+	}
+
+	public int getBrowseCount() {
+		return BrowseCount;
+	}
+
+	public void setBrowseCount(int browseCount) {
+		BrowseCount = browseCount;
 	}
 
 }
