@@ -175,6 +175,8 @@ public class JsonUtils {
 			messageEntity.setMsgType(object.getString("MsgType"));
 			messageEntity.setRecUserID(object.getInt("RecUserID") + "");
 			messageEntity.setSendDate(object.getString("SendDate"));
+			messageEntity.setCallUrl(object.getJSONArray("Buttons").getJSONObject(0).getString("CallUrl"));
+			messageEntity.setCaption(object.getJSONArray("Buttons").getJSONObject(0).getString("Caption"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

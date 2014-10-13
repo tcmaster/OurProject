@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white" >
-    <include 
-        layout="@layout/item_list_message_fg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/issue_News"
-        />
-    <View
-	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
-	    android:background="@color/lessgray2"
-	    android:layout_marginTop="5dp"
-	    android:layout_marginBottom="5dp"
-	    />
-    <include 
-        layout="@layout/item_list_message_fg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/system_message"/>
-	<TextView
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:background="@color/lessgray2"
-	    android:gravity="center_vertical"
-	    android:paddingLeft="10dp"
-	    android:text="@string/talk"
-	    android:paddingTop="10dp"
-	    android:paddingBottom="10dp"
-	    />
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/chatlist"
-        />
+    android:layout_height="match_parent" >
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/issue_News"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/item_list_message_fg" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/lessgray2" />
+
+        <include
+            android:id="@+id/system_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/item_list_message_fg" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lessgray2"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/talk" />
+
+        <com.android.joocola.view.MyListView
+            android:id="@+id/chatlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</ScrollView>

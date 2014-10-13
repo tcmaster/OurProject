@@ -1,5 +1,7 @@
 package com.android.joocola.entity;
 
+import com.lidroid.xutils.db.annotation.Id;
+
 /**
  * 系统消息存放实体
  * 
@@ -9,6 +11,11 @@ package com.android.joocola.entity;
  */
 public class AdminMessage {
 
+	/**
+	 * 数据库所用id
+	 */
+	@Id
+	private String _id;
 	/**
 	 * 系统消息类型
 	 */
@@ -37,6 +44,18 @@ public class AdminMessage {
 	 * 发送消息的日期
 	 */
 	private String SendDate;
+	/**
+	 * 按钮类型
+	 */
+	private String Caption;
+	/**
+	 * 按钮连接的地址
+	 */
+	private String CallUrl;
+	/**
+	 * 当前接收消息的用户
+	 */
+	private String user;
 
 	public String getMsgType() {
 		return MsgType;
@@ -94,9 +113,41 @@ public class AdminMessage {
 		SendDate = sendDate;
 	}
 
+	public String getCaption() {
+		return Caption;
+	}
+
+	public void setCaption(String caption) {
+		Caption = caption;
+	}
+
+	public String getCallUrl() {
+		return CallUrl;
+	}
+
+	public void setCallUrl(String callUrl) {
+		CallUrl = callUrl;
+	}
+
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
-		return "AdminMessage [MsgType=" + MsgType + ", RelateUserID=" + RelateUserID + ", RelateUserName=" + RelateUserName + ", RelateUserPhoto=" + RelateUserPhoto + ", MsgContent=" + MsgContent + ", RecUserID=" + RecUserID + ", SendDate=" + SendDate + "]";
+		return "AdminMessage [_id=" + _id + ", MsgType=" + MsgType + ", RelateUserID=" + RelateUserID + ", RelateUserName=" + RelateUserName + ", RelateUserPhoto=" + RelateUserPhoto + ", MsgContent=" + MsgContent + ", RecUserID=" + RecUserID + ", SendDate=" + SendDate + ", Caption=" + Caption + ", CallUrl=" + CallUrl + ", user=" + user + "]";
 	}
 
 }

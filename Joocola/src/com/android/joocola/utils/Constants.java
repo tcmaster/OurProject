@@ -1,6 +1,6 @@
 package com.android.joocola.utils;
 
-/*
+/**
  * 常用的字符串
  * 
  */
@@ -15,6 +15,9 @@ public class Constants {
 	 */
 	public static final String CHAT_ACTION = "IWantHaveAChat";
 	public static final String MULTI_CHAT_ACTION = "IWantHaveAMultiChat";
+	// 接收到系统的消息
+	public static final String CHAT_ADMIN_ACTION = "AdminSendMessage";
+
 	public static final String URL = "http://a.joocola.com";
 	public static final String MAIN_URL = "http://a.joocola.com/Controller/";
 	public static final String UPLOADIMGURL = "http://a.joocola.com/_Base/Uploader/UserPhoto.ashx";

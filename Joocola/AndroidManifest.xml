@@ -196,9 +196,13 @@
         </activity>
         <activity
             android:name="com.android.joocola.activity.JoocolaDealActivity"
-            android:label="@string/title_activity_joocola_deal" >
-        </activity>
-
+            android:label="@string/title_activity_joocola_deal"
+            android:launchMode="singleTop"
+		    android:screenOrientation="portrait" />
+		<activity 
+		    android:name="com.android.joocola.activity.SystemMessageActivity"
+		    android:launchMode="singleTop"
+		    android:screenOrientation="portrait"/>
         <receiver
             android:name="com.android.joocola.receiver.NetworkReceiver"
             android:label="NetworkConnection" >

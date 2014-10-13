@@ -180,11 +180,15 @@ public class EaseMobChat {
 		}
 		// 将消息转化为可以进行处理的实体
 		AdminMessage entity = JsonUtils.getAdminMessageEntity(object);
+		entity.setUser(JoocolaApplication.getInstance().getPID());
 		// 下面的步骤
-		// 1.对这条消息根据不同的情况进行不同的特殊处理
-		// 2.将这条消息存入数据库，以便在系统消息列表中进行显示
-		// 3.发送广播告知有新的消息
-		LogUtils.v(entity.toString());
+		// 1.将解析好的消息存入数据库
+		try {
+			db.save(entity);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+		// 2.发送广播通知有更新
 	}
 
 	/**

@@ -97,6 +97,8 @@
     <string name="age">年龄</string>
     <string name="ageinit">0</string>
     <string name="time">时间</string>
+    <!-- 系统信息 -->
+    <string name="agree">接受</string>
     <!-- 用户协议 -->
     <string name="deal">用户服务条款\n
 \n
