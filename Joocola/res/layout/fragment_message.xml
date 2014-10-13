@@ -4,7 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white" >
-
+    <include 
+        layout="@layout/item_list_message_fg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/issue_News"
+        />
+    <View
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:background="@color/lessgray2"
+	    android:layout_marginTop="5dp"
+	    android:layout_marginBottom="5dp"
+	    />
+    <include 
+        layout="@layout/item_list_message_fg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/system_message"/>
+	<TextView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@color/lessgray2"
+	    android:gravity="center_vertical"
+	    android:paddingLeft="10dp"
+	    android:text="@string/talk"
+	    android:paddingTop="10dp"
+	    android:paddingBottom="10dp"
+	    />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -20,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
@@ -41,6 +43,7 @@ import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;
 
 /**
@@ -56,6 +59,16 @@ public class Messagefragment extends Fragment {
 	 */
 	@ViewInject(R.id.chatlist)
 	private ListView lv_message_list;
+	/**
+	 * 邀约动态
+	 */
+	@ViewInject(R.id.issue_News)
+	private RelativeLayout rl_issue_news;
+	/**
+	 * 系统消息
+	 */
+	@ViewInject(R.id.system_message)
+	private RelativeLayout rl_system_message;
 	/**
 	 * 数据库
 	 */
@@ -78,6 +91,10 @@ public class Messagefragment extends Fragment {
 	private boolean isFirst = true;
 	// 本页面的数据源
 	private List<MyChatInfo> tResult;
+	/**
+	 * log 开关
+	 */
+	private boolean DEBUG = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -103,10 +120,42 @@ public class Messagefragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_message, container, false);
 		ViewUtils.inject(this, view);
-		if (isFirst)
+		if (isFirst) {
 			isFirst = false;
+			if (DEBUG)
+				LogUtils.v("第一次的状态改变");
+		}
+		initView();
 		lv_message_list.setAdapter(adapter);
 		return view;
+	}
+
+	/**
+	 * 该方法主要用来初始化邀约和系统消息的视图
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-10-13
+	 */
+	private void initView() {
+		ImageView ml_iv_in = (ImageView) rl_issue_news.findViewById(R.id.ml_iv);
+		ImageView rp_iv_in = (ImageView) rl_issue_news.findViewById(R.id.redPoint);
+		TextView ml_nickName_in = (TextView) rl_issue_news.findViewById(R.id.ml_nickName_tv);
+		TextView ml_chatInfo_in = (TextView) rl_issue_news.findViewById(R.id.ml_chatInfo_tv);
+		TextView ml_date_in = (TextView) rl_issue_news.findViewById(R.id.ml_date_tv);
+		ImageView ml_iv_sm = (ImageView) rl_system_message.findViewById(R.id.ml_iv);
+		ImageView rp_iv_sm = (ImageView) rl_system_message.findViewById(R.id.redPoint);
+		TextView ml_nickName_sm = (TextView) rl_system_message.findViewById(R.id.ml_nickName_tv);
+		TextView ml_chatInfo_sm = (TextView) rl_system_message.findViewById(R.id.ml_chatInfo_tv);
+		TextView ml_date_sm = (TextView) rl_system_message.findViewById(R.id.ml_date_tv);
+		rp_iv_in.setVisibility(View.INVISIBLE);
+		rp_iv_sm.setVisibility(View.INVISIBLE);
+		ml_nickName_sm.setText("系统消息");
+		ml_nickName_in.setText("邀约动态");
+		ml_chatInfo_in.setText("");
+		ml_chatInfo_sm.setText("");
+		ml_date_in.setText("");
+		ml_date_sm.setText("");
+
 	}
 
 	private void updateData() {
@@ -255,15 +304,35 @@ public class Messagefragment extends Fragment {
 		startActivity(intent);
 	}
 
+	@OnClick({ R.id.issue_News, R.id.system_message })
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.issue_News:
+			LogUtils.v("李哲你就往这加东西");
+			break;
+		case R.id.system_message:
+
+			break;
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
+		if (DEBUG)
+			LogUtils.v("进入setUserVisibleHint");
 		if (isVisibleToUser && !isFirst) {
+			if (DEBUG)
+				LogUtils.v("执行setUserVisibleHint");
 			updateData();
 		}
 	}
 
 	@Override
 	public void onResume() {
+		if (DEBUG)
+			LogUtils.v("执行onResume");
 		updateData();
 		super.onResume();
 	}
