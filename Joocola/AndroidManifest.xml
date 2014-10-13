@@ -202,7 +202,11 @@
 		<activity 
 		    android:name="com.android.joocola.activity.SystemMessageActivity"
 		    android:launchMode="singleTop"
-		    android:screenOrientation="portrait"/>
+		    android:screenOrientation="portrait"
+            android:label="@string/title_activity_joocola_deal" />
+        <activity 
+            android:name="com.android.joocola.activity.IssueDynamicActivity"
+            android:screenOrientation="portrait"/>
         <receiver
             android:name="com.android.joocola.receiver.NetworkReceiver"
             android:label="NetworkConnection" >

@@ -389,4 +389,5 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 }
