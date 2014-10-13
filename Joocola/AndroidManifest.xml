@@ -198,6 +198,9 @@
             android:name="com.android.joocola.activity.JoocolaDealActivity"
             android:label="@string/title_activity_joocola_deal" >
         </activity>
+        <activity 
+            android:name="com.android.joocola.activity.IssueDynamicActivity"
+            android:screenOrientation="portrait"></activity>
 
         <receiver
             android:name="com.android.joocola.receiver.NetworkReceiver"

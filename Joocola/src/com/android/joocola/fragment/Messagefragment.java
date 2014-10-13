@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.android.joocola.R;
 import com.android.joocola.activity.BaseActivity;
 import com.android.joocola.activity.ChatActivity;
+import com.android.joocola.activity.IssueDynamicActivity;
 import com.android.joocola.adapter.Fg_Chat_List_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
@@ -308,7 +309,9 @@ public class Messagefragment extends Fragment {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.issue_News:
-			LogUtils.v("李哲你就往这加东西");
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), IssueDynamicActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.system_message:
 
