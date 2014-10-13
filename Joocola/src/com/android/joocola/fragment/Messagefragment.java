@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +33,7 @@ import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
+import com.android.joocola.view.MyListView;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
@@ -58,7 +58,7 @@ public class Messagefragment extends Fragment {
 	 * 消息列表的listView
 	 */
 	@ViewInject(R.id.chatlist)
-	private ListView lv_message_list;
+	private MyListView lv_message_list;
 	/**
 	 * 邀约动态
 	 */
