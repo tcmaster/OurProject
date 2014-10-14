@@ -82,6 +82,35 @@ public class EaseSingleChat {
 	}
 
 	/**
+	 * 发送系统消息
+	 * 
+	 * @param userName
+	 *            要发的用户/群聊的id
+	 * @param content
+	 *            发送的系统消息内容
+	 * @param callBack
+	 *            消息发送状态的回调
+	 * @author: LiXiaosong
+	 * @date:2014-10-14
+	 */
+	public void sendSystemMessage(String userName, String content, ChatType chatType, final EMCallBack callBack) {
+		EMConversation conversation = getConversation(userName);
+		EMMessage message = EMMessage.createSendMessage(Type.TXT);
+		message.setChatType(chatType);
+		MessageBody body = new TextMessageBody(content);
+		message.addBody(body);
+		message.setReceipt(userName);
+		// 重要，这个标记了该消息是系统消息
+		message.setAttribute("isSystem", true);
+		conversation.addMessage(message);
+		if (chatType == chatType.Chat) {
+			EMChatManager.getInstance().sendMessage(message, callBack);
+		} else {
+			EMChatManager.getInstance().sendGroupMessage(message, callBack);
+		}
+	}
+
+	/**
 	 * 发送地理位置消息
 	 * 
 	 * @param userName

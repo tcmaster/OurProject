@@ -53,8 +53,7 @@ public class HttpPostInterface {
 					}
 				}
 				md5String = MD5Utils.md5s(md5String);
-				HttpPost httpPost = null;
-				httpPost = new HttpPost(Constants.MAIN_URL + url);
+
 				// 设置HTTP POST请求参数必须用NameValuePair对象
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				Iterator iter = map.entrySet().iterator();
@@ -63,58 +62,7 @@ public class HttpPostInterface {
 					params.add(new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()));
 				}
 				params.add(new BasicNameValuePair("sign", md5String));
-				HttpResponse httpResponse = null;
-				try {
-					// 设置httpPost请求参数
-					httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-					httpResponse = new DefaultHttpClient().execute(httpPost);
-					Log.e("post的code", httpResponse.getStatusLine().getStatusCode() + "");
-					if (httpResponse.getStatusLine().getStatusCode() == 200) {
-						// 第三步，使用getEntity方法活得返回结果
-						String result = EntityUtils.toString(httpResponse.getEntity());
-						Log.e("post的data", result);
-						final JSONObject jsonObject;
-						try {
-							jsonObject = new JSONObject(result);
-							boolean flag = jsonObject.getBoolean("result");
-							if (flag) {
-								if (jsonObject.getString("data") != null) {
-									handler.post(new Runnable() {
-
-										@Override
-										public void run() {
-											try {
-												mHttpPostCallBack.httpPostResolveData(jsonObject.getString("data"));
-											} catch (JSONException e) {
-												e.printStackTrace();
-											}
-										}
-									});
-								} else {
-									handler.post(new Runnable() {
-
-										@Override
-										public void run() {
-											mHttpPostCallBack.httpPostResolveData("");
-										}
-									});
-								}
-							} else {
-								Log.e("httpPost", "出错了");
-							}
-
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-
-					} else {
-						mHttpPostCallBack.httpPostResolveData(null);
-					}
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				postDirect(url, mHttpPostCallBack, params);
 			}
 		}).start();
 	}
@@ -147,6 +95,68 @@ public class HttpPostInterface {
 				}
 			}
 		}).start();
+	}
+
+	/**
+	 * 发送post请求，获取结果
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-10-14
+	 */
+	public void postDirect(String url, final HttpPostCallBack mHttpPostCallBack, List<NameValuePair> params) {
+		HttpPost httpPost = null;
+		httpPost = new HttpPost(Constants.MAIN_URL + url);
+		HttpResponse httpResponse = null;
+		try {
+			if (params != null)
+				httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+			httpResponse = new DefaultHttpClient().execute(httpPost);
+			Log.e("post的code", httpResponse.getStatusLine().getStatusCode() + "");
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				// 第三步，使用getEntity方法活得返回结果
+				String result = EntityUtils.toString(httpResponse.getEntity());
+				Log.e("post的data", result);
+				final JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(result);
+					boolean flag = jsonObject.getBoolean("result");
+					if (flag) {
+						if (jsonObject.getString("data") != null) {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									try {
+										mHttpPostCallBack.httpPostResolveData(jsonObject.getString("data"));
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}
+							});
+						} else {
+							handler.post(new Runnable() {
+
+								@Override
+								public void run() {
+									mHttpPostCallBack.httpPostResolveData("");
+								}
+							});
+						}
+					} else {
+						Log.e("httpPost", "出错了");
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} else {
+				mHttpPostCallBack.httpPostResolveData(null);
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public interface HttpPostCallBack {

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -267,6 +268,25 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
 		String currentTime = sdf.format(date);
 		return currentTime;
+	}
+
+	/**
+	 * 将某个时间字符串转化为long
+	 * 
+	 * @return
+	 * @author: LiXiaosong
+	 * @date:2014-10-14
+	 */
+	public static long getTimeLongValue(String src, String pattern) {
+		long result = 0;
+		SimpleDateFormat format = new SimpleDateFormat(pattern);
+		try {
+			result = format.parse(src).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public static String getCurrentTime() {

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.AdminMessage;
+import com.android.joocola.entity.AdminMessageNotify;
 import com.android.joocola.entity.MyChatInfo;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.JsonUtils;
@@ -23,6 +24,7 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.ConnectionListener;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.ImageMessageBody;
@@ -61,6 +63,7 @@ public class EaseMobChat {
 	 * 管理员用户,该用户发送的消息要特殊处理
 	 */
 	private final String ADMIN_USER = "u1";
+	private boolean DEBUG = true;
 
 	public synchronized static EaseMobChat getInstance() {
 		if (chatServic == null) {
@@ -103,6 +106,10 @@ public class EaseMobChat {
 
 	public void sendTxtMessage(String userName, ChatType chatType, String content, final EMCallBack callBack) {
 		chat.sendTextMessage(userName, chatType, content, callBack);
+	}
+
+	public void sendSystemMessage(String userName, String content, ChatType chatType, final EMCallBack callBack) {
+		chat.sendSystemMessage(userName, content, chatType, callBack);
 	}
 
 	public void sendImgMessage(String userName, ChatType chatType, String content, final EMCallBack callBack) {
@@ -174,21 +181,73 @@ public class EaseMobChat {
 		String text = ((TextMessageBody) message.getBody()).getMessage();
 		JSONObject object = null;
 		try {
+			// 先判断消息类型，在将消息转化为可以进行处理的实体
 			object = new JSONObject(text);
+			String msgType = object.getString("MsgType");
+			if (msgType.equals("SM_Normal") || msgType.equals("SM_VerifyTalk")) {
+				AdminMessage entity = null;
+				entity = JsonUtils.getAdminMessageEntity(object);
+				entity.setUser(JoocolaApplication.getInstance().getPID());
+				entity.setUser(JoocolaApplication.getInstance().getPID());
+				if (DEBUG)
+					LogUtils.v("解析完成后的聊天消息为" + entity.toString());
+				// 将解析好的消息存入数据库
+				db.save(entity);
+				// 发送广播通知有更新
+				Intent intent = new Intent(Constants.CHAT_ADMIN_ACTION);
+				JoocolaApplication.getInstance().sendBroadcast(intent);
+			} else if (msgType.equals("PM_Normal")) {
+				final AdminMessageNotify entity = JsonUtils.getAdminMessageNotifyEntity(object);
+				LogUtils.v("实体的值为" + entity.toString());
+				// 直接向同意方发送一条消息
+				sendSystemMessage(entity.getTalkFromUserID(), entity.getMsgContent(), ChatType.Chat, new EMCallBack() {
+
+					@Override
+					public void onSuccess() {
+						// 消息发送成功以后，将该条聊天数据存入数据库，代表有数据
+						// 发送成功，发送的消息需要显示在聊天会话上
+						if (DEBUG)
+							LogUtils.v("发送消息成功");
+						MyChatInfo info = new MyChatInfo();
+						EMConversation conversation = EMChatManager.getInstance().getConversation(entity.getTalkFromUserID());
+						EMMessage message = conversation.getLastMessage();
+						info.messageId = message.getMsgId();
+						info.user = entity.getTalkFromUserID();
+						info.isRead = false;
+						info.PID = JoocolaApplication.getInstance().getPID();
+						info.chatType = message.getChatType() == ChatType.GroupChat ? Constants.CHAT_TYPE_MULTI : Constants.CHAT_TYPE_SINGLE;
+						List<MyChatInfo> temp = null;
+						try {
+							temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", entity.getTalkFromUserID()).and("PID", "=", info.PID));
+							if (temp == null || temp.size() == 0) {
+								db.save(info);
+							} else {
+								info = temp.get(0);
+								info.messageId = message.getMsgId();
+								db.update(info, WhereBuilder.b("user", "=", entity.getTalkFromUserID()).and("PID", "=", info.PID), "messageId", "isRead");
+							}
+						} catch (DbException e) {
+							e.printStackTrace();
+						}
+						Intent chat = new Intent(Constants.CHAT_ACTION);
+						JoocolaApplication.getInstance().sendBroadcast(chat);
+					}
+
+					@Override
+					public void onProgress(int arg0, String arg1) {
+					}
+
+					@Override
+					public void onError(int arg0, String arg1) {
+					}
+				});
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
-		// 将消息转化为可以进行处理的实体
-		AdminMessage entity = JsonUtils.getAdminMessageEntity(object);
-		entity.setUser(JoocolaApplication.getInstance().getPID());
-		// 下面的步骤
-		// 1.将解析好的消息存入数据库
-		try {
-			db.save(entity);
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
-		// 2.发送广播通知有更新
+
 	}
 
 	/**
@@ -204,63 +263,82 @@ public class EaseMobChat {
 		public void onReceive(Context context, Intent intent) {
 			String msgId = intent.getStringExtra("msgid");
 			EMMessage message = EMChatManager.getInstance().getMessage(msgId);
+			if (DEBUG)
+				LogUtils.v("收到了一条聊天消息");
 			if (message.getFrom().equals(ADMIN_USER)) {
+				if (DEBUG)
+					LogUtils.v("聊天消息来自admin");
 				processAdminMessage(message);
 				return;
 			}
-			String content = "";
-			// 发送消息的对象，单聊时为消息发送者，群聊时为接收的group
-			String user = "";
-			String localUrl = "";
-			String chatType = "";
-			long time = 0l;
-			switch (message.getType()) {
-			case TXT:
-				TextMessageBody txtBody = (TextMessageBody) message.getBody();
-				content = txtBody.getMessage();
-				break;
-			case IMAGE:
-				ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
-				content = imgBody.getRemoteUrl();
-				localUrl = imgBody.getThumbnailUrl();
-				break;
-			default:
-				break;
-			}
-			time = message.getMsgTime();
-			List<MyChatInfo> temp = null;
-			MyChatInfo info = new MyChatInfo();
-			info.messageId = msgId;
-
-			info.PID = JoocolaApplication.getInstance().getPID();
-			if (message.getChatType() == ChatType.Chat) {
-				info.chatType = Constants.CHAT_TYPE_SINGLE;
-				// 个人ID
-				user = message.getFrom();
-			} else if (message.getChatType() == ChatType.GroupChat) {
-				info.chatType = Constants.CHAT_TYPE_MULTI;
-				// 群ID
-				user = message.getTo();
-			}
-			// 接收到消息，说明有未读消息
-			info.isRead = false;
-			info.user = user;
-			try {
-				temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", user).and("PID", "=", info.PID));
-				if (temp == null || temp.size() == 0) {
-					db.save(info);
-				} else {
-					info = temp.get(0);
-					info.messageId = message.getMsgId();
-					db.update(info, WhereBuilder.b("user", "=", user).and("PID", "=", info.PID), "messageId", "isRead");
-				}
-			} catch (DbException e) {
-				e.printStackTrace();
-			}
-			LogUtils.v("收到的消息是" + localUrl + " " + user + " " + new Date(time).toLocaleString());
-			Intent chat = new Intent(Constants.CHAT_ACTION);
-			JoocolaApplication.getInstance().sendBroadcast(chat);
+			processMessage(message);
 		}
+	}
+
+	/**
+	 * 对接收到的某条消息的处理
+	 * 
+	 * @author: LiXiaosong
+	 * @date:2014-10-14
+	 */
+	private void processMessage(EMMessage message) {
+		if (message == null) {
+			LogUtils.v("收到一条消息，不过是空值");
+			return;
+		}
+		LogUtils.v("原生的消息为" + message.toString());
+		String content = "";
+		// 发送消息的对象，单聊时为消息发送者，群聊时为接收的group
+		String user = "";
+		String localUrl = "";
+		String chatType = "";
+		long time = 0l;
+		switch (message.getType()) {
+		case TXT:
+			TextMessageBody txtBody = (TextMessageBody) message.getBody();
+			content = txtBody.getMessage();
+			break;
+		case IMAGE:
+			ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
+			content = imgBody.getRemoteUrl();
+			localUrl = imgBody.getThumbnailUrl();
+			break;
+		default:
+			break;
+		}
+		time = message.getMsgTime();
+		List<MyChatInfo> temp = null;
+		MyChatInfo info = new MyChatInfo();
+		info.messageId = message.getMsgId();
+
+		info.PID = JoocolaApplication.getInstance().getPID();
+		if (message.getChatType() == ChatType.Chat) {
+			info.chatType = Constants.CHAT_TYPE_SINGLE;
+			// 个人ID
+			user = message.getFrom();
+		} else if (message.getChatType() == ChatType.GroupChat) {
+			info.chatType = Constants.CHAT_TYPE_MULTI;
+			// 群ID
+			user = message.getTo();
+		}
+		// 接收到消息，说明有未读消息
+		info.isRead = false;
+		info.user = user;
+		try {
+			temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", user).and("PID", "=", info.PID));
+			if (temp == null || temp.size() == 0) {
+				db.save(info);
+			} else {
+				info = temp.get(0);
+				info.messageId = message.getMsgId();
+				db.update(info, WhereBuilder.b("user", "=", user).and("PID", "=", info.PID), "messageId", "isRead");
+			}
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+		LogUtils.v("收到的消息是" + localUrl + " " + user + " " + new Date(time).toLocaleString());
+		Intent chat = new Intent(Constants.CHAT_ACTION);
+		JoocolaApplication.getInstance().sendBroadcast(chat);
 	}
 
 	/**

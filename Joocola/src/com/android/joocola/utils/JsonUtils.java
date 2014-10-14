@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.joocola.entity.AdminMessage;
+import com.android.joocola.entity.AdminMessageNotify;
 import com.android.joocola.entity.AppointScoreEntity;
 import com.android.joocola.entity.GetIssueInfoEntity;
 import com.android.joocola.entity.ReplyEntity;
@@ -181,5 +182,21 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 		return messageEntity;
+	}
+
+	public static AdminMessageNotify getAdminMessageNotifyEntity(JSONObject object) {
+		AdminMessageNotify entity = new AdminMessageNotify();
+		try {
+			entity.setMsgType(object.getString("MsgType"));
+			entity.setMsgContent(object.getString("MsgContent"));
+			entity.setRecUserID(object.getInt("RecUserID") + "");
+			entity.setSendDate(object.getString("SendDate"));
+			entity.setTalkFromUserID(object.getInt("TalkFromUserID") + "");
+			entity.setTalkRevUserID(object.getInt("TalkRevUserID") + "");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return entity;
 	}
 }

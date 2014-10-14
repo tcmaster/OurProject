@@ -15,7 +15,7 @@ public class AdminMessage {
 	 * 数据库所用id
 	 */
 	@Id
-	private String _id;
+	private int id;
 	/**
 	 * 系统消息类型
 	 */
@@ -129,14 +129,6 @@ public class AdminMessage {
 		CallUrl = callUrl;
 	}
 
-	public String get_id() {
-		return _id;
-	}
-
-	public void set_id(String _id) {
-		this._id = _id;
-	}
-
 	public String getUser() {
 		return user;
 	}
@@ -145,9 +137,17 @@ public class AdminMessage {
 		this.user = user;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "AdminMessage [_id=" + _id + ", MsgType=" + MsgType + ", RelateUserID=" + RelateUserID + ", RelateUserName=" + RelateUserName + ", RelateUserPhoto=" + RelateUserPhoto + ", MsgContent=" + MsgContent + ", RecUserID=" + RecUserID + ", SendDate=" + SendDate + ", Caption=" + Caption + ", CallUrl=" + CallUrl + ", user=" + user + "]";
+		return "AdminMessage [id=" + id + ", MsgType=" + MsgType + ", RelateUserID=" + RelateUserID + ", RelateUserName=" + RelateUserName + ", RelateUserPhoto=" + RelateUserPhoto + ", MsgContent=" + MsgContent + ", RecUserID=" + RecUserID + ", SendDate=" + SendDate + ", Caption=" + Caption + ", CallUrl=" + CallUrl + ", user=" + user + "]";
 	}
 
 }

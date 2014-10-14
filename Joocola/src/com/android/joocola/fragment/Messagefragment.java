@@ -28,6 +28,7 @@ import com.android.joocola.R;
 import com.android.joocola.activity.BaseActivity;
 import com.android.joocola.activity.ChatActivity;
 import com.android.joocola.activity.IssueDynamicActivity;
+import com.android.joocola.activity.SystemMessageActivity;
 import com.android.joocola.adapter.Fg_Chat_List_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
@@ -307,18 +308,18 @@ public class Messagefragment extends Fragment {
 
 	@OnClick({ R.id.issue_News, R.id.system_message })
 	public void onClick(View v) {
+		Intent intent = new Intent();
 		switch (v.getId()) {
 		case R.id.issue_News:
-			Intent intent = new Intent();
 			intent.setClass(getActivity(), IssueDynamicActivity.class);
-			startActivity(intent);
 			break;
 		case R.id.system_message:
-
+			intent.setClass(getActivity(), SystemMessageActivity.class);
 			break;
 		default:
 			break;
 		}
+		startActivity(intent);
 	}
 
 	@Override

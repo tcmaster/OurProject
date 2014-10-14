@@ -56,9 +56,6 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mActionBar = getActionBar();
-		mActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
-
 	}
 
 	@Override
@@ -81,6 +78,8 @@ public class BaseActivity extends FragmentActivity {
 	 * 要使用自定义actionBar，必须调用这个方法
 	 */
 	public void useCustomerActionBar() {
+		mActionBar = getActionBar();
+		mActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
 		mActionBar.setCustomView(R.layout.layout_actionbar);
 		mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		View view = mActionBar.getCustomView();
