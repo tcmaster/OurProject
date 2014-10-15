@@ -167,7 +167,7 @@ public class ChatActivity extends BaseActivity {
 		MyChatInfo info = new MyChatInfo();
 		info.isRead = true;
 		try {
-			db.update(info, WhereBuilder.b("user", "=", userId), "isRead");
+			db.update(info, WhereBuilder.b("user", "=", userId).and("PID", "=", JoocolaApplication.getInstance().getPID()), "isRead");
 		} catch (DbException e) {
 			e.printStackTrace();
 		}
@@ -460,6 +460,14 @@ public class ChatActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			// 在该页面接收到了消息，需要将该消息变为已读
+			MyChatInfo info = new MyChatInfo();
+			info.isRead = true;
+			try {
+				db.update(info, WhereBuilder.b("user", "=", userId).and("PID", "=", JoocolaApplication.getInstance().getPID()), "isRead");
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
 			adapter.updateChatList();
 			scrollBottom();
 		}

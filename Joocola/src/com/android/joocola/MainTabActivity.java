@@ -292,7 +292,6 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 				img_tab_realease.setImageResource(R.drawable.tab_realease_normal);
 				img_tab_nearby.setImageResource(R.drawable.tab_nearby_normal);
 				img_tab_message.setImageResource(R.drawable.tab_message_touch);
-				mRedPoint.setVisibility(View.INVISIBLE);
 				tv_tab_realease.setTextColor(res.getColor(R.color.black));
 				tv_tab_nearby.setTextColor(res.getColor(R.color.black));
 				tv_tab_message.setTextColor(res.getColor(R.color.white));

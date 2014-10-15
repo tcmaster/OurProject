@@ -329,9 +329,9 @@ public class EaseMobChat {
 			if (temp == null || temp.size() == 0) {
 				db.save(info);
 			} else {
-				info = temp.get(0);
 				info.messageId = message.getMsgId();
 				db.update(info, WhereBuilder.b("user", "=", user).and("PID", "=", info.PID), "messageId", "isRead");
+				temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", user).and("PID", "=", info.PID));
 			}
 		} catch (DbException e) {
 			e.printStackTrace();
