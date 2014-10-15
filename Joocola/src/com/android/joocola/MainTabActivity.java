@@ -18,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -409,6 +410,10 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 			editor.putString("LocationCity", location.getCity());
 			editor.putString("LocationX", geoLat + "");
 			editor.putString("LocationY", geoLng + "");
+			editor.commit();
+
+			Log.e("bb", geoLat + "~~");
+			Log.e("bb", geoLng + "!@");
 			String str = location.getCity();
 			if (!TextUtils.isEmpty(str)) {
 				getActionBar().setTitle(str);
