@@ -102,6 +102,8 @@ public class EaseSingleChat {
 		message.setReceipt(userName);
 		// 重要，这个标记了该消息是系统消息
 		message.setAttribute("isSystem", true);
+		// 这个标记了当前该消息的系统类型是同意请求，目前只有这一种类型
+		message.setAttribute("isBegin", true);
 		conversation.addMessage(message);
 		if (chatType == chatType.Chat) {
 			EMChatManager.getInstance().sendMessage(message, callBack);

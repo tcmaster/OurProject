@@ -113,6 +113,10 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		if (lastMessage == null)
 			lastMessage = conversation.getMessage(data.get(position).messageId);
 		ViewHolder holder = null;
+		if (convertView != null && convertView.getTag() instanceof String) {
+			// 消除系统消息的View
+			convertView = null;
+		}
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_list_message_fg, null, false);
 			holder = new ViewHolder();
@@ -133,7 +137,11 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		}
 		// 看类型
 		if (lastMessage.getType() == Type.TXT) {
-			holder.tv_message.setText(((TextMessageBody) lastMessage.getBody()).getMessage());
+			// 判断是否为系统消息
+			if (lastMessage.getBooleanAttribute("isSystem", false)) {
+				holder.tv_message.setText("[系统消息]");
+			} else
+				holder.tv_message.setText(((TextMessageBody) lastMessage.getBody()).getMessage());
 		} else if (lastMessage.getType() == Type.IMAGE) {
 			holder.tv_message.setText("[图片文件]");
 		}
@@ -157,6 +165,10 @@ public class Fg_Chat_List_Adapter extends BaseAdapter {
 		TextView tv_message;
 		// 用于显示是否有未读消息
 		ImageView iv_redPoint;
+	}
+
+	private class ViewHolderSystem {
+
 	}
 
 }

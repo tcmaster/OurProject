@@ -92,6 +92,10 @@ public class SingleChatAdapter extends BaseAdapter {
 	 */
 	private int page;
 	/**
+	 * 填充器
+	 */
+	private LayoutInflater mInflater;
+	/**
 	 * 本界面的TAG标志
 	 */
 	private final String TAG = "SingleChatAdapter";
@@ -103,6 +107,7 @@ public class SingleChatAdapter extends BaseAdapter {
 		this.user = user;
 		photos = new HashMap<String, String>();
 		names = new HashMap<String, String>();
+		mInflater = LayoutInflater.from(context);
 		bmUtils = new BitmapUtils(context);
 		bmUtils.configDefaultLoadingImage(R.drawable.logo);
 		bmUtils.configDefaultLoadFailedImage(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo));
@@ -248,6 +253,31 @@ public class SingleChatAdapter extends BaseAdapter {
 			LogUtils.e(message.getFrom() + " is from " + message.getTo() + " is to " + message.getBody() + " is body");
 			LogUtils.e(conversation.getUserName());
 		}
+		// ***************************系统消息判断逻辑************************************//
+		// 判断是否为系统消息
+		if (message.getBooleanAttribute("isSystem", false)) {
+			convertView = mInflater.inflate(R.layout.item_system_info_prompt, null, false);
+			// 有这个tag代表该消息是系统消息
+			String systemTag = "系统消息标志";
+			convertView.setTag(systemTag);
+			TextView content = (TextView) convertView.findViewById(R.id.system_msg_info);
+			TextView time = (TextView) convertView.findViewById(R.id.system_msg_time);
+			if (message.getBooleanAttribute("isBegin", false)) {
+				if (("u" + JoocolaApplication.getInstance().getPID()).equals(message.getFrom())) {
+					content.setText(((TextMessageBody) message.getBody()).getMessage());
+				} else {
+					content.setText("你已经通过了他的验证请求，开始聊天吧");
+				}
+
+				time.setText(new Date(message.getMsgTime()).toLocaleString());
+			}
+			return convertView;
+		}
+		if (convertView != null && convertView.getTag() instanceof String) {
+			// 消除系统消息的View
+			convertView = null;
+		}
+		// ***************************系统消息判断逻辑end************************************//
 		boolean flag = ("u" + JoocolaApplication.getInstance().getPID()).equals(message.getFrom()) ? true : false;
 
 		if (convertView == null) {

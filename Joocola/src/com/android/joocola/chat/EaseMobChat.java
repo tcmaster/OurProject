@@ -200,7 +200,7 @@ public class EaseMobChat {
 				final AdminMessageNotify entity = JsonUtils.getAdminMessageNotifyEntity(object);
 				LogUtils.v("实体的值为" + entity.toString());
 				// 直接向同意方发送一条消息
-				sendSystemMessage(entity.getTalkFromUserID(), entity.getMsgContent(), ChatType.Chat, new EMCallBack() {
+				sendSystemMessage("u" + entity.getTalkFromUserID(), entity.getMsgContent(), ChatType.Chat, new EMCallBack() {
 
 					@Override
 					public void onSuccess() {
@@ -209,22 +209,22 @@ public class EaseMobChat {
 						if (DEBUG)
 							LogUtils.v("发送消息成功");
 						MyChatInfo info = new MyChatInfo();
-						EMConversation conversation = EMChatManager.getInstance().getConversation(entity.getTalkFromUserID());
+						EMConversation conversation = EMChatManager.getInstance().getConversation("u" + entity.getTalkFromUserID());
 						EMMessage message = conversation.getLastMessage();
 						info.messageId = message.getMsgId();
-						info.user = entity.getTalkFromUserID();
+						info.user = "u" + entity.getTalkFromUserID();
 						info.isRead = false;
 						info.PID = JoocolaApplication.getInstance().getPID();
 						info.chatType = message.getChatType() == ChatType.GroupChat ? Constants.CHAT_TYPE_MULTI : Constants.CHAT_TYPE_SINGLE;
 						List<MyChatInfo> temp = null;
 						try {
-							temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", entity.getTalkFromUserID()).and("PID", "=", info.PID));
+							temp = db.findAll(Selector.from(MyChatInfo.class).where("user", "=", "u" + entity.getTalkFromUserID()).and("PID", "=", info.PID));
 							if (temp == null || temp.size() == 0) {
 								db.save(info);
 							} else {
 								info = temp.get(0);
 								info.messageId = message.getMsgId();
-								db.update(info, WhereBuilder.b("user", "=", entity.getTalkFromUserID()).and("PID", "=", info.PID), "messageId", "isRead");
+								db.update(info, WhereBuilder.b("user", "=", "u" + entity.getTalkFromUserID()).and("PID", "=", info.PID), "messageId", "isRead");
 							}
 						} catch (DbException e) {
 							e.printStackTrace();
