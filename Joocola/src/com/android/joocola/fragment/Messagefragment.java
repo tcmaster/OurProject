@@ -24,8 +24,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.joocola.MainTabActivity;
 import com.android.joocola.R;
-import com.android.joocola.activity.BaseActivity;
 import com.android.joocola.activity.ChatActivity;
 import com.android.joocola.activity.IssueDynamicActivity;
 import com.android.joocola.activity.SystemMessageActivity;
@@ -97,25 +97,26 @@ public class Messagefragment extends Fragment {
 	 * log 开关
 	 */
 	private boolean DEBUG = true;
+	/**
+	 * 本fragment所对应的activity
+	 */
+	private MainTabActivity activity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// 初始化activity
+		activity = (MainTabActivity) getActivity();
 		// 初始化数据库
 		db = JoocolaApplication.getInstance().getDB();
 		// 初始化适配器
-		adapter = new Fg_Chat_List_Adapter(getActivity(), new ArrayList<MyChatInfo>());
+		adapter = new Fg_Chat_List_Adapter(activity, new ArrayList<MyChatInfo>());
 		// 初始化handler
-		handler = new Handler(getActivity().getMainLooper());
+		handler = new Handler(activity.getMainLooper());
 		// 注册接收消息的广播
 		receiver = new MyReceiver();
 		IntentFilter filter = new IntentFilter(Constants.CHAT_ACTION);
-		getActivity().registerReceiver(receiver, filter);
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+		activity.registerReceiver(receiver, filter);
 	}
 
 	@Override
@@ -171,8 +172,13 @@ public class Messagefragment extends Fragment {
 				StringBuilder sBuilder = new StringBuilder();
 				// 群聊的ids
 				StringBuilder mBuilder = new StringBuilder();
+				// 记录当前是否有未读消息
+				int count = 0;
 				for (int i = 0; i < tResult.size(); i++) {
 					// 若为群聊，则将ids存入邀约id列表
+					if (tResult.get(i).isRead) {
+						count++;
+					}
 					if (tResult.get(i).chatType == Constants.CHAT_TYPE_MULTI) {
 						mBuilder.append(tResult.get(i).user + ",");
 						continue;
@@ -180,11 +186,17 @@ public class Messagefragment extends Fragment {
 					// 若为单聊，将ids存入用户id列表
 					sBuilder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
 				}
+				if (count < tResult.size())
+					// 说明有未读消息
+					activity.setRedPointVisible(true);
+				else
+					activity.setRedPointVisible(false);
+
 				// 下面这段是为了获得当前的用户昵称,用户头像(仅限单聊)
 				Map<String, String> sMap = new HashMap<String, String>();
 				if (sBuilder.length() > 0) {
 					sMap.put("UserIDs", sBuilder.substring(0, sBuilder.length() - 1));
-					((BaseActivity) getActivity()).getHttpResult(sMap, Constants.USERINFOURL, new HttpPostCallBack() {
+					activity.getHttpResult(sMap, Constants.USERINFOURL, new HttpPostCallBack() {
 
 						@Override
 						public void httpPostResolveData(String result) {
@@ -193,7 +205,7 @@ public class Messagefragment extends Fragment {
 
 									@Override
 									public void run() {
-										Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
+										Utils.toast(activity, "获取用户资料失败,请检查网络");
 									}
 								});
 							} else {
@@ -227,7 +239,7 @@ public class Messagefragment extends Fragment {
 				if (mBuilder.length() > 0) {
 					Map<String, String> mMap = new HashMap<String, String>();
 					mMap.put("RoomIDs", mBuilder.substring(0, mBuilder.length() - 1));
-					((BaseActivity) getActivity()).getHttpResult(mMap, Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
+					activity.getHttpResult(mMap, Constants.GET_QUERY_APPOINT, new HttpPostCallBack() {
 
 						@Override
 						public void httpPostResolveData(String result) {
@@ -236,7 +248,7 @@ public class Messagefragment extends Fragment {
 
 									@Override
 									public void run() {
-										Utils.toast(getActivity(), "获取用户资料失败,请检查网络");
+										Utils.toast(activity, "获取用户资料失败,请检查网络");
 									}
 								});
 							} else {
@@ -275,7 +287,7 @@ public class Messagefragment extends Fragment {
 	@OnItemClick(R.id.chatlist)
 	public void onlistItemClick(AdapterView<?> parent, View view, int position, long id) {
 		TextView nickName_tv = (TextView) view.findViewById(R.id.ml_nickName_tv);
-		Intent intent = new Intent(getActivity(), ChatActivity.class);
+		Intent intent = new Intent(activity, ChatActivity.class);
 		int chatType = tResult.get(position).chatType;
 		LogUtils.v(tResult.get(position).user);
 		LogUtils.v(tResult.get(position).chatType + "");
@@ -311,10 +323,10 @@ public class Messagefragment extends Fragment {
 		Intent intent = new Intent();
 		switch (v.getId()) {
 		case R.id.issue_News:
-			intent.setClass(getActivity(), IssueDynamicActivity.class);
+			intent.setClass(activity, IssueDynamicActivity.class);
 			break;
 		case R.id.system_message:
-			intent.setClass(getActivity(), SystemMessageActivity.class);
+			intent.setClass(activity, SystemMessageActivity.class);
 			break;
 		default:
 			break;
@@ -343,7 +355,7 @@ public class Messagefragment extends Fragment {
 
 	@Override
 	public void onDestroy() {
-		getActivity().unregisterReceiver(receiver);
+		activity.unregisterReceiver(receiver);
 		super.onDestroy();
 	}
 
