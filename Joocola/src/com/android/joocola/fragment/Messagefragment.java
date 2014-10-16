@@ -80,9 +80,17 @@ public class Messagefragment extends Fragment {
 	 */
 	private Fg_Chat_List_Adapter adapter;
 	/**
-	 * 发送广播
+	 * 接收聊天消息的广播
 	 */
 	private MyReceiver receiver;
+	/**
+	 * 接收系统消息的广播
+	 */
+	private MySystemReceiver systemReceiver;
+	/**
+	 * 接收邀约消息的广播
+	 */
+	private MyIssueReceiver issueReceiver;
 	/**
 	 * handler
 	 */
@@ -101,6 +109,14 @@ public class Messagefragment extends Fragment {
 	 * 本fragment所对应的activity
 	 */
 	private MainTabActivity activity;
+	/**
+	 * 邀约动态的红点
+	 */
+	private ImageView rp_issue;
+	/**
+	 * 系统消息的红点
+	 */
+	private ImageView rp_system;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -113,10 +129,6 @@ public class Messagefragment extends Fragment {
 		adapter = new Fg_Chat_List_Adapter(activity, new ArrayList<MyChatInfo>());
 		// 初始化handler
 		handler = new Handler(activity.getMainLooper());
-		// 注册接收消息的广播
-		receiver = new MyReceiver();
-		IntentFilter filter = new IntentFilter(Constants.CHAT_ACTION);
-		activity.registerReceiver(receiver, filter);
 	}
 
 	@Override
@@ -129,8 +141,27 @@ public class Messagefragment extends Fragment {
 				LogUtils.v("第一次的状态改变");
 		}
 		initView();
+		initData();
 		lv_message_list.setAdapter(adapter);
 		return view;
+	}
+
+	/**
+	 * 初始化,注册本界面需要注册的广播
+	 */
+	private void initData() {
+		// 注册接收消息的广播
+		receiver = new MyReceiver();
+		IntentFilter filter = new IntentFilter(Constants.CHAT_ACTION);
+		activity.registerReceiver(receiver, filter);
+		// 注册接收系统消息的广播
+		systemReceiver = new MySystemReceiver();
+		IntentFilter filter2 = new IntentFilter(Constants.CHAT_ADMIN_ACTION);
+		activity.registerReceiver(systemReceiver, filter2);
+		// 注册接收邀约消息的广播
+		issueReceiver = new MyIssueReceiver();
+		IntentFilter filter3 = new IntentFilter(Constants.CHAT_ISSUE_ACTION);
+		activity.registerReceiver(issueReceiver, filter3);
 	}
 
 	/**
@@ -141,17 +172,17 @@ public class Messagefragment extends Fragment {
 	 */
 	private void initView() {
 		ImageView ml_iv_in = (ImageView) rl_issue_news.findViewById(R.id.ml_iv);
-		ImageView rp_iv_in = (ImageView) rl_issue_news.findViewById(R.id.redPoint);
+		rp_issue = (ImageView) rl_issue_news.findViewById(R.id.redPoint);
 		TextView ml_nickName_in = (TextView) rl_issue_news.findViewById(R.id.ml_nickName_tv);
 		TextView ml_chatInfo_in = (TextView) rl_issue_news.findViewById(R.id.ml_chatInfo_tv);
 		TextView ml_date_in = (TextView) rl_issue_news.findViewById(R.id.ml_date_tv);
 		ImageView ml_iv_sm = (ImageView) rl_system_message.findViewById(R.id.ml_iv);
-		ImageView rp_iv_sm = (ImageView) rl_system_message.findViewById(R.id.redPoint);
+		rp_system = (ImageView) rl_system_message.findViewById(R.id.redPoint);
 		TextView ml_nickName_sm = (TextView) rl_system_message.findViewById(R.id.ml_nickName_tv);
 		TextView ml_chatInfo_sm = (TextView) rl_system_message.findViewById(R.id.ml_chatInfo_tv);
 		TextView ml_date_sm = (TextView) rl_system_message.findViewById(R.id.ml_date_tv);
-		rp_iv_in.setVisibility(View.INVISIBLE);
-		rp_iv_sm.setVisibility(View.INVISIBLE);
+		rp_issue.setVisibility(View.INVISIBLE);
+		rp_system.setVisibility(View.INVISIBLE);
 		ml_nickName_sm.setText("系统消息");
 		ml_nickName_in.setText("邀约动态");
 		ml_chatInfo_in.setText("");
@@ -162,7 +193,6 @@ public class Messagefragment extends Fragment {
 	}
 
 	private void updateData() {
-
 		try {
 			tResult = db.findAll(Selector.from(MyChatInfo.class).where("PID", "=", JoocolaApplication.getInstance().getPID()));
 			// 绑定最新数据
@@ -321,17 +351,22 @@ public class Messagefragment extends Fragment {
 	@OnClick({ R.id.issue_News, R.id.system_message })
 	public void onClick(View v) {
 		Intent intent = new Intent();
+		int requestCode = 0;
 		switch (v.getId()) {
 		case R.id.issue_News:
 			intent.setClass(activity, IssueDynamicActivity.class);
+			rp_issue.setVisibility(View.INVISIBLE);
+			requestCode = activity.REQUEST_ISSUE_MSG;
 			break;
 		case R.id.system_message:
 			intent.setClass(activity, SystemMessageActivity.class);
+			rp_system.setVisibility(View.INVISIBLE);
+			requestCode = activity.REQUEST_SYSTEM_MSG;
 			break;
 		default:
 			break;
 		}
-		startActivity(intent);
+		startActivityForResult(intent, requestCode);
 	}
 
 	@Override
@@ -359,11 +394,41 @@ public class Messagefragment extends Fragment {
 		super.onDestroy();
 	}
 
+	/**
+	 * 接收聊天消息的广播
+	 * 
+	 * @author:LiXiaoSong
+	 * @copyright © joocola.com
+	 * @Date:2014-10-16
+	 */
 	private class MyReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			updateData();
 		}
+	}
+
+	/**
+	 * 接收系统消息的广播，主要为了控制红点
+	 */
+	private class MySystemReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			rp_system.setVisibility(View.VISIBLE);
+		}
+	}
+
+	/**
+	 * 接收邀约消息的广播，主要为了控制红点
+	 */
+	private class MyIssueReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			rp_issue.setVisibility(View.VISIBLE);
+		}
+
 	}
 }

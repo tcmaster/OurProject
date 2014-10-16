@@ -180,6 +180,8 @@ public class EaseMobChat {
 	private void processAdminMessage(EMMessage message) {
 		String text = ((TextMessageBody) message.getBody()).getMessage();
 		JSONObject object = null;
+		if (DEBUG)
+			LogUtils.v("系统聊天消息为" + text);
 		try {
 			// 先判断消息类型，在将消息转化为可以进行处理的实体
 			object = new JSONObject(text);

@@ -597,75 +597,91 @@ public class PersonalDetailActivity extends BaseActivity {
 									entitys.add(entity);
 								}
 							} else {
-								handler.post(new Runnable() {
+								Utils.toast(PersonalDetailActivity.this, "网络状况不佳");
+								cdlg.dismissDlg();
+								return;
+							}
+							add_lv.setAdapter(new Dlg_ListView_Adapter<GetIssueInfoEntity>(entitys, PersonalDetailActivity.this));
+							if (add_lv.getAdapter().getCount() == 0) {
+								// Utils.toast(PersonalDetailActivity.this, "暂无邀约");
+								// cdlg.dismissDlg();
+								title_tv.setText("您现在没有发起中的邀约");
+								ok_btn.setText("马上发布");
+								cancel_btn.setText("取消");
+								ok_btn.setOnClickListener(new OnClickListener() {
 
 									@Override
-									public void run() {
-										Utils.toast(PersonalDetailActivity.this, "网络状况不佳");
+									public void onClick(View v) {
 										cdlg.dismissDlg();
-										return;
+										mIssueInfos = mJoocolaApplication.getIssueInfos();
+										if (mIssueInfos == null || mIssueInfos.size() == 0) {
+											JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication, new InitAddInfo() {
+
+												@Override
+												public void initAddInfook() {
+													showIssueDialog(mIssueInfos, bitmapCache);
+												}
+											});
+										} else {
+											showIssueDialog(mIssueInfos, bitmapCache);
+										}
+
 									}
 								});
-							}
-							handler.post(new Runnable() {
+								cancel_btn.setOnClickListener(new OnClickListener() {
 
-								@Override
-								public void run() {
-									add_lv.setAdapter(new Dlg_ListView_Adapter<GetIssueInfoEntity>(entitys, PersonalDetailActivity.this));
-									if (add_lv.getAdapter().getCount() == 0) {
-										// Utils.toast(PersonalDetailActivity.this, "暂无邀约");
-										// cdlg.dismissDlg();
-										title_tv.setText("您现在没有发起中的邀约");
-										ok_btn.setText("马上发布");
-										cancel_btn.setText("取消");
-										ok_btn.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										cdlg.dismissDlg();
+									}
+								});
+							} else {
+								// 点击选中当前被选中的邀约
+								add_lv.setOnItemClickListener(new OnItemClickListener() {
+
+									@SuppressWarnings("rawtypes")
+									@Override
+									public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+										((Dlg_ListView_Adapter) arg0.getAdapter()).setPos(arg2);
+									}
+								});
+								if (add_lv.getAdapter().getCount() > 5)
+									add_lv.getLayoutParams().height = Utils.dip2px(PersonalDetailActivity.this, 200);
+								ok_btn.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										// 这里处理邀请加入邀约的工作
+										Dlg_ListView_Adapter<GetIssueInfoEntity> adapter = ((Dlg_ListView_Adapter<GetIssueInfoEntity>) add_lv.getAdapter());
+										GetIssueInfoEntity data = (GetIssueInfoEntity) adapter.getItem(adapter.getPos());
+										Map<String, String> params = new HashMap<String, String>();
+										params.put("appointID", data.getPID() + "");
+										params.put("publisherID", JoocolaApplication.getInstance().getPID());
+										params.put("inviteUserID", userId);
+										getHttpResult(params, Constants.INVITE_URL, new HttpPostCallBack() {
 
 											@Override
-											public void onClick(View v) {
-												cdlg.dismissDlg();
-												mIssueInfos = mJoocolaApplication.getIssueInfos();
-												if (mIssueInfos == null || mIssueInfos.size() == 0) {
-													JoocolaApplication.getInstance().initAddData(mIssueInfos, mJoocolaApplication, new InitAddInfo() {
-
-														@Override
-														public void initAddInfook() {
-															showIssueDialog(mIssueInfos, bitmapCache);
-														}
-													});
-												} else {
-													showIssueDialog(mIssueInfos, bitmapCache);
+											public void httpPostResolveData(String result) {
+												try {
+													JSONObject object = new JSONObject(result);
+													Utils.toast(PersonalDetailActivity.this, object.getString("Item2"));
+												} catch (JSONException e) {
+													e.printStackTrace();
 												}
 
 											}
 										});
-										cancel_btn.setOnClickListener(new OnClickListener() {
-
-											@Override
-											public void onClick(View v) {
-												cdlg.dismissDlg();
-											}
-										});
-									} else if (add_lv.getAdapter().getCount() > 5) {
-										add_lv.getLayoutParams().height = Utils.dip2px(PersonalDetailActivity.this, 200);
-										ok_btn.setOnClickListener(new OnClickListener() {
-
-											@Override
-											public void onClick(View v) {
-												cdlg.dismissDlg();
-											}
-										});
-										cancel_btn.setOnClickListener(new OnClickListener() {
-
-											@Override
-											public void onClick(View v) {
-												cdlg.dismissDlg();
-											}
-										});
+										cdlg.dismissDlg();
 									}
+								});
+								cancel_btn.setOnClickListener(new OnClickListener() {
 
-								}
-							});
-
+									@Override
+									public void onClick(View v) {
+										cdlg.dismissDlg();
+									}
+								});
+							}
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}

@@ -11,12 +11,21 @@ public class Constants {
 	 */
 	public final static String version = "1.0.0.0";
 	/**
-	 * 聊天广播的Action
+	 * 接收聊天的ACTION
 	 */
 	public static final String CHAT_ACTION = "IWantHaveAChat";
+	/**
+	 * 备用
+	 */
 	public static final String MULTI_CHAT_ACTION = "IWantHaveAMultiChat";
-	// 接收到系统的消息
+	/**
+	 * 接收到系统的消息
+	 */
 	public static final String CHAT_ADMIN_ACTION = "AdminSendMessage";
+	/**
+	 * 接收到新的邀约动态
+	 */
+	public static final String CHAT_ISSUE_ACTION = "issueReceiver";
 
 	public static final String URL = "http://a.joocola.com";
 	public static final String MAIN_URL = "http://a.joocola.com/Controller/";
@@ -289,6 +298,10 @@ public class Constants {
 	 * 发送聊天申请
 	 */
 	public static final String CHAT_SEND_REQUEST_URL = "Talk.SendMsgController.SendSysVerifyTalk.ashx";
+	/**
+	 * 邀请用户参加邀约
+	 */
+	public static final String INVITE_URL = "Bus.AppointController.Invite.ashx";
 	/**
 	 * 时间界面的几个传值
 	 */

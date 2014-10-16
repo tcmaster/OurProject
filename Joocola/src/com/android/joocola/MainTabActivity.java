@@ -81,6 +81,10 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 
 	private ImageView mRedPoint;
 	private final int REQUEST_CODE = 221;
+	// 系统消息页面返回
+	public final int REQUEST_SYSTEM_MSG = 222;
+	// 邀约消息页面返回
+	public final int REQUEST_ISSUE_MSG = 223;
 	private CustomerDialog customerDialog;
 	private ImageView img_tab_realease, img_tab_nearby, img_tab_message;
 	private TextView tv_tab_realease, tv_tab_nearby, tv_tab_message;
@@ -460,6 +464,12 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 				Releasefragment fg = (Releasefragment) fragmentsList.get(0);
 				fg.searchData(data);
 			}
+		} else if (requestCode == REQUEST_ISSUE_MSG) {
+			Intent intent = new Intent(Constants.CHAT_ADMIN_ACTION);
+			sendBroadcast(intent);
+		} else if (requestCode == REQUEST_SYSTEM_MSG) {
+			Intent intent = new Intent(Constants.CHAT_ISSUE_ACTION);
+			sendBroadcast(intent);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

@@ -53,6 +53,8 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 	// 本页需要上传的数据
 	// 图片地址
 	private String imgUrl = "";
+	// 这个字段用于判断当前是否上传过头像
+	private boolean isUpload = false;
 	// 昵称
 	private String nickName = "";
 	// 性别id
@@ -153,7 +155,10 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 			return;
 		}
 		if (imgUrl == null || imgUrl.equals("")) {
-			Utils.toast(this, "请设置用户的头像");
+			if (isUpload) {
+				Utils.toast(this, "头像未上传成功，请重新上传");
+			} else
+				Utils.toast(this, "请设置用户的头像");
 			pdlg.dismiss();
 			return;
 		}
@@ -273,6 +278,7 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 			public void httpPostResolveData(String result) {
 				if (result != null) {
 					imgUrl = result;
+					isUpload = true;
 					file.delete();
 				}
 			}
