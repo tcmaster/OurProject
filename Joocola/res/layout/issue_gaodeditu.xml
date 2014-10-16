@@ -22,6 +22,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:id="@+id/gaode_address"
             android:text="附近"
             android:textColor="@color/white"
             android:textSize="16sp" />

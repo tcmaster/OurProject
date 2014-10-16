@@ -57,6 +57,8 @@ public class IssuedinvitationActivity extends BaseActivity {
 	private ProgressDialog progDialog = null;
 	private RelativeLayout time_layout;
 	private LinearLayout location_layout;
+
+	private boolean isChooseAddress = false; // 用来记录是否已经选择过地址.
 	@SuppressLint("HandlerLeak")
 	private Handler issueHandler = new Handler() {
 
@@ -132,6 +134,15 @@ public class IssuedinvitationActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(IssuedinvitationActivity.this, GaodeMapActivity.class);
+				if (isChooseAddress) {
+					intent.putExtra("isChooseAddress", isChooseAddress);
+					intent.putExtra("LocationX", LocationX);
+					intent.putExtra("LocationY", LocationY);
+					Log.e("bb", isChooseAddress + "进入的时候");
+					Log.e("bb", LocationX + "进入的时候");
+					Log.e("bb", LocationY + "进入的时候");
+					intent.putExtra("LocationCityName", LocationCityName);
+				}
 				startActivityForResult(intent, 30);
 			}
 		});
@@ -259,6 +270,12 @@ public class IssuedinvitationActivity extends BaseActivity {
 				LocationY = data.getDoubleExtra("locationY", 321.987654);
 				btn_location.setText(address);
 				LocationCityName = data.getStringExtra("LocationCityName");
+				if (LocationX != 123.123456 && LocationY != 321.987654) {
+					isChooseAddress = true;
+				}
+				Log.e("bb", isChooseAddress + "返回的时候");
+				Log.e("bb", LocationX + "返回的时候");
+				Log.e("bb", LocationY + "返回的时候");
 			}
 			break;
 		default:
