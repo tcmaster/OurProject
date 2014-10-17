@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -112,6 +113,7 @@ public class EaseMobChat {
 	 * 新邀约动态->评论
 	 */
 	public static final String NEW_APP_COMMIT = "App_Comments";
+	private Handler handler;
 
 	public synchronized static EaseMobChat getInstance() {
 		if (chatServic == null) {
@@ -122,6 +124,7 @@ public class EaseMobChat {
 
 	private EaseMobChat() {
 		db = JoocolaApplication.getInstance().getDB();
+
 	}
 
 	public int getFlag() {
@@ -135,6 +138,7 @@ public class EaseMobChat {
 	public synchronized void beginWork() {
 		if (receiver == null)
 			receiver = new MyChatBroadCastReceiver();
+		handler = new Handler();
 		chat = new EaseSingleChat();
 		IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
 		JoocolaApplication.getInstance().registerReceiver(receiver, intentFilter);
@@ -298,7 +302,7 @@ public class EaseMobChat {
 			} else if (msgType.equals(NEW_APPNEW) || msgType.equals(NEW_SYSMSG)) {// 新的邀约动态和系统消息
 				// 解析该类型的消息
 				NAdminMsgEntity entity = JsonUtils.getNAdminMsgEntity(object);
-				Intent intent = new Intent();
+				final Intent intent = new Intent();
 				if (entity.getMsgType().equals(NEW_APPNEW)) {
 					intent.setAction(Constants.CHAT_ISSUE_ACTION);
 				} else if (entity.getMsgType().equals(NEW_SYSMSG)) {
@@ -306,7 +310,14 @@ public class EaseMobChat {
 				}
 				entity.setPID(JoocolaApplication.getInstance().getPID());
 				db.save(entity);
-				JoocolaApplication.getInstance().sendBroadcast(intent);
+				Log.v("lixiaosong", "发送了系统广播");
+				handler.postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						JoocolaApplication.getInstance().sendBroadcast(intent);
+					}
+				}, 1000);
 
 			}
 		} catch (JSONException e) {
@@ -404,6 +415,7 @@ public class EaseMobChat {
 			e.printStackTrace();
 		}
 		LogUtils.v("收到的消息是" + localUrl + " " + user + " " + new Date(time).toLocaleString());
+		Log.v("lixiaosong", "发送了普通广播");
 		Intent chat = new Intent(Constants.CHAT_ACTION);
 		JoocolaApplication.getInstance().sendBroadcast(chat);
 	}

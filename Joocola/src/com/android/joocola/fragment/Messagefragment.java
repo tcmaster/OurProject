@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.android.joocola.activity.SystemMessageActivity;
 import com.android.joocola.adapter.Fg_Chat_List_Adapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.MyChatInfo;
+import com.android.joocola.entity.NAdminMsgEntity;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
@@ -129,8 +131,8 @@ public class Messagefragment extends Fragment {
 		adapter = new Fg_Chat_List_Adapter(activity, new ArrayList<MyChatInfo>());
 		// 初始化handler
 		handler = new Handler(activity.getMainLooper());
-		// 需放到这里，为了保证广播能及时被接收
 		initData();
+
 	}
 
 	@Override
@@ -197,6 +199,12 @@ public class Messagefragment extends Fragment {
 		try {
 			tResult = db.findAll(Selector.from(MyChatInfo.class).where("PID", "=", JoocolaApplication.getInstance().getPID()));
 			// 绑定最新数据
+			List<NAdminMsgEntity> syss = db.findAll(Selector.from(NAdminMsgEntity.class).where("PID", "=", JoocolaApplication.getInstance().getPID()));
+			List<NAdminMsgEntity> issues = db.findAll(Selector.from(NAdminMsgEntity.class).where("PID", "=", JoocolaApplication.getInstance().getPID()));
+			if (syss != null && syss.size() != 0)
+				rp_system.setVisibility(View.VISIBLE);
+			if (issues != null && issues.size() != 0)
+				rp_issue.setVisibility(View.VISIBLE);
 			if (tResult != null) {
 				adapter.bindData(tResult);
 				// 单聊的ids
@@ -412,6 +420,7 @@ public class Messagefragment extends Fragment {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Log.v("lixiaosong", "接收了广播1");
 			updateData();
 		}
 	}
@@ -423,23 +432,7 @@ public class Messagefragment extends Fragment {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					// 为了防止界面报空
-					while (rp_system != null)
-						;
-					handler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							rp_system.setVisibility(View.VISIBLE);
-						}
-					});
-				}
-			}).start();
+			rp_system.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -450,22 +443,7 @@ public class Messagefragment extends Fragment {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					// 为了防止界面报空
-					while (rp_issue != null)
-						;
-					handler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							rp_issue.setVisibility(View.VISIBLE);
-						}
-					});
-				}
-			}).start();
+			rp_issue.setVisibility(View.VISIBLE);
 		}
 
 	}
