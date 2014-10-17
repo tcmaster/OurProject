@@ -35,6 +35,10 @@ public class NAdminMsgEntity implements Serializable {
 	 * 发送日期
 	 */
 	public String SendDate;
+	/**
+	 * 该消息所属的用户，查询的时候一定要带上，否则会把所有用户的数据删掉
+	 */
+	public String PID;
 
 	public String getMsgType() {
 		return MsgType;
@@ -76,9 +80,17 @@ public class NAdminMsgEntity implements Serializable {
 		this.id = id;
 	}
 
+	public String getPID() {
+		return PID;
+	}
+
+	public void setPID(String pID) {
+		PID = pID;
+	}
+
 	@Override
 	public String toString() {
-		return "NAdminMsgEntity [id=" + id + ", MsgType=" + MsgType + ", MsgContent=" + MsgContent + ", RecUserID=" + RecUserID + ", SendDate=" + SendDate + "]";
+		return "NAdminMsgEntity [id=" + id + ", MsgType=" + MsgType + ", MsgContent=" + MsgContent + ", RecUserID=" + RecUserID + ", SendDate=" + SendDate + ", PID=" + PID + "]";
 	}
 
 }

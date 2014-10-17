@@ -304,7 +304,8 @@ public class EaseMobChat {
 				} else if (entity.getMsgType().equals(NEW_SYSMSG)) {
 					intent.setAction(Constants.CHAT_ADMIN_ACTION);
 				}
-				intent.putExtra("entity", entity);
+				entity.setPID(JoocolaApplication.getInstance().getPID());
+				db.save(entity);
 				JoocolaApplication.getInstance().sendBroadcast(intent);
 
 			}
