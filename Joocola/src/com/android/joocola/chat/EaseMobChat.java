@@ -70,48 +70,48 @@ public class EaseMobChat {
 	/**
 	 * 系统消息->普通
 	 */
-	public final String SYS_NORMAL = "SM_Normal";
+	public static final String SYS_NORMAL = "SM_Normal";
 	/**
 	 * 系统消息->聊天验证
 	 */
-	public final String SYS_TALK_VERIFY = "SM_VerifyTalk";
+	public static final String SYS_TALK_VERIFY = "SM_VerifyTalk";
 	/**
 	 * 私聊->普通
 	 */
-	public final String PM_NORMAL = "PM_Normal";
+	public static final String PM_NORMAL = "PM_Normal";
 	/**
 	 * 新的邀约动态
 	 */
-	public final String NEW_APPNEW = "N_AppNews";
+	public static final String NEW_APPNEW = "N_AppNews";
 	/**
 	 * 新的系统消息
 	 */
-	public final String NEW_SYSMSG = "N_SysMsg";
+	public static final String NEW_SYSMSG = "N_SysMsg";
 	/**
 	 * 新系统消息->普通
 	 */
-	public final String NEW_SYS_NORMAL = "Sys_Normal";
+	public static final String NEW_SYS_NORMAL = "Sys_Normal";
 	/**
 	 * 新系统消息->聊天验证
 	 */
-	public final String NEW_SYS_VERIFY = "Sys_VerifyTalk";
+	public static final String NEW_SYS_VERIFY = "Sys_VerifyTalk";
 	/**
 	 * 新邀约动态->报名
 	 */
-	public final String NEW_APP_APPLY = "App_Apply";
+	public static final String NEW_APP_APPLY = "App_Apply";
 	/**
 	 * 新邀约动态->回复
 	 */
-	public final String NEW_APP_REPLY = "App_Reply";
+	public static final String NEW_APP_REPLY = "App_Reply";
 
 	/**
 	 * 新邀约动态->邀请
 	 */
-	public final String NEW_APP_INVITE = "App_Invite";
+	public static final String NEW_APP_INVITE = "App_Invite";
 	/**
 	 * 新邀约动态->评论
 	 */
-	public final String NEW_APP_COMMIT = "App_Comments";
+	public static final String NEW_APP_COMMIT = "App_Comments";
 
 	public synchronized static EaseMobChat getInstance() {
 		if (chatServic == null) {
