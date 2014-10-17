@@ -129,6 +129,8 @@ public class Messagefragment extends Fragment {
 		adapter = new Fg_Chat_List_Adapter(activity, new ArrayList<MyChatInfo>());
 		// 初始化handler
 		handler = new Handler(activity.getMainLooper());
+		// 需放到这里，为了保证广播能及时被接收
+		initData();
 	}
 
 	@Override
@@ -141,7 +143,6 @@ public class Messagefragment extends Fragment {
 				LogUtils.v("第一次的状态改变");
 		}
 		initView();
-		initData();
 		lv_message_list.setAdapter(adapter);
 		return view;
 	}
@@ -216,7 +217,11 @@ public class Messagefragment extends Fragment {
 					// 若为单聊，将ids存入用户id列表
 					sBuilder.append(tResult.get(i).user.substring(1, tResult.get(i).user.length()) + ",");
 				}
-				if (count < tResult.size())
+				if (rp_issue.getVisibility() == View.INVISIBLE)
+					count++;
+				if (rp_system.getVisibility() == View.INVISIBLE)
+					count++;
+				if (count < tResult.size() + 2)
 					// 说明有未读消息
 					activity.setRedPointVisible(true);
 				else
@@ -391,6 +396,8 @@ public class Messagefragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		activity.unregisterReceiver(receiver);
+		activity.unregisterReceiver(systemReceiver);
+		activity.unregisterReceiver(issueReceiver);
 		super.onDestroy();
 	}
 
@@ -416,7 +423,23 @@ public class Messagefragment extends Fragment {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			rp_system.setVisibility(View.VISIBLE);
+
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// 为了防止界面报空
+					while (rp_system != null)
+						;
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							rp_system.setVisibility(View.VISIBLE);
+						}
+					});
+				}
+			}).start();
 		}
 	}
 
@@ -427,7 +450,22 @@ public class Messagefragment extends Fragment {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			rp_issue.setVisibility(View.VISIBLE);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// 为了防止界面报空
+					while (rp_issue != null)
+						;
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							rp_issue.setVisibility(View.VISIBLE);
+						}
+					});
+				}
+			}).start();
 		}
 
 	}

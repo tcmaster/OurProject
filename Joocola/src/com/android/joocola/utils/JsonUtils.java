@@ -7,6 +7,7 @@ import com.android.joocola.entity.AdminMessage;
 import com.android.joocola.entity.AdminMessageNotify;
 import com.android.joocola.entity.AppointScoreEntity;
 import com.android.joocola.entity.GetIssueInfoEntity;
+import com.android.joocola.entity.NAdminMsgEntity;
 import com.android.joocola.entity.ReplyEntity;
 import com.android.joocola.entity.UserInfo;
 
@@ -184,6 +185,14 @@ public class JsonUtils {
 		return messageEntity;
 	}
 
+	/**
+	 * 解析私聊消息对象
+	 * 
+	 * @param object
+	 * @return 私聊消息对象的实体
+	 * @author: LiXiaosong
+	 * @date:2014-10-17
+	 */
 	public static AdminMessageNotify getAdminMessageNotifyEntity(JSONObject object) {
 		AdminMessageNotify entity = new AdminMessageNotify();
 		try {
@@ -196,7 +205,28 @@ public class JsonUtils {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		return entity;
+	}
 
+	/**
+	 * 解析新系统消息实体
+	 * 
+	 * @param object
+	 *            要解析的对象
+	 * @return 封装好的实体，可存数据库
+	 * @author: LiXiaosong
+	 * @date:2014-10-17
+	 */
+	public static NAdminMsgEntity getNAdminMsgEntity(JSONObject object) {
+		NAdminMsgEntity entity = new NAdminMsgEntity();
+		try {
+			entity.setMsgContent(object.getString("MsgContent"));
+			entity.setMsgType(object.getString("MsgType"));
+			entity.setRecUserID(object.getInt("RecUserID") + "");
+			entity.setSendDate(object.getString("SendDate"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return entity;
 	}
 }

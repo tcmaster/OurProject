@@ -89,7 +89,7 @@ public class SystemMessageActivity extends BaseActivity {
 	 */
 	private void updateData() {
 		try {
-			List<AdminMessage> temp = db.findAll(Selector.from(AdminMessage.class).where("user", "=", JoocolaApplication.getInstance().getPID()));
+			List<AdminMessage> temp = db.findAll(Selector.from(AdminMessage.class).where("user", "=", JoocolaApplication.getInstance().getPID()).orderBy("id", true));
 			if (DEBUG)
 				LogUtils.v("更新了数据");
 			if (temp != null && temp.size() != 0) {

@@ -18,6 +18,7 @@ import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.AdminMessage;
 import com.android.joocola.entity.AdminMessageNotify;
 import com.android.joocola.entity.MyChatInfo;
+import com.android.joocola.entity.NAdminMsgEntity;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.JsonUtils;
 import com.easemob.EMCallBack;
@@ -64,6 +65,53 @@ public class EaseMobChat {
 	 */
 	private final String ADMIN_USER = "u1";
 	private boolean DEBUG = true;
+
+	// 下面是接收系统消息时进行判断的一些具体参数
+	/**
+	 * 系统消息->普通
+	 */
+	public final String SYS_NORMAL = "SM_Normal";
+	/**
+	 * 系统消息->聊天验证
+	 */
+	public final String SYS_TALK_VERIFY = "SM_VerifyTalk";
+	/**
+	 * 私聊->普通
+	 */
+	public final String PM_NORMAL = "PM_Normal";
+	/**
+	 * 新的邀约动态
+	 */
+	public final String NEW_APPNEW = "N_AppNews";
+	/**
+	 * 新的系统消息
+	 */
+	public final String NEW_SYSMSG = "N_SysMsg";
+	/**
+	 * 新系统消息->普通
+	 */
+	public final String NEW_SYS_NORMAL = "Sys_Normal";
+	/**
+	 * 新系统消息->聊天验证
+	 */
+	public final String NEW_SYS_VERIFY = "Sys_VerifyTalk";
+	/**
+	 * 新邀约动态->报名
+	 */
+	public final String NEW_APP_APPLY = "App_Apply";
+	/**
+	 * 新邀约动态->回复
+	 */
+	public final String NEW_APP_REPLY = "App_Reply";
+
+	/**
+	 * 新邀约动态->邀请
+	 */
+	public final String NEW_APP_INVITE = "App_Invite";
+	/**
+	 * 新邀约动态->评论
+	 */
+	public final String NEW_APP_COMMIT = "App_Comments";
 
 	public synchronized static EaseMobChat getInstance() {
 		if (chatServic == null) {
@@ -171,6 +219,10 @@ public class EaseMobChat {
 	}
 
 	/**
+	 * { "MsgType": "N_AppNews", "MsgContent": "App_Invite", "RecUserID": 3, "SendDate": "2014-10-16 14:48"}
+	 */
+
+	/**
 	 * 用于处理系统发送过来的消息
 	 * 
 	 * @param message
@@ -186,7 +238,7 @@ public class EaseMobChat {
 			// 先判断消息类型，在将消息转化为可以进行处理的实体
 			object = new JSONObject(text);
 			String msgType = object.getString("MsgType");
-			if (msgType.equals("SM_Normal") || msgType.equals("SM_VerifyTalk")) {
+			if (msgType.equals(SYS_NORMAL) || msgType.equals(SYS_TALK_VERIFY)) {
 				AdminMessage entity = null;
 				entity = JsonUtils.getAdminMessageEntity(object);
 				entity.setUser(JoocolaApplication.getInstance().getPID());
@@ -198,7 +250,7 @@ public class EaseMobChat {
 				// 发送广播通知有更新
 				Intent intent = new Intent(Constants.CHAT_ADMIN_ACTION);
 				JoocolaApplication.getInstance().sendBroadcast(intent);
-			} else if (msgType.equals("PM_Normal")) {
+			} else if (msgType.equals(PM_NORMAL)) {
 				final AdminMessageNotify entity = JsonUtils.getAdminMessageNotifyEntity(object);
 				LogUtils.v("实体的值为" + entity.toString());
 				// 直接向同意方发送一条消息
@@ -243,6 +295,18 @@ public class EaseMobChat {
 					public void onError(int arg0, String arg1) {
 					}
 				});
+			} else if (msgType.equals(NEW_APPNEW) || msgType.equals(NEW_SYSMSG)) {// 新的邀约动态和系统消息
+				// 解析该类型的消息
+				NAdminMsgEntity entity = JsonUtils.getNAdminMsgEntity(object);
+				Intent intent = new Intent();
+				if (entity.getMsgType().equals(NEW_APPNEW)) {
+					intent.setAction(Constants.CHAT_ISSUE_ACTION);
+				} else if (entity.getMsgType().equals(NEW_SYSMSG)) {
+					intent.setAction(Constants.CHAT_ADMIN_ACTION);
+				}
+				intent.putExtra("entity", entity);
+				JoocolaApplication.getInstance().sendBroadcast(intent);
+
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
