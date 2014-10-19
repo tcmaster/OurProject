@@ -29,7 +29,6 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 	private ReplyFragment mReplyFragment;
 	private String mUseID;// 获取当前用户ID
 	private SharedPreferences mPreferences;
-	private Bundle mBundle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +86,7 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 				mApplyFragment = new ApplyFragment();
 				mApplyFragment.setmUserID(mUseID);
 			}
-			applyTransaction.replace(R.id.issuedynamic_fl, mReplyFragment);
+			applyTransaction.replace(R.id.issuedynamic_fl, mApplyFragment);
 			applyTransaction.commit();
 			break;
 		case R.id.reply_tt:

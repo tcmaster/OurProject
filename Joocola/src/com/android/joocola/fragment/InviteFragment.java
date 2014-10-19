@@ -7,12 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.adapter.IssueDynamicAdapter;
@@ -34,13 +35,23 @@ import com.android.joocola.utils.JsonUtils;
  */
 public class InviteFragment extends Fragment {
 
-	private static final String TAG = "Invite_Fragment";
-
-	private TextView mTempTextView;
 	private ListView mListView;
 	private String mUserID;
 	private ArrayList<AdminMessageContentEntity> mDataList = new ArrayList<AdminMessageContentEntity>();
 	private IssueDynamicAdapter mAdapter;
+	private Handler mHandler = new Handler() {
+
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 0:
+				initData();
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +61,7 @@ public class InviteFragment extends Fragment {
 	public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragmen_issuedynamic, container, false);
 		mListView = (ListView) view.findViewById(R.id.issuedynamic_lv);
-		mAdapter = new IssueDynamicAdapter(mDataList, getActivity(), JoocolaApplication.getInstance().getBitmapCache());
+		mAdapter = new IssueDynamicAdapter(mDataList, getActivity(), JoocolaApplication.getInstance().getBitmapCache(), mHandler);
 		mListView.setAdapter(mAdapter);
 		initData();
 		return view;
