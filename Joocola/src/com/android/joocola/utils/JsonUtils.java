@@ -1,9 +1,12 @@
 package com.android.joocola.utils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.joocola.entity.AdminMessage;
+import com.android.joocola.entity.AdminMessageContentButtonEntity;
+import com.android.joocola.entity.AdminMessageContentEntity;
 import com.android.joocola.entity.AdminMessageNotify;
 import com.android.joocola.entity.AppointScoreEntity;
 import com.android.joocola.entity.GetIssueInfoEntity;
@@ -228,5 +231,42 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 		return entity;
+	}
+
+	/**
+	 * 解析系统消息具体的内容
+	 */
+	public static AdminMessageContentEntity getAdminMessageContentEntity(JSONObject object) {
+		AdminMessageContentEntity mEntity = new AdminMessageContentEntity();
+		AdminMessageContentButtonEntity mButtonEntity = new AdminMessageContentButtonEntity();
+		try {
+			mEntity.setAssistContent(object.getString("AssistContent"));
+			mEntity.setMainContent(object.getString("MainContent"));
+			mEntity.setMsgTypeId(object.getInt("MsgTypeID"));
+			mEntity.setSendDateStr(object.getString("SendDateStr"));
+			mEntity.setSenderAge(object.getString("SenderAge"));
+			mEntity.setSenderDateStr(object.getString("SenderLocationDate"));
+			mEntity.setSenderID(object.getInt("SenderID"));
+			mEntity.setSenderLocationInfo(object.getString("SenderLocationInfo"));
+			mEntity.setSenderName(object.getString("SenderName"));
+			mEntity.setSenderSexIsFemale(object.getBoolean("SenderSexIsFemale"));
+			String buttons = object.getString("Buttons");
+			buttons = buttons.replaceAll("\\\\", "");
+			if (buttons.startsWith("[")) {
+				JSONArray jsonArray = new JSONArray(buttons);
+				if (jsonArray.length() != 0) {
+					JSONObject jsonObject = jsonArray.getJSONObject(0);
+					mButtonEntity.setCaption(jsonObject.getString("Caption"));
+					mButtonEntity.setCallUrl(jsonObject.getString("CallUrl"));
+				}
+			} else {
+				mButtonEntity.setCaption(buttons);
+			}
+			mEntity.setAdminMessageContentButtonEntity(mButtonEntity);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return mEntity;
+
 	}
 }

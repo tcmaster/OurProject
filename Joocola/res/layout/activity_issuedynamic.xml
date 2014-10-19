@@ -11,32 +11,46 @@
         android:layout_height="50dp" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/apply_tt"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="TextView" />
+            android:gravity="center"
+            android:text="报名" />
+        <View 
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray2"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/reply_tt"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="TextView" />
-
+            android:gravity="center"
+            android:text="回复" />
+         <View 
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray2"/>
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/invite_tt"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="TextView" />
-
+            android:gravity="center"
+            android:text="邀请" />
+        <View 
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray2"/>
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/evaluate_tt"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="TextView" />
+            android:gravity="center"
+            android:text="评价" />
 
     </LinearLayout>
 
@@ -45,6 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-</FrameLayout>
+    </FrameLayout>
 
 </LinearLayout>

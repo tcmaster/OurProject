@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/itemid_iv"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/itemid_iv"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/itemid_iv"
+        android:orientation="vertical" android:id="@+id/linearLayout1">
+
+        <TextView
+            android:id="@+id/itemid_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名" />
+
+        <LinearLayout
+            android:id="@+id/itemid_personll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/itemid_seximg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/boy" />
+
+            <TextView
+                android:id="@+id/itemid_locationinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="距离" />
+
+            <TextView
+                android:id="@+id/itemid_senderdatestr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="三天前" />
+        </LinearLayout>
+      <TextView
+        android:id="@+id/itemid_maincontent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:text="主要内容" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/itemid_assistcontent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/itemid_iv"
+        android:layout_below="@+id/itemid_iv"
+        android:layout_marginTop="14dp"
+        android:text="辅助内容" />
+
+    <TextView
+        android:id="@+id/itemid_senddatestr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearLayout1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="23dp"
+        android:text="发送时间" />
+
+    <Button
+        android:id="@+id/itemid_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/itemid_assistcontent"
+        android:layout_alignRight="@+id/itemid_senddatestr"
+        android:text="接受" />
+
+</RelativeLayout>

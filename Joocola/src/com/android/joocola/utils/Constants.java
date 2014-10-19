@@ -303,6 +303,10 @@ public class Constants {
 	 */
 	public static final String INVITE_URL = "Bus.AppointController.Invite.ashx";
 	/**
+	 * 获取各种系统消息
+	 */
+	public static final String GET_MSGS_URL = "Talk.SendMsgController.GetMsgs.ashx";
+	/**
 	 * 时间界面的几个传值
 	 */
 	public static final int INTENT_TIME = 1;
