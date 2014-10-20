@@ -93,6 +93,12 @@ public class TheUserAllEvaluateActivity extends BaseActivity {
 					}
 				});
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

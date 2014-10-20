@@ -289,6 +289,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 					}
 
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		} else if (item.getItemId() == 1) {
 			interface1.addParams("newPhotoUrl", url);
@@ -313,6 +319,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 							}
 						});
 					}
+
+				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
 
 				}
 			});
@@ -465,6 +477,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				}
 
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -537,6 +555,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 										 */
 										JoocolaApplication.getInstance().initUserInfo(JoocolaApplication.getInstance().getUserInfo().getPID());
 									}
+
+								}
+
+								@Override
+								public void onNetWorkError() {
+									// TODO Auto-generated method stub
 
 								}
 							});
@@ -623,6 +647,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 									}
 
 								}
+
+								@Override
+								public void onNetWorkError() {
+									// TODO Auto-generated method stub
+
+								}
 							});
 							cdlg.dismissDlg();
 							break;
@@ -688,6 +718,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 				});
 
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -706,6 +742,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 						location_tv.setText(cityName);
 					}
 				});
+
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
 
 			}
 		});
@@ -779,6 +821,12 @@ public class PersonalInfoEditActivity extends BaseActivity {
 										 */
 										JoocolaApplication.getInstance().initUserInfo(JoocolaApplication.getInstance().getUserInfo().getPID());
 									}
+
+								}
+
+								@Override
+								public void onNetWorkError() {
+									// TODO Auto-generated method stub
 
 								}
 							});
@@ -870,12 +918,24 @@ public class PersonalInfoEditActivity extends BaseActivity {
 									}
 
 								}
+
+								@Override
+								public void onNetWorkError() {
+									// TODO Auto-generated method stub
+
+								}
 							});
 						}
 					});
 
 				}
 				file.delete();
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}

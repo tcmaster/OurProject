@@ -219,6 +219,12 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -281,6 +287,12 @@ public class RegisterTwoActivity extends BaseActivity implements OnClickListener
 					isUpload = true;
 					file.delete();
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}

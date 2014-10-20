@@ -276,6 +276,12 @@ public class Messagefragment extends Fragment {
 								}
 							}
 						}
+
+						@Override
+						public void onNetWorkError() {
+							// TODO Auto-generated method stub
+
+						}
 					});
 				}
 				// 下面这段是为了得到群聊的照片和昵称
@@ -318,6 +324,12 @@ public class Messagefragment extends Fragment {
 									e.printStackTrace();
 								}
 							}
+						}
+
+						@Override
+						public void onNetWorkError() {
+							// TODO Auto-generated method stub
+
 						}
 					});
 				}

@@ -223,6 +223,12 @@ public class IssuedinvitationActivity extends BaseActivity {
 					message.obj = result;
 					issueHandler.sendMessage(message);
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		}
 	}

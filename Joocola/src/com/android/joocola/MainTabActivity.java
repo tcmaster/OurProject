@@ -442,6 +442,12 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 			@Override
 			public void httpPostResolveData(String result) {
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

@@ -315,6 +315,12 @@ public class PersonalDetailActivity extends BaseActivity {
 					});
 
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -357,6 +363,12 @@ public class PersonalDetailActivity extends BaseActivity {
 					});
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -398,6 +410,12 @@ public class PersonalDetailActivity extends BaseActivity {
 						}
 					});
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -450,6 +468,12 @@ public class PersonalDetailActivity extends BaseActivity {
 					});
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -491,6 +515,12 @@ public class PersonalDetailActivity extends BaseActivity {
 						}
 					});
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -670,6 +700,12 @@ public class PersonalDetailActivity extends BaseActivity {
 												}
 
 											}
+
+											@Override
+											public void onNetWorkError() {
+												// TODO Auto-generated method stub
+
+											}
 										});
 										cdlg.dismissDlg();
 									}
@@ -685,6 +721,12 @@ public class PersonalDetailActivity extends BaseActivity {
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
+
+					}
+
+					@Override
+					public void onNetWorkError() {
+						// TODO Auto-generated method stub
 
 					}
 				});
@@ -820,6 +862,12 @@ public class PersonalDetailActivity extends BaseActivity {
 														Utils.toast(PersonalDetailActivity.this, "申请发送失败");
 													cdlg.dismissDlg();
 												}
+
+												@Override
+												public void onNetWorkError() {
+													// TODO Auto-generated method stub
+
+												}
 											});
 										}
 									});
@@ -836,6 +884,12 @@ public class PersonalDetailActivity extends BaseActivity {
 						}
 					});
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 

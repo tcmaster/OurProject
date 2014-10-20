@@ -263,6 +263,12 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 								message.what = PSWD_NUM;
 								handler.sendMessage(message);
 							}
+
+							@Override
+							public void onNetWorkError() {
+								// TODO Auto-generated method stub
+
+							}
 						});
 					}
 				});
@@ -316,6 +322,12 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 								message.what = PHONE_NUM;
 								handler.sendMessage(message);
 							}
+
+							@Override
+							public void onNetWorkError() {
+								// TODO Auto-generated method stub
+
+							}
 						});
 					}
 				});
@@ -367,6 +379,12 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 								message.obj = result;
 								message.what = MAIL_NUM;
 								handler.sendMessage(message);
+							}
+
+							@Override
+							public void onNetWorkError() {
+								// TODO Auto-generated method stub
+
 							}
 						});
 					}

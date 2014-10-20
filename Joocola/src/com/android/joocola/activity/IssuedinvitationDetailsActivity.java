@@ -248,6 +248,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 					});
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -268,6 +274,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 				message.what = 0;
 				message.obj = result;
 				handler.sendMessage(message);
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -355,6 +367,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 						e.printStackTrace();
 					}
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -461,6 +479,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 				message.obj = result;
 				handler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -556,6 +580,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 				message.obj = result;
 				handler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -585,6 +615,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 					Utils.toast(IssuedinvitationDetailsActivity.this, "取消失败");
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -608,6 +644,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 				message.what = 2;
 				message.obj = result;
 				handler.sendMessage(message);
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 
@@ -682,6 +724,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 				message.obj = result;
 				handler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 
 	}
@@ -718,6 +766,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 						}
 					}
 				});
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -841,6 +895,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 					}
 				});
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 
 	}
@@ -875,6 +935,12 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 
 			@Override
 			public void httpPostResolveData(String result) {
+
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
 
 			}
 		});

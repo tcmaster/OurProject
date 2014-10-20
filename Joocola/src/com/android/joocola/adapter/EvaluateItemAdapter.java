@@ -308,6 +308,12 @@ public class EvaluateItemAdapter extends BaseAdapter {
 									}
 
 								}
+
+								@Override
+								public void onNetWorkError() {
+									// TODO Auto-generated method stub
+
+								}
 							});
 						}
 					});

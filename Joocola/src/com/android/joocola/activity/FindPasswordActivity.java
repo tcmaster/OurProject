@@ -154,6 +154,12 @@ public class FindPasswordActivity extends BaseActivity implements OnClickListene
 							e.printStackTrace();
 						}
 					}
+
+					@Override
+					public void onNetWorkError() {
+						// TODO Auto-generated method stub
+
+					}
 				});
 			} else {
 				Toast.makeText(FindPasswordActivity.this, getString(R.string.input_right), Toast.LENGTH_SHORT).show();
@@ -195,6 +201,12 @@ public class FindPasswordActivity extends BaseActivity implements OnClickListene
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
+					}
+
+					@Override
+					public void onNetWorkError() {
+						// TODO Auto-generated method stub
+
 					}
 				});
 			}

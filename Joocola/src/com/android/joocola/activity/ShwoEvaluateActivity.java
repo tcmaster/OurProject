@@ -94,6 +94,12 @@ public class ShwoEvaluateActivity extends BaseActivity {
 				message.obj = result;
 				mHandler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

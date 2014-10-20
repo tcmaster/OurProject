@@ -28,6 +28,8 @@ import org.json.JSONObject;
 import android.os.Handler;
 import android.util.Log;
 
+import com.android.joocola.app.JoocolaApplication;
+
 public class HttpPostInterface {
 
 	private HashMap<String, String> map = new HashMap<String, String>();
@@ -80,6 +82,16 @@ public class HttpPostInterface {
 					entity.addPart("Filedata", fileBody);
 					post.setEntity(entity);
 					HttpResponse response = null;
+					if (!Utils.isNetConn(JoocolaApplication.getInstance())) {
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								mHttpPostCallBack.onNetWorkError();
+							}
+						});
+						return;
+					}
 					response = client.execute(post);
 					if (response.getStatusLine().getStatusCode() == 200) {
 						String result = EntityUtils.toString(response.getEntity());
@@ -110,6 +122,17 @@ public class HttpPostInterface {
 		try {
 			if (params != null)
 				httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+			if (!Utils.isNetConn(JoocolaApplication.getInstance())) {// 当前网络断开
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						// 调用网络断开接口
+						mHttpPostCallBack.onNetWorkError();
+					}
+				});
+				return;
+			}
 			httpResponse = new DefaultHttpClient().execute(httpPost);
 			Log.e("post的code", httpResponse.getStatusLine().getStatusCode() + "");
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
@@ -159,8 +182,30 @@ public class HttpPostInterface {
 		}
 	}
 
+	/**
+	 * 网络接口回调
+	 * 
+	 * @author:LiXiaoSong
+	 * @copyright © joocola.com
+	 * @Date:2014-10-20
+	 */
 	public interface HttpPostCallBack {
 
+		/**
+		 * 网络正常，可以成功返回数据
+		 * 
+		 * @param result
+		 * @author: LiXiaosong
+		 * @date:2014-10-20
+		 */
 		public void httpPostResolveData(String result);
+
+		/**
+		 * 网络异常，需要进行自定义处理
+		 * 
+		 * @author: LiXiaosong
+		 * @date:2014-10-20
+		 */
+		public void onNetWorkError();
 	}
 }

@@ -117,6 +117,12 @@ public class SplashActivity extends Activity {
 									}
 								});
 							}
+
+							@Override
+							public void onNetWorkError() {
+								// TODO Auto-generated method stub
+
+							}
 						});
 					}
 				});

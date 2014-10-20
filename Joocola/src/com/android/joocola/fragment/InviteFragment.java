@@ -89,6 +89,12 @@ public class InviteFragment extends Fragment {
 					e.printStackTrace();
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

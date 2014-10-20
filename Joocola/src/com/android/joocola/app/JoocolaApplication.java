@@ -125,6 +125,12 @@ public class JoocolaApplication extends Application {
 				public void httpPostResolveData(String result) {
 					Log.e("bb", "------------------->" + result);
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		}
 	}
@@ -157,6 +163,11 @@ public class JoocolaApplication extends Application {
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
+				}
+
+				@Override
+				public void onNetWorkError() {
+
 				}
 			});
 		} else {
@@ -244,6 +255,12 @@ public class JoocolaApplication extends Application {
 
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -279,6 +296,12 @@ public class JoocolaApplication extends Application {
 
 				}
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -311,6 +334,11 @@ public class JoocolaApplication extends Application {
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
+				}
+
+				@Override
+				public void onNetWorkError() {
+
 				}
 			});
 		} else {
@@ -364,6 +392,11 @@ public class JoocolaApplication extends Application {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+
 			}
 		});
 		return mInfos;

@@ -161,6 +161,12 @@ public class ApplyMangersActivity extends BaseActivity {
 				message.obj = result;
 				mHandler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 
@@ -176,6 +182,12 @@ public class ApplyMangersActivity extends BaseActivity {
 				message.what = 2;
 				message.obj = result;
 				mHandler.sendMessage(message);
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -311,6 +323,12 @@ public class ApplyMangersActivity extends BaseActivity {
 					message.what = 3;
 					message.obj = result;
 					mHandler.sendMessage(message);
+				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
 				}
 			});
 		}

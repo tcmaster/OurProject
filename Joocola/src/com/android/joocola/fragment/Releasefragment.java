@@ -131,6 +131,12 @@ public class Releasefragment extends Fragment implements OnRefreshListener, OnLo
 				releaseHandler.sendMessage(message);
 
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

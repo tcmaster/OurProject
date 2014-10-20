@@ -166,6 +166,12 @@ public class MainActivity extends Activity implements OnClickListener {
 							});
 						}
 					}
+
+					@Override
+					public void onNetWorkError() {
+						// TODO Auto-generated method stub
+
+					}
 				});
 			} else {
 				Toast.makeText(MainActivity.this, getString(R.string.input_right), Toast.LENGTH_SHORT).show();
@@ -329,6 +335,12 @@ public class MainActivity extends Activity implements OnClickListener {
 								}
 							});
 						}
+					}
+
+					@Override
+					public void onNetWorkError() {
+						// TODO Auto-generated method stub
+
 					}
 				});
 			}

@@ -130,6 +130,12 @@ public class SystemMessageAdapter extends BaseAdapter {
 										msgAgree.setText("已同意");
 
 									}
+
+									@Override
+									public void onNetWorkError() {
+										// TODO Auto-generated method stub
+
+									}
 								}, null);
 							}
 						}).start();

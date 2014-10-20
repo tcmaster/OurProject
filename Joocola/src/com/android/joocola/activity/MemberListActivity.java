@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.android.joocola.R;
-import com.android.joocola.R.id;
-import com.android.joocola.R.layout;
 import com.android.joocola.adapter.NearByPersonAdapter;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.entity.UserInfo;
@@ -28,6 +26,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class MemberListActivity extends BaseActivity {
+
 	@ViewInject(R.id.memberList)
 	private ListView member_lv;
 	private String issueID;
@@ -57,8 +56,7 @@ public class MemberListActivity extends BaseActivity {
 		HttpPostInterface interface1 = new HttpPostInterface();
 		interface1.addParams("AppointID", issueID);
 		interface1.addParams("AppointUserOnlyJoined", "true");
-		interface1.addParams("CurUserID", JoocolaApplication.getInstance()
-				.getPID());
+		interface1.addParams("CurUserID", JoocolaApplication.getInstance().getPID());
 		interface1.getData(Constants.USERINFOURL, new HttpPostCallBack() {
 
 			@Override
@@ -68,8 +66,7 @@ public class MemberListActivity extends BaseActivity {
 
 						@Override
 						public void run() {
-							Utils.toast(MemberListActivity.this,
-									"获取用户资料失败,请检查网络");
+							Utils.toast(MemberListActivity.this, "获取用户资料失败,请检查网络");
 						}
 					});
 				} else {
@@ -79,27 +76,28 @@ public class MemberListActivity extends BaseActivity {
 						JSONArray array = object.getJSONArray("Entities");
 						final List<UserInfo> infos = new ArrayList<UserInfo>();
 						for (int i = 0; i < array.length(); i++) {
-							final JSONObject userObject = array
-									.getJSONObject(i);
-							infos.add(JsonUtils.getUserInfo(userObject,
-									new UserInfo()));
+							final JSONObject userObject = array.getJSONObject(i);
+							infos.add(JsonUtils.getUserInfo(userObject, new UserInfo()));
 						}
 						handler.post(new Runnable() {
 
 							@Override
 							public void run() {
-								adapter = new NearByPersonAdapter(infos,
-										MemberListActivity.this,
-										new BitmapCache());
+								adapter = new NearByPersonAdapter(infos, MemberListActivity.this, new BitmapCache());
 								member_lv.setAdapter(adapter);
-								getActionBarleft().setText(
-										"群聊信息(" + infos.size() + ")人");
+								getActionBarleft().setText("群聊信息(" + infos.size() + ")人");
 							}
 						});
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 

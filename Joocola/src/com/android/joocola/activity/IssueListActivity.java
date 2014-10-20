@@ -149,6 +149,12 @@ public class IssueListActivity extends BaseActivity implements OnRefreshListener
 				message.obj = result;
 				mHandler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

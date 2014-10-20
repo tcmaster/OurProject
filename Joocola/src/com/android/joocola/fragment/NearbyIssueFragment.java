@@ -132,6 +132,12 @@ public class NearbyIssueFragment extends Fragment implements OnRefreshListener, 
 				message.obj = result;
 				releaseHandler.sendMessage(message);
 			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
+			}
 		});
 	}
 

@@ -261,6 +261,12 @@ public class PersonalCenterActivity extends BaseActivity implements OnClickListe
 									}
 								});
 							}
+
+							@Override
+							public void onNetWorkError() {
+								// TODO Auto-generated method stub
+
+							}
 						});
 					}
 				});

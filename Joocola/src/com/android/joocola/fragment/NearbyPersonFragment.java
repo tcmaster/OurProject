@@ -95,6 +95,12 @@ public class NearbyPersonFragment extends Fragment implements OnRefreshListener 
 					message.what = 0;
 					mHandler.sendMessage(message);
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		}
 

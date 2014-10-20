@@ -165,6 +165,12 @@ public class IssueDynamicAdapter extends BaseAdapter {
 						e.printStackTrace();
 					}
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		}
 	}

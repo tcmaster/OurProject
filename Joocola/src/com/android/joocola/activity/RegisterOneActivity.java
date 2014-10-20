@@ -195,6 +195,12 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 						e.printStackTrace();
 					}
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		} else
 			Utils.toast(this, "用户名格式不正确，请使用邮箱/电话号码作为用户名");

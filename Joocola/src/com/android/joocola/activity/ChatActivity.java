@@ -263,6 +263,12 @@ public class ChatActivity extends BaseActivity {
 					if (result.equals("true"))
 						LogUtils.v("聊天信息成功记录");
 				}
+
+				@Override
+				public void onNetWorkError() {
+					// TODO Auto-generated method stub
+
+				}
 			});
 		}
 		super.onDestroy();
@@ -323,6 +329,12 @@ public class ChatActivity extends BaseActivity {
 					}
 
 				}
+			}
+
+			@Override
+			public void onNetWorkError() {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
