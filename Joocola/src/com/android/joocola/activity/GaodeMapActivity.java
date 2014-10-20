@@ -24,6 +24,7 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.InfoWindowAdapter;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMap.OnMarkerClickListener;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
@@ -99,9 +100,9 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 			locationCity = intent.getStringExtra("LocationCityName");
 			latLng = new LatLng(locationX, locationY);
 			latLonPoint = AMapUtil.convertToLatLonPoint(latLng);
+			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));// 设置当前地图显示为北京市恭王府
 			getAddress(latLonPoint);
 			doSearchQuery(latLonPoint);
-
 			regeoMarker.setPosition(latLng);
 		} else {
 			if (!TextUtils.isEmpty(LocationXStr) && !TextUtils.isEmpty(locationYStr)) {
@@ -109,6 +110,7 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 				locationY = Double.parseDouble(locationYStr);
 				latLng = new LatLng(locationX, locationY);
 				latLonPoint = AMapUtil.convertToLatLonPoint(latLng);
+				aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
 				getAddress(latLonPoint);
 				doSearchQuery(latLonPoint);
 				regeoMarker.setPosition(latLng);
@@ -152,8 +154,6 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 			aMap.setOnCameraChangeListener(this);
 			aMap.setOnMarkerClickListener(this);// 添加点击marker监听事件
 			aMap.setInfoWindowAdapter(this);// 添加显示infowindow监听事件
-			// geoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f,
-			// 0.5f).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 			regeoMarker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 		}
 		;
@@ -285,13 +285,8 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		if (rCode == 0) {
 			if (result != null && result.getRegeocodeAddress() != null && result.getRegeocodeAddress().getFormatAddress() != null) {
 				addressName = result.getRegeocodeAddress().getFormatAddress();
-				// aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(latLonPoint),
-				// 15));
-				// regeoMarker.setPosition(AMapUtil.convertToLatLng(latLonPoint));
 				address = addressName;
 				addressTv.setText(address);
-				// doSearchQuery(result.getRegeocodeQuery().getPoint());
-				// Toast.makeText(GaodeMapActivity.this, address, Toast.LENGTH_SHORT).show();
 			} else {
 				Utils.toast(GaodeMapActivity.this, "无此地址");
 			}
@@ -359,9 +354,6 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 			if (result != null && result.getQuery() != null) {// 搜索poi的结果
 				mSearchList.clear();
 				for (int i = 0; i < result.getPois().size(); i++) {
-					// Log.e("bb", "getTitle" + result.getPois().get(i).getTitle());
-					// Log.e("bb", "getLatitude" + result.getPois().get(i).getLatLonPoint().getLongitude());
-					// Log.e("bb", "getLongitude" + result.getPois().get(i).getLatLonPoint().getLatitude());
 					mSearchList.add(result.getPois().get(i).getTitle());
 				}
 				mSearchAdapter.notifyDataSetChanged();
@@ -397,8 +389,8 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 	 * 开始进行poi搜索
 	 */
 	protected void doSearchQuery(LatLonPoint lp) {
-		mQuery = new PoiSearch.Query("", mSpinner.getSelectedItem().toString(), "北京市");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-		mQuery.setPageSize(30);// 设置每页最多返回多少条poiitem
+		mQuery = new PoiSearch.Query("", mSpinner.getSelectedItem().toString(), "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+		mQuery.setPageSize(30);// 设置每页最多返回多少条poi。item
 
 		if (lp != null) {
 			poiSearch = new PoiSearch(this, mQuery);
@@ -438,5 +430,4 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		doSearchQuery(latLonPoint);
 		regeoMarker.setPosition(latLng);
 	}
-
 }
