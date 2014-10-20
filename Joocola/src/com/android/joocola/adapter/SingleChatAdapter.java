@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joocola.R;
+import com.android.joocola.activity.BigPicActivity;
 import com.android.joocola.activity.PersonalDetailActivity;
 import com.android.joocola.app.JoocolaApplication;
 import com.android.joocola.utils.Constants;
@@ -351,15 +352,26 @@ public class SingleChatAdapter extends BaseAdapter {
 			ImageMessageBody imgBody = (ImageMessageBody) message.getBody();
 			String remoteUrl = imgBody.getThumbnailUrl();
 			String localUrl = imgBody.getLocalUrl();
+			final String big_url;
 			Bitmap bm = com.android.joocola.utils.BitmapUtils.decodeFile(localUrl, Utils.dip2px(context, 100), Utils.dip2px(context, 100));
 			// 本地若没这张图片，从网络获取
 			if (bm != null) {
 				holder.iv_getImg.setImageBitmap(ThumbnailUtils.extractThumbnail(bm, Utils.dip2px(context, 100), Utils.dip2px(context, 100)));
+				big_url = imgBody.getLocalUrl();
 			} else {
-				bmUtils.display(holder.iv_getImg, imgBody.getThumbnailUrl());
+				bmUtils.display(holder.iv_getImg, remoteUrl);
+				big_url = imgBody.getRemoteUrl();
 			}
 			// 如果有图片，需要为图片设置一个点击事件（点击看大图)
+			holder.iv_getImg.setOnClickListener(new OnClickListener() {
 
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, BigPicActivity.class);
+					intent.putExtra("big_url", big_url);
+					context.startActivity(intent);
+				}
+			});
 		}
 		// 这里为聊天用户的头像设置点击事件,点击进入用户详情
 		holder.iv_photo.setOnClickListener(new OnClickListener() {

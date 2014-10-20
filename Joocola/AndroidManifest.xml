@@ -208,13 +208,9 @@
         <activity 
             android:name="com.android.joocola.activity.IssueDynamicActivity"
             android:screenOrientation="portrait"/>
-        <receiver
-            android:name="com.android.joocola.receiver.NetworkReceiver"
-            android:label="NetworkConnection" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+        <activity android:name="com.android.joocola.activity.BigPicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

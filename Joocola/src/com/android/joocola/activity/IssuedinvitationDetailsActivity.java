@@ -316,13 +316,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 			@Override
 			public void httpPostResolveData(String result) {
 				if (result == null || result.equals("")) {
-					handler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							Utils.toast(IssuedinvitationDetailsActivity.this, "获取邀约用户信息失败");
-						}
-					});
+					Utils.toast(IssuedinvitationDetailsActivity.this, "获取邀约用户信息失败");
 				} else {
 					JSONObject object;
 					try {
@@ -335,6 +329,10 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 
 									@Override
 									public void run() {
+										if (RoomId == null || RoomId.equals("")) {
+											Utils.toast(IssuedinvitationDetailsActivity.this, "人数不足四人，未创建群聊房间");
+											return;
+										}
 										Intent intent = new Intent(IssuedinvitationDetailsActivity.this, ChatActivity.class);
 										intent.putExtra("isSingle", false);
 										intent.putExtra("userNickName", title.getText().toString());// 房间名
@@ -356,13 +354,7 @@ public class IssuedinvitationDetailsActivity extends BaseActivity implements OnC
 								return;
 							}
 						}
-						handler.post(new Runnable() {
-
-							@Override
-							public void run() {
-								Utils.toast(IssuedinvitationDetailsActivity.this, "对不起，您没有参加该邀约，无法参与聊天");
-							}
-						});
+						Utils.toast(IssuedinvitationDetailsActivity.this, "对不起，您没有参加该邀约，无法参与聊天");
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
