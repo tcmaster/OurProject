@@ -12,10 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.joocola.R;
-import com.android.joocola.fragment.ApplyFragment;
-import com.android.joocola.fragment.EvaluateFragment;
-import com.android.joocola.fragment.InviteFragment;
-import com.android.joocola.fragment.ReplyFragment;
+import com.android.joocola.fragment.IssueDynamicFragment;
 import com.android.joocola.utils.Constants;
 
 public class IssueDynamicActivity extends BaseActivity implements OnClickListener {
@@ -23,10 +20,10 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 	private FrameLayout mFrameLayout;
 	private TextView apply_tt, reply_tt, invite_tt, evaluate_tt;
 	private FragmentManager fragmentManager;
-	private ApplyFragment mApplyFragment;
-	private EvaluateFragment mEvaluateFragment;
-	private InviteFragment mInviteFragment;
-	private ReplyFragment mReplyFragment;
+	private IssueDynamicFragment mApplyFragment;
+	private IssueDynamicFragment mEvaluateFragment;
+	private IssueDynamicFragment mInviteFragment;
+	private IssueDynamicFragment mReplyFragment;
 	private String mUseID;// 获取当前用户ID
 	private SharedPreferences mPreferences;
 
@@ -70,7 +67,8 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 		fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		if (mUseID != null && !TextUtils.isEmpty(mUseID)) {
-			mApplyFragment = new ApplyFragment();
+			mApplyFragment = new IssueDynamicFragment();
+			mApplyFragment.setType(10);
 			mApplyFragment.setmUserID(mUseID);
 			fragmentTransaction.replace(R.id.issuedynamic_fl, mApplyFragment);
 			fragmentTransaction.commit();
@@ -83,7 +81,8 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 		case R.id.apply_tt:
 			FragmentTransaction applyTransaction = fragmentManager.beginTransaction();
 			if (mApplyFragment == null) {
-				mApplyFragment = new ApplyFragment();
+				mApplyFragment = new IssueDynamicFragment();
+				mApplyFragment.setType(10);
 				mApplyFragment.setmUserID(mUseID);
 			}
 			applyTransaction.replace(R.id.issuedynamic_fl, mApplyFragment);
@@ -92,7 +91,8 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 		case R.id.reply_tt:
 			FragmentTransaction replyTransaction = fragmentManager.beginTransaction();
 			if (mReplyFragment == null) {
-				mReplyFragment = new ReplyFragment();
+				mReplyFragment = new IssueDynamicFragment();
+				mReplyFragment.setType(11);
 				mReplyFragment.setmUserID(mUseID);
 			}
 			replyTransaction.replace(R.id.issuedynamic_fl, mReplyFragment);
@@ -101,7 +101,8 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 		case R.id.invite_tt:
 			FragmentTransaction inviteTransaction = fragmentManager.beginTransaction();
 			if (mInviteFragment == null) {
-				mInviteFragment = new InviteFragment();
+				mInviteFragment = new IssueDynamicFragment();
+				mInviteFragment.setType(12);
 				mInviteFragment.setmUserID(mUseID);
 			}
 
@@ -111,8 +112,9 @@ public class IssueDynamicActivity extends BaseActivity implements OnClickListene
 		case R.id.evaluate_tt:
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			if (mEvaluateFragment == null) {
-				mEvaluateFragment = new EvaluateFragment();
+				mEvaluateFragment = new IssueDynamicFragment();
 				mEvaluateFragment.setmUserID(mUseID);
+				mEvaluateFragment.setType(13);
 			}
 			fragmentTransaction.replace(R.id.issuedynamic_fl, mEvaluateFragment);
 			fragmentTransaction.commit();

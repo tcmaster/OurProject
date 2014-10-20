@@ -247,6 +247,7 @@ public class JsonUtils {
 			mEntity.setSenderAge(object.getString("SenderAge"));
 			mEntity.setSenderDateStr(object.getString("SenderLocationDate"));
 			mEntity.setSenderID(object.getInt("SenderID"));
+			mEntity.setSenderPhoto(object.getString("SenderPhoto"));
 			mEntity.setSenderLocationInfo(object.getString("SenderLocationInfo"));
 			mEntity.setSenderName(object.getString("SenderName"));
 			mEntity.setSenderSexIsFemale(object.getBoolean("SenderSexIsFemale"));

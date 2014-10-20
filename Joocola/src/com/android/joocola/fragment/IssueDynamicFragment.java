@@ -9,10 +9,12 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.adapter.IssueDynamicAdapter;
@@ -24,7 +26,7 @@ import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
 
 /**
- * 评价系统消息界面
+ * 报名系统消息界面
  * 
  * @author:bb
  * @see:
@@ -32,12 +34,14 @@ import com.android.joocola.utils.JsonUtils;
  * @copyright © joocola.com
  * @Date:2014年10月19日
  */
-public class EvaluateFragment extends Fragment {
+public class IssueDynamicFragment extends Fragment {
 
+	private int Type;
 	private ListView mListView;
 	private String mUserID;
 	private ArrayList<AdminMessageContentEntity> mDataList = new ArrayList<AdminMessageContentEntity>();
 	private IssueDynamicAdapter mAdapter;
+	private TextView mNodata;
 	private Handler mHandler = new Handler();
 
 	@Override
@@ -45,10 +49,10 @@ public class EvaluateFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragmen_issuedynamic, container, false);
 		mListView = (ListView) view.findViewById(R.id.issuedynamic_lv);
+		mNodata = (TextView) view.findViewById(R.id.issuedynamic_nodata);
 		mAdapter = new IssueDynamicAdapter(mDataList, getActivity(), JoocolaApplication.getInstance().getBitmapCache(), mHandler);
 		mListView.setAdapter(mAdapter);
 		initData();
@@ -57,17 +61,18 @@ public class EvaluateFragment extends Fragment {
 
 	public void setmUserID(String mUserID) {
 		this.mUserID = mUserID;
-	}
+	};
 
 	private void initData() {
 		mDataList.clear();
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
-		httpPostInterface.addParams("MsgType", 13 + "");
+		httpPostInterface.addParams("MsgType", Type + "");
 		httpPostInterface.addParams("curUerID", mUserID);
 		httpPostInterface.getData(Constants.GET_MSGS_URL, new HttpPostCallBack() {
 
 			@Override
 			public void httpPostResolveData(String result) {
+				Log.e("bb", result);
 				try {
 					JSONObject jsonObject = new JSONObject(result);
 					JSONArray jsonArray = jsonObject.getJSONArray("Entities");
@@ -76,7 +81,11 @@ public class EvaluateFragment extends Fragment {
 						AdminMessageContentEntity mContentEntity = JsonUtils.getAdminMessageContentEntity(mObject);
 						mDataList.add(mContentEntity);
 					}
-					mAdapter.notifyDataSetChanged();
+					if (mDataList.size() != 0) {
+						mListView.setVisibility(View.VISIBLE);
+						mNodata.setVisibility(View.GONE);
+						mAdapter.notifyDataSetChanged();
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -88,5 +97,9 @@ public class EvaluateFragment extends Fragment {
 
 			}
 		});
+	}
+
+	public void setType(int type) {
+		Type = type;
 	}
 }

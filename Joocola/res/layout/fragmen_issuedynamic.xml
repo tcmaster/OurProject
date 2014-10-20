@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
- <View 
+    <View 
      android:layout_width="match_parent"
      android:layout_height="1dp"
      android:background="@color/gray2"/>
@@ -11,7 +11,15 @@
     <ListView
         android:id="@+id/issuedynamic_lv"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content" >
     </ListView>
+
+    <TextView
+        android:id="@+id/issuedynamic_nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="暂无数据"
+        android:gravity="center" />
 
 </LinearLayout>

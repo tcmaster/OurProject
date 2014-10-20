@@ -87,6 +87,28 @@ public class IssueDynamicAdapter extends BaseAdapter {
 		String imgUrl = mContentEntity.getSenderPhoto();
 		if (type == 12) {// 邀请
 			viewHolder.mainContent.setVisibility(View.GONE);
+			viewHolder.name.setText(mContentEntity.getSenderName());
+			if (mContentEntity.getSenderSexIsFemale()) {
+				viewHolder.sex.setImageResource(R.drawable.girl);
+			} else {
+				viewHolder.sex.setImageResource(R.drawable.boy);
+			}
+			viewHolder.locationInfo.setText(mContentEntity.getSenderLocationInfo());
+			viewHolder.SenderDateStr.setText(mContentEntity.getSenderDateStr());
+			viewHolder.SendDateStr.setText(mContentEntity.getSendDateStr());
+			viewHolder.btn.setText(mButtonEntity.getCaption());
+			viewHolder.AssistContent.setText(mContentEntity.getAssistContent());
+			viewHolder.btn.setOnClickListener(new btnOnclick(mButtonEntity.getCallUrl()));
+			viewHolder.networkImageView.setErrorImageResId(R.drawable.photobg);
+			viewHolder.networkImageView.setDefaultImageResId(R.drawable.photobg);
+			viewHolder.networkImageView.setImageUrl(Utils.processResultStr(Constants.URL + imgUrl, "_150_"), mImageLoader);
+			if (mButtonEntity.getCallUrl() == null) {
+				viewHolder.btn.setText(mButtonEntity.getCaption());
+			} else {
+				viewHolder.btn.setText(mButtonEntity.getCaption());
+				viewHolder.btn.setOnClickListener(new btnOnclick(mButtonEntity.getCaption()));
+			}
+		} else if (type == 10) {// 报名
 			if (mContentEntity.getSenderID() != 1) {// 如果button有内容的
 				viewHolder.name.setText(mContentEntity.getSenderName());
 				if (mContentEntity.getSenderSexIsFemale()) {
@@ -110,16 +132,16 @@ public class IssueDynamicAdapter extends BaseAdapter {
 				viewHolder.mainContent.setText("此处需要后台调整");
 				viewHolder.btn.setVisibility(View.GONE);
 				viewHolder.SendDateStr.setText(mContentEntity.getSendDateStr());
-
 			}
-		} else if (type == 10) {// 报名
 		} else if (type == 11) {// 回复
 			viewHolder.AssistContent.setText(mContentEntity.getAssistContent());
 			viewHolder.mainContent.setText(mContentEntity.getMainContent());
+			viewHolder.AssistContent.setVisibility(View.VISIBLE);
+			viewHolder.mainContent.setVisibility(View.VISIBLE);
 			viewHolder.personLL.setVisibility(View.GONE);
 			viewHolder.name.setText(mContentEntity.getSenderName());
 			viewHolder.SendDateStr.setText(mContentEntity.getSendDateStr());
-			viewHolder.btn.setText(mContentEntity.getAdminMessageContentButtonEntity().getCaption());
+			viewHolder.btn.setVisibility(View.GONE);
 			viewHolder.networkImageView.setErrorImageResId(R.drawable.photobg);
 			viewHolder.networkImageView.setDefaultImageResId(R.drawable.photobg);
 			viewHolder.networkImageView.setImageUrl(Utils.processResultStr(Constants.URL + imgUrl, "_150_"), mImageLoader);
