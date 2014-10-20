@@ -251,7 +251,8 @@ public class JsonUtils {
 			mEntity.setSenderName(object.getString("SenderName"));
 			mEntity.setSenderSexIsFemale(object.getBoolean("SenderSexIsFemale"));
 			String buttons = object.getString("Buttons");
-			buttons = buttons.replaceAll("\\\\", "");
+			buttons = buttons.replaceAll("\\\\\\\u0026", "&");
+			buttons = buttons.replace("\\\\", "");
 			if (buttons.startsWith("[")) {
 				JSONArray jsonArray = new JSONArray(buttons);
 				if (jsonArray.length() != 0) {

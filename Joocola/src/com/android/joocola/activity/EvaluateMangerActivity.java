@@ -135,7 +135,6 @@ public class EvaluateMangerActivity extends BaseActivity {
 
 			@Override
 			public void onNetWorkError() {
-				// TODO Auto-generated method stub
 
 			}
 		});

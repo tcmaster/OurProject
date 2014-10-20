@@ -80,7 +80,6 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issue_gaodeditu);
-
 		Intent intent = getIntent();
 		isChooseAddress = intent.getBooleanExtra("isChooseAddress", false);
 		mapView = (MapView) findViewById(R.id.map);
@@ -102,6 +101,7 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 			latLonPoint = AMapUtil.convertToLatLonPoint(latLng);
 			getAddress(latLonPoint);
 			doSearchQuery(latLonPoint);
+
 			regeoMarker.setPosition(latLng);
 		} else {
 			if (!TextUtils.isEmpty(LocationXStr) && !TextUtils.isEmpty(locationYStr)) {
