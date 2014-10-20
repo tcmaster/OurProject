@@ -1,10 +1,15 @@
 package com.android.joocola.activity;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,10 +22,13 @@ import android.widget.TextView;
 
 import com.android.joocola.R;
 import com.android.joocola.entity.RegisterInfo;
+import com.android.joocola.sms.SmsInfo;
+import com.android.joocola.sms.SmsObserver;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
+import com.lidroid.xutils.util.LogUtils;
 
 public class RegisterOneActivity extends BaseActivity implements OnClickListener {
 
@@ -38,6 +46,14 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 	private static final int GETCODEFAIL = 1;
 	// 按钮是否可用标识
 	private boolean buttonOk = true;
+	/**
+	 * 聚可乐发送验证码的电话号码
+	 */
+	private static final String PHONE_NUMBER = "106550200742";
+	/**
+	 * 短信监听器
+	 */
+	private SmsObserver smsObserver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +87,28 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 		b_getAutoCode.setOnClickListener(this);
 		b_nextStep.setOnClickListener(this);
 		tv_backLogin.setOnClickListener(this);
+		// 注册短信监听器
+		smsObserver = new SmsObserver(new Handler(), this, new SmsObserver.SmsProcesser() {
+
+			@Override
+			public void processSms(List<SmsInfo> infos) {
+				// 接收到新短信时，进行发信人的判断
+				SmsInfo info = infos.get(0);
+				LogUtils.v("聚可乐" + info.getSmsbody());
+				if (info.getSmsbody().contains("聚可乐")) {
+					Pattern pattern = Pattern.compile("\\d{6}");
+					Matcher matcher = pattern.matcher(info.getSmsbody());
+					// 得到验证码，放到控件中显示
+					matcher.find();
+					String resultStr = matcher.group();
+					if (resultStr != null && !resultStr.equals(""))
+						et_code.setText(resultStr);
+				}
+			}
+
+		});
+		getContentResolver().registerContentObserver(Uri.parse(SmsObserver.SMS_URI_ALL), true, smsObserver);
+
 	}
 
 	@Override
@@ -232,5 +270,12 @@ public class RegisterOneActivity extends BaseActivity implements OnClickListener
 			}
 			super.handleMessage(msg);
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (smsObserver != null)
+			getContentResolver().unregisterContentObserver(smsObserver);
+		super.onDestroy();
 	}
 }
