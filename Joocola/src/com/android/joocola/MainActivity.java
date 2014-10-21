@@ -32,6 +32,15 @@ import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 登录界面
+ * 
+ * @author:bb
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class MainActivity extends Activity implements OnClickListener {
 
 	private EditText nameEdit, pswdEdit;

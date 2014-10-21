@@ -22,20 +22,26 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * 邀约回复的适配器
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ */
 public class IssueReplyAdapter extends BaseAdapter {
+
 	private List<ReplyEntity> mReplys;
 	private LayoutInflater inflater;
 	private ViewHolder holder;
 	private ImageLoader mImageLoader;
 	private Context mContext;
 
-	public IssueReplyAdapter(List<ReplyEntity> replys, Context context,
-			BitmapCache bitmapCache) {
+	public IssueReplyAdapter(List<ReplyEntity> replys, Context context, BitmapCache bitmapCache) {
 		mReplys = replys;
 		mContext = context;
 		inflater = LayoutInflater.from(context);
-		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
-				bitmapCache);
+		mImageLoader = new ImageLoader(Volley.newRequestQueue(context), bitmapCache);
 	}
 
 	@Override
@@ -58,10 +64,8 @@ public class IssueReplyAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.replyitem, null);
-			holder.touxiang = (NetworkImageView) convertView
-					.findViewById(R.id.reply_img);
-			holder.content = (TextView) convertView
-					.findViewById(R.id.reply_content);
+			holder.touxiang = (NetworkImageView) convertView.findViewById(R.id.reply_img);
+			holder.content = (TextView) convertView.findViewById(R.id.reply_content);
 			holder.name = (TextView) convertView.findViewById(R.id.reply_name);
 			holder.time = (TextView) convertView.findViewById(R.id.reply_time);
 			convertView.setTag(holder);
@@ -76,15 +80,12 @@ public class IssueReplyAdapter extends BaseAdapter {
 		String touxiangUrl = replyEntity.getPublisherPhotoString();
 		holder.touxiang.setErrorImageResId(R.drawable.photobg);
 		holder.touxiang.setDefaultImageResId(R.drawable.photobg);
-		holder.touxiang.setImageUrl(
-				Utils.processResultStr(Constants.URL + touxiangUrl, "_150_"),
-				mImageLoader);
+		holder.touxiang.setImageUrl(Utils.processResultStr(Constants.URL + touxiangUrl, "_150_"), mImageLoader);
 		holder.touxiang.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(mContext,
-						PersonalDetailActivity.class);
+				Intent intent = new Intent(mContext, PersonalDetailActivity.class);
 				intent.putExtra("userId", publishID + "");
 				Log.e("跳转的pid", publishID + "");
 				mContext.startActivity(intent);
@@ -95,6 +96,7 @@ public class IssueReplyAdapter extends BaseAdapter {
 	}
 
 	private class ViewHolder {
+
 		private TextView content, name, time;
 		private NetworkImageView touxiang;
 	}

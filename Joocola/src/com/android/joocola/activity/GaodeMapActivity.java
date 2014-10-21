@@ -48,6 +48,15 @@ import com.android.joocola.utils.AMapUtil;
 import com.android.joocola.utils.Constants;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 地图界面
+ * 
+ * @author:bb
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchListener, OnClickListener,
 		OnPoiSearchListener, InfoWindowAdapter, OnMarkerClickListener, OnCameraChangeListener {
 

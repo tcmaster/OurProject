@@ -24,6 +24,14 @@ import com.android.joocola.R;
 import com.android.joocola.utils.HttpPostInterface;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 基础类 内封装了各种大家都可以调用的方法
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class BaseActivity extends FragmentActivity {
 
 	public ActionBar mActionBar;

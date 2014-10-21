@@ -30,6 +30,13 @@ import android.util.Log;
 
 import com.android.joocola.app.JoocolaApplication;
 
+/**
+ * 该类是最关键的类 所有的网络数据都需要调用此类去获取
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ */
 public class HttpPostInterface {
 
 	private HashMap<String, String> map = new HashMap<String, String>();

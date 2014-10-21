@@ -147,6 +147,14 @@ public class ApplyMangersActivity extends BaseActivity {
 		initUnJoinList();
 	}
 
+	/**
+	 * 加载已经加入的数据
+	 * 
+	 * @see:
+	 * @since:
+	 * @author: bb
+	 * @date:2014年10月21日
+	 */
 	private void initJoinList() {
 
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
@@ -170,6 +178,15 @@ public class ApplyMangersActivity extends BaseActivity {
 		});
 	}
 
+	/**
+	 * 
+	 * 加载没加入的
+	 * 
+	 * @see:
+	 * @since:
+	 * @author: bb
+	 * @date:2014年10月21日
+	 */
 	private void initUnJoinList() {
 		HttpPostInterface httpPostInterface = new HttpPostInterface();
 		httpPostInterface.addParams("AppointUserState", 10 + "");
@@ -223,6 +240,17 @@ public class ApplyMangersActivity extends BaseActivity {
 		return list;
 	}
 
+	/**
+	 * 动态的添加view
+	 * 
+	 * @param layout
+	 * @param datas
+	 * @param ifShowButton
+	 * @see:
+	 * @since:
+	 * @author: LiXiaosong
+	 * @date:2014年10月21日
+	 */
 	private void loadItemView(LinearLayout layout, List<SimpleUserInfo> datas, boolean ifShowButton) {
 		ImgOnclickListener imgOnclickListener = new ImgOnclickListener(datas);
 		ShowDialogListener shDialogListener = new ShowDialogListener(datas);

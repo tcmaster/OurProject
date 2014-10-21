@@ -24,6 +24,13 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * 周围的人的适配器
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ */
 public class NearByPersonAdapter extends BaseAdapter {
 
 	private List<UserInfo> mUserInfos = new ArrayList<UserInfo>();

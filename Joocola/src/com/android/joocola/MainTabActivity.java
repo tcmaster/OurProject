@@ -170,6 +170,7 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 		int id = item.getItemId();
 		Intent intent = new Intent();
 		switch (id) {
+		// 发表邀约的模块
 		case R.id.action_add:
 			mIssueInfos = mJoocolaApplication.getIssueInfos();
 			if (mIssueInfos == null || mIssueInfos.size() == 0) {
@@ -185,10 +186,12 @@ public class MainTabActivity extends BaseActivity implements AMapLocationListene
 			}
 
 			break;
+		// 筛选的模块
 		case R.id.action_loudou:
 			intent.setClass(MainTabActivity.this, FilterActivity.class);
 			startActivityForResult(intent, REQUEST_CODE);
 			break;
+		// 个人中心的模块
 		case R.id.action_me:
 			intent.setClass(this, PersonalCenterActivity.class);
 			startActivity(intent);

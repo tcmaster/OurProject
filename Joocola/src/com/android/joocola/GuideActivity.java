@@ -16,6 +16,15 @@ import com.android.joocola.fragment.GuideBFragment;
 import com.android.joocola.fragment.GuideCFragment;
 import com.android.joocola.fragment.MyFragmentPagerAdapter;
 
+/**
+ * 引导界面
+ * 
+ * @author:bb
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class GuideActivity extends FragmentActivity {
 
 	// 定义ViewPager对象

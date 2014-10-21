@@ -23,6 +23,14 @@ import com.android.joocola.utils.Utils;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * 找回密码界面
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class FindPasswordActivity extends BaseActivity implements OnClickListener {
 
 	private EditText edit_pm, edit_security, edit_new_pwsd;

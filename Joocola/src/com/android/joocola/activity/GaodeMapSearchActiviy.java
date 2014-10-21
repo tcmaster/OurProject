@@ -30,6 +30,15 @@ import com.android.joocola.R;
 import com.android.joocola.utils.AMapUtil;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 高德地图搜索界面
+ * 
+ * @author:bb
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class GaodeMapSearchActiviy extends Activity implements OnGeocodeSearchListener, OnMapClickListener {
 
 	private MapView mapView;

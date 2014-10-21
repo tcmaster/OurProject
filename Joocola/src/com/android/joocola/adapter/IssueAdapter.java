@@ -18,6 +18,14 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * 邀约的适配器
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class IssueAdapter extends BaseAdapter {
 
 	private LayoutInflater layoutInflater;

@@ -25,6 +25,14 @@ import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.JsonUtils;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 这是查看所有用户评价的界面
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class TheUserAllEvaluateActivity extends BaseActivity {
 
 	private String mUserId;

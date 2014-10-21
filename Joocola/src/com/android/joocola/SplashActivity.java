@@ -21,7 +21,7 @@ import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.Utils;
 
 /**
- * 闪屏界面
+ * 闪屏界面 每次登录首先启动该界面
  * 
  * @author bb
  * 

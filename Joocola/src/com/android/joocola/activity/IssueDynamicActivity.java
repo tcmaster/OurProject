@@ -15,6 +15,15 @@ import com.android.joocola.R;
 import com.android.joocola.fragment.IssueDynamicFragment;
 import com.android.joocola.utils.Constants;
 
+/**
+ * 邀约动态界面
+ * 
+ * @author:bb
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class IssueDynamicActivity extends BaseActivity implements OnClickListener {
 
 	private FrameLayout mFrameLayout;

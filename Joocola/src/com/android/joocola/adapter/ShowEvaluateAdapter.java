@@ -16,20 +16,26 @@ import com.android.joocola.utils.BitmapCache;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * 评价item的适配器
+ * 
+ * @author:LiXiaoSong
+ * @see:
+ * @since:
+ */
 public class ShowEvaluateAdapter extends BaseAdapter {
+
 	private ArrayList<AppointScoreEntity> mList;
 	private Context ctx;
 	private LayoutInflater inflater;
 	private ImageLoader mImageLoader;
 	private ViewHolder holder;
 
-	public ShowEvaluateAdapter(ArrayList<AppointScoreEntity> list,
-			Context context, BitmapCache bitmapCache) {
+	public ShowEvaluateAdapter(ArrayList<AppointScoreEntity> list, Context context, BitmapCache bitmapCache) {
 		ctx = context;
 		mList = list;
 		inflater = LayoutInflater.from(context);
-		mImageLoader = new ImageLoader(Volley.newRequestQueue(context),
-				bitmapCache);
+		mImageLoader = new ImageLoader(Volley.newRequestQueue(context), bitmapCache);
 	}
 
 	@Override
@@ -53,23 +59,17 @@ public class ShowEvaluateAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.item_appointscore, null);
-			holder.comment_neirong = (TextView) convertView
-					.findViewById(R.id.comment_neirong);
-			holder.comment_pj = (TextView) convertView
-					.findViewById(R.id.comment_pjtxt);
-			holder.comment_pjimg = (ImageView) convertView
-					.findViewById(R.id.comment_pjimg);
-			holder.comment_time = (TextView) convertView
-					.findViewById(R.id.comment_time);
-			holder.comment_user = (TextView) convertView
-					.findViewById(R.id.comment_user);
+			holder.comment_neirong = (TextView) convertView.findViewById(R.id.comment_neirong);
+			holder.comment_pj = (TextView) convertView.findViewById(R.id.comment_pjtxt);
+			holder.comment_pjimg = (ImageView) convertView.findViewById(R.id.comment_pjimg);
+			holder.comment_time = (TextView) convertView.findViewById(R.id.comment_time);
+			holder.comment_user = (TextView) convertView.findViewById(R.id.comment_user);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		AppointScoreEntity appointScoreEntity = mList.get(position);
-		holder.comment_user.setText(appointScoreEntity.getFromUserName()
-				+ " 评价 " + appointScoreEntity.getToUserName());
+		holder.comment_user.setText(appointScoreEntity.getFromUserName() + " 评价 " + appointScoreEntity.getToUserName());
 		holder.comment_neirong.setText(appointScoreEntity.getComment());
 		if (appointScoreEntity.getScoreID().equals("10")) {
 			holder.comment_pj.setText("好评");
@@ -87,6 +87,7 @@ public class ShowEvaluateAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
+
 		TextView comment_user;// 显示是谁跟谁的评价
 		TextView comment_pj;// 显示是什么评价
 		TextView comment_neirong;// 内容

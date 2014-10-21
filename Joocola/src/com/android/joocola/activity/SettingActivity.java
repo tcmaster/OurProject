@@ -42,6 +42,14 @@ import com.android.joocola.utils.HttpPostInterface.HttpPostCallBack;
 import com.android.joocola.utils.MyDownLoadManger;
 import com.android.joocola.utils.Utils;
 
+/**
+ * 设置界面
+ * 
+ * @see:
+ * @since:
+ * @copyright © joocola.com
+ * @Date:2014年10月21日
+ */
 public class SettingActivity extends BaseActivity implements OnClickListener {
 
 	private LinearLayout pswdLayout, mailLayout, phonenumLayout, updateLayout;
