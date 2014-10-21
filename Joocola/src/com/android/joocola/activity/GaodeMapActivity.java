@@ -285,6 +285,11 @@ public class GaodeMapActivity extends BaseActivity implements OnGeocodeSearchLis
 		if (rCode == 0) {
 			if (result != null && result.getRegeocodeAddress() != null && result.getRegeocodeAddress().getFormatAddress() != null) {
 				addressName = result.getRegeocodeAddress().getFormatAddress();
+				String cityString = result.getRegeocodeAddress().getCity();
+				if (cityString.equals(""))
+					cityString = result.getRegeocodeAddress().getProvince();
+				locationCity = cityString;
+				getActionBar().setTitle(locationCity);
 				address = addressName;
 				addressTv.setText(address);
 			} else {
