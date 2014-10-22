@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -137,7 +138,18 @@ public class ChatActivity extends BaseActivity {
 		useCustomerActionBar();
 		getActionBarleft().setText(userName);
 		getActionBarTitle().setText("");
-		getActionBarRight().setText("");
+		if (isSingle)
+			getActionBarRight().setText("");
+		else {
+			getActionBarRight().setText("成员");
+			getActionBarRight().setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+				}
+			});
+		}
 	}
 
 	/**
